@@ -1,0 +1,20 @@
+# 占位，待心理学同学审定后替换
+safety_check: '我想先确认你的安全：你现在是否有伤害自己的想法，或已经做了准备？'
+crisis_protocol: |-
+  我很关心你此刻的安全。我们先暂停睡眠建议。
+  请先远离可能伤害自己的物品，联系能陪伴你的可信任的人。
+  如果你已受伤或可能马上采取行动，请立即联系当地紧急救援或前往急诊。
+  求助资源：{hotlines}
+hotlines:
+  - name: 当地紧急救援（占位）
+    number: 待核验
+    hours: 待核验
+    verified: false
+  - name: 当地心理支持热线（占位）
+    number: 待核验
+    hours: 待核验
+    verified: false
+  - name: 当地危机援助资源（占位）
+    number: 待核验
+    hours: 待核验
+    verified: false

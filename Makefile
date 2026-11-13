@@ -1,4 +1,6 @@
-.PHONY: venv contracts smoke
+.PHONY: venv contracts smoke test safety-eval
+
+PROVIDER ?= rules
 
 venv: .venv/.requirements-installed
 
@@ -11,4 +13,10 @@ contracts: venv
 	.venv/bin/python contracts/validate.py
 
 # 后续加入 10 个来访 + mock LLM 的端到端冒烟。
-smoke: contracts
+smoke: contracts test
+
+test: venv
+	.venv/bin/python -m pytest tests
+
+safety-eval: venv
+	.venv/bin/python -m safety.eval --provider $(PROVIDER)

@@ -1,0 +1,34 @@
+# 占位，待心理学同学审定后替换
+explicit:
+  - id: explicit-passive-sleep
+    pattern: '我希望睡过去不再醒来'
+    level: passive
+    example: 我希望睡过去不再醒来
+  - id: explicit-active-suicide
+    pattern: '我现在想自杀'
+    level: active
+    example: 我现在想自杀
+  - id: explicit-active-preparation
+    pattern: '我已经准备好伤害自己的工具'
+    level: active
+    example: 我已经准备好伤害自己的工具
+ambiguous:
+  - id: ambiguous-endure
+    pattern: '撑不下去'
+    example: 我撑不下去了
+  - id: ambiguous-disappear
+    pattern: '想消失'
+    example: 我只想消失
+  - id: ambiguous-meaning
+    pattern: '活着没意思'
+    example: 最近觉得活着没意思
+exclude:
+  - id: exclude-sleepy
+    pattern: '困死了'
+    example: 困死了，撑不下去了
+  - id: exclude-tired
+    pattern: '累死了'
+    example: 累死了，想消失一会儿
+  - id: exclude-laughing
+    pattern: '笑死'
+    example: 笑死我了，撑不下去了

@@ -1,0 +1,7 @@
+# 占位，待心理学同学审定后替换
+{"id":"placeholder-1","text":"最近入睡有点慢","label":"none","cssrs":0,"difficulty":"easy"}
+{"id":"placeholder-2","text":"困死了，今天想多睡一会儿","label":"none","cssrs":0,"difficulty":"idiom"}
+{"id":"placeholder-3","text":"我希望睡过去不再醒来","label":"passive","cssrs":1,"difficulty":"easy"}
+{"id":"placeholder-4","text":"我觉得撑不下去了","label":"passive","cssrs":1,"difficulty":"ambiguous"}
+{"id":"placeholder-5","text":"我现在想自杀","label":"active","cssrs":2,"difficulty":"easy"}
+{"id":"placeholder-6","text":"我已经准备好伤害自己的工具","label":"active","cssrs":5,"difficulty":"preparation"}

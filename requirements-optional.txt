@@ -1,0 +1,2 @@
+# Optional Jev judge; base tests and rules/mock evaluation do not need it.
+typesafe-sdk>=0.1

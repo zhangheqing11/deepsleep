@@ -1,0 +1,26 @@
+# 固定硬否决，不接受 playbook 覆盖。阈值与本文件路径在 safety/config.yaml。
+contraindications:
+  - bipolar
+  - epilepsy
+  - untreated_osa
+  - pregnancy
+  - high_fall_risk
+  - drowsy_driving_job
+  - parasomnia
+plan_messages:
+  contraindication: '存在睡眠限制禁忌，不可建议 sleep_restriction。'
+  min_tib: '卧床时间低于冻结下限。'
+  unchecked: '建议睡眠限制前必须检查禁忌。'
+text_rules:
+  - id: clinical-wording
+    code: forbidden_wording
+    pattern: '诊断|治疗失眠症'
+    message: '出现禁用临床措辞，请改用建议、干预路径或建议就医。'
+    field: text
+  - id: medication-advice
+    code: forbidden_wording
+    pattern: '(?:建议|可以|应该|需要|试试|请|自行)?(?:服用|口服|吃|使用)(?:[^，。；！？\n]*)(?:药|褪黑素)|(?:建议|可以|应该|需要|自行)(?:用药|加药|减药)|(?:自行)?(?:停药|换药)|(?:增加|加大|减少|减小|调整|加倍)(?:[^，。；！？\n]*)(?:药量|剂量|药物|安眠药)|(?:安眠药|助眠药|褪黑素)(?:[^，。；！？\n]*)(?:加量|减量|加倍)'
+    message: '出现用药或调药建议，应转为建议咨询医生。'
+    field: text
+    # 仅排除同一分句中紧邻建议之前的明确禁止，不做整段排除。
+    negated_prefix_pattern: '(?:不|不要|不可|不能|不得|禁止|避免|请勿|切勿|不应|不建议)(?:自行)?(?:[^，。；！？\n]*[或及和])?$'
