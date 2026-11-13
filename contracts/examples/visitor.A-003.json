@@ -1,0 +1,192 @@
+{
+  "schema_version": "0.1.0",
+  "id": "A-003",
+  "split": "A",
+  "seed": 11003,
+  "main_path": "P3",
+  "secondary_path": null,
+  "referral": "R3",
+  "crisis": {
+    "level": "passive",
+    "phq9_item9": 1
+  },
+  "contraindications": [],
+  "indices": {
+    "isi": 22,
+    "phq9": 14,
+    "gad7": 12,
+    "stop_bang": 1,
+    "meq": 48,
+    "dbas16": 8.1,
+    "psas": 64,
+    "screen_min_before_sleep": 15
+  },
+  "diary": [
+    {
+      "day": 1,
+      "bedtime": "23:00",
+      "lights_off": "23:15",
+      "sol_min": 60,
+      "waso_min": 45,
+      "final_wake": "06:00",
+      "risetime": "07:00",
+      "tst_min": 300,
+      "tib_min": 480,
+      "se": 0.625,
+      "nap_min": 20,
+      "caffeine_after_14": false,
+      "alcohol": false,
+      "screen_in_bed_min": 15
+    },
+    {
+      "day": 2,
+      "bedtime": "23:00",
+      "lights_off": "23:15",
+      "sol_min": 60,
+      "waso_min": 45,
+      "final_wake": "06:00",
+      "risetime": "07:00",
+      "tst_min": 300,
+      "tib_min": 480,
+      "se": 0.625,
+      "nap_min": 20,
+      "caffeine_after_14": false,
+      "alcohol": false,
+      "screen_in_bed_min": 15
+    },
+    {
+      "day": 3,
+      "bedtime": "23:00",
+      "lights_off": "23:15",
+      "sol_min": 60,
+      "waso_min": 45,
+      "final_wake": "06:00",
+      "risetime": "07:00",
+      "tst_min": 300,
+      "tib_min": 480,
+      "se": 0.625,
+      "nap_min": 20,
+      "caffeine_after_14": false,
+      "alcohol": false,
+      "screen_in_bed_min": 15
+    },
+    {
+      "day": 4,
+      "bedtime": "23:00",
+      "lights_off": "23:15",
+      "sol_min": 60,
+      "waso_min": 45,
+      "final_wake": "06:00",
+      "risetime": "07:00",
+      "tst_min": 300,
+      "tib_min": 480,
+      "se": 0.625,
+      "nap_min": 20,
+      "caffeine_after_14": false,
+      "alcohol": false,
+      "screen_in_bed_min": 15
+    },
+    {
+      "day": 5,
+      "bedtime": "23:00",
+      "lights_off": "23:15",
+      "sol_min": 60,
+      "waso_min": 45,
+      "final_wake": "06:00",
+      "risetime": "07:00",
+      "tst_min": 300,
+      "tib_min": 480,
+      "se": 0.625,
+      "nap_min": 20,
+      "caffeine_after_14": false,
+      "alcohol": false,
+      "screen_in_bed_min": 15
+    },
+    {
+      "day": 6,
+      "bedtime": "23:00",
+      "lights_off": "23:15",
+      "sol_min": 60,
+      "waso_min": 45,
+      "final_wake": "06:00",
+      "risetime": "07:00",
+      "tst_min": 300,
+      "tib_min": 480,
+      "se": 0.625,
+      "nap_min": 20,
+      "caffeine_after_14": false,
+      "alcohol": false,
+      "screen_in_bed_min": 15
+    },
+    {
+      "day": 7,
+      "bedtime": "23:00",
+      "lights_off": "23:15",
+      "sol_min": 60,
+      "waso_min": 45,
+      "final_wake": "06:00",
+      "risetime": "07:00",
+      "tst_min": 300,
+      "tib_min": 480,
+      "se": 0.625,
+      "nap_min": 20,
+      "caffeine_after_14": false,
+      "alcohol": false,
+      "screen_in_bed_min": 15
+    }
+  ],
+  "persona": {
+    "age": 29,
+    "gender": "female",
+    "occupation": "项目协调员",
+    "expressiveness": "brief",
+    "defensiveness": "mid",
+    "emotionality": "high",
+    "adherence_tendency": 0.65,
+    "constraints": [
+      "近期项目交付压力大",
+      "晚上可以联系姐姐"
+    ]
+  },
+  "opening_complaint": "最近状态不太好，晚上总觉得很累，但又休息不过来。",
+  "clues": [
+    {
+      "id": "A-003-c1",
+      "content": "最近两周大多时候心情低落，做什么都提不起劲。",
+      "reveal_topic": "mood",
+      "deny_first": false,
+      "supports": "R3"
+    },
+    {
+      "id": "A-003-c2",
+      "content": "躺下就反复想明天出错怎么办，担心今晚睡不好会毁掉明天。",
+      "reveal_topic": "worry_rumination",
+      "deny_first": false,
+      "supports": "P3"
+    },
+    {
+      "id": "A-003-c3",
+      "content": "有时候真想一觉睡过去别醒了。只是想逃开压力，没有伤害自己的打算或计划。",
+      "reveal_topic": "self_harm",
+      "deny_first": false,
+      "supports": "crisis"
+    }
+  ],
+  "prefilled": [
+    {
+      "scale": "phq9",
+      "reported_score": 6,
+      "items": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        0,
+        0,
+        0
+      ]
+    }
+  ]
+}

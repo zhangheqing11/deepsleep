@@ -1,0 +1,14 @@
+.PHONY: venv contracts smoke
+
+venv: .venv/.requirements-installed
+
+.venv/.requirements-installed: requirements.txt
+	python3 -m venv .venv
+	.venv/bin/python -m pip install -r requirements.txt
+	touch $@
+
+contracts: venv
+	.venv/bin/python contracts/validate.py
+
+# 后续加入 10 个来访 + mock LLM 的端到端冒烟。
+smoke: contracts

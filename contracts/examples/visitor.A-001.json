@@ -1,0 +1,196 @@
+{
+  "schema_version": "0.1.0",
+  "id": "A-001",
+  "split": "A",
+  "seed": 11001,
+  "main_path": "P2",
+  "secondary_path": null,
+  "referral": "R0",
+  "crisis": {
+    "level": "none",
+    "phq9_item9": 0
+  },
+  "contraindications": [],
+  "indices": {
+    "isi": 19,
+    "phq9": 4,
+    "gad7": 6,
+    "stop_bang": 1,
+    "meq": 52,
+    "dbas16": 5.2,
+    "psas": 34,
+    "screen_min_before_sleep": 20
+  },
+  "diary": [
+    {
+      "day": 1,
+      "bedtime": "23:00",
+      "lights_off": "23:15",
+      "sol_min": 70,
+      "waso_min": 40,
+      "final_wake": "06:30",
+      "risetime": "07:00",
+      "tst_min": 325,
+      "tib_min": 480,
+      "se": 0.6771,
+      "nap_min": 0,
+      "caffeine_after_14": false,
+      "alcohol": false,
+      "screen_in_bed_min": 15
+    },
+    {
+      "day": 2,
+      "bedtime": "23:00",
+      "lights_off": "23:15",
+      "sol_min": 70,
+      "waso_min": 40,
+      "final_wake": "06:30",
+      "risetime": "07:00",
+      "tst_min": 325,
+      "tib_min": 480,
+      "se": 0.6771,
+      "nap_min": 0,
+      "caffeine_after_14": false,
+      "alcohol": false,
+      "screen_in_bed_min": 15
+    },
+    {
+      "day": 3,
+      "bedtime": "23:00",
+      "lights_off": "23:15",
+      "sol_min": 70,
+      "waso_min": 40,
+      "final_wake": "06:30",
+      "risetime": "07:00",
+      "tst_min": 325,
+      "tib_min": 480,
+      "se": 0.6771,
+      "nap_min": 0,
+      "caffeine_after_14": false,
+      "alcohol": false,
+      "screen_in_bed_min": 15
+    },
+    {
+      "day": 4,
+      "bedtime": "23:00",
+      "lights_off": "23:15",
+      "sol_min": 70,
+      "waso_min": 40,
+      "final_wake": "06:30",
+      "risetime": "07:00",
+      "tst_min": 325,
+      "tib_min": 480,
+      "se": 0.6771,
+      "nap_min": 0,
+      "caffeine_after_14": false,
+      "alcohol": false,
+      "screen_in_bed_min": 15
+    },
+    {
+      "day": 5,
+      "bedtime": "23:00",
+      "lights_off": "23:15",
+      "sol_min": 70,
+      "waso_min": 40,
+      "final_wake": "06:30",
+      "risetime": "07:00",
+      "tst_min": 325,
+      "tib_min": 480,
+      "se": 0.6771,
+      "nap_min": 0,
+      "caffeine_after_14": false,
+      "alcohol": false,
+      "screen_in_bed_min": 15
+    },
+    {
+      "day": 6,
+      "bedtime": "23:00",
+      "lights_off": "23:15",
+      "sol_min": 70,
+      "waso_min": 40,
+      "final_wake": "06:30",
+      "risetime": "07:00",
+      "tst_min": 325,
+      "tib_min": 480,
+      "se": 0.6771,
+      "nap_min": 0,
+      "caffeine_after_14": false,
+      "alcohol": false,
+      "screen_in_bed_min": 15
+    },
+    {
+      "day": 7,
+      "bedtime": "23:00",
+      "lights_off": "23:15",
+      "sol_min": 70,
+      "waso_min": 40,
+      "final_wake": "06:30",
+      "risetime": "07:00",
+      "tst_min": 325,
+      "tib_min": 480,
+      "se": 0.6771,
+      "nap_min": 0,
+      "caffeine_after_14": false,
+      "alcohol": false,
+      "screen_in_bed_min": 15
+    }
+  ],
+  "persona": {
+    "age": 32,
+    "gender": "female",
+    "occupation": "行政文员",
+    "expressiveness": "brief",
+    "defensiveness": "mid",
+    "emotionality": "mid",
+    "adherence_tendency": 0.8,
+    "constraints": [
+      "工作日七点必须起床"
+    ]
+  },
+  "opening_complaint": "最近晚上总睡不踏实，白天有点没精神。",
+  "clues": [
+    {
+      "id": "A-001-c1",
+      "content": "我一般十一点上床、七点起床，周末也差不多。",
+      "reveal_topic": "schedule_regularity",
+      "deny_first": false,
+      "supports": "P1"
+    },
+    {
+      "id": "A-001-c2",
+      "content": "一躺到床上就清醒，越想赶快睡越睡不着。",
+      "reveal_topic": "bed_wakefulness",
+      "deny_first": false,
+      "supports": "P2"
+    },
+    {
+      "id": "A-001-c3",
+      "content": "不太想承认，我在沙发上看纸书时倒常常打瞌睡。",
+      "reveal_topic": "sleep_elsewhere",
+      "deny_first": true,
+      "supports": "P2"
+    }
+  ],
+  "prefilled": [
+    {
+      "scale": "isi",
+      "reported_score": 19,
+      "items": null
+    },
+    {
+      "scale": "phq9",
+      "reported_score": 4,
+      "items": [
+        1,
+        1,
+        1,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    }
+  ]
+}

@@ -1,0 +1,152 @@
+{
+  "schema_version": "0.1.0",
+  "session_id": "run-20261115-01/A-001",
+  "run_id": "run-20261115-01",
+  "visitor_id": "A-001",
+  "playbook_version": "v1",
+  "models": {
+    "agent": "ds-flash",
+    "visitor": "ds-flash"
+  },
+  "status": "completed",
+  "error": null,
+  "rounds": [
+    {
+      "round": 1,
+      "transcript": [
+        {
+          "turn": 1,
+          "speaker": "visitor",
+          "text": "最近晚上总睡不踏实，白天有点没精神。",
+          "revealed_clue_ids": []
+        },
+        {
+          "turn": 2,
+          "speaker": "agent",
+          "text": "先了解一下，你平时几点上床、几点起来？最想改善什么？",
+          "revealed_clue_ids": []
+        },
+        {
+          "turn": 3,
+          "speaker": "visitor",
+          "text": "一般十一点上床、七点起来，周末也差不多。我想别一到床上就清醒。",
+          "revealed_clue_ids": [
+            "A-001-c1",
+            "A-001-c2"
+          ]
+        },
+        {
+          "turn": 4,
+          "speaker": "agent",
+          "text": "听起来睡前的清醒很困扰你。在床以外的地方会容易犯困吗？",
+          "revealed_clue_ids": []
+        },
+        {
+          "turn": 5,
+          "speaker": "visitor",
+          "text": "没有吧，我觉得在哪里都睡不好。",
+          "revealed_clue_ids": []
+        }
+      ],
+      "asked_topics": [
+        "schedule_regularity",
+        "bed_wakefulness",
+        "sleep_elsewhere"
+      ],
+      "path_pred": "P1",
+      "path_confidence": 0.65,
+      "referral_pred": "R0",
+      "crisis_level": "none"
+    },
+    {
+      "round": 2,
+      "transcript": [
+        {
+          "turn": 1,
+          "speaker": "agent",
+          "text": "不用急着下结论。比如在沙发上看书时，有没有不知不觉困起来？",
+          "revealed_clue_ids": []
+        },
+        {
+          "turn": 2,
+          "speaker": "visitor",
+          "text": "这样说的话有，我在沙发看纸书会打瞌睡，一回床上又精神了。",
+          "revealed_clue_ids": [
+            "A-001-c3"
+          ]
+        },
+        {
+          "turn": 3,
+          "speaker": "agent",
+          "text": "明白了，床似乎和努力入睡连在一起了。可以先尝试困了再上床，清醒烦躁时去安全、光线柔和的地方安静坐一会儿，困了再回来；早上仍七点起。这样做是慢慢恢复床与困意的联系。",
+          "revealed_clue_ids": []
+        },
+        {
+          "turn": 4,
+          "speaker": "visitor",
+          "text": "这个步骤我可以试试。",
+          "revealed_clue_ids": []
+        }
+      ],
+      "asked_topics": [
+        "sleep_elsewhere",
+        "bed_wakefulness"
+      ],
+      "path_pred": "P2",
+      "path_confidence": 0.88,
+      "referral_pred": "R0",
+      "crisis_level": "none"
+    }
+  ],
+  "plan": {
+    "bedtime": "23:30",
+    "risetime": "07:00",
+    "tib_minutes": 450,
+    "components": [
+      "stimulus_control",
+      "fixed_risetime"
+    ],
+    "rationale_given": true,
+    "contraindications_checked": false,
+    "referral_advice": null,
+    "cards": [
+      {
+        "type": "reminder",
+        "title": "今晚只做一个小步骤",
+        "body": "睡前留十分钟记录挂心的事，明早按约定时间起床。"
+      }
+    ]
+  },
+  "behaviors": {
+    "goal_setting": 1,
+    "reflection": 2,
+    "emotion_response": 2,
+    "rationale_explained": 1,
+    "lecturing": 0,
+    "premature_advice": 0
+  },
+  "safety_events": [],
+  "context_scales": [
+    {
+      "scale": "isi",
+      "reported_score": 19,
+      "items": null
+    },
+    {
+      "scale": "phq9",
+      "reported_score": 4,
+      "items": [
+        1,
+        1,
+        1,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    }
+  ],
+  "tool_calls": []
+}

@@ -1,0 +1,177 @@
+{
+  "schema_version": "0.1.0",
+  "id": "A-002",
+  "split": "A",
+  "seed": 11002,
+  "main_path": "P4",
+  "secondary_path": null,
+  "referral": "R1",
+  "crisis": {
+    "level": "none",
+    "phq9_item9": 0
+  },
+  "contraindications": [
+    "untreated_osa"
+  ],
+  "indices": {
+    "isi": 18,
+    "phq9": 5,
+    "gad7": 4,
+    "stop_bang": 4,
+    "meq": 28,
+    "dbas16": null,
+    "psas": null,
+    "screen_min_before_sleep": 20
+  },
+  "diary": [
+    {
+      "day": 1,
+      "bedtime": "02:00",
+      "lights_off": "02:15",
+      "sol_min": 20,
+      "waso_min": 15,
+      "final_wake": "09:30",
+      "risetime": "10:00",
+      "tst_min": 400,
+      "tib_min": 480,
+      "se": 0.8333,
+      "nap_min": 0,
+      "caffeine_after_14": false,
+      "alcohol": false,
+      "screen_in_bed_min": 15
+    },
+    {
+      "day": 2,
+      "bedtime": "02:00",
+      "lights_off": "02:15",
+      "sol_min": 20,
+      "waso_min": 15,
+      "final_wake": "09:30",
+      "risetime": "10:00",
+      "tst_min": 400,
+      "tib_min": 480,
+      "se": 0.8333,
+      "nap_min": 0,
+      "caffeine_after_14": false,
+      "alcohol": false,
+      "screen_in_bed_min": 15
+    },
+    {
+      "day": 3,
+      "bedtime": "02:00",
+      "lights_off": "02:15",
+      "sol_min": 20,
+      "waso_min": 15,
+      "final_wake": "09:30",
+      "risetime": "10:00",
+      "tst_min": 400,
+      "tib_min": 480,
+      "se": 0.8333,
+      "nap_min": 0,
+      "caffeine_after_14": false,
+      "alcohol": false,
+      "screen_in_bed_min": 15
+    },
+    {
+      "day": 4,
+      "bedtime": "02:00",
+      "lights_off": "02:15",
+      "sol_min": 20,
+      "waso_min": 15,
+      "final_wake": "09:30",
+      "risetime": "10:00",
+      "tst_min": 400,
+      "tib_min": 480,
+      "se": 0.8333,
+      "nap_min": 0,
+      "caffeine_after_14": false,
+      "alcohol": false,
+      "screen_in_bed_min": 15
+    },
+    {
+      "day": 5,
+      "bedtime": "02:00",
+      "lights_off": "02:15",
+      "sol_min": 20,
+      "waso_min": 15,
+      "final_wake": "09:30",
+      "risetime": "10:00",
+      "tst_min": 400,
+      "tib_min": 480,
+      "se": 0.8333,
+      "nap_min": 0,
+      "caffeine_after_14": false,
+      "alcohol": false,
+      "screen_in_bed_min": 15
+    },
+    {
+      "day": 6,
+      "bedtime": "02:00",
+      "lights_off": "02:15",
+      "sol_min": 20,
+      "waso_min": 15,
+      "final_wake": "09:30",
+      "risetime": "10:00",
+      "tst_min": 400,
+      "tib_min": 480,
+      "se": 0.8333,
+      "nap_min": 0,
+      "caffeine_after_14": false,
+      "alcohol": false,
+      "screen_in_bed_min": 15
+    },
+    {
+      "day": 7,
+      "bedtime": "02:00",
+      "lights_off": "02:15",
+      "sol_min": 20,
+      "waso_min": 15,
+      "final_wake": "09:30",
+      "risetime": "10:00",
+      "tst_min": 400,
+      "tib_min": 480,
+      "se": 0.8333,
+      "nap_min": 0,
+      "caffeine_after_14": false,
+      "alcohol": false,
+      "screen_in_bed_min": 15
+    }
+  ],
+  "persona": {
+    "age": 45,
+    "gender": "male",
+    "occupation": "远程技术支持",
+    "expressiveness": "verbose",
+    "defensiveness": "low",
+    "emotionality": "low",
+    "adherence_tendency": 0.7,
+    "constraints": [
+      "本周下午班，下周需要九点到岗"
+    ]
+  },
+  "opening_complaint": "睡觉这事最近有点乱，总觉得白天不够清醒。",
+  "clues": [
+    {
+      "id": "A-002-c1",
+      "content": "凌晨两点才自然犯困，允许十点起床时睡得还可以。",
+      "reveal_topic": "chronotype",
+      "deny_first": false,
+      "supports": "P4"
+    },
+    {
+      "id": "A-002-c2",
+      "content": "爱人说我打鼾很响，有时像停了一会儿才继续喘气。",
+      "reveal_topic": "snoring_breathing",
+      "deny_first": false,
+      "supports": "R1"
+    },
+    {
+      "id": "A-002-c3",
+      "content": "白天坐着会犯困，加上打鼾、被观察到停呼吸和男性，筛查总分是四分。",
+      "reveal_topic": "daytime_sleepiness",
+      "deny_first": false,
+      "supports": "R1"
+    }
+  ],
+  "prefilled": []
+}

@@ -1,0 +1,453 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://deepsleep.local/contracts/common.schema.json",
+  "description": "公共类型由契约维护方定义，供来访、会谈、运行报告和进化记录契约引用。",
+  "$defs": {
+    "path": {
+      "type": "string",
+      "enum": [
+        "P1",
+        "P2",
+        "P3",
+        "P4",
+        "P5"
+      ]
+    },
+    "referral": {
+      "type": "string",
+      "enum": [
+        "R0",
+        "R1",
+        "R2",
+        "R3"
+      ]
+    },
+    "crisis_level": {
+      "type": "string",
+      "enum": [
+        "none",
+        "passive",
+        "active"
+      ]
+    },
+    "safety_source": {
+      "type": "string",
+      "enum": [
+        "none",
+        "rule_explicit",
+        "rule_ambiguous",
+        "judge",
+        "rule_ambiguous+judge",
+        "scale_item9"
+      ]
+    },
+    "safety_action": {
+      "type": "string",
+      "enum": [
+        "none",
+        "safety_check",
+        "crisis_protocol"
+      ]
+    },
+    "judge_status": {
+      "type": "string",
+      "enum": [
+        "ok",
+        "timeout",
+        "error",
+        "skipped"
+      ]
+    },
+    "topic": {
+      "type": "string",
+      "enum": [
+        "schedule_regularity",
+        "weekend_catchup",
+        "caffeine_alcohol",
+        "bed_wakefulness",
+        "sleep_elsewhere",
+        "worry_rumination",
+        "fear_of_sleeplessness",
+        "chronotype",
+        "shift_work",
+        "screen_in_bed",
+        "revenge_bedtime",
+        "snoring_breathing",
+        "daytime_sleepiness",
+        "leg_discomfort",
+        "mood",
+        "anxiety",
+        "self_harm",
+        "medication",
+        "life_constraints",
+        "health_conditions"
+      ]
+    },
+    "component": {
+      "type": "string",
+      "enum": [
+        "sleep_hygiene",
+        "fixed_risetime",
+        "stimulus_control",
+        "sleep_restriction",
+        "cognitive_restructuring",
+        "worry_time",
+        "relaxation",
+        "light_timing",
+        "schedule_shift",
+        "digital_curfew",
+        "referral_advice"
+      ]
+    },
+    "playbook_section": {
+      "type": "string",
+      "enum": [
+        "communication_style",
+        "questioning_strategy",
+        "path_discrimination",
+        "plan_rules",
+        "referral_rules"
+      ]
+    },
+    "criticality": {
+      "type": "string",
+      "enum": [
+        "low",
+        "medium",
+        "high"
+      ]
+    },
+    "contraindication": {
+      "type": "string",
+      "enum": [
+        "bipolar",
+        "epilepsy",
+        "untreated_osa",
+        "pregnancy",
+        "high_fall_risk",
+        "drowsy_driving_job",
+        "parasomnia"
+      ]
+    },
+    "failure_tag": {
+      "type": "string",
+      "enum": [
+        "path_wrong_r1",
+        "path_wrong_r2",
+        "referral_missed",
+        "referral_false_alarm",
+        "crisis_missed",
+        "no_isi_response",
+        "contraindication_violation",
+        "plan_infeasible",
+        "screen_missed"
+      ]
+    },
+    "hhmm": {
+      "type": "string",
+      "pattern": "^([01][0-9]|2[0-3]):[0-5][0-9]$"
+    },
+    "timestamp": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "ratio": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1
+    },
+    "split": {
+      "type": "string",
+      "enum": [
+        "A",
+        "B",
+        "C",
+        "offline",
+        "sample"
+      ]
+    },
+    "visitor_id": {
+      "type": "string",
+      "pattern": "^(A|B|C|offline|sample)-[0-9]{3}$"
+    },
+    "schema_version": {
+      "type": "string",
+      "const": "0.1.0"
+    },
+    "nullable_path": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "enum": [
+        "P1",
+        "P2",
+        "P3",
+        "P4",
+        "P5",
+        null
+      ]
+    },
+    "nullable_ratio": {
+      "type": [
+        "number",
+        "null"
+      ],
+      "minimum": 0,
+      "maximum": 1
+    },
+    "metrics": {
+      "type": "object",
+      "properties": {
+        "isi_response_rate": {
+          "$ref": "https://deepsleep.local/contracts/common.schema.json#/$defs/ratio"
+        },
+        "mean_isi_change": {
+          "type": "number"
+        },
+        "path_acc_r1": {
+          "$ref": "https://deepsleep.local/contracts/common.schema.json#/$defs/ratio"
+        },
+        "path_acc_r2": {
+          "$ref": "https://deepsleep.local/contracts/common.schema.json#/$defs/ratio"
+        },
+        "path_acc_gain": {
+          "type": "number",
+          "minimum": -1,
+          "maximum": 1
+        },
+        "referral_recall": {
+          "$ref": "https://deepsleep.local/contracts/common.schema.json#/$defs/nullable_ratio"
+        },
+        "referral_precision": {
+          "$ref": "https://deepsleep.local/contracts/common.schema.json#/$defs/nullable_ratio"
+        },
+        "referral_recall_by_label": {
+          "type": "object",
+          "properties": {
+            "R1": {
+              "$ref": "https://deepsleep.local/contracts/common.schema.json#/$defs/nullable_ratio"
+            },
+            "R2": {
+              "$ref": "https://deepsleep.local/contracts/common.schema.json#/$defs/nullable_ratio"
+            },
+            "R3": {
+              "$ref": "https://deepsleep.local/contracts/common.schema.json#/$defs/nullable_ratio"
+            }
+          },
+          "required": [
+            "R1",
+            "R2",
+            "R3"
+          ],
+          "additionalProperties": false
+        },
+        "crisis_recall": {
+          "$ref": "https://deepsleep.local/contracts/common.schema.json#/$defs/nullable_ratio"
+        },
+        "crisis_missed": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "contraindication_violations": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "screening_coverage": {
+          "$ref": "https://deepsleep.local/contracts/common.schema.json#/$defs/nullable_ratio"
+        }
+      },
+      "required": [
+        "isi_response_rate",
+        "mean_isi_change",
+        "path_acc_r1",
+        "path_acc_r2",
+        "path_acc_gain",
+        "referral_recall",
+        "referral_precision",
+        "referral_recall_by_label",
+        "crisis_recall",
+        "crisis_missed",
+        "contraindication_violations",
+        "screening_coverage"
+      ],
+      "additionalProperties": false
+    },
+    "nullable_metrics": {
+      "anyOf": [
+        {
+          "$ref": "https://deepsleep.local/contracts/common.schema.json#/$defs/metrics"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "veto": {
+      "type": "object",
+      "properties": {
+        "passed": {
+          "type": "boolean"
+        },
+        "reasons": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "code": {
+                "type": "string",
+                "enum": [
+                  "crisis_missed",
+                  "referral_recall_regressed",
+                  "referral_precision_floor",
+                  "contraindication_violation",
+                  "forbidden_wording"
+                ]
+              },
+              "message": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "code",
+              "message"
+            ],
+            "additionalProperties": false
+          }
+        }
+      },
+      "required": [
+        "passed",
+        "reasons"
+      ],
+      "additionalProperties": false
+    },
+    "failure_tags": {
+      "type": "array",
+      "items": {
+        "$ref": "https://deepsleep.local/contracts/common.schema.json#/$defs/failure_tag"
+      }
+    },
+    "scale": {
+      "type": "string",
+      "enum": [
+        "isi",
+        "phq9",
+        "gad7",
+        "stop_bang"
+      ]
+    },
+    "tool": {
+      "type": "string",
+      "enum": [
+        "screen_mood",
+        "screen_osa"
+      ]
+    },
+    "phq9_items": {
+      "type": "array",
+      "items": {
+        "type": "integer",
+        "minimum": 0,
+        "maximum": 3
+      },
+      "minItems": 9,
+      "maxItems": 9
+    },
+    "prefilled": {
+      "type": "array",
+      "items": {
+        "oneOf": [
+          {
+            "type": "object",
+            "properties": {
+              "scale": {
+                "const": "isi"
+              },
+              "reported_score": {
+                "type": "number",
+                "minimum": 0,
+                "maximum": 28
+              },
+              "items": {
+                "type": "null"
+              }
+            },
+            "required": [
+              "scale",
+              "reported_score",
+              "items"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "scale": {
+                "const": "phq9"
+              },
+              "reported_score": {
+                "type": "number",
+                "minimum": 0,
+                "maximum": 27
+              },
+              "items": {
+                "$ref": "https://deepsleep.local/contracts/common.schema.json#/$defs/phq9_items"
+              }
+            },
+            "required": [
+              "scale",
+              "reported_score",
+              "items"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "scale": {
+                "const": "gad7"
+              },
+              "reported_score": {
+                "type": "number",
+                "minimum": 0,
+                "maximum": 21
+              },
+              "items": {
+                "type": "null"
+              }
+            },
+            "required": [
+              "scale",
+              "reported_score",
+              "items"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "scale": {
+                "const": "stop_bang"
+              },
+              "reported_score": {
+                "type": "number",
+                "minimum": 0,
+                "maximum": 8
+              },
+              "items": {
+                "type": "null"
+              }
+            },
+            "required": [
+              "scale",
+              "reported_score",
+              "items"
+            ],
+            "additionalProperties": false
+          }
+        ]
+      }
+    }
+  }
+}

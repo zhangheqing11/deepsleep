@@ -1,0 +1,125 @@
+{
+  "schema_version": "0.1.0",
+  "session_id": "run-20261115-01/A-002",
+  "run_id": "run-20261115-01",
+  "visitor_id": "A-002",
+  "playbook_version": "v1",
+  "models": {
+    "agent": "ds-flash",
+    "visitor": "ds-flash"
+  },
+  "status": "completed",
+  "error": null,
+  "rounds": [
+    {
+      "round": 1,
+      "transcript": [
+        {
+          "turn": 1,
+          "speaker": "visitor",
+          "text": "睡觉这事最近有点乱，总觉得白天不够清醒。",
+          "revealed_clue_ids": []
+        },
+        {
+          "turn": 2,
+          "speaker": "agent",
+          "text": "你说白天不够清醒，最近有人提过你打鼾或睡着时呼吸不畅吗？",
+          "revealed_clue_ids": []
+        },
+        {
+          "turn": 3,
+          "speaker": "visitor",
+          "text": "爱人说我打鼾很响，有时像停了一会儿才继续喘气。",
+          "revealed_clue_ids": [
+            "A-002-c2"
+          ]
+        },
+        {
+          "turn": 5,
+          "speaker": "agent",
+          "text": "筛查提示需要进一步评估，建议到正规医疗机构了解睡眠呼吸情况。我们再看看目前的作息。",
+          "revealed_clue_ids": []
+        }
+      ],
+      "asked_topics": [
+        "snoring_breathing",
+        "daytime_sleepiness"
+      ],
+      "path_pred": "P1",
+      "path_confidence": 0.6,
+      "referral_pred": "R1",
+      "crisis_level": "none"
+    },
+    {
+      "round": 2,
+      "transcript": [
+        {
+          "turn": 1,
+          "speaker": "agent",
+          "text": "工作安排最近有变化吗？你希望先改善哪一段作息？",
+          "revealed_clue_ids": []
+        },
+        {
+          "turn": 2,
+          "speaker": "visitor",
+          "text": "本周下午班，下周要九点到岗，我想白天能清醒一点。",
+          "revealed_clue_ids": []
+        },
+        {
+          "turn": 3,
+          "speaker": "agent",
+          "text": "可以先记录一周作息，在工作允许的范围里逐步固定起床时间，并安排专业评估睡眠呼吸情况。",
+          "revealed_clue_ids": []
+        },
+        {
+          "turn": 4,
+          "speaker": "visitor",
+          "text": "我先记录，也会预约评估。",
+          "revealed_clue_ids": []
+        }
+      ],
+      "asked_topics": [
+        "life_constraints",
+        "schedule_regularity"
+      ],
+      "path_pred": "P1",
+      "path_confidence": 0.65,
+      "referral_pred": "R1",
+      "crisis_level": "none"
+    }
+  ],
+  "plan": {
+    "bedtime": "02:00",
+    "risetime": "10:00",
+    "tib_minutes": 480,
+    "components": [
+      "sleep_hygiene",
+      "fixed_risetime",
+      "referral_advice"
+    ],
+    "rationale_given": true,
+    "contraindications_checked": false,
+    "referral_advice": "筛查提示睡眠呼吸风险，建议到正规医疗机构进一步评估。",
+    "cards": []
+  },
+  "behaviors": {
+    "goal_setting": 1,
+    "reflection": 1,
+    "emotion_response": 0,
+    "rationale_explained": 1,
+    "lecturing": 0,
+    "premature_advice": 0
+  },
+  "safety_events": [],
+  "context_scales": [],
+  "tool_calls": [
+    {
+      "round": 1,
+      "turn": 4,
+      "tool": "screen_osa",
+      "result": {
+        "stop_bang": 4
+      }
+    }
+  ]
+}

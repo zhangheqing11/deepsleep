@@ -1,0 +1,218 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://deepsleep.local/contracts/run_report.schema.json",
+  "description": "运行报告由 scoring/ 产出，供反思器和看板消费。",
+  "type": "object",
+  "properties": {
+    "schema_version": {
+      "$ref": "https://deepsleep.local/contracts/common.schema.json#/$defs/schema_version"
+    },
+    "run_id": {
+      "type": "string"
+    },
+    "label": {
+      "type": "string"
+    },
+    "role": {
+      "type": "string",
+      "enum": [
+        "run1",
+        "run2",
+        "control",
+        "validation",
+        "offline"
+      ]
+    },
+    "created_at": {
+      "$ref": "https://deepsleep.local/contracts/common.schema.json#/$defs/timestamp"
+    },
+    "duration_s": {
+      "type": "number"
+    },
+    "playbook_version": {
+      "type": "string"
+    },
+    "split": {
+      "$ref": "https://deepsleep.local/contracts/common.schema.json#/$defs/split"
+    },
+    "n_visitors": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "models": {
+      "type": "object",
+      "properties": {
+        "agent": {
+          "type": "string"
+        },
+        "visitor": {
+          "type": "string"
+        },
+        "judge": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "agent",
+        "visitor",
+        "judge"
+      ],
+      "additionalProperties": false
+    },
+    "metrics": {
+      "$ref": "https://deepsleep.local/contracts/common.schema.json#/$defs/metrics"
+    },
+    "veto": {
+      "$ref": "https://deepsleep.local/contracts/common.schema.json#/$defs/veto"
+    },
+    "safety_summary": {
+      "type": "object",
+      "properties": {
+        "judge_provider": {
+          "type": "string"
+        },
+        "judge_calls": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "judge_fallbacks": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "safety_checks": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "crisis_protocols": {
+          "type": "integer",
+          "minimum": 0
+        }
+      },
+      "required": [
+        "judge_provider",
+        "judge_calls",
+        "judge_fallbacks",
+        "safety_checks",
+        "crisis_protocols"
+      ],
+      "additionalProperties": false
+    },
+    "per_visitor": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "visitor_id": {
+            "$ref": "https://deepsleep.local/contracts/common.schema.json#/$defs/visitor_id"
+          },
+          "main_path": {
+            "$ref": "https://deepsleep.local/contracts/common.schema.json#/$defs/path"
+          },
+          "path_pred_r1": {
+            "$ref": "https://deepsleep.local/contracts/common.schema.json#/$defs/path"
+          },
+          "path_pred_r2": {
+            "$ref": "https://deepsleep.local/contracts/common.schema.json#/$defs/path"
+          },
+          "referral_true": {
+            "$ref": "https://deepsleep.local/contracts/common.schema.json#/$defs/referral"
+          },
+          "referral_pred": {
+            "$ref": "https://deepsleep.local/contracts/common.schema.json#/$defs/referral"
+          },
+          "crisis_true": {
+            "$ref": "https://deepsleep.local/contracts/common.schema.json#/$defs/crisis_level"
+          },
+          "crisis_pred": {
+            "$ref": "https://deepsleep.local/contracts/common.schema.json#/$defs/crisis_level"
+          },
+          "isi_baseline": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 28
+          },
+          "isi_week": {
+            "type": "array",
+            "items": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 28
+            },
+            "minItems": 5,
+            "maxItems": 5
+          },
+          "isi_change": {
+            "type": "number"
+          },
+          "responder": {
+            "type": "boolean"
+          },
+          "adherence": {
+            "$ref": "https://deepsleep.local/contracts/common.schema.json#/$defs/ratio"
+          },
+          "alliance": {
+            "$ref": "https://deepsleep.local/contracts/common.schema.json#/$defs/ratio"
+          },
+          "failure_tags": {
+            "$ref": "https://deepsleep.local/contracts/common.schema.json#/$defs/failure_tags"
+          },
+          "session_ref": {
+            "type": "string"
+          },
+          "prefilled_scales": {
+            "type": "array",
+            "items": {
+              "$ref": "https://deepsleep.local/contracts/common.schema.json#/$defs/scale"
+            },
+            "uniqueItems": true
+          },
+          "screened": {
+            "type": "array",
+            "items": {
+              "$ref": "https://deepsleep.local/contracts/common.schema.json#/$defs/tool"
+            },
+            "uniqueItems": true
+          }
+        },
+        "required": [
+          "visitor_id",
+          "main_path",
+          "path_pred_r1",
+          "path_pred_r2",
+          "referral_true",
+          "referral_pred",
+          "crisis_true",
+          "crisis_pred",
+          "isi_baseline",
+          "isi_week",
+          "isi_change",
+          "responder",
+          "adherence",
+          "alliance",
+          "failure_tags",
+          "session_ref",
+          "prefilled_scales",
+          "screened"
+        ],
+        "additionalProperties": false
+      }
+    }
+  },
+  "required": [
+    "schema_version",
+    "run_id",
+    "label",
+    "role",
+    "created_at",
+    "duration_s",
+    "playbook_version",
+    "split",
+    "n_visitors",
+    "models",
+    "metrics",
+    "veto",
+    "safety_summary",
+    "per_visitor"
+  ],
+  "additionalProperties": false
+}
