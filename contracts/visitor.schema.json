@@ -1,0 +1,325 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://deepsleep.local/contracts/visitor.schema.json",
+  "description": "模拟来访由 sim/ 来访生成器产出，供模拟来访、计分和看板消费。",
+  "type": "object",
+  "properties": {
+    "schema_version": {
+      "$ref": "https://deepsleep.local/contracts/common.schema.json#/$defs/schema_version"
+    },
+    "id": {
+      "$ref": "https://deepsleep.local/contracts/common.schema.json#/$defs/visitor_id"
+    },
+    "split": {
+      "$ref": "https://deepsleep.local/contracts/common.schema.json#/$defs/split"
+    },
+    "seed": {
+      "type": "integer"
+    },
+    "main_path": {
+      "$ref": "https://deepsleep.local/contracts/common.schema.json#/$defs/path"
+    },
+    "secondary_path": {
+      "$ref": "https://deepsleep.local/contracts/common.schema.json#/$defs/nullable_path"
+    },
+    "referral": {
+      "$ref": "https://deepsleep.local/contracts/common.schema.json#/$defs/referral"
+    },
+    "crisis": {
+      "type": "object",
+      "properties": {
+        "level": {
+          "$ref": "https://deepsleep.local/contracts/common.schema.json#/$defs/crisis_level"
+        },
+        "phq9_item9": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 3
+        },
+        "history": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "level",
+        "phq9_item9",
+        "history"
+      ],
+      "additionalProperties": false
+    },
+    "contraindications": {
+      "type": "array",
+      "items": {
+        "$ref": "https://deepsleep.local/contracts/common.schema.json#/$defs/contraindication"
+      }
+    },
+    "indices": {
+      "type": "object",
+      "properties": {
+        "isi": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 28
+        },
+        "phq9": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 27
+        },
+        "gad7": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 21
+        },
+        "stop_bang": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 8
+        },
+        "meq": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 16,
+          "maximum": 86
+        },
+        "dbas16": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0,
+          "maximum": 10
+        },
+        "psas": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 16,
+          "maximum": 80
+        },
+        "screen_min_before_sleep": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0
+        }
+      },
+      "required": [
+        "isi",
+        "phq9",
+        "gad7",
+        "stop_bang",
+        "meq",
+        "dbas16",
+        "psas",
+        "screen_min_before_sleep"
+      ],
+      "additionalProperties": false
+    },
+    "diary": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "day": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 7
+          },
+          "bedtime": {
+            "$ref": "https://deepsleep.local/contracts/common.schema.json#/$defs/hhmm"
+          },
+          "lights_off": {
+            "$ref": "https://deepsleep.local/contracts/common.schema.json#/$defs/hhmm"
+          },
+          "sol_min": {
+            "type": "number"
+          },
+          "waso_min": {
+            "type": "number"
+          },
+          "final_wake": {
+            "$ref": "https://deepsleep.local/contracts/common.schema.json#/$defs/hhmm"
+          },
+          "risetime": {
+            "$ref": "https://deepsleep.local/contracts/common.schema.json#/$defs/hhmm"
+          },
+          "tst_min": {
+            "type": "number"
+          },
+          "tib_min": {
+            "type": "number"
+          },
+          "se": {
+            "$ref": "https://deepsleep.local/contracts/common.schema.json#/$defs/ratio"
+          },
+          "nap_min": {
+            "type": "number"
+          },
+          "caffeine_after_14": {
+            "type": "boolean"
+          },
+          "alcohol": {
+            "type": "boolean"
+          },
+          "screen_in_bed_min": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "day",
+          "bedtime",
+          "lights_off",
+          "sol_min",
+          "waso_min",
+          "final_wake",
+          "risetime",
+          "tst_min",
+          "tib_min",
+          "se",
+          "nap_min",
+          "caffeine_after_14",
+          "alcohol",
+          "screen_in_bed_min"
+        ],
+        "additionalProperties": false
+      },
+      "minItems": 7,
+      "maxItems": 7
+    },
+    "persona": {
+      "type": "object",
+      "properties": {
+        "age": {
+          "type": "integer",
+          "minimum": 16,
+          "maximum": 80
+        },
+        "gender": {
+          "type": "string",
+          "enum": [
+            "female",
+            "male",
+            "other"
+          ]
+        },
+        "occupation": {
+          "type": "string"
+        },
+        "expressiveness": {
+          "type": "string",
+          "enum": [
+            "brief",
+            "verbose"
+          ]
+        },
+        "defensiveness": {
+          "type": "string",
+          "enum": [
+            "low",
+            "mid",
+            "high"
+          ]
+        },
+        "emotionality": {
+          "type": "string",
+          "enum": [
+            "low",
+            "mid",
+            "high"
+          ]
+        },
+        "adherence_tendency": {
+          "$ref": "https://deepsleep.local/contracts/common.schema.json#/$defs/ratio"
+        },
+        "constraints": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "required": [
+        "age",
+        "gender",
+        "occupation",
+        "expressiveness",
+        "defensiveness",
+        "emotionality",
+        "adherence_tendency",
+        "constraints"
+      ],
+      "additionalProperties": false
+    },
+    "opening_complaint": {
+      "type": "string"
+    },
+    "clues": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "content": {
+            "type": "string"
+          },
+          "reveal_topic": {
+            "$ref": "https://deepsleep.local/contracts/common.schema.json#/$defs/topic"
+          },
+          "deny_first": {
+            "type": "boolean"
+          },
+          "supports": {
+            "anyOf": [
+              {
+                "$ref": "https://deepsleep.local/contracts/common.schema.json#/$defs/path"
+              },
+              {
+                "$ref": "https://deepsleep.local/contracts/common.schema.json#/$defs/referral"
+              },
+              {
+                "const": "crisis",
+                "type": "string"
+              }
+            ]
+          }
+        },
+        "required": [
+          "id",
+          "content",
+          "reveal_topic",
+          "deny_first",
+          "supports"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "prefilled": {
+      "$ref": "https://deepsleep.local/contracts/common.schema.json#/$defs/prefilled"
+    }
+  },
+  "required": [
+    "schema_version",
+    "id",
+    "split",
+    "seed",
+    "main_path",
+    "secondary_path",
+    "referral",
+    "crisis",
+    "contraindications",
+    "indices",
+    "diary",
+    "persona",
+    "opening_complaint",
+    "clues",
+    "prefilled"
+  ],
+  "additionalProperties": false
+}

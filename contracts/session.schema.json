@@ -1,0 +1,470 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://deepsleep.local/contracts/session.schema.json",
+  "description": "会谈记录由 engine/ 会谈 agent 产出，供计分和看板会谈页消费。",
+  "type": "object",
+  "properties": {
+    "schema_version": {
+      "$ref": "https://deepsleep.local/contracts/common.schema.json#/$defs/schema_version"
+    },
+    "session_id": {
+      "type": "string"
+    },
+    "run_id": {
+      "type": "string"
+    },
+    "visitor_id": {
+      "$ref": "https://deepsleep.local/contracts/common.schema.json#/$defs/visitor_id"
+    },
+    "playbook_version": {
+      "type": "string"
+    },
+    "models": {
+      "type": "object",
+      "properties": {
+        "agent": {
+          "type": "string"
+        },
+        "visitor": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "agent",
+        "visitor"
+      ],
+      "additionalProperties": false
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "completed",
+        "crisis_exit",
+        "error"
+      ]
+    },
+    "error": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "rounds": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "round": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 2
+          },
+          "transcript": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "turn": {
+                  "type": "integer",
+                  "minimum": 1
+                },
+                "speaker": {
+                  "type": "string",
+                  "enum": [
+                    "agent",
+                    "visitor",
+                    "safety"
+                  ]
+                },
+                "text": {
+                  "type": "string"
+                },
+                "revealed_clue_ids": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              },
+              "required": [
+                "turn",
+                "speaker",
+                "text",
+                "revealed_clue_ids"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "asked_topics": {
+            "type": "array",
+            "items": {
+              "$ref": "https://deepsleep.local/contracts/common.schema.json#/$defs/topic"
+            }
+          },
+          "path_pred": {
+            "$ref": "https://deepsleep.local/contracts/common.schema.json#/$defs/path"
+          },
+          "path_confidence": {
+            "$ref": "https://deepsleep.local/contracts/common.schema.json#/$defs/nullable_ratio"
+          },
+          "referral_pred": {
+            "$ref": "https://deepsleep.local/contracts/common.schema.json#/$defs/referral"
+          },
+          "crisis_level": {
+            "$ref": "https://deepsleep.local/contracts/common.schema.json#/$defs/crisis_level"
+          }
+        },
+        "required": [
+          "round",
+          "transcript",
+          "asked_topics",
+          "path_pred",
+          "path_confidence",
+          "referral_pred",
+          "crisis_level"
+        ],
+        "additionalProperties": false
+      },
+      "minItems": 1,
+      "maxItems": 2
+    },
+    "plan": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "properties": {
+        "bedtime": {
+          "$ref": "https://deepsleep.local/contracts/common.schema.json#/$defs/hhmm"
+        },
+        "risetime": {
+          "$ref": "https://deepsleep.local/contracts/common.schema.json#/$defs/hhmm"
+        },
+        "tib_minutes": {
+          "type": "integer"
+        },
+        "components": {
+          "type": "array",
+          "items": {
+            "$ref": "https://deepsleep.local/contracts/common.schema.json#/$defs/component"
+          },
+          "minItems": 1
+        },
+        "rationale_given": {
+          "type": "boolean"
+        },
+        "contraindications_checked": {
+          "type": "boolean"
+        },
+        "referral_advice": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "cards": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "type": {
+                "type": "string",
+                "enum": [
+                  "entertainment_control",
+                  "smart_home",
+                  "reminder"
+                ]
+              },
+              "title": {
+                "type": "string"
+              },
+              "body": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "type",
+              "title",
+              "body"
+            ],
+            "additionalProperties": false
+          }
+        }
+      },
+      "required": [
+        "bedtime",
+        "risetime",
+        "tib_minutes",
+        "components",
+        "rationale_given",
+        "contraindications_checked",
+        "referral_advice",
+        "cards"
+      ],
+      "additionalProperties": false
+    },
+    "behaviors": {
+      "type": "object",
+      "properties": {
+        "goal_setting": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "reflection": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "emotion_response": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "rationale_explained": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "lecturing": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "premature_advice": {
+          "type": "integer",
+          "minimum": 0
+        }
+      },
+      "required": [
+        "goal_setting",
+        "reflection",
+        "emotion_response",
+        "rationale_explained",
+        "lecturing",
+        "premature_advice"
+      ],
+      "additionalProperties": false
+    },
+    "safety_events": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "round": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 2
+          },
+          "turn": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "level": {
+            "$ref": "https://deepsleep.local/contracts/common.schema.json#/$defs/crisis_level"
+          },
+          "source": {
+            "$ref": "https://deepsleep.local/contracts/common.schema.json#/$defs/safety_source"
+          },
+          "action": {
+            "$ref": "https://deepsleep.local/contracts/common.schema.json#/$defs/safety_action",
+            "not": {
+              "const": "none"
+            }
+          },
+          "judge_status": {
+            "$ref": "https://deepsleep.local/contracts/common.schema.json#/$defs/judge_status"
+          },
+          "judge_provider": {
+            "type": "string"
+          },
+          "judge_probs": {
+            "type": [
+              "object",
+              "null"
+            ],
+            "properties": {
+              "none": {
+                "$ref": "https://deepsleep.local/contracts/common.schema.json#/$defs/ratio"
+              },
+              "history": {
+                "$ref": "https://deepsleep.local/contracts/common.schema.json#/$defs/ratio"
+              },
+              "passive": {
+                "$ref": "https://deepsleep.local/contracts/common.schema.json#/$defs/ratio"
+              },
+              "active": {
+                "$ref": "https://deepsleep.local/contracts/common.schema.json#/$defs/ratio"
+              }
+            },
+            "required": [
+              "none",
+              "history",
+              "passive",
+              "active"
+            ],
+            "additionalProperties": false
+          },
+          "matched": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "round",
+          "turn",
+          "level",
+          "source",
+          "action",
+          "judge_status",
+          "judge_provider",
+          "judge_probs",
+          "matched"
+        ],
+        "additionalProperties": false,
+        "if": {
+          "properties": {
+            "action": {
+              "const": "history_check"
+            }
+          },
+          "required": [
+            "action"
+          ]
+        },
+        "then": {
+          "properties": {
+            "level": {
+              "const": "none"
+            }
+          }
+        },
+        "else": {
+          "properties": {
+            "level": {
+              "not": {
+                "const": "none"
+              }
+            }
+          }
+        }
+      }
+    },
+    "context_scales": {
+      "$ref": "https://deepsleep.local/contracts/common.schema.json#/$defs/prefilled"
+    },
+    "tool_calls": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "round": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 2
+          },
+          "turn": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "tool": {
+            "$ref": "https://deepsleep.local/contracts/common.schema.json#/$defs/tool"
+          },
+          "result": {
+            "type": "object"
+          }
+        },
+        "required": [
+          "round",
+          "turn",
+          "tool",
+          "result"
+        ],
+        "additionalProperties": false,
+        "allOf": [
+          {
+            "if": {
+              "properties": {
+                "tool": {
+                  "const": "screen_mood"
+                }
+              },
+              "required": [
+                "tool"
+              ]
+            },
+            "then": {
+              "properties": {
+                "result": {
+                  "type": "object",
+                  "properties": {
+                    "phq9": {
+                      "type": "number",
+                      "minimum": 0,
+                      "maximum": 27
+                    },
+                    "phq9_items": {
+                      "$ref": "https://deepsleep.local/contracts/common.schema.json#/$defs/phq9_items"
+                    },
+                    "gad7": {
+                      "type": "number",
+                      "minimum": 0,
+                      "maximum": 21
+                    }
+                  },
+                  "required": [
+                    "phq9",
+                    "phq9_items",
+                    "gad7"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "tool": {
+                  "const": "screen_osa"
+                }
+              },
+              "required": [
+                "tool"
+              ]
+            },
+            "then": {
+              "properties": {
+                "result": {
+                  "type": "object",
+                  "properties": {
+                    "stop_bang": {
+                      "type": "number",
+                      "minimum": 0,
+                      "maximum": 8
+                    }
+                  },
+                  "required": [
+                    "stop_bang"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          }
+        ]
+      }
+    }
+  },
+  "required": [
+    "schema_version",
+    "session_id",
+    "run_id",
+    "visitor_id",
+    "playbook_version",
+    "models",
+    "status",
+    "error",
+    "rounds",
+    "plan",
+    "behaviors",
+    "safety_events",
+    "context_scales",
+    "tool_calls"
+  ],
+  "additionalProperties": false
+}

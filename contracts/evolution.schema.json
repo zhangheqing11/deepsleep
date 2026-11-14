@@ -1,0 +1,393 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://deepsleep.local/contracts/evolution.schema.json",
+  "description": "进化记录由 engine/ 反思器与门禁产出，供看板进化页消费。",
+  "type": "object",
+  "properties": {
+    "schema_version": {
+      "$ref": "https://deepsleep.local/contracts/common.schema.json#/$defs/schema_version"
+    },
+    "evolution_id": {
+      "type": "string"
+    },
+    "created_at": {
+      "$ref": "https://deepsleep.local/contracts/common.schema.json#/$defs/timestamp"
+    },
+    "from_version": {
+      "type": "string"
+    },
+    "to_version": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "outcome": {
+      "type": "string",
+      "enum": [
+        "committed",
+        "kept_previous"
+      ]
+    },
+    "source_run_id": {
+      "type": "string"
+    },
+    "val_split": {
+      "type": "string",
+      "const": "C"
+    },
+    "reflector": {
+      "type": "object",
+      "properties": {
+        "model": {
+          "type": "string"
+        },
+        "fell_back": {
+          "type": "boolean"
+        },
+        "fallback_reason": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "required": [
+        "model",
+        "fell_back",
+        "fallback_reason"
+      ],
+      "additionalProperties": false
+    },
+    "failures_used": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "visitor_id": {
+            "$ref": "https://deepsleep.local/contracts/common.schema.json#/$defs/visitor_id"
+          },
+          "failure_tags": {
+            "$ref": "https://deepsleep.local/contracts/common.schema.json#/$defs/failure_tags"
+          }
+        },
+        "required": [
+          "visitor_id",
+          "failure_tags"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "human_feedback": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "kind": {
+            "type": "string",
+            "enum": [
+              "correction",
+              "score",
+              "demonstration"
+            ]
+          },
+          "source": {
+            "type": "string",
+            "enum": [
+              "human",
+              "auto_critic"
+            ]
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "approved",
+              "rejected",
+              "edited",
+              "pending",
+              "timeout"
+            ]
+          },
+          "visitor_id": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "pattern": "^(A|B|C|offline|sample)-[0-9]{3}$"
+          },
+          "text": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "score": {
+            "type": [
+              "number",
+              "null"
+            ]
+          }
+        },
+        "required": [
+          "id",
+          "kind",
+          "source",
+          "status",
+          "visitor_id",
+          "text",
+          "score"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "candidates": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "enum": [
+              "c1",
+              "c2",
+              "c3"
+            ]
+          },
+          "summary": {
+            "type": "string"
+          },
+          "changes": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string"
+                },
+                "op": {
+                  "type": "string",
+                  "enum": [
+                    "add",
+                    "modify",
+                    "delete"
+                  ]
+                },
+                "section": {
+                  "$ref": "https://deepsleep.local/contracts/common.schema.json#/$defs/playbook_section"
+                },
+                "before": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                },
+                "after": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                },
+                "reason": {
+                  "type": "string"
+                },
+                "criticality_rule": {
+                  "$ref": "https://deepsleep.local/contracts/common.schema.json#/$defs/criticality"
+                },
+                "criticality_self": {
+                  "$ref": "https://deepsleep.local/contracts/common.schema.json#/$defs/criticality"
+                },
+                "criticality": {
+                  "$ref": "https://deepsleep.local/contracts/common.schema.json#/$defs/criticality"
+                }
+              },
+              "required": [
+                "id",
+                "op",
+                "section",
+                "before",
+                "after",
+                "reason",
+                "criticality_rule",
+                "criticality_self",
+                "criticality"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "hard_rule_violations": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "code": {
+                  "type": "string"
+                },
+                "change_id": {
+                  "type": "string"
+                },
+                "message": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "code",
+                "change_id",
+                "message"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "val_metrics": {
+            "$ref": "https://deepsleep.local/contracts/common.schema.json#/$defs/nullable_metrics"
+          },
+          "veto": {
+            "$ref": "https://deepsleep.local/contracts/common.schema.json#/$defs/veto"
+          },
+          "passed": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "id",
+          "summary",
+          "changes",
+          "hard_rule_violations",
+          "val_metrics",
+          "veto",
+          "passed"
+        ],
+        "additionalProperties": false
+      },
+      "minItems": 3,
+      "maxItems": 3
+    },
+    "human_review": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "change_id": {
+            "type": "string"
+          },
+          "decision": {
+            "type": "string",
+            "enum": [
+              "approve",
+              "reject",
+              "timeout"
+            ]
+          },
+          "scores": {
+            "type": [
+              "object",
+              "null"
+            ],
+            "properties": {
+              "safety": {
+                "type": "number",
+                "minimum": 1,
+                "maximum": 5
+              },
+              "clinical": {
+                "type": "number",
+                "minimum": 1,
+                "maximum": 5
+              },
+              "feasibility": {
+                "type": "number",
+                "minimum": 1,
+                "maximum": 5
+              }
+            },
+            "required": [
+              "safety",
+              "clinical",
+              "feasibility"
+            ],
+            "additionalProperties": false
+          },
+          "comment": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        },
+        "required": [
+          "change_id",
+          "decision",
+          "scores",
+          "comment"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "chosen": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "commit": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "properties": {
+        "repo": {
+          "type": "string",
+          "const": "var/playbook-repo"
+        },
+        "sha": {
+          "type": "string"
+        },
+        "author": {
+          "type": "string",
+          "const": "deepsleep-agent"
+        },
+        "message": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "repo",
+        "sha",
+        "author",
+        "message"
+      ],
+      "additionalProperties": false
+    },
+    "diff": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "baseline_val_metrics": {
+      "$ref": "https://deepsleep.local/contracts/common.schema.json#/$defs/metrics"
+    }
+  },
+  "required": [
+    "schema_version",
+    "evolution_id",
+    "created_at",
+    "from_version",
+    "to_version",
+    "outcome",
+    "source_run_id",
+    "val_split",
+    "reflector",
+    "failures_used",
+    "human_feedback",
+    "candidates",
+    "human_review",
+    "chosen",
+    "commit",
+    "diff",
+    "baseline_val_metrics"
+  ],
+  "additionalProperties": false
+}
