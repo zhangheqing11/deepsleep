@@ -135,3 +135,9 @@ Idempotency-Key 已实现并发去重；具体请求比较方式见 MOCK_API.md�
 
 与前端实测“创建运行 → 查询进度 → 查看 Mock 报告”，确认页面展示和异常反馈。
 files 模式已经读取引擎落盘产物；HTTP 不执行引擎、评分、反思或版本提交。旧离线快照入口保留作历史参考。
+
+## 本地演示登录
+
+默认 API_AUTH_MODE=none，保持已有 Mock 联调兼容。演示时设为 demo，并通过 API_AUTH_PASSWORD_SHA256 提供演示密码的 SHA-256 摘要。登录接口为 POST /api/v1/auth/login；成功后前端把 access_token 保存在 sessionStorage，并为运行、报告、会谈和看板只读接口添加 Authorization: Bearer <access_token>。
+
+GET /api/v1/health、登录接口保持公开；GET /api/v1/auth/me 用于恢复登录状态，POST /api/v1/auth/logout 用于退出。token 只保存在当前后端进程内，服务重启后失效。

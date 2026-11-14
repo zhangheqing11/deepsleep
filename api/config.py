@@ -16,10 +16,25 @@ class Settings:
     cors_origins: tuple[str, ...] = ()
     mock_step_delay_s: float = 0.5
     mock_report_delay_s: float = 3.0
+    auth_mode: Literal["none", "demo"] = "none"
+    auth_username: str = "demo"
+    auth_password_sha256: str = ""
+    auth_ttl_s: int = 28800
 
     def __post_init__(self) -> None:
         if self.data_source not in {"files", "mock"}:
             raise ValueError("API_DATA_SOURCE 只能设为 files 或 mock。")
+        if self.auth_mode not in ("none", "demo"):
+            raise ValueError("API_AUTH_MODE 只能是 none 或 demo。")
+        if not self.auth_username or len(self.auth_username) > 64:
+            raise ValueError("API_AUTH_USERNAME 必须是 1 到 64 个字符。")
+        if self.auth_mode == "demo" and (
+            len(self.auth_password_sha256) != 64
+            or any(char not in "0123456789abcdefABCDEF" for char in self.auth_password_sha256)
+        ):
+            raise ValueError("启用 demo 登录时必须提供 64 位十六进制 API_AUTH_PASSWORD_SHA256。")
+        if not 60 <= self.auth_ttl_s <= 7 * 24 * 60 * 60:
+            raise ValueError("API_AUTH_TTL_S 必须在 60 秒到 7 天之间。")
         for name, value, maximum in (
             ("mock_step_delay_s", self.mock_step_delay_s, 5),
             ("mock_report_delay_s", self.mock_report_delay_s, 10),
@@ -67,4 +82,8 @@ class Settings:
             serve_web=os.getenv("API_SERVE_WEB", "0") == "1",
             mock_step_delay_s=float(os.getenv("API_MOCK_STEP_DELAY_S", "0.5")),
             mock_report_delay_s=float(os.getenv("API_MOCK_REPORT_DELAY_S", "3")),
+            auth_mode=os.getenv("API_AUTH_MODE", "none").strip() or "none",
+            auth_username=os.getenv("API_AUTH_USERNAME", "demo").strip() or "demo",
+            auth_password_sha256=os.getenv("API_AUTH_PASSWORD_SHA256", "").strip(),
+            auth_ttl_s=int(os.getenv("API_AUTH_TTL_S", "28800")),
         )
