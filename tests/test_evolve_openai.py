@@ -26,7 +26,7 @@ def clean_env(monkeypatch):
 
 def response(**kwargs):
     return NS(**{"status": "completed", "output_text": json.dumps(GOOD), "output": [],
-                 "model": "gpt-6-astra", "reasoning": NS(effort="xhigh"),
+                 "model": "gpt-6-astra", "reasoning": NS(effort="high"),
                  "usage": NS(output_tokens_details=NS(reasoning_tokens=123)), **kwargs})
 
 
@@ -56,14 +56,14 @@ def test_openai_responses_success_and_usage(monkeypatch):
     result = run_reflection(config, primary, fallback, error)
     assert not result.fell_back
     assert all(c["changes"] for c in result.candidates)
-    assert result.provider == "openai" and result.reasoning_effort == "xhigh"
+    assert result.provider == "openai" and result.reasoning_effort == "high"  # defaults frozen 2026-11-14 after real-API runs
     assert result.model == "gpt-6-astra"
     call = create.call_args.kwargs
-    assert call["reasoning"] == {"effort": "xhigh"}
+    assert call["reasoning"] == {"effort": "high"}
     # JSON is requested by the existing prompt and validated locally. Do not add
     # legacy JSON mode: the initial real request with it returned HTTP 400.
     assert "text" not in call
-    assert clients[0][0]["timeout"] == 300
+    assert clients[0][0]["timeout"] == 600  # shipped default raised 2026-11-15: high-effort reflections ran 122–298 s
     assert clients[0][0]["max_retries"] == 0
     assert result.attempts[0]["reasoning_tokens"] == 123
     assert result.attempts[0]["duration_s"] >= 0
@@ -102,7 +102,8 @@ def test_openai_failure_falls_back_with_both_attempts(monkeypatch, case):
 
 
 @pytest.mark.parametrize("provider,model,effort", [
-    ("openai", "gpt-6-astra", "xhigh"), ("anthropic", "claude-opus-5-5", "high")])
+    ("openai", "gpt-6-astra", "high"), ("anthropic", "claude-opus-5-5", "high")])
+# defaults frozen 2026-11-14 after real-API runs (openai primary effort xhigh -> high)
 def test_provider_switch_by_env_or_config(monkeypatch, provider, model, effort):
     sdk(monkeypatch)
     monkeypatch.setattr("anthropic.AsyncAnthropic", lambda **kwargs: NS())
@@ -202,7 +203,7 @@ def test_reports_preserve_provider_metadata_without_contract_changes(monkeypatch
     assert set(evolution["reflector"]) == {"model", "fell_back", "fallback_reason"}
     metadata = insights["reflector"]
     assert metadata["provider"] == ("deepseek" if fall_back else "openai")
-    assert metadata["reasoning_effort"] == (None if fall_back else "xhigh")
+    assert metadata["reasoning_effort"] == (None if fall_back else "high")
     assert len(metadata["attempts"]) == (2 if fall_back else 1)
     path = tmp_path / "var/evolve/provider-report/insights.json"
     assert json.loads(path.read_text())["reflector"] == metadata

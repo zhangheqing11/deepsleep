@@ -17,6 +17,18 @@ def sandbox(tmp_path, monkeypatch):
     monkeypatch.setattr(demo, "VAR_DIR", tmp_path / "var")
     monkeypatch.setattr(demo, "PLAYBOOK_REPO", tmp_path / "var/playbook-repo")
     monkeypatch.setattr(demo, "load_dotenv", lambda *a, **k: None)  # never read the repo-root .env
+    # Pin the simple gate/lineage behaviour so these orchestration tests do not depend on shipped defaults.
+    real_evolve_config = demo.evolve_config
+
+    def simple_evolve_config(overrides=None):
+        overrides = dict(overrides or {})
+        overrides["gate"] = {"replicates": 1, "baseline_replicates": 1, "baseline_during_reflection": False,
+                             "parallel_candidates": False, "referral_recall_tolerance_visitors": 0,
+                             **overrides.get("gate", {})}
+        overrides["lineage"] = {"continue_after_reject": False, "reuse_baseline": True, **overrides.get("lineage", {})}
+        return real_evolve_config(overrides)
+
+    monkeypatch.setattr(demo, "evolve_config", simple_evolve_config)
     attempts = []
 
     def forbidden(*args, **kwargs):
@@ -136,6 +148,57 @@ def test_committed_branch_keeps_original_control(sandbox, monkeypatch):
     assert 1 <= sum(line.startswith("- ") for line in text.splitlines()) <= 3
 
 
+def test_two_generations_chain_and_manifest(sandbox, monkeypatch):
+    real_evolve = demo.evolve
+
+    async def committed(**kwargs):
+        evaluator = kwargs["evaluator"]
+
+        async def with_test_metrics(text, *, label):
+            rich = await evaluator(text, label=label)
+            # Synthetic C metrics: every candidate beats v1, nothing beats the adopted v2.
+            rich["metrics"] = dict(rich["metrics"], isi_response_rate=0.8 if "+c" in label else 0.1,
+                                   referral_recall=1.0, referral_precision=1.0,
+                                   crisis_missed=0, contraindication_violations=0)
+            return rich
+
+        return await real_evolve(**dict(kwargs, evaluator=with_test_metrics))
+
+    monkeypatch.setattr(demo, "evolve", committed)
+    assert demo.main(["all", *MOCK, "--experiment", "chain", "--generations", "2"]) == 0
+    m = manifest()
+    assert m["evolution"]["generations"] == ["chain-learn-g1", "chain-learn-g2"]
+    assert m["evolution"]["evolution_id"] == "chain-learn-g1"           # last committed generation
+    assert m["run2"]["playbook_version"] == "v2" and m["control"]["playbook_version"] == "v1"
+    assert demo.read_json(demo.VAR_DIR / "demo/chain/options.json")["generations"] == 2
+    validators = load_validators()
+    evolutions = [demo.read_json(demo.VAR_DIR / "evolve" / eid / "evolution.json") for eid in m["evolution"]["generations"]]
+    assert [validate_document(e, "evolution", validators, {}) for e in evolutions] == [[], []]
+    assert [e["outcome"] for e in evolutions] == ["committed", "kept_previous"]
+    chosen = next(c for c in evolutions[0]["candidates"] if c["id"] == evolutions[0]["chosen"])
+    assert evolutions[1]["baseline_val_metrics"] == chosen["val_metrics"]   # reused, not re-run
+    runs = {p.name for p in (demo.VAR_DIR / "runs").iterdir()}
+    assert "chain-learn-v2" not in runs                                  # generation 2 baseline was reused
+    lineage = demo.read_json(demo.VAR_DIR / "evolve/chain-learn/lineage.json")
+    assert [g["outcome"] for g in lineage["generations"]] == ["committed", "kept_previous"]
+    text = (demo.VAR_DIR / "demo/chain/summary.md").read_text(encoding="utf-8")
+    assert "学习结果（第 1 代）：committed；v1 → v2" in text
+    assert "学习结果（第 2 代）：kept_previous；v2 → v2" in text and "rollback v1" in text
+    assert_reports(m)
+
+
+def test_old_options_without_generations_still_load(sandbox):
+    assert demo.main(["run1", *MOCK, "--experiment", "legacy"]) == 0
+    path = demo.VAR_DIR / "demo/legacy/options.json"
+    options = demo.read_json(path)
+    del options["generations"]
+    demo.atomic_json(path, options)
+    assert demo.main(["learn", "--experiment", "legacy", "--generations", "2"]) == 1   # frozen at default 1
+    assert demo.main(["learn", "--experiment", "legacy"]) == 0
+    m = manifest()
+    assert m["evolution"]["generations"] == ["legacy-learn"] and m["evolution"]["evolution_id"] == "legacy-learn"
+
+
 @pytest.mark.parametrize("failure", ["run1", "learn", "run2", "control"])
 def test_failure_written_and_sibling_finishes(sandbox, monkeypatch, failure):
     original_batch = demo.batch
@@ -185,23 +248,31 @@ def test_refuse_options_change_and_foreign_paths(sandbox):
     assert exc.value.code == 2
 
 
-def test_global_session_limit_across_parallel_batches(sandbox, monkeypatch):
-    active = peak = 0
+def test_session_limit_is_per_batch_across_parallel_batches(sandbox, monkeypatch):
+    # One semaphore per batch (2026-11-14): overlapping batches no longer queue behind each other,
+    # so --max-sessions bounds each batch's concurrency, not the global total.
+    active, peak, total = {}, {}, 0
+    total_peak = 0
     run = demo.SessionRunner.run
 
     async def measured(self):
-        nonlocal active, peak
-        active += 1
-        peak = max(peak, active)
+        nonlocal total, total_peak
+        rid = self.run_id
+        active[rid] = active.get(rid, 0) + 1
+        total += 1
+        peak[rid] = max(peak.get(rid, 0), active[rid])
+        total_peak = max(total_peak, total)
         await asyncio.sleep(0)
         try:
             return await run(self)
         finally:
-            active -= 1
+            active[rid] -= 1
+            total -= 1
 
     monkeypatch.setattr(demo.SessionRunner, "run", measured)
     assert demo.main(["all", *MOCK, "--max-sessions", "2"]) == 0
-    assert peak == 2 and active == 0
+    assert peak and all(v == 2 for v in peak.values()) and not any(active.values()) and total == 0
+    assert total_peak >= 2
 
 
 def test_manifest_atomically_replaced(sandbox, monkeypatch):
@@ -267,3 +338,137 @@ def test_real_mode_requires_configuration_before_any_requests(sandbox, monkeypat
     assert demo.main(["run1", "--dev", "--visitors-dir", "sim/visitors"]) == 1
     assert manifest()["stage"] == "failed"
     assert "DS_API_KEY" in manifest()["error"]
+
+
+def committed_evolve(monkeypatch, calls):
+    """Patch demo.evolve so candidates beat v1 on C (forces a commit) and record each call's kwargs."""
+    real_evolve = demo.evolve
+
+    async def committed(**kwargs):
+        calls.append(kwargs)
+        evaluator = kwargs["evaluator"]
+
+        async def with_test_metrics(text, *, label):
+            rich = await evaluator(text, label=label)
+            rich["metrics"] = dict(rich["metrics"], isi_response_rate=0.8 if "+c" in label else 0.1,
+                                   referral_recall=1.0, referral_precision=1.0,
+                                   crisis_missed=0, contraindication_violations=0)
+            return rich
+
+        return await real_evolve(**dict(kwargs, evaluator=with_test_metrics))
+
+    monkeypatch.setattr(demo, "evolve", committed)
+
+
+def record_batches(monkeypatch, batches):
+    original = demo.batch
+
+    async def recorded(*args):
+        batches.append(args)
+        return await original(*args)
+
+    monkeypatch.setattr(demo, "batch", recorded)
+
+
+def test_two_generations_practice_on_new_playbook(sandbox, monkeypatch):
+    calls, batches = [], []
+    committed_evolve(monkeypatch, calls)
+    record_batches(monkeypatch, batches)
+    assert demo.main(["all", *MOCK, "--experiment", "prac", "--generations", "2"]) == 0
+    m = manifest()
+    assert m["practice"] == [{"run_id": "prac-practice-v2", "playbook_version": "v2", "state": "done"}]
+    practice = [args for args in batches if args[5] == "practice"]
+    assert len(practice) == 1
+    _, visitors, text, version, run_id, _, split = practice[0][:7]
+    learned = (demo.VAR_DIR / "demo/prac/learned.md").read_text(encoding="utf-8")
+    original = (demo.VAR_DIR / "demo/prac/original.md").read_text(encoding="utf-8")
+    assert text == learned != original and version == "v2" and run_id == "prac-practice-v2" and split == "A"
+    groups = demo.read_json(demo.VAR_DIR / "demo/prac/cohorts.json")
+    assert [v["id"] for v in visitors] == [v["id"] for v in groups["A"]]
+    # Generation 1 reflects on run 1; generation 2 on the fresh practice report and its sessions.
+    assert [c["run_report"]["run_id"] for c in calls] == ["prac-run1", "prac-practice-v2"]
+    fresh = demo.read_json(demo.VAR_DIR / "runs/prac-practice-v2/run_report.json")
+    assert calls[1]["run_report"] == fresh
+    assert set(calls[1]["sessions"]) == {v["id"] for v in groups["A"]}
+    assert all(s["run_id"] == "prac-practice-v2" for s in calls[1]["sessions"].values())
+    validators = load_validators()
+    visitors_by_id = {v["id"]: v for group in groups.values() for v in group}
+    assert validate_document(fresh, "run_report", validators, visitors_by_id) == []
+    assert (fresh["role"], fresh["split"], fresh["label"], fresh["playbook_version"]) == ("run1", "A", "自我练习", "v2")
+    lineage = demo.read_json(demo.VAR_DIR / "evolve/prac-learn/lineage.json")
+    assert lineage["generations"][0]["next_source_run_id"] == "prac-practice-v2"
+    states = [[p["state"] for p in s.get("practice", [])] for s in sandbox]
+    assert ["running"] in states and ["done"] in states
+    text = (demo.VAR_DIR / "demo/prac/summary.md").read_text(encoding="utf-8")
+    line = next(l for l in text.splitlines() if l.startswith("自我练习"))
+    assert "（A 组，v2）" in line and "isi_response_rate=" in line and "prac-practice-v2" in line
+    assert_reports(m)
+
+
+def test_single_generation_has_no_practice(sandbox, monkeypatch):
+    calls, batches = [], []
+    committed_evolve(monkeypatch, calls)
+    record_batches(monkeypatch, batches)
+    assert demo.main(["all", *MOCK, "--experiment", "single"]) == 0
+    m = manifest()
+    assert m["run2"]["playbook_version"] == "v2"                      # committed, still no practice
+    assert set(m) == {"experiment_id", "updated_at", "stage", "run1", "evolution", "run2", "control", "error"}
+    assert all("practice" not in s for s in sandbox)
+    assert sorted(args[5] for args in batches if args[5] != "validation") == ["control", "run1", "run2"]
+    assert len(calls) == 1 and calls[0]["run_report"]["run_id"] == "single-run1"
+    assert not any("practice" in p.name for p in (demo.VAR_DIR / "runs").iterdir())
+    assert "自我练习" not in (demo.VAR_DIR / "demo/single/summary.md").read_text(encoding="utf-8")
+
+
+def inject_degraded(monkeypatch, n):
+    original = demo.build_report
+
+    def degraded(*args, **kwargs):
+        report, summary = original(*args, **kwargs)
+        summary["degraded_sessions"] = n
+        return report, summary
+
+    monkeypatch.setattr(demo, "build_report", degraded)
+
+
+def test_degraded_batch_above_threshold_is_invalid(sandbox, monkeypatch):
+    inject_degraded(monkeypatch, 1)                                     # 1/6 > 0.10
+    assert demo.main(["run1", *MOCK, "--experiment", "degraded"]) == 1
+    m = manifest()
+    assert m["stage"] == "failed" and m["run1"]["state"] == "failed" and "批次无效" in m["error"]
+    out = demo.VAR_DIR / "runs" / m["run1"]["run_id"]
+    summary = demo.read_json(out / "summary.json")
+    assert summary["attempted"] == 6 and summary["degraded_sessions"] == 1
+    assert "max_degraded_share" in summary["invalid_reason"]
+    assert (out / "run_report.json").is_file()                          # kept for inspection
+
+
+def test_degraded_batch_below_threshold_passes(sandbox, monkeypatch):
+    real = demo.load_config
+    monkeypatch.setattr(demo, "load_config", lambda config=None: real({**(config or {}),
+                                                                       "quality": {"max_degraded_share": 0.2}}))
+    inject_degraded(monkeypatch, 1)                                     # 1/6 <= 0.2
+    assert demo.main(["run1", *MOCK, "--experiment", "tolerated"]) == 0
+    m = manifest()
+    assert m["run1"]["state"] == "done"
+    assert "invalid_reason" not in demo.read_json(demo.VAR_DIR / "runs" / m["run1"]["run_id"] / "summary.json")
+
+
+def test_mock_batches_are_never_degraded(sandbox):
+    assert demo.main(["run1", *MOCK, "--experiment", "clean"]) == 0
+    summary = demo.read_json(demo.VAR_DIR / "runs/clean-run1/summary.json")
+    assert summary["degraded_sessions"] == 0 and "invalid_reason" not in summary
+
+
+@pytest.mark.parametrize("value", [-0.01, 1.01, True, "0.1", None])
+def test_config_rejects_bad_degraded_share(value):
+    from engine.config import load_config
+    with pytest.raises(ValueError, match="max_degraded_share"):
+        load_config({"quality": {"max_degraded_share": value}})
+
+
+def test_config_degraded_share_default_and_bounds():
+    from engine.config import load_config
+    assert load_config()["quality"]["max_degraded_share"] == 0.10
+    for value in (0, 1, 0.5):
+        assert load_config({"quality": {"max_degraded_share": value}})["quality"]["max_degraded_share"] == value

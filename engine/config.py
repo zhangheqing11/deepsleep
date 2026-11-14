@@ -61,6 +61,9 @@ def load_config(config=None) -> dict:
     if any(not isinstance(retry[k], (int, float)) or not 0 <= retry[k] <= 60
            for k in ("backoff_s", "max_backoff_s")):
         raise ValueError("network retry delays must be between 0 and 60 seconds")
+    share = values["quality"]["max_degraded_share"]
+    if isinstance(share, bool) or not isinstance(share, (int, float)) or not 0 <= share <= 1:
+        raise ValueError("quality.max_degraded_share must be a number between 0 and 1")
     for key in PATH_KEYS:
         values[key] = str((path.parent / values[key]).resolve())
     return values

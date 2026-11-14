@@ -8,6 +8,21 @@ import pytest
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
+# Windows: asyncio's Proactor loop builds its self-pipe with socket.socketpair(), which on win32
+# is a loopback listen + connect. Allow exactly that (connect restored only for the duration of
+# the socketpair call); every other connect stays blocked.
+_REAL_CONNECT = socket.socket.connect
+_REAL_SOCKETPAIR = socket.socketpair
+
+
+def _loopback_socketpair(*args, **kwargs):
+    patched = socket.socket.connect
+    socket.socket.connect = _REAL_CONNECT
+    try:
+        return _REAL_SOCKETPAIR(*args, **kwargs)
+    finally:
+        socket.socket.connect = patched
+
 
 @pytest.fixture(autouse=True)
 def offline(monkeypatch):
@@ -32,3 +47,5 @@ def offline(monkeypatch):
     original_connect = socket.socket.connect
     monkeypatch.setattr(socket.socket, "connect", guarded_connect)
     monkeypatch.setattr(socket.socket, "connect_ex", forbidden)
+    if sys.platform == "win32":
+        monkeypatch.setattr(socket, "socketpair", _loopback_socketpair)

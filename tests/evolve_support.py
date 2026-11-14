@@ -22,10 +22,19 @@ def example(name: str) -> dict:
 BASELINE = example("evolution.v1-v2.json")["baseline_val_metrics"]
 
 
+# The simple, sequential gate behaviour most tests assume. Pinned here so tests do not depend on the
+# shipped defaults (frozen 2026-11-14: replicates 2, baseline_replicates 3, parallel, tolerance 1 ...).
+SIMPLE_GATE = {"replicates": 1, "baseline_replicates": 1, "baseline_during_reflection": False,
+               "parallel_candidates": False, "referral_recall_tolerance_visitors": 0}
+SIMPLE_LINEAGE = {"continue_after_reject": False, "reuse_baseline": True}
+
+
 def make_config(tmp_path: Path, **overrides) -> dict:
     config = load_config({
         "repo": {"path": str(tmp_path / "var" / "playbook-repo"), "initial_path": str(FIXTURE_INITIAL)},
         "review": {"run_dir": str(tmp_path / "var" / "evolve"), "timeout_s": 0, "poll_interval_s": 0.01},
+        "gate": dict(SIMPLE_GATE),
+        "lineage": dict(SIMPLE_LINEAGE),
     })
     for section, values in overrides.items():
         config[section].update(values)
