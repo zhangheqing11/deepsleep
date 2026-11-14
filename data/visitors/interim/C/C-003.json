@@ -1,0 +1,181 @@
+{
+  "schema_version": "0.1.0",
+  "id": "C-003",
+  "split": "C",
+  "seed": 1940954086,
+  "main_path": "P5",
+  "secondary_path": null,
+  "referral": "R0",
+  "crisis": {
+    "level": "none",
+    "phq9_item9": 0,
+    "history": false
+  },
+  "contraindications": [],
+  "indices": {
+    "isi": 14,
+    "phq9": 3,
+    "gad7": 8,
+    "stop_bang": 1,
+    "meq": null,
+    "dbas16": null,
+    "psas": null,
+    "screen_min_before_sleep": 85
+  },
+  "diary": [
+    {
+      "day": 1,
+      "bedtime": "00:25",
+      "lights_off": "01:50",
+      "sol_min": 10,
+      "waso_min": 15,
+      "final_wake": "07:20",
+      "risetime": "07:30",
+      "tst_min": 305,
+      "tib_min": 425,
+      "se": 0.7176,
+      "nap_min": 0,
+      "caffeine_after_14": false,
+      "alcohol": false,
+      "screen_in_bed_min": 85
+    },
+    {
+      "day": 2,
+      "bedtime": "00:25",
+      "lights_off": "01:50",
+      "sol_min": 6,
+      "waso_min": 22,
+      "final_wake": "07:20",
+      "risetime": "07:30",
+      "tst_min": 302,
+      "tib_min": 425,
+      "se": 0.7106,
+      "nap_min": 0,
+      "caffeine_after_14": false,
+      "alcohol": false,
+      "screen_in_bed_min": 85
+    },
+    {
+      "day": 3,
+      "bedtime": "00:35",
+      "lights_off": "02:00",
+      "sol_min": 6,
+      "waso_min": 19,
+      "final_wake": "07:20",
+      "risetime": "07:30",
+      "tst_min": 295,
+      "tib_min": 415,
+      "se": 0.7108,
+      "nap_min": 0,
+      "caffeine_after_14": false,
+      "alcohol": false,
+      "screen_in_bed_min": 85
+    },
+    {
+      "day": 4,
+      "bedtime": "00:35",
+      "lights_off": "02:00",
+      "sol_min": 6,
+      "waso_min": 19,
+      "final_wake": "07:20",
+      "risetime": "07:30",
+      "tst_min": 295,
+      "tib_min": 415,
+      "se": 0.7108,
+      "nap_min": 0,
+      "caffeine_after_14": false,
+      "alcohol": false,
+      "screen_in_bed_min": 85
+    },
+    {
+      "day": 5,
+      "bedtime": "00:30",
+      "lights_off": "01:55",
+      "sol_min": 5,
+      "waso_min": 23,
+      "final_wake": "07:20",
+      "risetime": "07:30",
+      "tst_min": 297,
+      "tib_min": 420,
+      "se": 0.7071,
+      "nap_min": 0,
+      "caffeine_after_14": false,
+      "alcohol": false,
+      "screen_in_bed_min": 85
+    },
+    {
+      "day": 6,
+      "bedtime": "00:25",
+      "lights_off": "01:50",
+      "sol_min": 7,
+      "waso_min": 16,
+      "final_wake": "07:20",
+      "risetime": "07:30",
+      "tst_min": 307,
+      "tib_min": 425,
+      "se": 0.7224,
+      "nap_min": 0,
+      "caffeine_after_14": false,
+      "alcohol": false,
+      "screen_in_bed_min": 85
+    },
+    {
+      "day": 7,
+      "bedtime": "00:35",
+      "lights_off": "02:00",
+      "sol_min": 10,
+      "waso_min": 18,
+      "final_wake": "07:20",
+      "risetime": "07:30",
+      "tst_min": 292,
+      "tib_min": 415,
+      "se": 0.7036,
+      "nap_min": 0,
+      "caffeine_after_14": false,
+      "alcohol": false,
+      "screen_in_bed_min": 85
+    }
+  ],
+  "persona": {
+    "age": 31,
+    "gender": "other",
+    "occupation": "职员",
+    "expressiveness": "brief",
+    "defensiveness": "mid",
+    "emotionality": "high",
+    "adherence_tendency": 0.45,
+    "constraints": []
+  },
+  "opening_complaint": "最近晚上睡眠质量很差，要好久才睡得着，白天特别累。",
+  "clues": [
+    {
+      "id": "C-003::domain/path_clues.md#P5-c1",
+      "content": "上床以后刷短视频，一刷就是一两个小时",
+      "reveal_topic": "screen_in_bed",
+      "supports": "P5",
+      "deny_first": true
+    },
+    {
+      "id": "C-003::domain/path_clues.md#P5-c4",
+      "content": "说好十一点睡，刷着刷着就两点了，总想再看一个",
+      "reveal_topic": "revenge_bedtime",
+      "supports": "P5",
+      "deny_first": false
+    },
+    {
+      "id": "C-003::domain/path_clues.md#P5-c5",
+      "content": "晚上打游戏排位、追剧停不下来，一局接一局",
+      "reveal_topic": "screen_in_bed",
+      "supports": "P5",
+      "deny_first": true
+    },
+    {
+      "id": "C-003::domain/referral_cues.md#RC-7:2.4",
+      "content": "运动后腿酸，白天久站腿胀。",
+      "reveal_topic": "leg_discomfort",
+      "supports": "R0",
+      "deny_first": false
+    }
+  ],
+  "prefilled": []
+}

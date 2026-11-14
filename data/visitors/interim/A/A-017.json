@@ -1,0 +1,181 @@
+{
+  "schema_version": "0.1.0",
+  "id": "A-017",
+  "split": "A",
+  "seed": 1250401849,
+  "main_path": "P4",
+  "secondary_path": null,
+  "referral": "R0",
+  "crisis": {
+    "level": "none",
+    "phq9_item9": 0,
+    "history": false
+  },
+  "contraindications": [],
+  "indices": {
+    "isi": 14,
+    "phq9": 5,
+    "gad7": 2,
+    "stop_bang": 2,
+    "meq": null,
+    "dbas16": null,
+    "psas": null,
+    "screen_min_before_sleep": 0
+  },
+  "diary": [
+    {
+      "day": 1,
+      "bedtime": "01:30",
+      "lights_off": "01:40",
+      "sol_min": 61,
+      "waso_min": 16,
+      "final_wake": "07:50",
+      "risetime": "08:00",
+      "tst_min": 293,
+      "tib_min": 390,
+      "se": 0.7513,
+      "nap_min": 0,
+      "caffeine_after_14": false,
+      "alcohol": false,
+      "screen_in_bed_min": 0
+    },
+    {
+      "day": 2,
+      "bedtime": "01:35",
+      "lights_off": "01:45",
+      "sol_min": 65,
+      "waso_min": 16,
+      "final_wake": "07:50",
+      "risetime": "08:00",
+      "tst_min": 284,
+      "tib_min": 385,
+      "se": 0.7377,
+      "nap_min": 0,
+      "caffeine_after_14": false,
+      "alcohol": false,
+      "screen_in_bed_min": 0
+    },
+    {
+      "day": 3,
+      "bedtime": "01:30",
+      "lights_off": "01:40",
+      "sol_min": 56,
+      "waso_min": 25,
+      "final_wake": "07:50",
+      "risetime": "08:00",
+      "tst_min": 289,
+      "tib_min": 390,
+      "se": 0.741,
+      "nap_min": 0,
+      "caffeine_after_14": false,
+      "alcohol": false,
+      "screen_in_bed_min": 0
+    },
+    {
+      "day": 4,
+      "bedtime": "01:30",
+      "lights_off": "01:40",
+      "sol_min": 61,
+      "waso_min": 18,
+      "final_wake": "07:50",
+      "risetime": "08:00",
+      "tst_min": 291,
+      "tib_min": 390,
+      "se": 0.7462,
+      "nap_min": 0,
+      "caffeine_after_14": false,
+      "alcohol": false,
+      "screen_in_bed_min": 0
+    },
+    {
+      "day": 5,
+      "bedtime": "01:30",
+      "lights_off": "01:40",
+      "sol_min": 62,
+      "waso_min": 25,
+      "final_wake": "07:50",
+      "risetime": "08:00",
+      "tst_min": 283,
+      "tib_min": 390,
+      "se": 0.7256,
+      "nap_min": 0,
+      "caffeine_after_14": false,
+      "alcohol": false,
+      "screen_in_bed_min": 0
+    },
+    {
+      "day": 6,
+      "bedtime": "03:00",
+      "lights_off": "03:00",
+      "sol_min": 5,
+      "waso_min": 20,
+      "final_wake": "10:50",
+      "risetime": "11:00",
+      "tst_min": 445,
+      "tib_min": 480,
+      "se": 0.9271,
+      "nap_min": 0,
+      "caffeine_after_14": false,
+      "alcohol": false,
+      "screen_in_bed_min": 0
+    },
+    {
+      "day": 7,
+      "bedtime": "03:00",
+      "lights_off": "03:00",
+      "sol_min": 5,
+      "waso_min": 20,
+      "final_wake": "10:50",
+      "risetime": "11:00",
+      "tst_min": 445,
+      "tib_min": 480,
+      "se": 0.9271,
+      "nap_min": 0,
+      "caffeine_after_14": false,
+      "alcohol": false,
+      "screen_in_bed_min": 0
+    }
+  ],
+  "persona": {
+    "age": 33,
+    "gender": "other",
+    "occupation": "职员",
+    "expressiveness": "verbose",
+    "defensiveness": "low",
+    "emotionality": "low",
+    "adherence_tendency": 0.45,
+    "constraints": []
+  },
+  "opening_complaint": "最近睡得不太稳，白天总是没精神，不知道该从哪儿调。",
+  "clues": [
+    {
+      "id": "A-017::domain/path_clues.md#P4-c1",
+      "content": "不管几点上床，都要到两三点才困；放假让我随便睡，我也是三点睡、十一点起，睡得挺好",
+      "reveal_topic": "chronotype",
+      "supports": "P4",
+      "deny_first": false
+    },
+    {
+      "id": "A-017::domain/path_clues.md#P4-c2",
+      "content": "早上闹钟响三四遍还起不来，上午脑子不清醒，越到晚上越精神",
+      "reveal_topic": "chronotype",
+      "supports": "P4",
+      "deny_first": false
+    },
+    {
+      "id": "A-017::domain/path_clues.md#P4-c4",
+      "content": "从学生时代起就是夜猫子，让我早睡就是躺着熬",
+      "reveal_topic": "chronotype",
+      "supports": "P4",
+      "deny_first": false
+    },
+    {
+      "id": "A-017::domain/referral_cues.md#RC-7:3.3",
+      "content": "搬家让我有点紧张，事情过去后就缓解。",
+      "reveal_topic": "anxiety",
+      "supports": "R0",
+      "deny_first": false
+    }
+  ],
+  "prefilled": []
+}

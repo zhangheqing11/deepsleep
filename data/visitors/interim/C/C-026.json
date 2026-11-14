@@ -1,0 +1,188 @@
+{
+  "schema_version": "0.1.0",
+  "id": "C-026",
+  "split": "C",
+  "seed": 545327389,
+  "main_path": "P5",
+  "secondary_path": "P3",
+  "referral": "R0",
+  "crisis": {
+    "level": "none",
+    "phq9_item9": 0,
+    "history": false
+  },
+  "contraindications": [],
+  "indices": {
+    "isi": 20,
+    "phq9": 7,
+    "gad7": 7,
+    "stop_bang": 1,
+    "meq": null,
+    "dbas16": null,
+    "psas": null,
+    "screen_min_before_sleep": 100
+  },
+  "diary": [
+    {
+      "day": 1,
+      "bedtime": "23:00",
+      "lights_off": "00:40",
+      "sol_min": 20,
+      "waso_min": 21,
+      "final_wake": "07:20",
+      "risetime": "07:30",
+      "tst_min": 359,
+      "tib_min": 510,
+      "se": 0.7039,
+      "nap_min": 0,
+      "caffeine_after_14": false,
+      "alcohol": false,
+      "screen_in_bed_min": 100
+    },
+    {
+      "day": 2,
+      "bedtime": "22:55",
+      "lights_off": "00:35",
+      "sol_min": 26,
+      "waso_min": 17,
+      "final_wake": "07:20",
+      "risetime": "07:30",
+      "tst_min": 362,
+      "tib_min": 515,
+      "se": 0.7029,
+      "nap_min": 0,
+      "caffeine_after_14": false,
+      "alcohol": false,
+      "screen_in_bed_min": 100
+    },
+    {
+      "day": 3,
+      "bedtime": "23:05",
+      "lights_off": "00:45",
+      "sol_min": 28,
+      "waso_min": 25,
+      "final_wake": "07:20",
+      "risetime": "07:30",
+      "tst_min": 342,
+      "tib_min": 505,
+      "se": 0.6772,
+      "nap_min": 0,
+      "caffeine_after_14": false,
+      "alcohol": false,
+      "screen_in_bed_min": 100
+    },
+    {
+      "day": 4,
+      "bedtime": "23:00",
+      "lights_off": "00:40",
+      "sol_min": 27,
+      "waso_min": 15,
+      "final_wake": "07:20",
+      "risetime": "07:30",
+      "tst_min": 358,
+      "tib_min": 510,
+      "se": 0.702,
+      "nap_min": 0,
+      "caffeine_after_14": false,
+      "alcohol": false,
+      "screen_in_bed_min": 100
+    },
+    {
+      "day": 5,
+      "bedtime": "23:05",
+      "lights_off": "00:45",
+      "sol_min": 30,
+      "waso_min": 15,
+      "final_wake": "07:20",
+      "risetime": "07:30",
+      "tst_min": 350,
+      "tib_min": 505,
+      "se": 0.6931,
+      "nap_min": 0,
+      "caffeine_after_14": false,
+      "alcohol": false,
+      "screen_in_bed_min": 100
+    },
+    {
+      "day": 6,
+      "bedtime": "22:55",
+      "lights_off": "00:35",
+      "sol_min": 25,
+      "waso_min": 17,
+      "final_wake": "07:20",
+      "risetime": "07:30",
+      "tst_min": 363,
+      "tib_min": 515,
+      "se": 0.7049,
+      "nap_min": 0,
+      "caffeine_after_14": false,
+      "alcohol": false,
+      "screen_in_bed_min": 100
+    },
+    {
+      "day": 7,
+      "bedtime": "23:05",
+      "lights_off": "00:45",
+      "sol_min": 28,
+      "waso_min": 21,
+      "final_wake": "07:20",
+      "risetime": "07:30",
+      "tst_min": 346,
+      "tib_min": 505,
+      "se": 0.6851,
+      "nap_min": 0,
+      "caffeine_after_14": false,
+      "alcohol": false,
+      "screen_in_bed_min": 100
+    }
+  ],
+  "persona": {
+    "age": 29,
+    "gender": "other",
+    "occupation": "职员",
+    "expressiveness": "brief",
+    "defensiveness": "low",
+    "emotionality": "high",
+    "adherence_tendency": 0.65,
+    "constraints": []
+  },
+  "opening_complaint": "最近睡得不太稳，白天总是没精神，不知道该从哪儿调。",
+  "clues": [
+    {
+      "id": "C-026::domain/path_clues.md#P5-c1",
+      "content": "上床以后刷短视频，一刷就是一两个小时",
+      "reveal_topic": "screen_in_bed",
+      "supports": "P5",
+      "deny_first": false
+    },
+    {
+      "id": "C-026::domain/path_clues.md#P5-c3",
+      "content": "不带手机的时候，比如出差忘带或者断网，我睡得挺快",
+      "reveal_topic": "screen_in_bed",
+      "supports": "P5",
+      "deny_first": false
+    },
+    {
+      "id": "C-026::domain/path_clues.md#P5-c5",
+      "content": "晚上打游戏排位、追剧停不下来，一局接一局",
+      "reveal_topic": "screen_in_bed",
+      "supports": "P5",
+      "deny_first": false
+    },
+    {
+      "id": "C-026::domain/path_clues.md#P3-c3",
+      "content": "我总觉得再这么睡不好，身体肯定要垮，明天一定会搞砸",
+      "reveal_topic": "fear_of_sleeplessness",
+      "supports": "P3",
+      "deny_first": false
+    },
+    {
+      "id": "C-026::domain/referral_cues.md#RC-7:2.4",
+      "content": "运动后腿酸，白天久站腿胀。",
+      "reveal_topic": "leg_discomfort",
+      "supports": "R0",
+      "deny_first": false
+    }
+  ],
+  "prefilled": []
+}

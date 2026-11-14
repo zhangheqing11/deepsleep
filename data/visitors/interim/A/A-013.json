@@ -1,0 +1,228 @@
+{
+  "schema_version": "0.1.0",
+  "id": "A-013",
+  "split": "A",
+  "seed": 1682998569,
+  "main_path": "P1",
+  "secondary_path": "P4",
+  "referral": "R3",
+  "crisis": {
+    "level": "none",
+    "phq9_item9": 0,
+    "history": false
+  },
+  "contraindications": [],
+  "indices": {
+    "isi": 14,
+    "phq9": 13,
+    "gad7": 15,
+    "stop_bang": 1,
+    "meq": null,
+    "dbas16": null,
+    "psas": null,
+    "screen_min_before_sleep": 0
+  },
+  "diary": [
+    {
+      "day": 1,
+      "bedtime": "01:25",
+      "lights_off": "01:35",
+      "sol_min": 57,
+      "waso_min": 21,
+      "final_wake": "05:50",
+      "risetime": "06:00",
+      "tst_min": 177,
+      "tib_min": 275,
+      "se": 0.6436,
+      "nap_min": 0,
+      "caffeine_after_14": false,
+      "alcohol": true,
+      "screen_in_bed_min": 0
+    },
+    {
+      "day": 2,
+      "bedtime": "01:35",
+      "lights_off": "01:45",
+      "sol_min": 60,
+      "waso_min": 15,
+      "final_wake": "08:50",
+      "risetime": "09:00",
+      "tst_min": 350,
+      "tib_min": 445,
+      "se": 0.7865,
+      "nap_min": 0,
+      "caffeine_after_14": false,
+      "alcohol": true,
+      "screen_in_bed_min": 0
+    },
+    {
+      "day": 3,
+      "bedtime": "01:25",
+      "lights_off": "01:35",
+      "sol_min": 57,
+      "waso_min": 18,
+      "final_wake": "05:50",
+      "risetime": "06:00",
+      "tst_min": 180,
+      "tib_min": 275,
+      "se": 0.6545,
+      "nap_min": 0,
+      "caffeine_after_14": false,
+      "alcohol": true,
+      "screen_in_bed_min": 0
+    },
+    {
+      "day": 4,
+      "bedtime": "01:35",
+      "lights_off": "01:45",
+      "sol_min": 65,
+      "waso_min": 24,
+      "final_wake": "08:50",
+      "risetime": "09:00",
+      "tst_min": 336,
+      "tib_min": 445,
+      "se": 0.7551,
+      "nap_min": 0,
+      "caffeine_after_14": false,
+      "alcohol": true,
+      "screen_in_bed_min": 0
+    },
+    {
+      "day": 5,
+      "bedtime": "01:25",
+      "lights_off": "01:35",
+      "sol_min": 65,
+      "waso_min": 18,
+      "final_wake": "05:50",
+      "risetime": "06:00",
+      "tst_min": 172,
+      "tib_min": 275,
+      "se": 0.6255,
+      "nap_min": 0,
+      "caffeine_after_14": false,
+      "alcohol": true,
+      "screen_in_bed_min": 0
+    },
+    {
+      "day": 6,
+      "bedtime": "01:35",
+      "lights_off": "01:45",
+      "sol_min": 58,
+      "waso_min": 24,
+      "final_wake": "08:50",
+      "risetime": "09:00",
+      "tst_min": 343,
+      "tib_min": 445,
+      "se": 0.7708,
+      "nap_min": 0,
+      "caffeine_after_14": false,
+      "alcohol": true,
+      "screen_in_bed_min": 0
+    },
+    {
+      "day": 7,
+      "bedtime": "01:35",
+      "lights_off": "01:45",
+      "sol_min": 64,
+      "waso_min": 20,
+      "final_wake": "05:50",
+      "risetime": "06:00",
+      "tst_min": 161,
+      "tib_min": 265,
+      "se": 0.6075,
+      "nap_min": 0,
+      "caffeine_after_14": false,
+      "alcohol": true,
+      "screen_in_bed_min": 0
+    }
+  ],
+  "persona": {
+    "age": 35,
+    "gender": "male",
+    "occupation": "职员",
+    "expressiveness": "verbose",
+    "defensiveness": "mid",
+    "emotionality": "low",
+    "adherence_tendency": 0.75,
+    "constraints": []
+  },
+  "opening_complaint": "最近睡得不太稳，白天总是没精神，不知道该从哪儿调。",
+  "clues": [
+    {
+      "id": "A-013::domain/path_clues.md#P1-c2",
+      "content": "起床时间看心情，早的时候六点，晚的时候九点多",
+      "reveal_topic": "schedule_regularity",
+      "supports": "P1",
+      "deny_first": false
+    },
+    {
+      "id": "A-013::domain/path_clues.md#P1-c6",
+      "content": "团队在海外，晚上十一点以后才有会，开完会人特别精神",
+      "reveal_topic": "life_constraints",
+      "supports": "P1",
+      "deny_first": false
+    },
+    {
+      "id": "A-013::domain/path_clues.md#P1-c4",
+      "content": "晚上喝两口才好入睡，不喝反而更睡不着",
+      "reveal_topic": "caffeine_alcohol",
+      "supports": "P1",
+      "deny_first": true
+    },
+    {
+      "id": "A-013::domain/path_clues.md#P4-c2",
+      "content": "早上闹钟响三四遍还起不来，上午脑子不清醒，越到晚上越精神",
+      "reveal_topic": "chronotype",
+      "supports": "P4",
+      "deny_first": false
+    },
+    {
+      "id": "A-013::domain/referral_cues.md#R3-c3",
+      "content": "白天也一直在担心，控制不住地想最坏的结果",
+      "reveal_topic": "anxiety",
+      "supports": "R3",
+      "deny_first": true
+    },
+    {
+      "id": "A-013::domain/referral_cues.md#R3-c4",
+      "content": "整个人绷得很紧，坐立不安，容易发火",
+      "reveal_topic": "anxiety",
+      "supports": "R3",
+      "deny_first": false
+    },
+    {
+      "id": "A-013::domain/referral_cues.md#R3-c2",
+      "content": "情绪一直很低，常常没来由地想哭",
+      "reveal_topic": "mood",
+      "supports": "R3",
+      "deny_first": true
+    }
+  ],
+  "prefilled": [
+    {
+      "scale": "isi",
+      "reported_score": 9,
+      "items": null
+    },
+    {
+      "scale": "phq9",
+      "reported_score": 9,
+      "items": [
+        2,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        0
+      ]
+    },
+    {
+      "scale": "gad7",
+      "reported_score": 9,
+      "items": null
+    }
+  ]
+}

@@ -1,0 +1,181 @@
+{
+  "schema_version": "0.1.0",
+  "id": "A-031",
+  "split": "A",
+  "seed": 1053087708,
+  "main_path": "P1",
+  "secondary_path": null,
+  "referral": "R0",
+  "crisis": {
+    "level": "none",
+    "phq9_item9": 0,
+    "history": false
+  },
+  "contraindications": [],
+  "indices": {
+    "isi": 21,
+    "phq9": 9,
+    "gad7": 7,
+    "stop_bang": 2,
+    "meq": null,
+    "dbas16": null,
+    "psas": null,
+    "screen_min_before_sleep": 0
+  },
+  "diary": [
+    {
+      "day": 1,
+      "bedtime": "23:25",
+      "lights_off": "23:35",
+      "sol_min": 30,
+      "waso_min": 24,
+      "final_wake": "05:50",
+      "risetime": "06:00",
+      "tst_min": 321,
+      "tib_min": 395,
+      "se": 0.8127,
+      "nap_min": 75,
+      "caffeine_after_14": true,
+      "alcohol": false,
+      "screen_in_bed_min": 0
+    },
+    {
+      "day": 2,
+      "bedtime": "23:35",
+      "lights_off": "23:45",
+      "sol_min": 35,
+      "waso_min": 17,
+      "final_wake": "08:50",
+      "risetime": "09:00",
+      "tst_min": 493,
+      "tib_min": 565,
+      "se": 0.8726,
+      "nap_min": 75,
+      "caffeine_after_14": true,
+      "alcohol": false,
+      "screen_in_bed_min": 0
+    },
+    {
+      "day": 3,
+      "bedtime": "23:25",
+      "lights_off": "23:35",
+      "sol_min": 34,
+      "waso_min": 15,
+      "final_wake": "05:50",
+      "risetime": "06:00",
+      "tst_min": 326,
+      "tib_min": 395,
+      "se": 0.8253,
+      "nap_min": 75,
+      "caffeine_after_14": true,
+      "alcohol": false,
+      "screen_in_bed_min": 0
+    },
+    {
+      "day": 4,
+      "bedtime": "23:35",
+      "lights_off": "23:45",
+      "sol_min": 34,
+      "waso_min": 20,
+      "final_wake": "08:50",
+      "risetime": "09:00",
+      "tst_min": 491,
+      "tib_min": 565,
+      "se": 0.869,
+      "nap_min": 75,
+      "caffeine_after_14": true,
+      "alcohol": false,
+      "screen_in_bed_min": 0
+    },
+    {
+      "day": 5,
+      "bedtime": "23:30",
+      "lights_off": "23:40",
+      "sol_min": 36,
+      "waso_min": 21,
+      "final_wake": "05:50",
+      "risetime": "06:00",
+      "tst_min": 313,
+      "tib_min": 390,
+      "se": 0.8026,
+      "nap_min": 75,
+      "caffeine_after_14": true,
+      "alcohol": false,
+      "screen_in_bed_min": 0
+    },
+    {
+      "day": 6,
+      "bedtime": "23:25",
+      "lights_off": "23:35",
+      "sol_min": 40,
+      "waso_min": 25,
+      "final_wake": "08:50",
+      "risetime": "09:00",
+      "tst_min": 490,
+      "tib_min": 575,
+      "se": 0.8522,
+      "nap_min": 75,
+      "caffeine_after_14": true,
+      "alcohol": false,
+      "screen_in_bed_min": 0
+    },
+    {
+      "day": 7,
+      "bedtime": "23:35",
+      "lights_off": "23:45",
+      "sol_min": 39,
+      "waso_min": 18,
+      "final_wake": "05:50",
+      "risetime": "06:00",
+      "tst_min": 308,
+      "tib_min": 385,
+      "se": 0.8,
+      "nap_min": 75,
+      "caffeine_after_14": true,
+      "alcohol": false,
+      "screen_in_bed_min": 0
+    }
+  ],
+  "persona": {
+    "age": 26,
+    "gender": "male",
+    "occupation": "职员",
+    "expressiveness": "brief",
+    "defensiveness": "mid",
+    "emotionality": "high",
+    "adherence_tendency": 0.75,
+    "constraints": []
+  },
+  "opening_complaint": "晚上老是睡得很晚，睡眠时间不够，想调整一下。",
+  "clues": [
+    {
+      "id": "A-031::domain/path_clues.md#P1-c2",
+      "content": "起床时间看心情，早的时候六点，晚的时候九点多",
+      "reveal_topic": "schedule_regularity",
+      "supports": "P1",
+      "deny_first": false
+    },
+    {
+      "id": "A-031::domain/path_clues.md#P1-c3",
+      "content": "下午三四点还得来杯咖啡续命，有时候晚饭后也喝",
+      "reveal_topic": "caffeine_alcohol",
+      "supports": "P1",
+      "deny_first": false
+    },
+    {
+      "id": "A-031::domain/path_clues.md#P1-c5",
+      "content": "中午要睡一个多小时，不然下午撑不住，傍晚有时还会眯一会儿",
+      "reveal_topic": "daytime_sleepiness",
+      "supports": "P1",
+      "deny_first": false
+    },
+    {
+      "id": "A-031::domain/referral_cues.md#RC-7:1.3",
+      "content": "我只在感冒、鼻塞的时候偶尔打鼾，没有憋醒，也没有白天嗜睡。",
+      "reveal_topic": "snoring_breathing",
+      "supports": "R0",
+      "deny_first": false
+    }
+  ],
+  "prefilled": []
+}

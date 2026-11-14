@@ -1,0 +1,195 @@
+{
+  "schema_version": "0.1.0",
+  "id": "A-037",
+  "split": "A",
+  "seed": 1704595755,
+  "main_path": "P1",
+  "secondary_path": "P4",
+  "referral": "R3",
+  "crisis": {
+    "level": "none",
+    "phq9_item9": 0,
+    "history": false
+  },
+  "contraindications": [],
+  "indices": {
+    "isi": 18,
+    "phq9": 16,
+    "gad7": 12,
+    "stop_bang": 1,
+    "meq": null,
+    "dbas16": null,
+    "psas": null,
+    "screen_min_before_sleep": 0
+  },
+  "diary": [
+    {
+      "day": 1,
+      "bedtime": "01:35",
+      "lights_off": "01:45",
+      "sol_min": 65,
+      "waso_min": 22,
+      "final_wake": "05:50",
+      "risetime": "06:00",
+      "tst_min": 158,
+      "tib_min": 265,
+      "se": 0.5962,
+      "nap_min": 75,
+      "caffeine_after_14": false,
+      "alcohol": true,
+      "screen_in_bed_min": 0
+    },
+    {
+      "day": 2,
+      "bedtime": "01:25",
+      "lights_off": "01:35",
+      "sol_min": 63,
+      "waso_min": 18,
+      "final_wake": "08:50",
+      "risetime": "09:00",
+      "tst_min": 354,
+      "tib_min": 455,
+      "se": 0.778,
+      "nap_min": 75,
+      "caffeine_after_14": false,
+      "alcohol": true,
+      "screen_in_bed_min": 0
+    },
+    {
+      "day": 3,
+      "bedtime": "01:25",
+      "lights_off": "01:35",
+      "sol_min": 64,
+      "waso_min": 16,
+      "final_wake": "05:50",
+      "risetime": "06:00",
+      "tst_min": 175,
+      "tib_min": 275,
+      "se": 0.6364,
+      "nap_min": 75,
+      "caffeine_after_14": false,
+      "alcohol": true,
+      "screen_in_bed_min": 0
+    },
+    {
+      "day": 4,
+      "bedtime": "01:35",
+      "lights_off": "01:45",
+      "sol_min": 65,
+      "waso_min": 17,
+      "final_wake": "08:50",
+      "risetime": "09:00",
+      "tst_min": 343,
+      "tib_min": 445,
+      "se": 0.7708,
+      "nap_min": 75,
+      "caffeine_after_14": false,
+      "alcohol": true,
+      "screen_in_bed_min": 0
+    },
+    {
+      "day": 5,
+      "bedtime": "01:30",
+      "lights_off": "01:40",
+      "sol_min": 59,
+      "waso_min": 19,
+      "final_wake": "05:50",
+      "risetime": "06:00",
+      "tst_min": 172,
+      "tib_min": 270,
+      "se": 0.637,
+      "nap_min": 75,
+      "caffeine_after_14": false,
+      "alcohol": true,
+      "screen_in_bed_min": 0
+    },
+    {
+      "day": 6,
+      "bedtime": "01:35",
+      "lights_off": "01:45",
+      "sol_min": 57,
+      "waso_min": 24,
+      "final_wake": "08:50",
+      "risetime": "09:00",
+      "tst_min": 344,
+      "tib_min": 445,
+      "se": 0.773,
+      "nap_min": 75,
+      "caffeine_after_14": false,
+      "alcohol": true,
+      "screen_in_bed_min": 0
+    },
+    {
+      "day": 7,
+      "bedtime": "01:30",
+      "lights_off": "01:40",
+      "sol_min": 62,
+      "waso_min": 22,
+      "final_wake": "05:50",
+      "risetime": "06:00",
+      "tst_min": 166,
+      "tib_min": 270,
+      "se": 0.6148,
+      "nap_min": 75,
+      "caffeine_after_14": false,
+      "alcohol": true,
+      "screen_in_bed_min": 0
+    }
+  ],
+  "persona": {
+    "age": 59,
+    "gender": "female",
+    "occupation": "职员",
+    "expressiveness": "verbose",
+    "defensiveness": "low",
+    "emotionality": "low",
+    "adherence_tendency": 0.75,
+    "constraints": []
+  },
+  "opening_complaint": "晚上老是睡得很晚，睡眠时间不够，想调整一下。",
+  "clues": [
+    {
+      "id": "A-037::domain/path_clues.md#P1-c2",
+      "content": "起床时间看心情，早的时候六点，晚的时候九点多",
+      "reveal_topic": "schedule_regularity",
+      "supports": "P1",
+      "deny_first": false
+    },
+    {
+      "id": "A-037::domain/path_clues.md#P1-c4",
+      "content": "晚上喝两口才好入睡，不喝反而更睡不着",
+      "reveal_topic": "caffeine_alcohol",
+      "supports": "P1",
+      "deny_first": false
+    },
+    {
+      "id": "A-037::domain/path_clues.md#P1-c5",
+      "content": "中午要睡一个多小时，不然下午撑不住，傍晚有时还会眯一会儿",
+      "reveal_topic": "daytime_sleepiness",
+      "supports": "P1",
+      "deny_first": false
+    },
+    {
+      "id": "A-037::domain/path_clues.md#P4-c4",
+      "content": "从学生时代起就是夜猫子，让我早睡就是躺着熬",
+      "reveal_topic": "chronotype",
+      "supports": "P4",
+      "deny_first": false
+    },
+    {
+      "id": "A-037::domain/referral_cues.md#R3-c1",
+      "content": "最近对什么都提不起兴趣，以前喜欢的事也不想做了",
+      "reveal_topic": "mood",
+      "supports": "R3",
+      "deny_first": false
+    },
+    {
+      "id": "A-037::domain/referral_cues.md#R3-c3",
+      "content": "白天也一直在担心，控制不住地想最坏的结果",
+      "reveal_topic": "anxiety",
+      "supports": "R3",
+      "deny_first": false
+    }
+  ],
+  "prefilled": []
+}

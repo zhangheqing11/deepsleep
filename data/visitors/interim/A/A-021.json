@@ -1,0 +1,211 @@
+{
+  "schema_version": "0.1.0",
+  "id": "A-021",
+  "split": "A",
+  "seed": 1867054511,
+  "main_path": "P3",
+  "secondary_path": null,
+  "referral": "R1",
+  "crisis": {
+    "level": "none",
+    "phq9_item9": 0,
+    "history": false
+  },
+  "contraindications": [
+    "untreated_osa",
+    "drowsy_driving_job"
+  ],
+  "indices": {
+    "isi": 13,
+    "phq9": 6,
+    "gad7": 6,
+    "stop_bang": 3,
+    "meq": null,
+    "dbas16": null,
+    "psas": null,
+    "screen_min_before_sleep": 0
+  },
+  "diary": [
+    {
+      "day": 1,
+      "bedtime": "23:35",
+      "lights_off": "23:45",
+      "sol_min": 61,
+      "waso_min": 22,
+      "final_wake": "07:20",
+      "risetime": "07:30",
+      "tst_min": 372,
+      "tib_min": 475,
+      "se": 0.7832,
+      "nap_min": 0,
+      "caffeine_after_14": false,
+      "alcohol": false,
+      "screen_in_bed_min": 0
+    },
+    {
+      "day": 2,
+      "bedtime": "23:30",
+      "lights_off": "23:40",
+      "sol_min": 60,
+      "waso_min": 24,
+      "final_wake": "07:20",
+      "risetime": "07:30",
+      "tst_min": 376,
+      "tib_min": 480,
+      "se": 0.7833,
+      "nap_min": 0,
+      "caffeine_after_14": false,
+      "alcohol": false,
+      "screen_in_bed_min": 0
+    },
+    {
+      "day": 3,
+      "bedtime": "23:30",
+      "lights_off": "23:40",
+      "sol_min": 56,
+      "waso_min": 17,
+      "final_wake": "07:20",
+      "risetime": "07:30",
+      "tst_min": 387,
+      "tib_min": 480,
+      "se": 0.8063,
+      "nap_min": 0,
+      "caffeine_after_14": false,
+      "alcohol": false,
+      "screen_in_bed_min": 0
+    },
+    {
+      "day": 4,
+      "bedtime": "23:35",
+      "lights_off": "23:45",
+      "sol_min": 58,
+      "waso_min": 18,
+      "final_wake": "07:20",
+      "risetime": "07:30",
+      "tst_min": 379,
+      "tib_min": 475,
+      "se": 0.7979,
+      "nap_min": 0,
+      "caffeine_after_14": false,
+      "alcohol": false,
+      "screen_in_bed_min": 0
+    },
+    {
+      "day": 5,
+      "bedtime": "23:25",
+      "lights_off": "23:35",
+      "sol_min": 64,
+      "waso_min": 19,
+      "final_wake": "07:20",
+      "risetime": "07:30",
+      "tst_min": 382,
+      "tib_min": 485,
+      "se": 0.7876,
+      "nap_min": 0,
+      "caffeine_after_14": false,
+      "alcohol": false,
+      "screen_in_bed_min": 0
+    },
+    {
+      "day": 6,
+      "bedtime": "23:30",
+      "lights_off": "23:40",
+      "sol_min": 63,
+      "waso_min": 17,
+      "final_wake": "07:20",
+      "risetime": "07:30",
+      "tst_min": 380,
+      "tib_min": 480,
+      "se": 0.7917,
+      "nap_min": 0,
+      "caffeine_after_14": false,
+      "alcohol": false,
+      "screen_in_bed_min": 0
+    },
+    {
+      "day": 7,
+      "bedtime": "23:35",
+      "lights_off": "23:45",
+      "sol_min": 60,
+      "waso_min": 15,
+      "final_wake": "07:20",
+      "risetime": "07:30",
+      "tst_min": 380,
+      "tib_min": 475,
+      "se": 0.8,
+      "nap_min": 0,
+      "caffeine_after_14": false,
+      "alcohol": false,
+      "screen_in_bed_min": 0
+    }
+  ],
+  "persona": {
+    "age": 30,
+    "gender": "male",
+    "occupation": "司机",
+    "expressiveness": "verbose",
+    "defensiveness": "mid",
+    "emotionality": "high",
+    "adherence_tendency": 0.65,
+    "constraints": [
+      "工作需要开车"
+    ]
+  },
+  "opening_complaint": "这阵子睡得很不好，每天早上都很难受，白天也没劲。",
+  "clues": [
+    {
+      "id": "A-021::domain/path_clues.md#P3-c1",
+      "content": "一躺下脑子就开始转，复盘今天的事，盘算明天的安排",
+      "reveal_topic": "worry_rumination",
+      "supports": "P3",
+      "deny_first": false
+    },
+    {
+      "id": "A-021::domain/path_clues.md#P3-c5",
+      "content": "我会盯着手环的睡眠分数，分数低就更焦虑",
+      "reveal_topic": "fear_of_sleeplessness",
+      "supports": "P3",
+      "deny_first": false
+    },
+    {
+      "id": "A-021::domain/path_clues.md#P3-c2",
+      "content": "越告诉自己要睡就越睡不着，还老看时间算还能睡几个小时",
+      "reveal_topic": "fear_of_sleeplessness",
+      "supports": "P3",
+      "deny_first": false
+    },
+    {
+      "id": "A-021::domain/referral_cues.md#R1-c1",
+      "content": "家里人说我打鼾很响，有时候中间会停一下，像是憋住了",
+      "reveal_topic": "snoring_breathing",
+      "supports": "R1",
+      "deny_first": true
+    },
+    {
+      "id": "A-021::domain/referral_cues.md#R1-c4",
+      "content": "白天特别困，开会、开车都会打盹，睡够时间也这样",
+      "reveal_topic": "daytime_sleepiness",
+      "supports": "R1",
+      "deny_first": false
+    },
+    {
+      "id": "A-021::domain/referral_cues.md#R1-c5",
+      "content": "我有高血压，一直在吃药",
+      "reveal_topic": "health_conditions",
+      "supports": "R1",
+      "deny_first": false
+    }
+  ],
+  "prefilled": [
+    {
+      "scale": "isi",
+      "reported_score": 8,
+      "items": null
+    },
+    {
+      "scale": "stop_bang",
+      "reported_score": 0,
+      "items": null
+    }
+  ]
+}
