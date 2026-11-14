@@ -8,6 +8,7 @@ import { useEffect, useState } from 'react';
 // 旧链接 #/runs/:id/sessions/:vid 仍然可用。
 
 export type ConsoleRoute =
+  | { name: 'console-pipeline' }
   | { name: 'console-runs' }
   | { name: 'console-session'; runId: string; visitorId: string }
   | { name: 'console-visitors' }
@@ -59,6 +60,8 @@ export function parseRoute(hash: string): Route {
     case '/console':
     case '/console/runs':
       return { name: 'console-runs' };
+    case '/console/pipeline':
+      return { name: 'console-pipeline' };
     case '/console/visitors':
       return { name: 'console-visitors' };
     case '/console/evolution':
@@ -77,6 +80,8 @@ export function parseRoute(hash: string): Route {
 
 export const HREF = {
   board: '#/',
+  console: '#/console',
+  pipeline: '#/console/pipeline',
   runs: '#/console',
   visitors: '#/console/visitors',
   evolution: '#/console/evolution',

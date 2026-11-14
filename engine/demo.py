@@ -284,6 +284,95 @@ def summary_text(manifest, options):
     return "\n".join(lines) + "\n"
 
 
+PROGRESS_SCHEMA = "demo-progress/1"
+# Gate evaluator labels: "v1" (baseline), "v1#r2", "v1+c2", "v1+c2#r2" (see evolve.pipeline.replicate_labels).
+VALIDATION_LABEL = re.compile(r"(?P<version>[^+#]+)(?:\+(?P<candidate>[^#]+))?(?:#r(?P<replicate>\d+))?")
+
+
+def now_iso():
+    return datetime.now().astimezone().isoformat(timespec="milliseconds")
+
+
+class Progress:
+    """Live telemetry for the console pipeline view: ``var/demo/<experiment_id>/progress.json``.
+
+    One in-memory dict for the whole experiment, rewritten atomically on every batch or generation
+    start/finish. All batches run on one asyncio loop, so overlapping batches need no locking.
+    Telemetry only: a failing write never breaks the experiment.
+    """
+
+    def __init__(self, directory, experiment_id, options, commands):
+        self.path = directory / "progress.json"
+        existing = None
+        if self.path.is_file():  # split commands (run1 → learn → run2) extend one file
+            try:
+                existing = read_json(self.path)
+            except (OSError, ValueError):
+                existing = None
+        if not isinstance(existing, dict) or existing.get("experiment_id") != experiment_id:
+            existing = {"schema": PROGRESS_SCHEMA, "experiment_id": experiment_id, "started_at": now_iso(),
+                        "updated_at": None, "commands": [], "generations_planned": options.get("generations", 1),
+                        "mock": bool(options.get("mock")), "batches": [], "generations": []}
+        self.data = existing
+        self.data["commands"] = list(dict.fromkeys([*self.data.get("commands", []), *commands]))
+        self.open_generation = None
+        self.last_generation = max((g["index"] for g in self.data["generations"]), default=None)
+        self.save()
+
+    def save(self):
+        self.data["updated_at"] = now_iso()
+        try:
+            atomic_json(self.path, self.data)
+        except OSError:
+            pass
+
+    def batch_started(self, run_id, role, version, split, total, label=None):
+        generation = candidate = None
+        replicate = 1
+        if role == "validation":
+            generation = self.open_generation["index"] if self.open_generation else self.last_generation
+            match = VALIDATION_LABEL.fullmatch(label or "")
+            if match:
+                candidate = match["candidate"]
+                replicate = int(match["replicate"] or 1)
+        elif role == "practice":
+            generation = self.last_generation  # the generation that just adopted ``version``
+        if label:
+            version = label.split("#", 1)[0]
+        entry = {"run_id": run_id, "role": role, "version": version, "split": split, "total": total,
+                 "state": "running", "started_at": now_iso(), "finished_at": None,
+                 "generation": generation, "candidate": candidate, "replicate": replicate}
+        self.data["batches"].append(entry)
+        self.save()
+        return entry
+
+    def batch_finished(self, entry, state):
+        entry.update(state=state, finished_at=now_iso())
+        self.save()
+
+    def generation_started(self, evolution_id, from_version):
+        index = len(self.data["generations"]) + 1
+        entry = {"index": index, "evolution_id": evolution_id, "from_version": from_version, "state": "running",
+                 "started_at": now_iso(), "finished_at": None, "outcome": None, "to_version": None}
+        self.data["generations"].append(entry)
+        self.open_generation = entry
+        self.save()
+        return entry
+
+    def generation_finished(self, entry, state, outcome=None, to_version=None):
+        entry.update(state=state, finished_at=now_iso(), outcome=outcome, to_version=to_version)
+        if self.open_generation is entry:
+            self.open_generation = None
+        self.last_generation = entry["index"]
+        self.save()
+
+    def fail_open(self):
+        for item in (*self.data["batches"], *self.data["generations"]):
+            if item["state"] == "running":
+                item.update(state="failed", finished_at=now_iso())
+        self.save()
+
+
 class Experiment:
     def __init__(self, manifest, options):
         self.manifest, self.options = manifest, options
@@ -292,6 +381,7 @@ class Experiment:
         self.repo = PlaybookRepo(self.config)
         self.deps = None
         self.limiter = asyncio.Semaphore(options["max_sessions"])
+        self.progress = None
 
     def start(self, *keys):
         self.manifest["stage"] = "learning" if keys[0] == "evolution" else keys[0]
@@ -306,14 +396,26 @@ class Experiment:
             if self.manifest[name]["state"] != "done"), "done")
         save_manifest(self.manifest)
 
-    async def run_batch(self, visitors, text, version, run_id, role, split):
-        if self.deps is None:
-            self.deps = make_deps(self.options)
-        # One session limiter per batch: batches that are meant to overlap (run 2 with its control,
-        # the three gate candidates) must not queue behind each other for the same slots. The
-        # provider-side bound is agent_llm.max_inflight, shared by every batch through ``deps``.
-        limiter = asyncio.Semaphore(self.options["max_sessions"])
-        return await batch(self.deps, visitors, text, version, run_id, role, split, limiter, self.options["mock"])
+    async def run_batch(self, visitors, text, version, run_id, role, split, label=None):
+        # Single funnel for every batch (run1, validation, practice, run2, control): progress.json.
+        entry = self.progress.batch_started(run_id, role, version, split, len(visitors), label) \
+            if self.progress is not None else None
+        try:
+            if self.deps is None:
+                self.deps = make_deps(self.options)
+            # One session limiter per batch: batches that are meant to overlap (run 2 with its control,
+            # the three gate candidates) must not queue behind each other for the same slots. The
+            # provider-side bound is agent_llm.max_inflight, shared by every batch through ``deps``.
+            limiter = asyncio.Semaphore(self.options["max_sessions"])
+            result = await batch(self.deps, visitors, text, version, run_id, role, split, limiter,
+                                 self.options["mock"])
+        except BaseException:
+            if entry is not None:
+                self.progress.batch_finished(entry, "failed")
+            raise
+        if entry is not None:
+            self.progress.batch_finished(entry, "done")
+        return result
 
     async def run1(self):
         self.repo.init()
@@ -346,7 +448,7 @@ class Experiment:
             while (VAR_DIR / "runs" / run_id).exists():
                 attempt += 1
                 run_id = f"{base}-t{attempt}"
-            return await self.run_batch(groups["C"], playbook_text, label, run_id, "validation", "C")
+            return await self.run_batch(groups["C"], playbook_text, label, run_id, "validation", "C", label=label)
 
         async def source_runner(playbook_text, version):
             # Self-practice: cohort A under the newly adopted playbook, so the next generation
@@ -366,14 +468,31 @@ class Experiment:
             fresh = read_json(VAR_DIR / "runs" / run_id / "run_report.json")
             return {"run_report": fresh, "sessions": rich["sessions"], "traces": rich["traces"]}
 
+        async def tracked_evolve(**kw):
+            # evolve_fn resolves the module-level ``evolve`` at call time so it stays patchable.
+            # Batches started while a generation is open (baseline during reflection, gate
+            # candidates) are attributed to it in progress.json.
+            entry = self.progress.generation_started(kw.get("evolution_id"), kw["repo"].current_version()) \
+                if self.progress is not None else None
+            try:
+                out = await evolve(**kw)
+            except BaseException:
+                if entry is not None:
+                    self.progress.generation_finished(entry, "failed")
+                raise
+            if entry is not None:
+                evolution = out[0] if isinstance(out, tuple) else out
+                self.progress.generation_finished(entry, "done", evolution.get("outcome"),
+                                                  evolution.get("to_version"))
+            return out
+
         generations = self.options.get("generations", 1)
-        # evolve_fn resolves the module-level ``evolve`` at call time so it stays patchable.
         results = await evolve_lineage(
             run_report=report, sessions=load_sessions(report, run_dir), traces=load_traces(report, run_dir),
             visitors={v["id"]: v for v in groups["A"]}, evaluator=evaluator, config=self.config, repo=self.repo,
             max_generations=generations, evolution_id_prefix=prefix,
             primary=MockReflector() if self.options["mock"] else None,
-            use_default_clients=not self.options["mock"], evolve_fn=lambda **kw: evolve(**kw),
+            use_default_clients=not self.options["mock"], evolve_fn=tracked_evolve,
             source_runner=source_runner if generations > 1 else None,
             continue_after_reject=bool((self.config.get("lineage") or {}).get("continue_after_reject", False)),
             reuse_baseline=bool((self.config.get("lineage") or {}).get("reuse_baseline", True)))
@@ -405,6 +524,7 @@ class Experiment:
         print(text, flush=True)
 
     async def execute(self, commands):
+        self.progress = Progress(self.directory, self.manifest["experiment_id"], self.options, commands)
         try:
             try:
                 for command in commands:
@@ -418,6 +538,7 @@ class Experiment:
                 if self.manifest[key]["state"] == "running":
                     self.manifest[key]["state"] = "failed"
             save_manifest(self.manifest)
+            self.progress.fail_open()
             raise
 
 

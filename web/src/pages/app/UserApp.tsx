@@ -4,9 +4,9 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import { describeError } from '../../api/errors';
 import { Compare, Ending, Scales, Transcript } from '../../components/app/Replay';
 import { SignOutButton } from '../../components/SignOutButton';
+import { BrandLink, SurfaceName, SurfaceNav } from '../../components/SurfaceNav';
 import { HREF, visitorHref, type UserRoute, type VisitorTab } from '../../hooks/useHashRoute';
 import { useCatalog, useSession, type CatalogState } from '../../hooks/useReplay';
-import { Moon } from '../../layouts/ConsoleLayout';
 import { isDark, setThemeChoice, useAppearance } from '../../lib/appearance';
 import {
   advance,
@@ -37,21 +37,19 @@ function ThemeToggle() {
   );
 }
 
-function Shell({ children, back }: { children: React.ReactNode; back?: boolean }) {
+function Shell({ children }: { children: React.ReactNode }) {
   return (
     <div className="ua">
       <header className="ua-bar">
-        <a className="ua-brand" href={HREF.app}>
-          <Moon size={20} />
-          <span>deepsleep</span>
-        </a>
-        <nav className="ua-nav" aria-label="页面">
-          {back && <a className="ua-link" href={HREF.app}>换一位来访</a>}
-          <a className="ua-link" href={HREF.me}>用户视角</a>
-          <a className="ua-link" href={HREF.board}>进化看板</a>
+        <div className="sf-left">
+          <BrandLink className="ua-brand" />
+          <SurfaceName surface="app" />
+          <SurfaceNav current="app" />
+        </div>
+        <div className="ua-nav">
           <ThemeToggle />
           <SignOutButton className="ua-link" />
-        </nav>
+        </div>
       </header>
       {children}
       <footer className="ua-foot">
@@ -229,10 +227,13 @@ function Visitor({ catalog, entry, tab }: { catalog: Catalog; entry: VisitorEntr
   const other: Side | null = sides.length === 2 ? (side === 'before' ? 'after' : 'before') : null;
 
   return (
-    <Shell back>
+    <Shell>
       <main className="ua-visitor" data-tab={tab}>
         <section className="ua-opening">
-          <span className="ua-who">来访 {entry.id}{entry.safety ? ' · 安全线示例' : ''}</span>
+          <p className="ua-crumb">
+            <a className="ua-link" href={HREF.app}>来访列表</a>
+            <span className="ua-who">来访 {entry.id}{entry.safety ? ' · 安全线示例' : ''}</span>
+          </p>
           <h1>{opening ? `“${opening}”` : <span className="ua-skeleton" aria-label="正在读取" />}</h1>
         </section>
 
@@ -326,7 +327,7 @@ export function UserApp({ route }: { route: UserRoute }) {
   const entry = catalog?.visitors.find((v) => v.id === route.visitorId);
   if (!catalog || !entry) {
     return (
-      <Shell back>
+      <Shell>
         <main className="ua-home">
           <section className="ua-lead">
             <h1>{catalog === undefined ? '正在读取…' : '没有这位来访的会谈'}</h1>

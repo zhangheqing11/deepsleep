@@ -420,6 +420,102 @@ def test_single_generation_has_no_practice(sandbox, monkeypatch):
     assert "自我练习" not in (demo.VAR_DIR / "demo/single/summary.md").read_text(encoding="utf-8")
 
 
+def progress(eid):
+    return demo.read_json(demo.VAR_DIR / "demo" / eid / "progress.json")
+
+
+def test_progress_file_two_generations(sandbox, monkeypatch):
+    calls = []
+    committed_evolve(monkeypatch, calls)
+    snapshots = []
+    real_save = demo.Progress.save
+
+    def capture(self):
+        real_save(self)
+        snapshots.append(deepcopy(self.data))
+
+    monkeypatch.setattr(demo.Progress, "save", capture)
+    assert demo.main(["all", *MOCK, "--experiment", "prog", "--generations", "2"]) == 0
+    p = progress("prog")
+    assert p["schema"] == "demo-progress/1" and p["experiment_id"] == "prog"
+    assert p["commands"] == ["run1", "learn", "run2"] and p["generations_planned"] == 2 and p["mock"] is True
+    assert p["started_at"] and p["updated_at"]
+    roles = [b["role"] for b in p["batches"]]
+    assert roles[0] == "run1" and sorted(roles[-2:]) == ["control", "run2"]
+    assert all(b["state"] == "done" and b["finished_at"] for b in p["batches"])
+    groups = demo.read_json(demo.VAR_DIR / "demo/prog/cohorts.json")
+    run1 = p["batches"][0]
+    assert (run1["run_id"], run1["version"], run1["split"], run1["total"]) == ("prog-run1", "v1", "A", len(groups["A"]))
+    assert (run1["generation"], run1["candidate"], run1["replicate"]) == (None, None, 1)
+    validation = [b for b in p["batches"] if b["role"] == "validation"]
+    assert all(b["split"] == "C" and b["total"] == len(groups["C"]) for b in validation)
+    gen1 = [b for b in validation if b["generation"] == 1]
+    assert [(b["candidate"], b["version"]) for b in gen1] == [(None, "v1"), ("c1", "v1+c1"), ("c2", "v1+c2"),
+                                                              ("c3", "v1+c3")]
+    gen2 = [b for b in validation if b["generation"] == 2]   # baseline reused from generation 1
+    assert [b["candidate"] for b in gen2] == ["c1", "c2", "c3"] and all(b["version"].startswith("v2+") for b in gen2)
+    practice = [b for b in p["batches"] if b["role"] == "practice"]
+    assert [(b["run_id"], b["generation"], b["version"]) for b in practice] == [("prog-practice-v2", 1, "v2")]
+    assert [(g["index"], g["evolution_id"], g["from_version"], g["state"], g["outcome"], g["to_version"])
+            for g in p["generations"]] == [(1, "prog-learn-g1", "v1", "done", "committed", "v2"),
+                                           (2, "prog-learn-g2", "v2", "done", "kept_previous", None)]
+    # Live states: a generation is running while its batches run; run 2 and control overlap.
+    assert any(s["generations"] and s["generations"][0]["state"] == "running"
+               and any(b["generation"] == 1 and b["state"] == "running" for b in s["batches"]) for s in snapshots)
+    assert any({b["role"] for b in s["batches"] if b["state"] == "running"} == {"run2", "control"} for s in snapshots)
+    # The manifest format is unchanged.
+    assert set(manifest()) == {"experiment_id", "updated_at", "stage", "run1", "evolution", "run2", "control",
+                               "error", "practice"}
+
+
+def test_progress_replicate_labels(sandbox, monkeypatch):
+    real = demo.evolve_config
+    monkeypatch.setattr(demo, "evolve_config", lambda overrides=None: real(
+        {**(overrides or {}), "gate": {"replicates": 2, "baseline_replicates": 2}}))
+    assert demo.main(["all", *MOCK, "--experiment", "reps"]) == 0
+    p = progress("reps")
+    validation = [(b["generation"], b["candidate"], b["replicate"], b["version"])
+                  for b in p["batches"] if b["role"] == "validation"]
+    assert validation[:2] == [(1, None, 1, "v1"), (1, None, 2, "v1")]
+    assert (1, "c2", 2, "v1+c2") in validation and len(validation) == 8
+    assert p["generations"][0]["outcome"] == "kept_previous" and p["generations"][0]["evolution_id"] == "reps-learn"
+
+
+def test_progress_records_failures(sandbox, monkeypatch):
+    original = demo.batch
+
+    async def broken(*args):
+        if args[5] == "control":
+            raise RuntimeError("injected stage failure")
+        return await original(*args)
+
+    monkeypatch.setattr(demo, "batch", broken)
+    assert demo.main(["all", *MOCK, "--experiment", "pfail"]) == 1
+    states = {b["role"]: b["state"] for b in progress("pfail")["batches"] if b["role"] in ("run2", "control")}
+    assert states == {"run2": "done", "control": "failed"}
+
+
+def test_progress_failed_generation(sandbox, monkeypatch):
+    async def broken_evolve(**kwargs):
+        raise RuntimeError("injected learn failure")
+
+    monkeypatch.setattr(demo, "evolve", broken_evolve)
+    assert demo.main(["all", *MOCK, "--experiment", "gfail"]) == 1
+    gens = progress("gfail")["generations"]
+    assert [(g["state"], g["outcome"]) for g in gens] == [("failed", None)] and gens[0]["finished_at"]
+
+
+def test_progress_split_commands_extend_one_file(sandbox):
+    assert demo.main(["run1", *MOCK, "--experiment", "psplit"]) == 0
+    first = progress("psplit")
+    assert first["commands"] == ["run1"] and [b["role"] for b in first["batches"]] == ["run1"]
+    assert demo.main(["learn", "--experiment", "psplit"]) == 0
+    assert demo.main(["run2", "--experiment", "psplit"]) == 0
+    p = progress("psplit")
+    assert p["commands"] == ["run1", "learn", "run2"] and p["started_at"] == first["started_at"]
+    assert p["batches"][0] == first["batches"][0] and len(p["generations"]) == 1
+
+
 def inject_degraded(monkeypatch, n):
     original = demo.build_report
 

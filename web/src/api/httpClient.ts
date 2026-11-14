@@ -14,6 +14,7 @@ import { ApiError } from './errors';
 import { claimResponseMeta } from './requestLog';
 
 import type { RunListItem, ExperimentResponse, RunEvidence, EvolutionListItem, EvolutionStatus, EvolutionInsights, PlaybookVersion, Playbook, PlaybookDiff } from './extensionTypes';
+import type { PipelineLaunchResponse, PipelineResponse, PipelineStopResponse } from './extensionTypes';
 
 interface RequestOptions {
   body?: unknown;
@@ -134,4 +135,7 @@ export const httpClient: ApiClient = {
     request<ListResponse<SessionListItem>>('GET', `/runs/${enc(runId)}/sessions`, { signal }),
   getSession: (runId, visitorId, signal) =>
     request<Session>('GET', `/runs/${enc(runId)}/sessions/${enc(visitorId)}`, { signal }),
+  getPipeline: (signal) => request<PipelineResponse>('GET', '/demo/pipeline', { signal }),
+  launchPipeline: (body, signal) => request<PipelineLaunchResponse>('POST', '/demo/launch', { body, signal }),
+  stopPipeline: (signal) => request<PipelineStopResponse>('POST', '/demo/stop', { signal }),
 };

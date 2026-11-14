@@ -4,6 +4,7 @@ import { probeDevconsole, type ProbeResult } from '../../lib/devconsoleLink';
 
 /**
  * 侧栏的“进化后台”入口：普通链接，新标签页打开，原控制台当前页面和运行不受影响。
+ * 它是另一个应用，不属于顶栏的界面切换；“↗”和“新标签页”字样提示它会离开当前应用。
  * 未配置 / 配置有误 / 目标不是进化后台时明确显示，不给出会跳错的链接。
  */
 export function DevconsoleNavLink() {
@@ -60,9 +61,10 @@ export function DevconsoleNavLink() {
     <a className="nav-external" href={link.href} target="_blank" rel="noopener noreferrer">
       <span>
         进化后台 <span aria-hidden="true">↗</span>
-        <span className="sr-only">（在新标签页打开）</span>
+        <span className="sr-only">（独立应用，在新标签页打开）</span>
       </span>
       <small>
+        <span aria-hidden="true">新标签页 · </span>
         {probe === 'unreachable' ? '未能确认是否已启动' : probe === 'checking' ? '检测中…' : '实时指标与学习过程'}
       </small>
     </a>

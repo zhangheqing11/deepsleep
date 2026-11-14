@@ -79,3 +79,127 @@ export interface PlaybookVersion {
 }
 export interface Playbook { version: string; text: string }
 export interface PlaybookDiff { from: string; to: string; diff: string }
+
+// ---------- 全链路演示（api/PIPELINE_API.md，非契约） ----------
+
+export type PipelineState = 'running' | 'done' | 'failed';
+export type PipelineStepState = 'pending' | 'running' | 'done' | 'failed' | 'skipped';
+export type PipelineStepKind = 'run' | 'generation' | 'practice' | 'final';
+export type PipelineBatchRole = 'run1' | 'validation' | 'practice' | 'run2' | 'control';
+
+export interface PipelineBatch {
+  run_id: string;
+  role: PipelineBatchRole;
+  /** 运行 1、基线 · 第 n 次、候选 k · 第 n 次、练习（vN）、运行 2、对照 */
+  label: string;
+  version: string;
+  split: string;
+  total: number;
+  completed: number;
+  failed: number;
+  state: 'running' | 'done' | 'failed';
+  started_at: string | null;
+  finished_at: string | null;
+  duration_s: number | null;
+  isi_response_rate: number | null;
+}
+
+export interface PipelineCandidate {
+  id: string;
+  state: 'pending' | 'running' | 'done';
+  isi: number | null;
+  /** 该代结束后取自 evolution.json，之前为 null */
+  passed: boolean | null;
+}
+
+export interface PipelineGeneration {
+  index: number;
+  evolution_id: string;
+  from_version: string;
+  /** 原样取自 var/evolve/<id>/status.json */
+  phase: EvolutionPhase | null;
+  reflector: EvolutionStatus['reflector'] | null;
+  baseline_isi: number | null;
+  candidates: PipelineCandidate[];
+  outcome: Evolution['outcome'] | null;
+  to_version: string | null;
+  chosen: string | null;
+}
+
+export interface PipelineStep {
+  key: string;
+  kind: PipelineStepKind;
+  label: string;
+  detail: string;
+  state: PipelineStepState;
+  started_at: string | null;
+  finished_at: string | null;
+  elapsed_s: number | null;
+  expected_s: number | null;
+  /** 非 running 时为 null */
+  eta_s: number | null;
+  batches: PipelineBatch[];
+  /** 仅 kind=generation；尚未开始时为 null */
+  generation?: PipelineGeneration | null;
+}
+
+export interface PipelineRunResult {
+  isi_response_rate: number | null;
+  referral_recall: number | null;
+  referral_precision: number | null;
+  n: number;
+  playbook_version: string;
+}
+
+export interface PipelineResult {
+  run1: PipelineRunResult | null;
+  control: PipelineRunResult | null;
+  run2: PipelineRunResult | null;
+  /** (运行 2 − 对照) 的 ISI 有效率百分点差；任一缺失为 null */
+  delta_pp: number | null;
+}
+
+export interface PipelinePreset {
+  key: string;
+  label: string;
+  generations: number;
+  description: string;
+  expected_s: number;
+}
+
+export interface PipelineLauncher {
+  /** 服务端设置了 API_DEMO_LAUNCH=1 才为 true */
+  enabled: boolean;
+  state: 'idle' | 'running' | 'exited';
+  pid: number | null;
+  preset: string | null;
+  started_at: string | null;
+  exit_code: number | null;
+  presets: PipelinePreset[];
+  /** 子进程输出的最后 20 行 */
+  log_tail: string[];
+}
+
+export interface PipelineSnapshot {
+  available: true;
+  experiment_id: string;
+  mode: 'real' | 'mock';
+  state: PipelineState;
+  error: string | null;
+  started_at: string | null;
+  updated_at: string | null;
+  finished_at: string | null;
+  elapsed_s: number | null;
+  eta_s: number | null;
+  generations_planned: number;
+  playbook: { from_version: string; current_version: string };
+  steps: PipelineStep[];
+  result: PipelineResult;
+  launcher: PipelineLauncher;
+}
+
+export type PipelineResponse = PipelineSnapshot | { available: false; launcher: PipelineLauncher };
+
+export interface PipelineLaunchRequest { preset: string; mock: boolean }
+export interface PipelineLaunchResponse { pid: number; preset: string; mock: boolean }
+export interface PipelineStopResponse { stopped: boolean }

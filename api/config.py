@@ -20,6 +20,8 @@ class Settings:
     auth_username: str = "demo"
     auth_password_sha256: str = ""
     auth_ttl_s: int = 28800
+    # 控制台"一键全链路"：允许 HTTP 服务启动 python -m engine.demo 子进程（见 PIPELINE_API.md）。
+    demo_launch: bool = False
 
     def __post_init__(self) -> None:
         if self.data_source not in {"files", "mock"}:
@@ -86,4 +88,5 @@ class Settings:
             auth_username=os.getenv("API_AUTH_USERNAME", "demo").strip() or "demo",
             auth_password_sha256=os.getenv("API_AUTH_PASSWORD_SHA256", "").strip(),
             auth_ttl_s=int(os.getenv("API_AUTH_TTL_S", "28800")),
+            demo_launch=os.getenv("API_DEMO_LAUNCH", "0").strip() == "1",
         )

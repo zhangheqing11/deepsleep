@@ -20,6 +20,7 @@ from api.auth_routes import router as auth_router
 from api.errors import APIError
 from api.file_store import FileStore
 from api.mock_read_store import MockReadStore
+from api.pipeline import Launcher, PipelineView, router as pipeline_router
 from api.read_routes import router as read_router, files_router
 from api.routes import router
 from api.run_service import MockRunService
@@ -71,7 +72,11 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     application.state.runs = runs
     application.state.read_store = read_store
     application.state.auth = AuthService(settings)
+    files = runs is None
+    application.state.pipeline = PipelineView(read_store) if files else None
+    application.state.launcher = Launcher(settings.demo_launch and files, settings.data_root)
     application.include_router(read_router)
+    application.include_router(pipeline_router)
     application.include_router(router if runs is not None else files_router)
     application.include_router(auth_router)
 
