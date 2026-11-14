@@ -10,8 +10,21 @@
 | 分支 | 内容 | 状态 |
 |---|---|---|
 | （待开）v0.1.1 契约修复分支 | 契约 v0.1.0 已合入 main（[PR #1](https://github.com/zhangheqing11/deepsleep/pull/1)，2026-11-14，前端组与数据科学同学已线下 approve）。校验器漏检、示例补全和字段调整（F07/F08/F16）按 [`docs/reviews/pr1-contracts-fixes.md`](reviews/pr1-contracts-fixes.md) 修，作为 `[contract]` 后续 PR | Codex 已在本地修复中，验收后开 PR |
-| `zhq/domain-safety` | 安全层骨架：规则 + 判断器（ds flash / Jev / Gemini Decision / Mock），对比工具 `safety/eval.py`，处方否决 `domain/vetoes.py` | 本地提交。基于契约分支，PR #1 已合并，可 rebase 到 main 后开 PR |
-| `zhq/domain-clinical-v0` | 临床草稿：线索表、危机测试集、词表、处方否决、转介判据、`docs/review-queue.md` | 本地提交。等心理学同学审定 |
+| `zhq/domain-safety` | 安全层：规则 + 四选一判断器（ds flash / Jev / Gemini Decision / StartLux / Mock）、history_check、定稿词表与 48 条测试集、已审定话术、对比工具、处方硬否决（330 分钟 / 18 岁 / 硬软分级） | [PR #6](https://github.com/zhangheqing11/deepsleep/pull/6) 已开（11/14），等 review。剩 A2/A4：真实 API 对比与阈值冻结 |
+| `zhq/domain-clinical-v0` | 临床内容定稿（线索表、处方否决、转介判据、测试集与词表说明、审核清单与**审核结论 `docs/review-decisions.md`**） | [PR #7](https://github.com/zhangheqing11/deepsleep/pull/7) 已开（11/14），等 review |
+
+## 并行开发计划（统筹会话 11/14 10:00 定）
+
+工作模式：统筹会话只做总控。每个能并行的 PR 各开一个 Opus（medium）会话，会话内按规则调用 Codex（执行、测试、后端）和 Sonnet（用户可见文案）。Opus 会话可以自行审核、验收；只有关键判断才提交给心理学同学：临床或安全判据、用户可见文案、契约改动、push 或合并。
+
+| 会话 / 分支 | 范围 | 基于 | 依赖与冲突 |
+|---|---|---|---|
+| S1 判断器对比（A2/A4） | 代码、数据、话术已在 PR #6 完成。剩下：在 `.env` 配好各家 key、准备好 VPN 后，跑五家真实对比；整理结果，交心理学同学拍板判断器选择与阈值，冻结后开小 PR | `zhq/domain-safety` 合并后的 main | 需要 key；不阻塞 S2–S4（S3 可先用 mock 判断器） |
+| S2 `zhq/sim-scoring-min` | 最小版来访生成：按 `domain/path_clues.md` 每条路径 3–4 个手写来访，共 15–20 个，含自评、history、R1–R3；模拟来访（ds flash，分层线索，deny_first）+ mock；简易 4 周状态模型（`sim/params.yaml`，标明是占位）；计分产出 run_report；`make smoke` 用 10 个来访 + mock LLM；`docs/handoff-algo.md` | main | 只依赖契约；session 结构以契约示例为准 |
+| S3 `zhq/engine-session` | 会谈循环：两轮对话、每轮判路径和转介、处方；`engine/playbook_v0.md`（章节对应 playbook_section，不写何时筛查）；ds flash 客户端；接安全层（每条来访发言过安全层；history_check 注入与兜底；passive 插安全确认；active 走 crisis_exit）；筛查工具；回合上限；40–50 路并发；产出 session JSON | `zhq/domain-safety` | 依赖安全层接口；跑端到端需要 S2 的来访和计分 |
+| S4 `zhq/engine-evolve` | 反思器（Opus 5.5，失败降级 ds flash）→ 3 份增量候选（按章节标关键度）→ 硬规则（`domain/vetoes.py`）→ 验证集 C 门禁（`baseline_val_metrics`）→ 人类审核只能否决 → `var/playbook-repo` 独立 git、一键重置 v0 → evolution JSON。批注环节（C1）等主循环跑通后再做 | `zhq/domain-safety` | 先对着契约示例和 mock 开发；端到端需要 S2 和 S3 |
+
+共享文件（`Makefile`、`requirements.txt`）只做最小追加，合并时以 rebase 解决冲突。PR #1 已于 11/14 合并，新分支一律基于 main。
 
 ## A. 安全层（`safety/`）
 
