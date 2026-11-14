@@ -30,3 +30,23 @@ check-keys: venv
 # 会谈引擎：契约示例来访 + mock agent，输出到 var/runs/<run-id>/
 engine-mock: venv
 	.venv/bin/python -m engine.run --mock --run-id dev-mock
+
+# 路演目标复用已有 Python，不创建 venv 或安装依赖。
+DEMO_PYTHON ?= $(firstword $(wildcard .venv/bin/python ../deepsleep/.venv/bin/python))
+DEMO_ARGS ?=
+.PHONY: demo-reset demo-run1 demo-run2 demo-all demo-mock
+demo-reset:
+	$(DEMO_PYTHON) -m engine.demo reset
+
+demo-run1:
+	$(DEMO_PYTHON) -m engine.demo run1 $(DEMO_ARGS)
+	$(DEMO_PYTHON) -m engine.demo learn $(DEMO_ARGS)
+
+demo-run2:
+	$(DEMO_PYTHON) -m engine.demo run2 $(DEMO_ARGS)
+
+demo-all:
+	$(DEMO_PYTHON) -m engine.demo all $(DEMO_ARGS)
+
+demo-mock:
+	$(DEMO_PYTHON) -m engine.demo all --mock --dev --visitors-dir sim/visitors --reset $(DEMO_ARGS)
