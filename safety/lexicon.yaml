@@ -1,5 +1,5 @@
 # 已定（11/14）；来源 ds-clinical/safety/crisis_lexicon_draft.md。X9 仅提示，past_time 仅改道。
-# S7 主体/否定命中只改道 ambiguous，不丢弃；口径待心理学同学确认（决定清单 D 节）。
+# S7 主体/否定命中只改道 ambiguous，不丢弃；口径已由心理学同学确认（2026-11-14，review-decisions 第二批 D1/D2）。
 explicit_context:
   self_subject: 我(?!的?(?:朋友|室友|同事|同学|家人|妈|爸|哥|姐|弟|妹|老公|老婆|对象|邻居|孩子))|本人
   third_party: 朋友|室友|同事|同学|家人|妈妈|爸爸|哥哥|姐姐|弟弟|妹妹|老公|老婆|对象|邻居|孩子|他|她|有人|新闻|报道
