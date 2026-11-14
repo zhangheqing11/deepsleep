@@ -14,3 +14,4 @@ export { createHttpClient } from '../../src/api/httpClient';
 export { createMockClient } from '../../src/api/mockClient';
 export { fixtureData, parseFixtureName, FIXTURES } from '../../src/fixtures/devSamples';
 export { setupSource } from '../../src/api/index';
+export { authHeader, getAuthState, noteUnauthorized, refreshAuth, signIn, signOut } from '../../src/api/auth';

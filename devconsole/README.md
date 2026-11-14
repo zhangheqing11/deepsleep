@@ -3,7 +3,7 @@
 独立的只读展示应用，给评委看三件事：**比什么指标、学到了什么、怎么回退**。原 `web/` 控制台继续负责操作和调试，只在侧栏加一个跳转入口（单独的 PR）。
 
 - 技术栈与 `web/` 相同（React 18.3.1、TypeScript 5.6.3、Vite 5.4.11），有自己的 `package.json` 和锁文件，锁文件的依赖版本和 `web/` 一致。不做 monorepo，也不做共享包。
-- 只读：没有发起运行、触发学习、回滚、审批等写操作，所有请求都是 GET。
+- 只读：没有发起运行、触发学习、回滚、审批等写操作，所有数据请求都是 GET；仅有的两个 POST 是登录和退出登录（见“登录”）。
 - 不注册 Service Worker：断网时应该明确显示断连，而不是显示缓存页面。
 - 需求来源：统筹会话的《交接：进化后台》修订 2。本轮只做独立应用和新标签页跳转；iframe 副屏、拖拽分栏和嵌入模式留到后续。
 
@@ -54,7 +54,7 @@ mock 模式可以用 URL 参数切换开发样例，用来检查各种状态下�
 
 ## 后端接口（#38 已实现，规格见 `api/READ_API.md`）
 
-前缀 `/api/v1`，全部是 GET，错误结构和 `X-Request-ID` 沿用现有约定。后端启动方式见 `api/READ_API.md`：`API_DATA_SOURCE=files` 读 `var/` 里的真实产物，`API_DATA_SOURCE=mock` 读契约示例。
+前缀 `/api/v1`，数据接口全部是 GET，错误结构和 `X-Request-ID` 沿用现有约定。后端启动方式见 `api/READ_API.md`：`API_DATA_SOURCE=files` 读 `var/` 里的真实产物，`API_DATA_SOURCE=mock` 读契约示例。
 
 | 接口 | 前端怎么用 | 前端处理 |
 |---|---|---|
@@ -69,10 +69,20 @@ mock 模式可以用 URL 参数切换开发样例，用来检查各种状态下�
 仍需后端确认的问题：
 
 1. `/devconsole/` 的托管方式：`API_SERVE_WEB=1` 目前只托管 `web/dist`，路径是 `/`。进化后台是加一个 `/devconsole/` 静态挂载，还是单独开端口？双机演示时，显示器那台电脑要访问的地址是什么（不能是 localhost）？
-2. `cxj/api-auth-demo` 的 Bearer 鉴权如果合入，并且覆盖这些只读接口，进化后台怎么拿令牌？现在前端**不带任何令牌**，也不做登录。
+2. ~~Bearer 鉴权怎么拿令牌~~ 已解决，见“登录”。
 3. `partial_metrics`：#38 没有提供。前端运行中只显示进度，最终指标等报告生成后再显示。如果以后要提供，请先给出字段格式。
 
 错误样例（前端都有测试覆盖）：404 无错误结构；404 `NOT_FOUND`；404 `NOT_READY`；409 `REPORT_NOT_READY`；404 `DATA_UNAVAILABLE`；没有错误结构的 502/503，按网络问题处理；200 但不是 JSON（例如 SPA 回退页），显示数据格式错误。
+
+## 登录
+
+后端用 `API_AUTH_MODE=demo` 开启演示登录（#41）后，所有只读接口都要 Bearer 令牌。进化后台读真实后端（`http` 模式）时：
+
+- 进入页面先问 `GET /auth/me`：后端没开登录就直接显示看板；开了就显示登录页（只有登录，没有注册，账号由启动后端的人设置）。
+- 令牌只放 `sessionStorage`（键 `deepsleep.devconsole.token.v1`），关掉标签页即失效；和 `web/` 控制台不共享，所以从控制台侧栏新标签页跳过来需要再登录一次。账号密码不落盘。
+- 每个数据请求带 `Authorization: Bearer`；任何接口返回 `AUTH_REQUIRED` / `INVALID_TOKEN` / `TOKEN_EXPIRED` 都会清掉令牌回到登录页（后端重启后令牌失效属于这种情况），看板卸载、轮询随之停止。
+- 顶栏登录后出现“退出登录”。`mock` 模式不需要登录。
+- 实现在 `src/api/auth.ts`、`src/pages/LoginPage.tsx`，测试在 `tests/auth.test.mjs`（假 fetch 与假 sessionStorage）。
 
 ## 原控制台入口的识别文件
 
@@ -85,7 +95,7 @@ src/config.ts            唯一配置入口
 src/lib/settings.ts      配置解析（纯函数）
 src/lib/poller.ts        串行轮询
 src/lib/shape.ts         结构校验工具
-src/api/                 数据接口：client（接口）、httpClient、mockClient、validate、contractTypes（复制自 web）、extensionTypes（后端扩展，非契约）
+src/api/                 数据接口与登录（auth.ts）：client（接口）、httpClient、mockClient、validate、contractTypes（复制自 web）、extensionTypes（后端扩展，非契约）
 src/fixtures/            mock 模式的开发样例（手写占位）
 tests/                   node --test；tests/support/load.mjs 用 Vite 自带的 esbuild 打包真实源码
 ```

@@ -1,8 +1,9 @@
-// HTTP 适配器：只发 GET。失败一律抛 ApiError，不回退到 mock。
+// HTTP 适配器：数据请求只发 GET，并带上登录令牌（见 auth.ts）。失败一律抛 ApiError，不回退到 mock。
 // 单次超时、取消、退避由 lib/poller.ts 负责；这里只做请求、错误信封解析和结构校验。
 // 读接口由后端 api/read_routes.py 提供（#38，规格见 api/READ_API.md）。
 
 import type { DataClient } from './client';
+import { authHeader, noteUnauthorized } from './auth';
 import { ApiError } from './errors';
 import { parseEvolution, parseEvolveStatus, parseExperiment, parseReport, parseRunState } from './validate';
 import { ShapeError } from '../lib/shape';
@@ -27,7 +28,7 @@ export function createHttpClient(baseUrl: string, fetchImpl: FetchLike = (i, ini
     try {
       res = await fetchImpl(`${baseUrl}${path}`, {
         method: 'GET',
-        headers: { Accept: 'application/json' },
+        headers: { Accept: 'application/json', ...authHeader() },
         signal,
         cache: 'no-store',
       });
@@ -47,6 +48,8 @@ export function createHttpClient(baseUrl: string, fetchImpl: FetchLike = (i, ini
     }
     if (!res.ok) {
       const env = readEnvelope(body);
+      // 令牌缺失、无效或过期：回到登录页（后端重启后令牌失效也走这里）。
+      if (res.status === 401) noteUnauthorized(env.code);
       // 没有统一错误结构的 5xx（例如开发代理连不上后端）按网络问题处理。
       if (res.status >= 500 && !env.code) {
         throw new ApiError({ kind: 'network', status: res.status, message: `HTTP ${res.status}`, requestId: headerRequestId });

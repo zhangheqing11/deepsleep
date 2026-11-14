@@ -62,6 +62,10 @@ const CODE_MESSAGES: Record<string, string> = {
   SERVICE_UNAVAILABLE: '依赖服务暂不可用，请稍后重试',
   EVOLUTION_NOT_FOUND: '未找到该学习记录',
   NOT_READY: '尚未生成，稍后会自动重试',
+  AUTH_REQUIRED: '需要登录',
+  INVALID_TOKEN: '登录已失效，请重新登录',
+  TOKEN_EXPIRED: '登录已过期，请重新登录',
+  INVALID_CREDENTIALS: '账号或密码不对',
   DATA_UNAVAILABLE: '后端读到的数据不完整或不合法，暂时无法显示',
 };
 
