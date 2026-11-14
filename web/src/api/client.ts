@@ -1,7 +1,7 @@
 // 可替换的数据访问接口：页面只依赖这个接口，不关心背后是前端模拟还是后端 HTTP。
 
 import type { AdapterKind } from '../config';
-import type { RunReport, Session } from './contractTypes';
+import type { Evolution, RunReport, Session } from './contractTypes';
 import type {
   BackendMockScenario,
   CreateRunRequest,
@@ -11,6 +11,8 @@ import type {
   RunStatusResponse,
   SessionListItem,
 } from './draftTypes';
+
+import type { RunListItem, ExperimentResponse, RunEvidence, EvolutionListItem, EvolutionStatus, EvolutionInsights, PlaybookVersion, Playbook, PlaybookDiff } from './extensionTypes';
 
 export interface ApiClient {
   readonly adapter: AdapterKind;
@@ -25,6 +27,16 @@ export interface ApiClient {
     signal?: AbortSignal,
     mockScenario?: BackendMockScenario,
   ): Promise<CreateRunResponse>;
+  listRuns(limit?: number, signal?: AbortSignal): Promise<ListResponse<RunListItem>>;
+  getExperiment(signal?: AbortSignal): Promise<ExperimentResponse>;
+  getEvidence(runId: string, signal?: AbortSignal): Promise<RunEvidence>;
+  listEvolutions(limit?: number, signal?: AbortSignal): Promise<ListResponse<EvolutionListItem>>;
+  getEvolution(id: string, signal?: AbortSignal): Promise<Evolution>;
+  getEvolutionStatus(id: string, signal?: AbortSignal): Promise<EvolutionStatus>;
+  getEvolutionInsights(id: string, signal?: AbortSignal): Promise<EvolutionInsights>;
+  listPlaybookVersions(signal?: AbortSignal): Promise<ListResponse<PlaybookVersion>>;
+  getPlaybook(version: string, signal?: AbortSignal): Promise<Playbook>;
+  getPlaybookDiff(from: string, to: string, signal?: AbortSignal): Promise<PlaybookDiff>;
   getRun(runId: string, signal?: AbortSignal): Promise<RunStatusResponse>;
   getReport(runId: string, signal?: AbortSignal): Promise<RunReport>;
   listSessions(runId: string, signal?: AbortSignal): Promise<ListResponse<SessionListItem>>;

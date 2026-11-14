@@ -1,3 +1,4 @@
+import { api } from '../../api';
 import type { RunHistoryEntry } from '../../lib/storage';
 import { dateTime } from '../../lib/format';
 import { RUN_STATUS_LABEL, label } from '../../lib/labels';
@@ -14,12 +15,14 @@ const STATUS_TONE: Record<string, 'neutral' | 'info' | 'ok' | 'danger' | 'warn'>
 /** 最近运行：收成一行，展开后是紧凑列表 */
 export function RecentRuns({
   history,
+  fromServer,
   currentRunId,
   disabled,
   onSelect,
   onForget,
 }: {
   history: RunHistoryEntry[];
+  fromServer: boolean;
   currentRunId: string | null;
   disabled: boolean;
   onSelect: (runId: string) => void;
@@ -29,7 +32,7 @@ export function RecentRuns({
   return (
     <details className="fold">
       <summary>
-        最近运行（{history.length}） <span className="small muted">· 仅本机记录</span>
+        最近运行（{history.length}） <span className="small muted">· {fromServer ? api.adapter === 'mock' ? '模拟记录' : '服务端记录' : '本机后备记录'}</span>
       </summary>
       <ul className="run-history">
         {history.map((h) => {
@@ -55,19 +58,19 @@ export function RecentRuns({
                 {current && <span className="small">当前</span>}
                 <span className="small muted run-history-time">{dateTime(h.created_at)}</span>
               </button>
-              <button
+              {!fromServer && <button
                 type="button"
                 className="quiet-btn"
                 aria-label={`从本机记录中移除 ${h.run_id}`}
                 onClick={() => onForget(h.run_id)}
               >
                 移除
-              </button>
+              </button>}
             </li>
           );
         })}
       </ul>
-      <p className="small muted">后端提供运行列表接口后，这里改为读取服务端记录（含其他设备发起的运行）。</p>
+
     </details>
   );
 }

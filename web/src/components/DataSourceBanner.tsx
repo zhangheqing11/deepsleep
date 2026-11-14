@@ -2,7 +2,7 @@ import type { ExecutionMode } from '../api/draftTypes';
 import type { AdapterKind } from '../config';
 import { Badge } from './common';
 
-/** 页面必须区分“模拟数据”和“真实运行”（历史回放待 GET /runs 列表接口，后续实现） */
+/** 页面必须区分“模拟数据”和“真实运行” */
 export function DataSourceBadge({ adapter, mode }: { adapter: AdapterKind; mode?: ExecutionMode | null }) {
   if (adapter === 'mock') return <Badge tone="mock">模拟数据 · 前端本地</Badge>;
   if (mode === 'mock') return <Badge tone="mock">模拟数据 · 后端 Mock</Badge>;
@@ -10,7 +10,10 @@ export function DataSourceBadge({ adapter, mode }: { adapter: AdapterKind; mode?
   return <Badge>数据来源待确认</Badge>;
 }
 
-export function DataSourceBanner({ adapter, mode }: { adapter: AdapterKind; mode?: ExecutionMode | null }) {
+export function DataSourceBanner({ adapter, mode, unavailable = false }: { adapter: AdapterKind; mode?: ExecutionMode | null; unavailable?: boolean }) {
+  if (adapter === 'http' && unavailable) return (
+    <div className="banner banner-mock" role="alert"><strong>后端不可用</strong><span>无法读取后端数据，请重新检查服务连接。</span></div>
+  );
   if (adapter === 'mock') {
     return (
       <div className="banner banner-mock" role="note">

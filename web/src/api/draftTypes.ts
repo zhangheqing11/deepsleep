@@ -7,12 +7,7 @@ import type { SessionStatus } from './contractTypes';
 export type ExecutionMode = 'mock' | 'real';
 export type RunTaskStatus = 'queued' | 'running' | 'succeeded' | 'failed';
 
-export interface HealthResponse {
-  status: string;
-  execution_mode: ExecutionMode;
-  /** 前端反馈中建议新增，可能缺省 */
-  contracts_version?: string;
-}
+export type { HealthResponse } from './extensionTypes';
 
 /**
  * 后端 Mock 的场景开关（cxj/api-server api/MOCK_API.md），通过请求头 X-Mock-Scenario 传递，不放进请求体。
@@ -33,7 +28,7 @@ export interface CreateRunResponse {
 }
 
 export interface RunProgress {
-  total: number;
+  total: number | null;
   completed: number;
   failed: number;
 }

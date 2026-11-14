@@ -1,11 +1,14 @@
-// 进化记录：静态展示契约示例 contracts/examples/evolution.v1-v2.json。
-// 学习 / 版本 / 回滚接口尚未确定，这里不发请求、不提供任何操作按钮。
-
-import evolutionExample from '../../../../contracts/examples/evolution.v1-v2.json';
+import { useEffect, useState } from 'react';
+import { api } from '../../api';
+import { toApiError } from '../../api/errors';
+import type { EvolutionStatus } from '../../api/extensionTypes';
+import { useReadPoller } from '../../hooks/useReadPoller';
+import { useResource } from '../../hooks/useResource';
 import type { Evolution, EvolutionCandidate, Metrics } from '../../api/contractTypes';
-import { Badge, Card, KeyValue, Notice } from '../../components/common';
+import { Badge, Card, ErrorNotice, KeyValue, Notice, Spinner } from '../../components/common';
 import { dateTime, pct, signed } from '../../lib/format';
 import {
+  STEP_STATE_LABEL,
   CHANGE_OP_LABEL,
   CRITICALITY_LABEL,
   FAILURE_TAG_LABEL,
@@ -17,7 +20,6 @@ import {
   label,
 } from '../../lib/labels';
 
-const evo = evolutionExample as unknown as Evolution;
 
 const METRIC_ROWS: { title: string; get: (m: Metrics) => number | null; fmt: (v: number | null) => string }[] = [
   { title: '4 周模拟 ISI 有效率', get: (m) => m.isi_response_rate, fmt: pct },
@@ -58,24 +60,13 @@ function DiffView({ diff }: { diff: string }) {
   );
 }
 
-export function EvolutionPage() {
+export function EvolutionDetail({ evo }: { evo: Evolution }) {
   const chosen = evo.candidates.find((c) => c.id === evo.chosen) ?? null;
   const reviewByChange = new Map(evo.human_review.map((r) => [r.change_id, r]));
   const committed = evo.outcome === 'committed';
 
   return (
-    <div className="page">
-      <div className="page-title-row">
-        <div>
-          <h1>进化记录</h1>
-          <p className="muted">改了什么、为什么允许生效、如何保留或回退旧版本。</p>
-        </div>
-      </div>
-      <p className="source-note" role="note">
-        <strong>契约示例 · 静态展示</strong>
-        内容来自 contracts/examples/evolution.v1-v2.json。学习任务接口尚未确定，这里没有发起学习或回滚的操作。
-      </p>
-
+    <>
       <Card
         title={
           <>
@@ -85,7 +76,7 @@ export function EvolutionPage() {
         aside={committed ? <Badge tone="ok">生成新版本</Badge> : <Badge tone="warn">保留上一代</Badge>}
       >
         {!committed && (
-          <Notice tone="info" title="所有候选都没有通过，继续使用上一代 playbook">
+          <Notice tone="info" title="本次学习保留上一代 playbook">
             这是正常的学习结果，不是系统故障。
           </Notice>
         )}
@@ -281,6 +272,121 @@ export function EvolutionPage() {
           ))}
         </ul>
       </details>
-    </div>
+    </>
   );
+}
+
+
+export function EvolutionPage() {
+  const list = useResource('evolutions', (signal) => api.listEvolutions(20, signal));
+  const [selected, setSelected] = useState('');
+  const items = list.status === 'ok' ? [...list.data.items].sort((a, b) => Date.parse(b.created_at) - Date.parse(a.created_at)) : [];
+  const id = items.some((item) => item.evolution_id === selected) ? selected : items[0]?.evolution_id ?? '';
+  return <div className="page">
+    <div className="page-title-row"><div><h1>进化记录</h1><p className="muted">改了什么、为什么允许生效、如何保留或回退旧版本。</p></div>
+      <button type="button" className="btn btn-sm" onClick={list.reload}>刷新进化记录</button>
+    </div>
+    {api.adapter === 'mock' && <p className="source-note">模拟数据 · 进化来自契约示例；版本元数据为占位，正文仅含差异片段。</p>}
+    {list.status === 'error' && <ErrorNotice error={list.error} title="进化列表读取失败" />}
+    {list.status === 'loading' && <Spinner label="正在读取进化记录…" />}
+    {list.status === 'ok' && items.length === 0 && <p className="muted">暂无进化记录。</p>}
+    {items.length > 0 && <div className="field"><label htmlFor="evolution-id">选择进化记录</label>
+      <select id="evolution-id" value={id} onChange={(e) => setSelected(e.target.value)}>
+        {items.map((item) => <option key={item.evolution_id} value={item.evolution_id}>{item.evolution_id} · {item.from_version} → {item.to_version ?? item.from_version} · {dateTime(item.created_at)}</option>)}
+      </select>
+    </div>}
+    {id ? <EvolutionRecord key={id} id={id} /> : <PlaybookVersions refreshKey="initial" />}
+  </div>;
+}
+
+export async function readEvolution(id: string, signal: AbortSignal): Promise<{ evolution: Evolution | null; status: EvolutionStatus | null }> {
+  try {
+    return { evolution: await api.getEvolution(id, signal), status: null };
+  } catch (e) {
+    const error = toApiError(e);
+    if (error.status !== 404 || error.code !== 'NOT_READY') throw e;
+    return { evolution: null, status: await api.getEvolutionStatus(id, signal) };
+  }
+}
+
+function EvolutionRecord({ id }: { id: string }) {
+  const poller = useReadPoller(id, (signal) => readEvolution(id, signal),
+    (data) => data.evolution !== null || data.status?.phase === 'failed');
+  const { data, error, polling, reload } = poller;
+  return <>
+    {error && <ErrorNotice error={error} title={polling ? '连接中断，正在自动重试' : '进化记录读取失败'} action={<button type="button" className="btn btn-sm" onClick={reload}>重新读取</button>} />}
+    {!data && !error && <Spinner label="正在读取进化记录…" />}
+    {data?.status && <EvolutionProgress status={data.status} />}
+    {data?.evolution && <EvolutionDetail evo={data.evolution} />}
+    <PlaybookVersions refreshKey={`${id}:${data?.evolution?.outcome ?? data?.status?.phase ?? ''}`} />
+  </>;
+}
+
+export function EvolutionProgress({ status }: { status: EvolutionStatus }) {
+  const [now, setNow] = useState(Date.now());
+  useEffect(() => {
+    if (status.review.state !== 'waiting') return;
+    setNow(Date.now());
+    const timer = window.setInterval(() => setNow(Date.now()), 1000);
+    return () => window.clearInterval(timer);
+  }, [status.review.state, status.review.deadline]);
+  const deadline = status.review.deadline ? Date.parse(status.review.deadline) : NaN;
+  const remaining = Number.isFinite(deadline) ? Math.max(0, Math.ceil((deadline - now) / 1000)) : null;
+  return <Card title="学习进度" aside={<Badge>{label(STEP_STATE_LABEL, status.phase)}</Badge>}>
+    {status.phase === 'failed' && <Notice tone="danger" title="学习执行失败">{status.error}</Notice>}
+    {status.reflector.fell_back && <Notice tone="warn" title="反思器自动降级">{status.reflector.model}</Notice>}
+    <ol className="flow" aria-label="学习流程">
+      <li><span className="flow-step">1</span><div><strong>反思</strong><div>{label(STEP_STATE_LABEL, status.reflector.state)}</div><div className="small mono">{status.reflector.model}</div></div></li>
+      <li><span className="flow-step">2</span><div><strong>候选验证</strong><div>基线：{label(STEP_STATE_LABEL, status.validation.baseline)}</div>
+        {(['c1', 'c2', 'c3'] as const).map((id) => <div key={id}>{id}：{label(STEP_STATE_LABEL, status.validation.candidates[id] ?? 'pending')}</div>)}</div></li>
+      <li><span className="flow-step">3</span><div><strong>审核窗口</strong><div>{label(STEP_STATE_LABEL, status.review.state)}</div>
+        {status.review.state === 'waiting' && <>
+          <div>{remaining === null ? '审核截止时间暂无' : remaining > 0 ? `距审核截止 ${remaining} 秒` : '审核窗口已到期，等待后端确认'}</div>
+          {status.review.deadline && <div className="small">截止时间：{status.review.deadline}</div>}
+          <div className="small">待审核改动：{status.review.pending_changes}</div>
+        </>}</div></li>
+      <li><span className="flow-step">4</span><div><strong>提交</strong><div>{status.phase === 'done' ? '已完成' : status.phase === 'committing' ? '进行中' : status.phase === 'failed' ? '执行失败' : '等待中'}</div></div></li>
+    </ol>
+  </Card>;
+}
+
+function PlaybookVersions({ refreshKey }: { refreshKey: string }) {
+  const list = useResource(`versions:${refreshKey}`, (signal) => api.listPlaybookVersions(signal));
+  const [from, setFrom] = useState('');
+  const [to, setTo] = useState('');
+  const items = list.status === 'ok' ? [...list.data.items].sort((a, b) => Number(a.version.slice(1)) - Number(b.version.slice(1))) : [];
+  const fromVersion = items.some((v) => v.version === from) ? from : items[0]?.version ?? '';
+  const toVersion = items.some((v) => v.version === to) ? to : items.find((v) => v.is_head)?.version ?? items[items.length - 1]?.version ?? '';
+  return <Card title="playbook 版本树" aside={<button type="button" className="btn btn-sm" onClick={list.reload}>刷新版本</button>}>
+    {list.status === 'error' && <ErrorNotice error={list.error} title="版本列表读取失败" />}
+    {list.status === 'loading' && <Spinner label="正在读取版本…" />}
+    {list.status === 'ok' && items.length === 0 && <p className="muted">暂无版本记录。</p>}
+    <ol className="plain-list" aria-label="版本历史">
+      {items.map((v) => <li key={v.version}><strong>{v.version}</strong> {v.is_head && <Badge tone="ok">当前版本</Badge>} · <span className="mono">{v.sha.slice(0, 12)}</span> · {v.author} · {dateTime(v.committed_at)}<p className="small">{v.message}</p></li>)}
+    </ol>
+    {items.length > 0 && <>
+      <div className="compare-pickers">
+        {([['差异起始版本', fromVersion, setFrom], ['差异目标版本', toVersion, setTo]] as const).map(([title, value, change], i) => <div className="field" key={title}><label htmlFor={`version-${i}`}>{title}</label><select id={`version-${i}`} value={value} onChange={(e) => change(e.target.value)}>{items.map((v) => <option key={v.version}>{v.version}</option>)}</select></div>)}
+      </div>
+      <VersionDiff key={`${fromVersion}:${toVersion}`} from={fromVersion} to={toVersion} />
+    </>}
+  </Card>;
+}
+function VersionDiff({ from, to }: { from: string; to: string }) {
+  const diff = useResource(`diff:${from}:${to}`, (signal) => api.getPlaybookDiff(from, to, signal));
+  const [showText, setShowText] = useState(false);
+  return <>
+    {diff.status === 'loading' && <Spinner label="正在读取版本差异…" />}
+    {diff.status === 'error' && <ErrorNotice error={diff.error} title="版本差异读取失败" action={<button type="button" className="btn btn-sm" onClick={diff.reload}>重新读取</button>} />}
+    {diff.status === 'ok' && (diff.data.diff ? <DiffView diff={diff.data.diff} /> : <p className="muted">两个版本没有差异。</p>)}
+    <details className="fold" onToggle={(e) => setShowText(e.currentTarget.open)}><summary>目标版本正文 · {to}</summary>{showText && <PlaybookText version={to} />}</details>
+  </>;
+}
+function PlaybookText({ version }: { version: string }) {
+  const text = useResource(`playbook:${version}`, (signal) => api.getPlaybook(version, signal));
+  return <>
+    {text.status === 'loading' && <Spinner label="正在读取版本正文…" />}
+    {text.status === 'error' && <ErrorNotice error={text.error} title="版本正文读取失败" />}
+    {text.status === 'ok' && <pre className="diff">{text.data.text}</pre>}
+  </>;
 }

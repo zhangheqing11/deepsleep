@@ -184,3 +184,11 @@ export const REVIEW_DECISION_LABEL: Record<string, string> = {
   reject: '否决',
   timeout: '超时（不生效）',
 };
+
+// 只读控制台扩展状态；未知状态保留后端原值。
+export const STEP_STATE_LABEL: Record<string, string> = {
+  pending: '等待中', running: '进行中', done: '已完成', failed: '执行失败',
+  reflecting: '反思', validating: '候选验证', committing: '提交',
+  error: '执行失败', skipped: '已跳过', blocked: '硬规则拦下', empty: '无有效改动',
+  not_needed: '无需审核', waiting: '等待审核',
+};

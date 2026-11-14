@@ -4,6 +4,7 @@ import type { CreateRunResponse } from '../api/draftTypes';
 import { currentRunStore, runHistoryStore, type RunHistoryEntry, type SavedRun } from '../lib/storage';
 import { useCreateRun } from './useCreateRun';
 import { useReport, useSessionList } from './useRunData';
+import { useResource } from './useResource';
 import { useRunPoller } from './useRunPoller';
 
 function loadSavedRun(): SavedRun | null {
@@ -20,7 +21,7 @@ export function useConsoleRun() {
   const [history, setHistory] = useState<RunHistoryEntry[]>(() => runHistoryStore.list(api.adapter));
   const runId = saved?.run_id ?? null;
 
-  const refreshHistory = useCallback(() => setHistory(runHistoryStore.list(api.adapter)), []);
+  const refreshHistory = useCallback(() => setHistory(runHistoryStore.list(api.adapter).sort((a, b) => Date.parse(b.created_at) - Date.parse(a.created_at))), []);
 
   const poller = useRunPoller(runId, () => {
     currentRunStore.clear();
@@ -33,6 +34,20 @@ export function useConsoleRun() {
   // 避免用旧状态提前为新运行请求报告和会谈列表
   const run = poller.run && poller.run.run_id === runId ? poller.run : null;
   const terminal = run?.status === 'succeeded' || run?.status === 'failed';
+  const remoteHistory = useResource(`runs:${runId ?? ''}:${run?.status ?? ''}`, (signal) => api.listRuns(50, signal));
+  const serverHistory: RunHistoryEntry[] | null = remoteHistory.status === 'ok' ? remoteHistory.data.items.map((item) => ({
+    run_id: item.run_id, adapter: api.adapter, created_at: item.created_at, split: item.split ?? '',
+    playbook_version: item.playbook_version, status: item.status === 'completed' ? 'succeeded' : item.status,
+  })) : null;
+  useEffect(() => {
+    if (remoteHistory.status === 'ok') {
+      runHistoryStore.cache(api.adapter, remoteHistory.data.items.map((item) => ({
+        run_id: item.run_id, adapter: api.adapter, created_at: item.created_at, split: item.split ?? '',
+        playbook_version: item.playbook_version, status: item.status === 'completed' ? 'succeeded' : item.status,
+      })));
+      refreshHistory();
+    }
+  }, [remoteHistory.status === 'ok' ? remoteHistory.data : null, refreshHistory]);
 
   const report = useReport(runId, Boolean(run?.report_available));
   const sessions = useSessionList(runId, terminal);
@@ -97,7 +112,9 @@ export function useConsoleRun() {
     sessions,
     sessionVisitors,
     create,
-    history,
+    history: serverHistory ?? (remoteHistory.status === 'error' ? history : []),
+    historyResource: remoteHistory,
+    historyFromServer: serverHistory !== null,
     selectRun,
     clearRun,
     forgetRun,

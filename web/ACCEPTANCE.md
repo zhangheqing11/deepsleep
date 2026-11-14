@@ -1,3 +1,15 @@
+# 本轮只读数据接线验收（2026-11-14，wyx/web-real-data）
+
+- 范围：仅 `web/`，按 `read-api-spec.md` 实现 HTTP 和 mock 适配器，未新增 npm 依赖；用户端、配色布局体系和 Service Worker 未改。
+- `npm run typecheck`、`npm run build`、`npm run test:sw` 通过；Service Worker 26 项通过。
+- `npm run test:read-api`：12 项通过（11 个子场景 + 1 个汇总）。使用本地 mock、受控 fetch 响应、虚拟时钟和 React 静态渲染。
+- 覆盖：11 个新读取方法的路径/query/signal/request_id；mock 实验与报告/进化关联；501 CLI 提示；1 秒串行、终态停止、2/4/5 秒退避、卸载 abort 和迟到结果隔离；NOT_READY/NOT_FOUND；审核 deadline 到期、kept_previous、reflector 降级；未知总人数；null 差值；实验入口；缓存只保留最新 20 条。
+- 浏览器实测未完成：本机 Chrome 在当前执行环境启动后退出（exit 134），浏览器工具返回 `The browser access host is unavailable`。没有截图、实际交互或响应式验收结论。
+- 真实后端分支尚未集成：本轮没有执行真实引擎、模型、学习或端到端 files 联调。
+- 待联调确认：status 与 insights 原样 JSON 的长期版本约定；版本列表无父提交关系，当前按版本号显示历史。所有新增文案待审。
+
+---
+
 # web/ 验收记录
 
 > 只记录**前端 ↔ 后端 Mock** 的验收。后端当前只有 `execution_mode=mock`：报告和会谈来自 `contracts/examples/` 的固定示例，进度是模拟的。以下任何一项都**不是**真实模型、真实引擎、真实评分或真实学习效果的验收。

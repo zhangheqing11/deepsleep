@@ -4,7 +4,7 @@ import type { ApiError } from '../api/errors';
 import { MOCK_SCENARIOS, getMockScenario, setMockScenario, type MockScenario } from '../api/mockClient';
 import type { AdapterKind } from '../config';
 import type { PendingCreate } from '../lib/storage';
-import { ErrorNotice } from './common';
+import { ErrorNotice, Notice } from './common';
 
 // 后端 Mock 支持的场景（cxj/api-server api/MOCK_API.md）
 const BACKEND_SCENARIOS: { value: BackendMockScenario; label: string; hint: string }[] = [
@@ -150,7 +150,7 @@ export function RunLauncher(props: Props) {
         <summary className="small muted">配置说明</summary>
         <ul className="plain-list small muted">
           <li>一次运行会对一组模拟来访执行完整评测（每个来访两轮会谈）。来访数量与 seed 由后端配置决定。</li>
-          <li>C 组仅用于学习门禁，不在此提供。实际使用的版本以后端返回为准；后端提供版本列表前，这里手动填写。</li>
+          <li>C 组仅用于学习门禁，不在此提供。实际使用的版本以后端返回为准；这里可手动指定版本。</li>
           {showBackendScenario && (
             <li>
               后端 Mock 场景（通过请求头 X-Mock-Scenario 传给后端，仅用于调试）：
@@ -188,7 +188,8 @@ export function RunLauncher(props: Props) {
           重试会沿用同一个提交标识（Idempotency-Key），后端若已创建任务会返回同一个运行，不会重复创建。
         </p>
       )}
-      {error && !error.isTransient && <ErrorNotice error={error} title="未能创建运行" />}
+      {adapter === 'http' && error?.code === 'RUNS_VIA_CLI' && <Notice tone="info" title="请在操作员终端发起运行"><pre className="diff">{error.message}</pre></Notice>}
+      {error && error.code !== 'RUNS_VIA_CLI' && !error.isTransient && <ErrorNotice error={error} title="未能创建运行" />}
     </section>
   );
 }

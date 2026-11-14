@@ -40,14 +40,14 @@ npm run preview:lan   # 生产构建，终端里会显示局域网地址，如 h
 
 | 变量 | 默认值 | 说明 |
 |---|---|---|
-| `VITE_API_ADAPTER` | `mock` | `mock`：前端本地模拟适配器，不需要后端；`http`：请求后端 |
+| `VITE_API_ADAPTER` | `http` | `mock`：前端本地模拟适配器，不需要后端；`http`：请求后端 |
 | `VITE_API_BASE_URL` | `/api/v1` | 所有请求的基础地址，只在 `src/config.ts` 读取 |
 | `VITE_DEV_PROXY_TARGET` | `http://127.0.0.1:8000` | 开发代理把 `/api` 转发到这里（后端地址待确认） |
 
 - **mock 模式**：页面顶部固定显示“模拟数据”。报告和会谈直接取自 `contracts/examples/` 的正式示例（只读），进度、错误按接口草案模拟。模拟场景可在页面上切换：正常完成、任务失败、报告未准备好、网络不稳。
 - 分组与版本的对应关系和后端 Mock 一致：`{split:A}` → 运行 1（A/v1）；`{split:B}` → 对照（B/v1）；`{split:B, playbook_version:v2}` → 运行 2（B/v2）。不填版本时固定 v1，其他组合返回 422。会谈记录只有 A-001 至 A-003，其余显示“无记录”。
 - **http 模式 + 后端 Mock**：后端 `GET /health` 返回 `execution_mode=mock` 时，运行页出现“模拟场景 · 后端 Mock 调试”（normal / fail / report_delay），通过请求头 `X-Mock-Scenario` 传给后端，只在开发者控制台出现，用户端（`#/app`）不显示。每次点“开始运行”都生成新的 Idempotency-Key，所以换场景必然换 key；只有“重试提交”沿用原 key 和原场景。后端返回真实执行时不显示、不发送。前端本地模拟的场景（含“网络不稳”）只在 mock 模式出现，两者不混用。
-- **联调启动**：后端按 `api/README.md` 在 `127.0.0.1:8000` 启动；**演示时不加 `--reload`、不用多个 workers、演示过程中不重启后端**（与后端约定）。后端运行记录只在内存里，重启后旧 run_id 返回 404，前端提示“找不到这个运行，请重新发起运行”。前端第一轮只对接 8000；后端的 8001 离线引擎入口是后端内部验收用，前端暂不接。前端在 `web/.env.local` 写 `VITE_API_ADAPTER=http` 与 `VITE_DEV_PROXY_TARGET=http://127.0.0.1:8000`，再 `npm run dev`。
+- **联调启动**：后端按 `api/README.md` 在 `127.0.0.1:8000` 启动；**演示时不加 `--reload`、不用多个 workers、演示过程中不重启后端**（与后端约定）。后端 `API_DATA_SOURCE=files` 时读取运行产物；`mock` 模式的内存运行重启后可能返回 404。前端第一轮只对接 8000；后端的 8001 离线引擎入口是后端内部验收用，前端暂不接。前端在 `web/.env.local` 写 `VITE_API_ADAPTER=http` 与 `VITE_DEV_PROXY_TARGET=http://127.0.0.1:8000`，再 `npm run dev`。
 - **http 模式**：真实请求失败时只显示错误，**不会**换成模拟数据。
 
 ## 目录
@@ -58,6 +58,7 @@ src/
 ├── App.tsx                路由分发：控制台 / 用户端
 ├── api/
 │   ├── contractTypes.ts   run_report / session / evolution 类型，手写自 contracts v0.1.0
+│   ├── extensionTypes.ts  后端扩展，非契约（运行列表、实验、进化状态、版本等）
 │   ├── draftTypes.ts      ⚠ 接口草案类型（health、运行状态、错误结构、会谈列表项），未定稿
 │   ├── client.ts          ApiClient 接口
 │   ├── httpClient.ts      fetch 实现：统一错误结构、request_id、Idempotency-Key
@@ -73,7 +74,7 @@ src/
 │   ├── useRunData.ts      health / 报告（409 重试）/ 会谈列表 / 单个会谈
 │   └── useResource.ts     可取消的一次性请求
 ├── layouts/               ConsoleLayout（灰绿外框 + 左侧导航）、AppLayout（手机宽度 + 底部两项导航）
-├── pages/console/         RunsPage、VisitorsPage、EvolutionPage（契约示例静态展示）、DebugPage
+├── pages/console/         RunsPage、VisitorsPage、EvolutionPage（后端只读数据）、DebugPage
 ├── pages/app/             ChatPage、SettingsPage
 ├── components/            评测流程组件（RunLauncher、RunProgress、ReportView、SessionList、SessionView）与 console/ 子组件
 ├── lib/                   存储、格式化、中文文案；userDemoStore.ts 是用户端演示的本机偏好与记忆
@@ -83,11 +84,12 @@ src/
 
 ## 约定
 
-- 正式指标、路径、转介全部来自后端，前端只做格式化（比例为 null 显示“暂无”，提升用 `path_acc_gain`）。
+- 正式指标、路径、转介全部来自后端；前端只格式化指标并计算三方对比的显示差值（比例为 null 显示“暂无”，轮内提升用 `path_acc_gain`）。
 - 当前运行编号存 `localStorage`，刷新后继续查询；未确认的创建请求存 `sessionStorage`。
 - 文案只用“建议”“干预路径”“建议就医”，不使用诊断式表述。
-- 学习、playbook 版本、回滚接口未定：进化记录页只静态展示契约示例，没有任何操作按钮。
-- 最近运行只记录本机发起的运行；对比页并排展示两份报告的数值、标出较好的一侧，不计算差值（是否由前端计算待团队确认）。
+- 进化记录从后端读取，默认最新一条；进行中轮询状态，审核倒计时使用 `review.deadline`。版本历史、任意两版差异与正文只读展示，不发起学习或回滚。
+- 最近运行优先读取 `GET /runs?limit=50`；读取失败时明确提示并显示本机最近 20 条缓存。当前实验每秒串行轮询，done/failed 停止；重新查询可读取新实验。
+- 实验完成后一键按“运行 1 / 对照 / 运行 2”对比。差值为运行 2 减对照，比例用百分点；任一值为 null 显示“暂无”。不同分组或相同 run_id 会提示，不把较好数值当作学习效果结论。
 - 用户端演示只能选择预设消息，不开放自由输入：自由输入属于真实用户数据，且演示没有安全层，待团队决定并接入后端聊天接口后再开放。
 - 用户端偏好和“我记住的事”只保存在本机浏览器；导出、删除数据等按钮标为“待接入”。
 
@@ -102,3 +104,18 @@ src/
 运行 `npm run test:sw`（Node 20+，无需新依赖）。26 项 Node 回归测试执行实际 `public/sw.js`，用内存 CacheStorage 与受控网络验证隔离、白名单、错误响应、离线回退与缓存故障。它们不替代浏览器安装/升级和真机 PWA 验收。
 
 交叉评审的其他待修项与给 Claude 的分批任务见 [reviews/CROSS_REVIEW_FIXES.md](reviews/CROSS_REVIEW_FIXES.md)。
+
+
+## 只读数据接口 v1
+
+- HTTP 路径和字段对照集成规格 `read-api-spec.md`，没有改动 `contracts/`。
+- 默认 `VITE_API_ADAPTER=http`；离线开发显式设置 `VITE_API_ADAPTER=mock`。health 失败显示“后端不可用”，不切换适配器。
+- files 模式的 `POST /runs` 返回 `501 RUNS_VIA_CLI` 时显示后端终端命令，清除未确认提交，不按暂时故障重试。
+- 本地 mock 的实验是固定占位；报告、进化来自契约示例。版本元数据是占位，正文只包含契约 diff 的片段；无 path_probs / insights 示例时返回 `{available:false}`。
+- 状态扩展对照 `engine/evolve/status.py`（验证和审核可能并行）；`insights` 内部字段未冻结，暂以原始 JSON 类型接收。
+- 版本接口没有父提交关系，版本树按 v1/v2/... 排列为版本历史，不推断分支关系。
+
+```bash
+npm run test:read-api  # 使用已有 Vite + Node test；适配器、轮询、静态渲染回归，无浏览器或模型调用
+npm run typecheck && npm run build && npm run test:sw
+```
