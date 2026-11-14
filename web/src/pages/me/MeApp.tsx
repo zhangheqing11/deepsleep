@@ -1,7 +1,7 @@
 // 用户视角：一位来访自己打开应用会看到什么——今晚的安排、和教练的对话、自己的自评。
 // 数据仍然是实验里一位模拟来访与最新一版教练的会谈；没有输入框，不生成任何教练的话。
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { signOut, useAuth } from '../../api/auth';
+import { dismissWelcome, signOut, useAuth } from '../../api/auth';
 import { describeError } from '../../api/errors';
 import { Ending, IsiSpark, Scales, Transcript } from '../../components/app/Replay';
 import { HREF, meHref, visitorHref, type MeRoute, type MeTab } from '../../hooks/useHashRoute';
@@ -24,10 +24,19 @@ function greeting(now = new Date()): string {
   return '晚上好';
 }
 
-/** 默认进入的那位来访：没有触发安全线、和最新一版教练谈过的第一位。 */
-export function defaultVisitor(catalog: Catalog): VisitorEntry | null {
+/**
+ * 默认进入的那位来访：没有触发安全线、和最新一版教练谈过的。
+ * 自己注册的账号按账号名固定分到其中一位（同一个账号每次看到的是同一位）；其余情况取第一位。
+ */
+export function defaultVisitor(catalog: Pick<Catalog, 'visitors'>, accountId: string | null = null): VisitorEntry | null {
   const list = catalog.visitors;
-  return list.find((v) => !v.safety && v.hasAfter) ?? list.find((v) => !v.safety) ?? list[0] ?? null;
+  const eligible = list.filter((v) => !v.safety && v.hasAfter);
+  if (accountId && eligible.length > 0) {
+    let h = 0;
+    for (const ch of accountId) h = (h * 31 + ch.codePointAt(0)!) >>> 0;
+    return eligible[h % eligible.length];
+  }
+  return eligible[0] ?? list.find((v) => !v.safety) ?? list[0] ?? null;
 }
 
 const TABS: { tab: MeTab; text: string }[] = [
@@ -62,6 +71,9 @@ function Frame({ children, visitorId, tab, pinned }: { children: React.ReactNode
 function Tonight({ catalog, entry, side, pinned }: { catalog: Catalog; entry: VisitorEntry; side: Side; pinned: boolean }) {
   const run = side === 'after' ? catalog.after : catalog.before;
   const res = useSession(run?.runId ?? null, entry.id);
+  const auth = useAuth();
+  const name = auth.state === 'signed-in' && auth.user.role === 'user' ? auth.user.display_name : null;
+  const welcome = auth.state === 'signed-in' && auth.fresh === true;
   if (res.status === 'error') {
     return <p className="ua-note negative" role="alert">读不到你和教练的对话：{describeError(res.error)}<button type="button" className="ua-link" onClick={res.reload}>重试</button></p>;
   }
@@ -74,8 +86,14 @@ function Tonight({ catalog, entry, side, pinned }: { catalog: Catalog; entry: Vi
 
   return (
     <>
+      {welcome && (
+        <section className="me-welcome" role="status">
+          <p><b>注册好了。</b>演示里没有你自己的数据：你会以模拟来访 {entry.id} 的身份，看 TA 和教练谈完之后应用里的样子。</p>
+          <button type="button" className="ua-link" onClick={dismissWelcome}>知道了</button>
+        </section>
+      )}
       <section className="me-hero">
-        <span className="ua-who">{greeting()}</span>
+        <span className="ua-who">{greeting()}{name ? `，${name}` : ''}</span>
         {plan ? (
           <h1>今晚 <b>{plan.bedtime}</b> 上床，<br />明早 <b>{plan.risetime}</b> 起床</h1>
         ) : session.status === 'crisis_exit' ? (
@@ -264,8 +282,10 @@ function Profile({ catalog, entry, side }: { catalog: Catalog; entry: VisitorEnt
 
 export function MeApp({ route }: { route: MeRoute }) {
   const state = useCatalog();
+  const auth = useAuth();
+  const account = auth.state === 'signed-in' && auth.user.role === 'user' ? auth.user.id : null;
   const { catalog } = state;
-  const entry = catalog ? (route.visitorId ? catalog.visitors.find((v) => v.id === route.visitorId) ?? null : defaultVisitor(catalog)) : null;
+  const entry = catalog ? (route.visitorId ? catalog.visitors.find((v) => v.id === route.visitorId) ?? null : defaultVisitor(catalog, account)) : null;
   const pinned = route.visitorId !== null;
 
   if (!catalog || !entry) {

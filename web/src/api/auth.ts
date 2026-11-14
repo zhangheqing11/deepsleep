@@ -1,4 +1,4 @@
-// 登录状态：对接后端 #41 的本地演示账号（POST /auth/login、GET /auth/me、POST /auth/logout）。
+// 登录状态：对接后端的本地演示账号（POST /auth/login、/auth/register、/auth/logout，GET /auth/me）。
 // - 后端没有开启登录（API_AUTH_MODE=none，默认）时 /auth/me 返回 authenticated:false，前端不出现登录页。
 // - 令牌只放在 sessionStorage：关掉标签页即失效；后端重启后令牌也会失效，此时任何接口返回 401 都会回到登录页。
 // - 这里的请求不经过 requestLog：账号和密码不进入调试页的请求记录。
@@ -17,7 +17,8 @@ export type AuthState =
   /** 后端未启用登录，或使用前端本地模拟：所有页面直接可用 */
   | { state: 'open' }
   | { state: 'signed-out'; reason: 'required' | 'expired' | 'left' }
-  | { state: 'signed-in'; user: AuthUser };
+  /** fresh：这次是刚注册进来的，用户视角据此显示一次欢迎说明 */
+  | { state: 'signed-in'; user: AuthUser; fresh?: boolean };
 
 const TOKEN_KEY = 'deepsleep.auth.token.v1';
 /** 这些 401 表示“需要重新登录”；账号密码错误（INVALID_CREDENTIALS）不在其中 */
@@ -137,6 +138,33 @@ export async function signIn(username: string, password: string): Promise<void> 
   }
   setToken(res.access_token);
   set({ state: 'signed-in', user: res.user });
+}
+
+/** 账号 3–32 位字母、数字或 _ . -；密码至少 6 位。与后端的校验一致，先在本机拦一遍。 */
+export function registrationProblem(username: string, password: string): string | null {
+  if (!/^[A-Za-z0-9_.-]{3,32}$/.test(username)) return '账号用 3–32 位字母、数字或 _ . -。';
+  if (password.length < 6) return '密码至少 6 位。';
+  return null;
+}
+
+/** 注册一个演示账号并直接登录。重名时抛出 ApiError（code=USERNAME_TAKEN）。 */
+export async function signUp(username: string, password: string, displayName: string): Promise<void> {
+  const name = displayName.trim();
+  const res = await call<{ access_token: string; user: AuthUser }>('POST', '/auth/register', {
+    username,
+    password,
+    ...(name ? { display_name: name } : {}),
+  });
+  if (typeof res.access_token !== 'string' || !res.user) {
+    throw new ApiError({ kind: 'invalid_response', message: '注册响应缺少令牌' });
+  }
+  setToken(res.access_token);
+  set({ state: 'signed-in', user: res.user, fresh: true });
+}
+
+/** 欢迎说明看过之后调用，之后不再显示 */
+export function dismissWelcome(): void {
+  if (current.state === 'signed-in' && current.fresh) set({ state: 'signed-in', user: current.user });
 }
 
 export async function signOut(): Promise<void> {
