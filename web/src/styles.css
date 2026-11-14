@@ -1,87 +1,144 @@
-/* 视觉变量：以选定的双端草图为基准的低饱和灰绿体系。
+/* 视觉变量：低饱和、不抢眼。唯一的色相家族（--hue，偏灰的深青绿）只用在“进化后的那一版”的数据和“变好”上。
+   页面底色比所有板块深一档；板块靠各自的低饱和底色分开；砖红只表示变差和安全线失守。
    日间 / 夜间都在这里定义；组件只引用变量。 */
 
+@font-face {
+  font-family: 'Geist Variable';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 100 900;
+  src: url('@fontsource-variable/geist/files/geist-latin-wght-normal.woff2') format('woff2-variations');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329,
+    U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
 :root {
-  --bg: #f3f6f6;
-  --surface: #ffffff;
-  --surface-2: #edf2ef;
-  --border: #dfe5e2;
-  --text: #202625;
-  --muted: #5d6965;
-  --accent: #276854;
-  --accent-soft: #e3ece7;
-  --button: #243a31;
-  --button-ink: #ffffff;
+  --bg: #e4e7e6;
+  --surface: #fbfbf9;
+  --surface-2: #eceeed;
+  --border: #d6dad9;
+  --rule: #e6e9e8;
+  --control: #c3c9c7;
+  --text: #1c2322;
+  --muted: #56605e;
+  --accent: #1c2322;
+  --accent-soft: #eceeed;
+  --link: #2f6f6a;
+  --button: #1c2322;
+  --button-ink: #fbfbf9;
 
-  /* 语义色：低饱和但仍可辨认 */
-  --ok: #2e6f4e;
-  --ok-soft: #e6f0ea;
-  --warn: #85601a;
-  --warn-soft: #f6efe0;
-  --danger: #a8402f;
-  --danger-soft: #f8eae6;
-  --info: #2f5f6b;
-  --info-soft: #e7eff0;
+  /* 语义色：只用于状态与变化 */
+  --ok: #2f6f6a;
+  --ok-soft: #dbe9e3;
+  --ok-ink: #1f4f47;
+  --warn: #7a5f1f;
+  --warn-soft: #f0e8d6;
+  --warn-ink: #6e5520;
+  --danger: #a4503f;
+  --danger-soft: #f1dfda;
+  --danger-ink: #7a3a2c;
+  --info: #46524f;
+  --info-soft: #eceeed;
 
-  --frame: #f3f6f6;
-  --frame-ink: #3e4c47;
+  --frame: #e4e7e6;
+  --frame-ink: #3c4644;
 
-  --radius: 8px;
-  --radius-lg: 16px;
-  --font: -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', 'Segoe UI',
-    system-ui, sans-serif;
-  --mono: ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace;
+  /* 数据色：--hue 给进化后的版本，--base 给对照 */
+  --hue: #2f6f6a;
+  --hue-soft: #dbe9e3;
+  --base: #8b908f;
+
+  /* 板块底色：靠低饱和的色块分区，不靠边框和阴影 */
+  --panel-lead: #fbfbf9;
+  --panel-learned: #e7eee9;
+  --panel-safety: #e4ebef;
+  --panel-plain: #eff0ee;
+  --panel-edge: rgba(28, 35, 34, 0.07);
+
+  --radius: 6px;
+  --radius-lg: 8px;
+  --font: 'Geist Variable', -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei UI',
+    'Microsoft YaHei', 'Segoe UI', system-ui, sans-serif;
+  --mono: ui-monospace, 'SFMono-Regular', 'Cascadia Mono', Menlo, Consolas, monospace;
   color-scheme: light;
 }
 
-/* 夜间：跟随系统（未手动选择日间时），或手动选择夜间 */
+/* 夜间：跟随系统（未手动选择日间时），或手动选择夜间。真中性的深色，不用藏青。 */
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme='light']) {
-    --bg: #191b1b;
-    --surface: #222424;
-    --surface-2: #2d3530;
-    --border: #3c4340;
-    --text: #ecf0ed;
-    --muted: #adb7b2;
-    --accent: #98c9af;
-    --accent-soft: #2b3a33;
-    --button: #dbe9df;
-    --button-ink: #1b2922;
-    --ok: #9fd2b4;
-    --ok-soft: #233229;
-    --warn: #e2c27f;
-    --warn-soft: #362f20;
-    --danger: #eda193;
-    --danger-soft: #3b2724;
-    --info: #a6c9d0;
-    --info-soft: #22302f;
-    --frame: #191b1b;
-    --frame-ink: #c3ccc7;
+    --bg: #0c0d0d;
+    --surface: #1a1c1c;
+    --surface-2: #242727;
+    --border: #2c3030;
+    --rule: #232626;
+    --control: #474d4c;
+    --text: #eef1f0;
+    --muted: #aab2b0;
+    --accent: #eef1f0;
+    --accent-soft: #242727;
+    --link: #86bdb5;
+    --button: #eef1f0;
+    --button-ink: #0c0d0d;
+    --ok: #86bdb5;
+    --ok-soft: #17302c;
+    --ok-ink: #9fd0c8;
+    --warn: #d2b673;
+    --warn-soft: #2c2617;
+    --warn-ink: #d2b673;
+    --danger: #d98a78;
+    --danger-soft: #33201c;
+    --danger-ink: #e3a092;
+    --info: #aab2b0;
+    --info-soft: #242727;
+    --frame: #0c0d0d;
+    --frame-ink: #aab2b0;
+    --hue: #86bdb5;
+    --hue-soft: #17302c;
+    --base: #868c8b;
+    --panel-lead: #1c1f1f;
+    --panel-learned: #18211e;
+    --panel-safety: #181e22;
+    --panel-plain: #151717;
+    --panel-edge: rgba(238, 241, 240, 0.07);
     color-scheme: dark;
   }
 }
 
 :root[data-theme='dark'] {
-  --bg: #191b1b;
-  --surface: #222424;
-  --surface-2: #2d3530;
-  --border: #3c4340;
-  --text: #ecf0ed;
-  --muted: #adb7b2;
-  --accent: #98c9af;
-  --accent-soft: #2b3a33;
-  --button: #dbe9df;
-  --button-ink: #1b2922;
-  --ok: #9fd2b4;
-  --ok-soft: #233229;
-  --warn: #e2c27f;
-  --warn-soft: #362f20;
-  --danger: #eda193;
-  --danger-soft: #3b2724;
-  --info: #a6c9d0;
-  --info-soft: #22302f;
-  --frame: #191b1b;
-  --frame-ink: #c3ccc7;
+  --bg: #0c0d0d;
+  --surface: #1a1c1c;
+  --surface-2: #242727;
+  --border: #2c3030;
+  --rule: #232626;
+  --control: #474d4c;
+  --text: #eef1f0;
+  --muted: #aab2b0;
+  --accent: #eef1f0;
+  --accent-soft: #242727;
+  --link: #86bdb5;
+  --button: #eef1f0;
+  --button-ink: #0c0d0d;
+  --ok: #86bdb5;
+  --ok-soft: #17302c;
+  --ok-ink: #9fd0c8;
+  --warn: #d2b673;
+  --warn-soft: #2c2617;
+  --warn-ink: #d2b673;
+  --danger: #d98a78;
+  --danger-soft: #33201c;
+  --danger-ink: #e3a092;
+  --info: #aab2b0;
+  --info-soft: #242727;
+  --frame: #0c0d0d;
+  --frame-ink: #aab2b0;
+  --hue: #86bdb5;
+  --hue-soft: #17302c;
+  --base: #868c8b;
+  --panel-lead: #1c1f1f;
+  --panel-learned: #18211e;
+  --panel-safety: #181e22;
+  --panel-plain: #151717;
+  --panel-edge: rgba(238, 241, 240, 0.07);
   color-scheme: dark;
 }
 
@@ -106,7 +163,7 @@ body {
 }
 
 a {
-  color: var(--accent);
+  color: var(--link);
   text-decoration: none;
 }
 a:hover {
@@ -781,4 +838,19 @@ a.session-item:hover {
     animation-duration: 0.01ms !important;
     transition-duration: 0.01ms !important;
   }
+}
+
+/* ---------- 数据来源横幅 ---------- */
+.banner {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 10px;
+  margin-bottom: 16px;
+  padding: 9px 14px;
+  border-radius: var(--radius);
+  font-size: 0.9rem;
+}
+.banner-mock {
+  background: var(--warn-soft);
+  color: var(--warn-ink);
 }

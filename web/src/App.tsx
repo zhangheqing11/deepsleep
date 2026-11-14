@@ -2,13 +2,12 @@ import { useEffect } from 'react';
 import { api } from './api';
 import { SessionView } from './components/SessionView';
 import { useConsoleRun } from './hooks/useConsoleRun';
-import { isUserRoute, useHashRoute, type ConsoleRoute, type UserRoute } from './hooks/useHashRoute';
+import { isUserRoute, useHashRoute, type ConsoleRoute } from './hooks/useHashRoute';
 import { useHealth } from './hooks/useRunData';
-import { AppLayout } from './layouts/AppLayout';
 import { ConsoleLayout } from './layouts/ConsoleLayout';
-import { applyAppearance, useSavedPreferences } from './lib/userDemoStore';
-import { ChatPage } from './pages/app/ChatPage';
-import { SettingsPage } from './pages/app/SettingsPage';
+import { applyAppearance, useAppearance } from './lib/appearance';
+import { BoardPage } from './pages/board/BoardPage';
+import { UserApp } from './pages/app/UserApp';
 import { DebugPage } from './pages/console/DebugPage';
 import { EvolutionPage } from './pages/console/EvolutionPage';
 import { RunsPage } from './pages/console/RunsPage';
@@ -46,18 +45,15 @@ function ConsoleApp({ route }: { route: ConsoleRoute }) {
   );
 }
 
-function UserApp({ route }: { route: UserRoute }) {
-  return <AppLayout route={route}>{route.name === 'app-settings' ? <SettingsPage /> : <ChatPage />}</AppLayout>;
-}
-
 export function App() {
   const route = useHashRoute();
-  const prefs = useSavedPreferences();
+  const appearance = useAppearance();
 
-  // 外观偏好对两套界面都生效
+  // 外观偏好对三套界面都生效
   useEffect(() => {
-    applyAppearance(prefs.appearance);
-  }, [prefs.appearance]);
+    applyAppearance(appearance);
+  }, [appearance]);
 
+  if (route.name === 'board') return <BoardPage />;
   return isUserRoute(route) ? <UserApp route={route} /> : <ConsoleApp route={route} />;
 }
