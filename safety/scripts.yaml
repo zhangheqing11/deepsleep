@@ -1,4 +1,4 @@
-# 定稿（心理学同学 2026-11-14 审定，采用推荐版）。热线 verified 须实测后才能改为 true；每次演示前复核。
+# 定稿（心理学同学 2026-11-14 审定，采用推荐版）。热线已由心理学同学 2026-11-14 实测，verified: true；每次演示前仍要复核。
 history_check: 谢谢你愿意说出来，这不容易，我只想确认现在的情况：最近一个月，你还有没有这样的念头，或者伤害自己的行为？
 history_verify_patterns:
 - (?:现在|目前|此刻|最近|近一个月|近 1 个月)[^。！？；\n]{0,60}(?:是否|有没有|还会|还想|仍有|还有|已经没有)[^。！？；\n]{0,40}(?:这种念头|这些念头|这样的念头|轻生|自杀|自伤|伤害自己|不想活|不再醒来)[^。！？；\n]{0,20}(?:吗|么|[？?])
@@ -18,13 +18,13 @@ crisis_protocol: '我很担心你，先把睡眠的事放一放，你现在的�
 hotlines:
 - name: 全国统一心理援助热线
   number: '12356'
-  verified: false
+  verified: true
 - name: 北京心理援助热线
   number: 010-82951332（手机）/ 800-810-1117（座机）
-  verified: false
+  verified: true
 - name: 急救电话
   number: '120'
-  verified: false
+  verified: true
 - name: 报警电话
   number: '110'
-  verified: false
+  verified: true
