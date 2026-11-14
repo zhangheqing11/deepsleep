@@ -1,5 +1,7 @@
 """Structured plan and playbook text vetoes; callers map field to change_id."""
 from dataclasses import dataclass
+from functools import lru_cache
+import os
 import re
 from typing import Literal
 
@@ -20,11 +22,19 @@ class Violation:
             raise ValueError("severity must be hard or soft")
 
 
+@lru_cache(maxsize=8)
+def _read_rules(path: str, mtime_ns: int) -> dict:
+    # Keyed by mtime so an edited rules file is re-read; avoids re-parsing YAML on every call.
+    with open(path, encoding="utf-8") as stream:
+        return yaml.safe_load(stream)
+
+
 def _settings(config):
-    config = load_config(config)
-    with open(config["veto_rules_path"], encoding="utf-8") as stream:
-        rules = yaml.safe_load(stream)
-    return config, rules
+    # A config already produced by load_config (absolute paths) round-trips unchanged; skip re-reading YAML.
+    resolved = isinstance(config, dict) and os.path.isabs(str(config.get("veto_rules_path", "")))
+    config = config if resolved else load_config(config)
+    path = config["veto_rules_path"]
+    return config, _read_rules(path, os.stat(path).st_mtime_ns)
 
 
 def check_plan(plan, contraindications, *, age=None, crisis_level="none", config=None) -> list[Violation]:
