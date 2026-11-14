@@ -6,6 +6,7 @@ import { refreshAuth, useAuth } from './api/auth';
 import { Notice } from './components/common';
 import { TopBar } from './components/TopBar';
 import { BACKOFF_MS, CONFIG_WARNINGS, EXPERIMENT_POLL_MS, REQUEST_TIMEOUT_MS, STALE_AFTER_FAILURES } from './config';
+import { executionModes, useExperimentData } from './hooks/useExperimentData';
 import { usePoller } from './hooks/usePoller';
 import { LoginPage } from './pages/LoginPage';
 import { OverviewPage } from './pages/OverviewPage';
@@ -83,10 +84,12 @@ function Dashboard({
     backoffMs: BACKOFF_MS,
     staleAfter: STALE_AFTER_FAILURES,
   });
+  const manifest = experiment.data?.available ? experiment.data.manifest : null;
+  const data = useExperimentData(client, manifest);
 
   return (
     <>
-      <TopBar mode={client.mode} fixtureLabel={fixtureLabel} connection={experiment} executionModes={[]} />
+      <TopBar mode={client.mode} fixtureLabel={fixtureLabel} connection={experiment} executionModes={executionModes(data)} />
       {client.mode === 'mock' && (
         <div className="banner banner-mock" role="note">
           模拟数据：指标与进化记录来自 contracts/examples 正式示例，实验进度和学习状态是手写开发样例，均不是实际运行结果。
@@ -108,7 +111,7 @@ function Dashboard({
           </span>
         ))}
       </nav>
-      <OverviewPage client={client} experiment={experiment} />
+      <OverviewPage experiment={experiment} data={data} />
       {CONFIG_WARNINGS.length > 0 && (
         <p className="foot" role="note">
           配置提示：{CONFIG_WARNINGS.join('；')}

@@ -74,6 +74,17 @@ mock 模式可以用 URL 参数切换开发样例，用来检查各种状态下�
 
 错误样例（前端都有测试覆盖）：404 无错误结构；404 `NOT_FOUND`；404 `NOT_READY`；409 `REPORT_NOT_READY`；404 `DATA_UNAVAILABLE`；没有错误结构的 502/503，按网络问题处理；200 但不是 JSON（例如 SPA 回退页），显示数据格式错误。
 
+## 进化总览（`#/overview`）
+
+一页回答三件事，1920×1080 不用滚动就能看全：
+
+- **时间线**：运行 1 → 学习 → 运行 2，对照和运行 2 并列，并标明“同一批 B 组模拟来访”。每个节点显示清单里的状态、`/runs/{id}` 给出的进度和读取时间；版本未知时显示“版本待定”。
+- **① 比什么指标**：对照和运行 2 相邻作为主要对比，中间显示两者主指标的百分点差（只做相减，任一缺失就显示“暂无”）；运行 1 放在下方，只作背景。主指标都带样本量 n。副指标表和安全红线（危机漏报、违反禁忌、否决规则）对三次运行逐项列出，任一不过整块变红并列出原因。报告生成前一律显示“尚未生成”，不画成 0。只有后端提供 `partial_metrics` 时才显示“阶段统计”。
+- **② 学到了什么**：学习中显示 `status.json` 的阶段、反思器模型（降级时有醒目标记）、各候选验证状态和人工审核窗口。审核倒计时以后端给的截止时间为准；如果截止时间和本机时钟相差太大，会提示核对两台电脑的时钟。学习完成后，展示被选候选里按关键度排序的最多 3 条改动、修改原因，以及验证集上一代与候选的主指标对比。`kept_previous` 是正常结果，单独展示每个候选被拦下的原因，原因全部来自数据字段。
+- **③ 怎么回退**：版本链只从数据读，不写死 v1 / v2；页面展示提交信息、三项保障和回退命令 `python -m engine.evolve rollback <上一代>`，**不提供回退按钮**。
+
+其余视图（运行与跑分、进化记录、分类器证据、模拟来访）在导航里显示为未开放，后续分批实现。
+
 ## 登录
 
 后端用 `API_AUTH_MODE=demo` 开启演示登录（#41）后，所有只读接口都要 Bearer 令牌。进化后台读真实后端（`http` 模式）时：
@@ -95,6 +106,9 @@ src/config.ts            唯一配置入口
 src/lib/settings.ts      配置解析（纯函数）
 src/lib/poller.ts        串行轮询
 src/lib/shape.ts         结构校验工具
+src/model/overview.ts    总览的推导（纯函数：百分点差、红线、改动排序、拦截原因、版本、时间线）
+src/hooks/               usePoller（轮询 hook）、useExperimentData（当前实验下各项数据）
+src/components/          Timeline、MetricsPanel、LearnedPanel、RollbackPanel、TopBar
 src/api/                 数据接口与登录（auth.ts）：client（接口）、httpClient、mockClient、validate、contractTypes（复制自 web）、extensionTypes（后端扩展，非契约）
 src/fixtures/            mock 模式的开发样例（手写占位）
 tests/                   node --test；tests/support/load.mjs 用 Vite 自带的 esbuild 打包真实源码

@@ -67,6 +67,7 @@ const CODE_MESSAGES: Record<string, string> = {
   TOKEN_EXPIRED: '登录已过期，请重新登录',
   INVALID_CREDENTIALS: '账号或密码不对',
   DATA_UNAVAILABLE: '后端读到的数据不完整或不合法，暂时无法显示',
+  NOT_FOUND: '后端没有找到这个接口或文件（HTTP 404）：只读接口可能尚未部署，或产物还没写出',
 };
 
 export function describeError(e: ApiError): string {
