@@ -1,6 +1,6 @@
 import { useCallback, useRef, useState } from 'react';
 import { api } from '../api';
-import type { CreateRunRequest, CreateRunResponse } from '../api/draftTypes';
+import type { BackendMockScenario, CreateRunRequest, CreateRunResponse } from '../api/draftTypes';
 import { ApiError, toApiError } from '../api/errors';
 import { newIdempotencyKey, pendingCreateStore, type PendingCreate } from '../lib/storage';
 
@@ -26,7 +26,7 @@ export function useCreateRun(onCreated: (res: CreateRunResponse) => void) {
       setSubmitting(true);
       setError(null);
       try {
-        const res = await api.createRun(p.body, p.idempotency_key);
+        const res = await api.createRun(p.body, p.idempotency_key, undefined, p.mock_scenario);
         pendingCreateStore.clear();
         setPending(null);
         onCreated(res);
@@ -45,12 +45,13 @@ export function useCreateRun(onCreated: (res: CreateRunResponse) => void) {
     [onCreated],
   );
 
-  /** 用户明确发起一次新运行 */
+  /** 用户明确发起一次新运行；mockScenario 只在后端为 Mock 时传入 */
   const start = useCallback(
-    (body: CreateRunRequest) => {
+    (body: CreateRunRequest, mockScenario?: BackendMockScenario) => {
       const p: PendingCreate = {
         idempotency_key: newIdempotencyKey(),
         body,
+        ...(mockScenario ? { mock_scenario: mockScenario } : {}),
         adapter: api.adapter,
         first_attempt_at: new Date().toISOString(),
       };

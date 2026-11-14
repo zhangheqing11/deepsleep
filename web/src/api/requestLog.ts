@@ -45,18 +45,44 @@ export function useRequestLog(): RequestLogEntry[] {
   return useSyncExternalStore(requestLog.subscribe, requestLog.snapshot, requestLog.snapshot);
 }
 
+// 让 HTTP 适配器把成功响应的 X-Request-ID 和状态码交给当前这条记录。
+// track 调用 fn() 时同步设置，httpClient 在发请求前（第一个 await 之前）同步领取，所以不会串到别的请求上。
+export interface ResponseMeta {
+  request_id?: string;
+  status?: number;
+}
+let pendingMeta: ResponseMeta | null = null;
+
+export function claimResponseMeta(): ResponseMeta | null {
+  const m = pendingMeta;
+  pendingMeta = null;
+  return m;
+}
+
 async function track<T>(op: string, target: string, fn: () => Promise<T>): Promise<T> {
   const started = performance.now();
   const base = { seq: ++seq, at: new Date().toISOString(), op, target };
+  const meta: ResponseMeta = {};
   const push = (e: RequestLogEntry) => {
     entries = [e, ...entries].slice(0, MAX);
     emit();
   };
   try {
-    const result = await fn();
-    push({ ...base, ok: true, aborted: false, duration_ms: performance.now() - started });
+    pendingMeta = meta;
+    const promise = fn();
+    pendingMeta = null;
+    const result = await promise;
+    push({
+      ...base,
+      ok: true,
+      aborted: false,
+      duration_ms: performance.now() - started,
+      status: meta.status,
+      request_id: meta.request_id,
+    });
     return result;
   } catch (e) {
+    pendingMeta = null;
     const err = toApiError(e);
     push({
       ...base,
@@ -77,9 +103,11 @@ export function withRequestLog(client: ApiClient): ApiClient {
   return {
     adapter: client.adapter,
     health: (signal) => track('GET /health', '', () => client.health(signal)),
-    createRun: (body, key, signal) =>
-      track('POST /runs', `${body.split}${body.playbook_version ? `/${body.playbook_version}` : ''}`, () =>
-        client.createRun(body, key, signal),
+    createRun: (body, key, signal, mockScenario) =>
+      track(
+        'POST /runs',
+        `${body.split}${body.playbook_version ? `/${body.playbook_version}` : ''}${mockScenario ? ` · 场景 ${mockScenario}` : ''}`,
+        () => client.createRun(body, key, signal, mockScenario),
       ),
     getRun: (runId, signal) => track('GET /runs/{id}', runId, () => client.getRun(runId, signal)),
     getReport: (runId, signal) => track('GET /runs/{id}/report', runId, () => client.getReport(runId, signal)),

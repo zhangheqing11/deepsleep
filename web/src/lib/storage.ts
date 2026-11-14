@@ -104,6 +104,8 @@ const PENDING_CREATE_KEY = 'deepsleep.pendingCreate.v1';
 export interface PendingCreate {
   idempotency_key: string;
   body: { split: 'A' | 'B'; playbook_version?: string };
+  /** 后端 Mock 场景；重试必须沿用，否则后端按“同 key 不同请求”返回 409 */
+  mock_scenario?: 'normal' | 'fail' | 'report_delay';
   adapter: string;
   first_attempt_at: string;
 }

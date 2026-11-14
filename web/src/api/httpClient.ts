@@ -10,6 +10,7 @@ import type {
   SessionListItem,
 } from './draftTypes';
 import { ApiError } from './errors';
+import { claimResponseMeta } from './requestLog';
 
 interface RequestOptions {
   body?: unknown;
@@ -25,6 +26,8 @@ function isErrorEnvelope(v: unknown): v is ErrorEnvelope {
 
 async function request<T>(method: string, path: string, opts: RequestOptions = {}): Promise<T> {
   const { body, headers, signal } = opts;
+  // 必须在第一个 await 之前同步领取，见 requestLog.ts
+  const meta = claimResponseMeta();
   let res: Response;
   try {
     res = await fetch(`${API_BASE_URL}${path}`, {
@@ -43,6 +46,10 @@ async function request<T>(method: string, path: string, opts: RequestOptions = {
   }
 
   const headerRequestId = res.headers.get('X-Request-ID') ?? undefined;
+  if (meta) {
+    meta.request_id = headerRequestId;
+    meta.status = res.status;
+  }
   let text: string;
   try {
     text = await res.text();
@@ -97,10 +104,13 @@ const enc = encodeURIComponent;
 export const httpClient: ApiClient = {
   adapter: 'http',
   health: (signal) => request<HealthResponse>('GET', '/health', { signal }),
-  createRun: (body, idempotencyKey, signal) =>
+  createRun: (body, idempotencyKey, signal, mockScenario) =>
     request<CreateRunResponse>('POST', '/runs', {
       body,
-      headers: { 'Idempotency-Key': idempotencyKey },
+      headers: {
+        'Idempotency-Key': idempotencyKey,
+        ...(mockScenario ? { 'X-Mock-Scenario': mockScenario } : {}),
+      },
       signal,
     }),
   getRun: (runId, signal) => request<RunStatusResponse>('GET', `/runs/${enc(runId)}`, { signal }),

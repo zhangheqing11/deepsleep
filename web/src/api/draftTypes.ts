@@ -14,6 +14,12 @@ export interface HealthResponse {
   contracts_version?: string;
 }
 
+/**
+ * 后端 Mock 的场景开关（cxj/api-server api/MOCK_API.md），通过请求头 X-Mock-Scenario 传递，不放进请求体。
+ * 只用于 execution_mode=mock 的调试；真实执行时不发送。
+ */
+export type BackendMockScenario = 'normal' | 'fail' | 'report_delay';
+
 export interface CreateRunRequest {
   split: 'A' | 'B';
   /** 前端反馈：建议可选，缺省由后端使用当前版本 */
