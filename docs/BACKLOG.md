@@ -102,13 +102,13 @@
 
 另：该分支一并新增了 34 个占位示例（13 个 visitor、21 个 session），用来让 `run_report.session_ref` 全部指向存在的文件；这些是合成占位，不是临床内容。
 
-## I. 评审遗留清单（2026-11-14 批次 2：PR #6–#10）
+## J. 评审遗留清单（2026-11-14 批次 2：PR #6–#10）
 
-验收会话审完 #6、#7、#8、#9、#10：#8、#10、#7 已合并；#6、#9 待修；#12（design 原型）未审。**修之前先读对应清单**，每份清单有问题、证据、要求和验收标准。
+验收会话审完 #6、#7、#8、#9、#10、#12：#8、#10、#7、#6 已合并；#9 待修；#12（design 原型）审完待作者修，不建议原样合并。**修之前先读对应清单**，每份清单有问题、证据、要求和验收标准。
 
 | PR | 状态 | 清单 | 要点 |
 |---|---|---|---|
-| [#6](https://github.com/zhangheqing11/deepsleep/pull/6) 危机安全层 | **待修后再合** | [`pr6-safety-fixes.md`](reviews/pr6-safety-fixes.md) | P0 四项：缺 key 静默降级到 Mock、量表事件与契约矛盾、history 核验正则误判、StartLux 超时被截断。⚠️ S3、S7 需要心理学同学确认口径 |
+| [#6](https://github.com/zhangheqing11/deepsleep/pull/6) 危机安全层 | **已合并**（`ac6322d`） | [`pr6-safety-fixes.md`](reviews/pr6-safety-fixes.md) | 以另一会话的修复版本合入，心理学同学确认（含 S7 的降级交判断器做法、`history_check` 话术去掉"念头，或者"中的一个逗号）。合并后 main 上验收：505 项测试通过，`make smoke` 通过，S1/S2/S4/S6 独立探针全过。剩余缺口见下
 | [#9](https://github.com/zhangheqing11/deepsleep/pull/9) 资源清单 | **待修后再合** | [`pr9-resources-fixes.md`](reviews/pr9-resources-fixes.md) | 移到 `docs/`、§8.2 与已合并契约冲突、Hill 表被误用、十余处事实更正 |
 | [#7](https://github.com/zhangheqing11/deepsleep/pull/7) 临床内容 | 已合并 | [`pr7-pr10-followups.md`](reviews/pr7-pr10-followups.md) A 节 | 文档承诺的硬否决规则 V3–V6、V9、F2–F6 等在 #6 里没有实现，需 `zhq/domain-vetoes-v2` |
 | [#10](https://github.com/zhangheqing11/deepsleep/pull/10) 后端 Mock | 已合并 | 同上 B 节 | `mocks/fixtures.py:17` 写死 `schema_version == "0.1.0"`，契约升版本的 PR 必须同步改（G1） |
@@ -117,6 +117,13 @@
 另外登记两项：
 - **S3 engine-session 会话的验收项**：`history_check` 自动补话术、`speaker=safety`、来访回答再过安全层的**端到端测试**（#6 只有接口约定，没有端到端证据）。
 - **`zhq/domain-vetoes-v2`**：实现 #7 描述的未落地硬否决规则，先定 V3–V6 的输入接口（询问记录、OSA 筛查结果、最终 R1 预测）。
+
+**PR #6 合并后的剩余缺口（低风险，不挡演示，择机处理）**：
+- **L1 核验检测漏识别**：agent 问"你最近还有想死的念头吗？"这类真实核验问句，`check_verification` 判为未核验，系统会多补一次固定话术。方向是安全的（多问一次），但会让会谈显得重复。
+- **L2 英文禁用词多空白**：`we will  treat   insomnia`（词间多个空格）没被 W8 拦住，因为 W8 的英文部分对空白数量敏感。中文变体和繁简、全角空格拆字都已拦住。
+- **L3 话术与审定原文差一个逗号**：main 上 `history_check` 为"……还有没有这样的念头或者伤害自己的行为？"，审定原文是"……念头，或者……"。这是为了让固定话术本身通过子句级核验检测而做的改动，心理学同学已确认没问题；记在这里以便日后对照。
+- **S11**（history_check 自动补话术、`speaker=safety`、来访回答再过安全层的端到端测试）和 **S12**（`zhq/domain-vetoes-v2`，实现 V3–V6、V9、F2–F6、T3、S1）仍未做。
+- 分支 `zhq/domain-safety-review-fixes` 是验收会话做的一份等价修复，已不需要，可以删除。
 
 ## H. 仓库与流程
 
