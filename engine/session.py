@@ -30,7 +30,7 @@ from safety.rules import LEVEL_RANK
 from .classifier import PATHS, PathClassifier, PathState
 from .interfaces import PlanOutcomeModel, ScreeningProvider, VisitorReply, VisitorSim
 from .llm import AgentLLM, LLMError
-from .playbook import Playbook
+from .playbook import Playbook, strip_locks
 from .topics import TOPIC_PATTERNS, tag_topics
 
 SCHEMA_VERSION = "0.1.0"
@@ -463,7 +463,8 @@ class SessionRunner:
                     + prompts["turn_merged"])
         else:
             body = prompts[task]
-        playbook = "\n\n".join(f"## {name}\n{self.deps.playbook.sections[name]}" for name in SECTIONS_FOR[task])
+        playbook = "\n\n".join(f"## {name}\n{strip_locks(self.deps.playbook.sections[name])}"
+                             for name in SECTIONS_FOR[task])
         system = (f"{prompts['boundaries'].strip()}\n\n{body.strip()}\n\n# Playbook（{self.deps.playbook.version}，"
                   f"仅本模块相关章节）\n{playbook}")
         lines = [f"任务：{task}", f"当前：第 {snap.round} 轮。"]

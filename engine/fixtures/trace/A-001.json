@@ -1,0 +1,813 @@
+{
+  "visitor_id": "A-001",
+  "pipeline": "split",
+  "classifier": "mock",
+  "llm_calls": [
+    {
+      "agent": "strategy",
+      "task": "strategy",
+      "attempt": 0,
+      "ok": true,
+      "output": {
+        "action": "say",
+        "strategy": {
+          "type": "explore",
+          "target_topic": "schedule_regularity",
+          "contrast": [],
+          "revisit_later": null,
+          "intent": "explore"
+        }
+      },
+      "ms": 0.1
+    },
+    {
+      "agent": "response",
+      "task": "response",
+      "attempt": 0,
+      "ok": true,
+      "output": {
+        "text": "先了解一下，你平时几点上床、几点起床？",
+        "acts": [
+          "goal_setting"
+        ]
+      },
+      "ms": 0.0
+    },
+    {
+      "agent": "strategy",
+      "task": "strategy",
+      "attempt": 0,
+      "ok": true,
+      "output": {
+        "action": "say",
+        "strategy": {
+          "type": "explore",
+          "target_topic": "bed_wakefulness",
+          "contrast": [],
+          "revisit_later": null,
+          "intent": "explore"
+        }
+      },
+      "ms": 0.0
+    },
+    {
+      "agent": "response",
+      "task": "response",
+      "attempt": 0,
+      "ok": true,
+      "output": {
+        "text": "躺在床上的时候，你通常是清醒着，还是脑子里在想事情？",
+        "acts": [
+          "reflection"
+        ]
+      },
+      "ms": 0.0
+    },
+    {
+      "agent": "strategy",
+      "task": "strategy",
+      "attempt": 0,
+      "ok": true,
+      "output": {
+        "action": "say",
+        "strategy": {
+          "type": "explore",
+          "target_topic": "chronotype",
+          "contrast": [],
+          "revisit_later": null,
+          "intent": "explore"
+        }
+      },
+      "ms": 0.0
+    },
+    {
+      "agent": "response",
+      "task": "response",
+      "attempt": 0,
+      "ok": true,
+      "output": {
+        "text": "如果放假可以随便睡，你几点会自然犯困、几点自然醒？",
+        "acts": [
+          "reflection"
+        ]
+      },
+      "ms": 0.0
+    },
+    {
+      "agent": "strategy",
+      "task": "strategy",
+      "attempt": 0,
+      "ok": true,
+      "output": {
+        "action": "say",
+        "strategy": {
+          "type": "explore",
+          "target_topic": "screen_in_bed",
+          "contrast": [],
+          "revisit_later": null,
+          "intent": "explore"
+        }
+      },
+      "ms": 0.0
+    },
+    {
+      "agent": "response",
+      "task": "response",
+      "attempt": 0,
+      "ok": true,
+      "output": {
+        "text": "上床以后会看手机或者刷视频吗？",
+        "acts": [
+          "reflection"
+        ]
+      },
+      "ms": 0.0
+    },
+    {
+      "agent": "strategy",
+      "task": "strategy",
+      "attempt": 0,
+      "ok": true,
+      "output": {
+        "action": "say",
+        "strategy": {
+          "type": "explore",
+          "target_topic": "snoring_breathing",
+          "contrast": [],
+          "revisit_later": null,
+          "intent": "explore"
+        }
+      },
+      "ms": 0.0
+    },
+    {
+      "agent": "response",
+      "task": "response",
+      "attempt": 0,
+      "ok": true,
+      "output": {
+        "text": "家里人有没有说过你打鼾，或者睡觉时呼吸停顿？",
+        "acts": [
+          "reflection"
+        ]
+      },
+      "ms": 0.0
+    },
+    {
+      "agent": "classifier",
+      "task": "classify",
+      "ok": true,
+      "status": "ok",
+      "ms": 0.0
+    },
+    {
+      "agent": "memory",
+      "task": "memory",
+      "attempt": 0,
+      "ok": true,
+      "output": {
+        "summary": "mock 摘要",
+        "facts": [],
+        "open_questions": [],
+        "referral": "R0",
+        "referral_reason": "mock"
+      },
+      "ms": 0.0
+    },
+    {
+      "agent": "plan",
+      "task": "plan",
+      "attempt": 0,
+      "ok": true,
+      "output": {
+        "plan": {
+          "bedtime": "23:30",
+          "risetime": "07:00",
+          "tib_minutes": 450,
+          "components": [
+            "sleep_hygiene",
+            "fixed_risetime"
+          ],
+          "rationale_given": true,
+          "referral_advice": null,
+          "cards": [
+            {
+              "type": "reminder",
+              "title": "固定起床时间",
+              "body": "明早七点起床，先坚持一周。"
+            }
+          ]
+        },
+        "contraindications_identified": [],
+        "age": null,
+        "closing_message": "我们先从固定起床时间开始，每天七点起床，这样身体的节律会慢慢稳定下来。"
+      },
+      "ms": 0.0
+    },
+    {
+      "agent": "select",
+      "task": "select",
+      "attempt": 0,
+      "ok": true,
+      "output": {
+        "decision": "adjust",
+        "rationale": "mock",
+        "focus": "mock"
+      },
+      "ms": 0.0
+    },
+    {
+      "agent": "strategy",
+      "task": "strategy",
+      "attempt": 0,
+      "ok": true,
+      "output": {
+        "action": "say",
+        "strategy": {
+          "type": "explore",
+          "target_topic": "sleep_elsewhere",
+          "contrast": [],
+          "revisit_later": null,
+          "intent": "explore"
+        }
+      },
+      "ms": 0.0
+    },
+    {
+      "agent": "response",
+      "task": "response",
+      "attempt": 0,
+      "ok": true,
+      "output": {
+        "text": "在沙发上或者出差住外面的时候，会不会反而容易睡着？",
+        "acts": [
+          "reflection"
+        ]
+      },
+      "ms": 0.0
+    },
+    {
+      "agent": "strategy",
+      "task": "strategy",
+      "attempt": 0,
+      "ok": true,
+      "output": {
+        "action": "say",
+        "strategy": {
+          "type": "supportive",
+          "target_topic": null,
+          "contrast": [],
+          "revisit_later": "sleep_elsewhere",
+          "intent": "supportive"
+        }
+      },
+      "ms": 0.0
+    },
+    {
+      "agent": "response",
+      "task": "response",
+      "attempt": 0,
+      "ok": true,
+      "output": {
+        "text": "没关系，这些不一定马上说得清，我们慢慢来。",
+        "acts": [
+          "emotion_response"
+        ]
+      },
+      "ms": 0.0
+    },
+    {
+      "agent": "strategy",
+      "task": "strategy",
+      "attempt": 0,
+      "ok": true,
+      "output": {
+        "action": "say",
+        "strategy": {
+          "type": "revisit",
+          "target_topic": "sleep_elsewhere",
+          "contrast": [],
+          "revisit_later": null,
+          "intent": "revisit"
+        }
+      },
+      "ms": 0.0
+    },
+    {
+      "agent": "response",
+      "task": "response",
+      "attempt": 0,
+      "ok": true,
+      "output": {
+        "text": "刚才提到的事，我换个场景再问问：在沙发上或者出差住外面的时候，会不会反而容易睡着？",
+        "acts": [
+          "reflection"
+        ]
+      },
+      "ms": 0.0
+    },
+    {
+      "agent": "strategy",
+      "task": "strategy",
+      "attempt": 0,
+      "ok": true,
+      "output": {
+        "action": "say",
+        "strategy": {
+          "type": "explore",
+          "target_topic": "mood",
+          "contrast": [],
+          "revisit_later": null,
+          "intent": "explore"
+        }
+      },
+      "ms": 0.0
+    },
+    {
+      "agent": "response",
+      "task": "response",
+      "attempt": 0,
+      "ok": true,
+      "output": {
+        "text": "最近心情怎么样，做事还提得起兴趣吗？",
+        "acts": [
+          "reflection"
+        ]
+      },
+      "ms": 0.0
+    },
+    {
+      "agent": "classifier",
+      "task": "classify",
+      "ok": true,
+      "status": "ok",
+      "ms": 0.0
+    },
+    {
+      "agent": "memory",
+      "task": "memory",
+      "attempt": 0,
+      "ok": true,
+      "output": {
+        "summary": "mock 摘要",
+        "facts": [],
+        "open_questions": [],
+        "referral": "R0",
+        "referral_reason": "mock"
+      },
+      "ms": 0.0
+    },
+    {
+      "agent": "plan",
+      "task": "plan",
+      "attempt": 0,
+      "ok": true,
+      "output": {
+        "plan": {
+          "bedtime": "23:30",
+          "risetime": "07:00",
+          "tib_minutes": 450,
+          "components": [
+            "stimulus_control",
+            "fixed_risetime"
+          ],
+          "rationale_given": true,
+          "referral_advice": null,
+          "cards": [
+            {
+              "type": "reminder",
+              "title": "固定起床时间",
+              "body": "明早七点起床，先坚持一周。"
+            }
+          ]
+        },
+        "contraindications_identified": [],
+        "age": null,
+        "closing_message": "我们先从固定起床时间开始，每天七点起床，这样身体的节律会慢慢稳定下来。"
+      },
+      "ms": 0.0
+    }
+  ],
+  "path_probs": [
+    {
+      "round": 1,
+      "turn": 1,
+      "final": false,
+      "weights": {
+        "P1": 0.2,
+        "P2": 0.2,
+        "P3": 0.2,
+        "P4": 0.2,
+        "P5": 0.2
+      },
+      "attitude": "cooperative",
+      "uncertainty": 1.0,
+      "margin": 0.0,
+      "status": "ok",
+      "provider": "mock",
+      "latency_ms": 0.0
+    },
+    {
+      "round": 1,
+      "turn": 3,
+      "final": false,
+      "weights": {
+        "P1": 0.42857142857142855,
+        "P2": 0.14285714285714285,
+        "P3": 0.14285714285714285,
+        "P4": 0.14285714285714285,
+        "P5": 0.14285714285714285
+      },
+      "attitude": "cooperative",
+      "uncertainty": 0.9165,
+      "margin": 0.2857,
+      "status": "ok",
+      "provider": "mock",
+      "latency_ms": 0.0
+    },
+    {
+      "round": 1,
+      "turn": 5,
+      "final": false,
+      "weights": {
+        "P1": 0.3333333333333333,
+        "P2": 0.3333333333333333,
+        "P3": 0.1111111111111111,
+        "P4": 0.1111111111111111,
+        "P5": 0.1111111111111111
+      },
+      "attitude": "cooperative",
+      "uncertainty": 0.9101,
+      "margin": 0.0,
+      "status": "ok",
+      "provider": "mock",
+      "latency_ms": 0.0
+    },
+    {
+      "round": 1,
+      "turn": 7,
+      "final": false,
+      "weights": {
+        "P1": 0.3333333333333333,
+        "P2": 0.3333333333333333,
+        "P3": 0.1111111111111111,
+        "P4": 0.1111111111111111,
+        "P5": 0.1111111111111111
+      },
+      "attitude": "cooperative",
+      "uncertainty": 0.9101,
+      "margin": 0.0,
+      "status": "ok",
+      "provider": "mock",
+      "latency_ms": 0.0
+    },
+    {
+      "round": 1,
+      "turn": 9,
+      "final": false,
+      "weights": {
+        "P1": 0.3333333333333333,
+        "P2": 0.3333333333333333,
+        "P3": 0.1111111111111111,
+        "P4": 0.1111111111111111,
+        "P5": 0.1111111111111111
+      },
+      "attitude": "cooperative",
+      "uncertainty": 0.9101,
+      "margin": 0.0,
+      "status": "ok",
+      "provider": "mock",
+      "latency_ms": 0.0
+    },
+    {
+      "round": 1,
+      "final": true,
+      "weights": {
+        "P1": 0.3333333333333333,
+        "P2": 0.3333333333333333,
+        "P3": 0.1111111111111111,
+        "P4": 0.1111111111111111,
+        "P5": 0.1111111111111111
+      },
+      "attitude": "cooperative",
+      "uncertainty": 0.9101,
+      "margin": 0.0,
+      "status": "ok",
+      "provider": "mock",
+      "latency_ms": 0.0
+    },
+    {
+      "round": 2,
+      "turn": 0,
+      "final": false,
+      "weights": {
+        "P1": 0.3333333333333333,
+        "P2": 0.3333333333333333,
+        "P3": 0.1111111111111111,
+        "P4": 0.1111111111111111,
+        "P5": 0.1111111111111111
+      },
+      "attitude": "cooperative",
+      "uncertainty": 0.9101,
+      "margin": 0.0,
+      "status": "ok",
+      "provider": "mock",
+      "latency_ms": 0.0
+    },
+    {
+      "round": 2,
+      "turn": 2,
+      "final": false,
+      "weights": {
+        "P1": 0.3333333333333333,
+        "P2": 0.3333333333333333,
+        "P3": 0.1111111111111111,
+        "P4": 0.1111111111111111,
+        "P5": 0.1111111111111111
+      },
+      "attitude": "resistant",
+      "uncertainty": 0.9101,
+      "margin": 0.0,
+      "status": "ok",
+      "provider": "mock",
+      "latency_ms": 0.0
+    },
+    {
+      "round": 2,
+      "turn": 4,
+      "final": false,
+      "weights": {
+        "P1": 0.3333333333333333,
+        "P2": 0.3333333333333333,
+        "P3": 0.1111111111111111,
+        "P4": 0.1111111111111111,
+        "P5": 0.1111111111111111
+      },
+      "attitude": "cooperative",
+      "uncertainty": 0.9101,
+      "margin": 0.0,
+      "status": "ok",
+      "provider": "mock",
+      "latency_ms": 0.0
+    },
+    {
+      "round": 2,
+      "turn": 6,
+      "final": false,
+      "weights": {
+        "P1": 0.2727272727272727,
+        "P2": 0.45454545454545453,
+        "P3": 0.09090909090909091,
+        "P4": 0.09090909090909091,
+        "P5": 0.09090909090909091
+      },
+      "attitude": "cooperative",
+      "uncertainty": 0.8492,
+      "margin": 0.1818,
+      "status": "ok",
+      "provider": "mock",
+      "latency_ms": 0.0
+    },
+    {
+      "round": 2,
+      "final": true,
+      "weights": {
+        "P1": 0.2727272727272727,
+        "P2": 0.45454545454545453,
+        "P3": 0.09090909090909091,
+        "P4": 0.09090909090909091,
+        "P5": 0.09090909090909091
+      },
+      "attitude": "cooperative",
+      "uncertainty": 0.8492,
+      "margin": 0.1818,
+      "status": "ok",
+      "provider": "mock",
+      "latency_ms": 0.0
+    }
+  ],
+  "strategies": [
+    {
+      "round": 1,
+      "action": "say",
+      "type": "explore",
+      "target_topic": "schedule_regularity",
+      "contrast": [],
+      "revisit_later": null,
+      "intent": "explore"
+    },
+    {
+      "round": 1,
+      "action": "say",
+      "type": "explore",
+      "target_topic": "bed_wakefulness",
+      "contrast": [],
+      "revisit_later": null,
+      "intent": "explore"
+    },
+    {
+      "round": 1,
+      "action": "say",
+      "type": "explore",
+      "target_topic": "chronotype",
+      "contrast": [],
+      "revisit_later": null,
+      "intent": "explore"
+    },
+    {
+      "round": 1,
+      "action": "say",
+      "type": "explore",
+      "target_topic": "screen_in_bed",
+      "contrast": [],
+      "revisit_later": null,
+      "intent": "explore"
+    },
+    {
+      "round": 1,
+      "action": "say",
+      "type": "explore",
+      "target_topic": "snoring_breathing",
+      "contrast": [],
+      "revisit_later": null,
+      "intent": "explore"
+    },
+    {
+      "round": 2,
+      "action": "say",
+      "type": "explore",
+      "target_topic": "sleep_elsewhere",
+      "contrast": [],
+      "revisit_later": null,
+      "intent": "explore"
+    },
+    {
+      "round": 2,
+      "action": "say",
+      "type": "supportive",
+      "target_topic": null,
+      "contrast": [],
+      "revisit_later": "sleep_elsewhere",
+      "intent": "supportive"
+    },
+    {
+      "round": 2,
+      "action": "say",
+      "type": "revisit",
+      "target_topic": "sleep_elsewhere",
+      "contrast": [],
+      "revisit_later": null,
+      "intent": "revisit"
+    },
+    {
+      "round": 2,
+      "action": "say",
+      "type": "explore",
+      "target_topic": "mood",
+      "contrast": [],
+      "revisit_later": null,
+      "intent": "explore"
+    }
+  ],
+  "history_checks": [],
+  "vetoes": [
+    {
+      "stage": "plan",
+      "round": 1,
+      "attempt": 0,
+      "violations": []
+    },
+    {
+      "stage": "plan",
+      "round": 2,
+      "attempt": 0,
+      "violations": []
+    }
+  ],
+  "plans": {
+    "1": {
+      "plan": {
+        "bedtime": "23:30",
+        "risetime": "07:00",
+        "tib_minutes": 450,
+        "components": [
+          "sleep_hygiene",
+          "fixed_risetime"
+        ],
+        "rationale_given": true,
+        "contraindications_checked": false,
+        "referral_advice": null,
+        "cards": [
+          {
+            "type": "reminder",
+            "title": "固定起床时间",
+            "body": "明早七点起床，先坚持一周。"
+          }
+        ]
+      },
+      "closing_message": "我们先从固定起床时间开始，每天七点起床，这样身体的节律会慢慢稳定下来。"
+    },
+    "2": {
+      "plan": {
+        "bedtime": "23:30",
+        "risetime": "07:00",
+        "tib_minutes": 450,
+        "components": [
+          "stimulus_control",
+          "fixed_risetime"
+        ],
+        "rationale_given": true,
+        "contraindications_checked": false,
+        "referral_advice": null,
+        "cards": [
+          {
+            "type": "reminder",
+            "title": "固定起床时间",
+            "body": "明早七点起床，先坚持一周。"
+          }
+        ]
+      },
+      "closing_message": "我们先从固定起床时间开始，每天七点起床，这样身体的节律会慢慢稳定下来。"
+    }
+  },
+  "memory": {
+    "1": {
+      "summary": "mock 摘要",
+      "facts": [],
+      "open_questions": [],
+      "referral": "R0",
+      "referral_reason": "mock"
+    },
+    "2": {
+      "summary": "mock 摘要",
+      "facts": [],
+      "open_questions": [],
+      "referral": "R0",
+      "referral_reason": "mock"
+    }
+  },
+  "round1_outcome": {
+    "isi_week": [
+      19.0,
+      18.6,
+      18.2,
+      17.8,
+      17.4
+    ],
+    "isi_change": -1.6,
+    "adherence": 0.8,
+    "responder": false,
+    "placeholder": true
+  },
+  "selection": {
+    "decision": "adjust",
+    "rationale": "mock",
+    "focus": "mock"
+  },
+  "speculation": {
+    "used": 7,
+    "discarded": 0,
+    "discarded_calls": 0
+  },
+  "ignored_events": [],
+  "duration_s": 0.009,
+  "judge_failures": 0,
+  "latency_ms": {
+    "strategy": {
+      "n": 9,
+      "total": 0.1,
+      "mean": 0.0,
+      "p95": 0.1
+    },
+    "response": {
+      "n": 9,
+      "total": 0.0,
+      "mean": 0.0,
+      "p95": 0.0
+    },
+    "classifier": {
+      "n": 11,
+      "total": 0.0,
+      "mean": 0.0,
+      "p95": 0.0
+    },
+    "memory": {
+      "n": 2,
+      "total": 0.0,
+      "mean": 0.0,
+      "p95": 0.0
+    },
+    "plan": {
+      "n": 2,
+      "total": 0.0,
+      "mean": 0.0,
+      "p95": 0.0
+    },
+    "select": {
+      "n": 1,
+      "total": 0.0,
+      "mean": 0.0,
+      "p95": 0.0
+    }
+  }
+}

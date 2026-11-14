@@ -5,6 +5,8 @@ import re
 
 SECTIONS = ("communication_style", "questioning_strategy", "path_discrimination", "plan_rules", "referral_rules")
 _HEADING = re.compile(r"^##\s+(\S+)\s*$", re.MULTILINE)
+LOCK_MARK = "<!-- locked -->"
+_LOCK = re.compile(r"\s*<!--\s*locked\s*-->")
 
 
 @dataclass(frozen=True)
@@ -31,6 +33,15 @@ def load_playbook(path: Path | str, version: str = "v0") -> Playbook:
     return Playbook(version, text, parse_sections(text))
 
 
+def locked_lines(text: str) -> list[str]:
+    """Safety lines evolution must keep verbatim (S4 hard rule reads these)."""
+    return [_LOCK.sub("", line).rstrip() for line in text.splitlines() if _LOCK.search(line)]
+
+
+def strip_locks(text: str) -> str:
+    return _LOCK.sub("", text)
+
+
 def render_for_agent(playbook: Playbook) -> str:
     """Only the five sections reach the agent; the human preamble stays out."""
-    return "\n\n".join(f"## {name}\n{playbook.sections[name]}" for name in SECTIONS)
+    return "\n\n".join(f"## {name}\n{strip_locks(playbook.sections[name])}" for name in SECTIONS)

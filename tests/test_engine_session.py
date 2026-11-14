@@ -571,3 +571,27 @@ def test_repeated_passive_then_item9_contract_conflict():
     session, trace = run(deps_for(llm=llm, sim=ScriptedSim(["最近很累。", PASSIVE_TEXT, "没有计划。"])), v)
     assert trace["ignored_events"][0]["source"] == "scale_item9"
     assert_valid(session, v)
+
+
+def test_locked_lines_marked_and_hidden_from_agents():
+    from engine.playbook import locked_lines
+    text = load_playbook(load_config()["playbook_path"]).text
+    locked = locked_lines(text)
+    assert any("330" in line for line in locked) and any("禁忌" in line for line in locked)
+    llm = ScriptedLLM()
+    run(deps_for(llm=llm), visitor())
+    assert all("locked" not in m[0]["content"] for _, m, _ in llm.calls)
+
+
+def test_trace_fixtures_match_documented_path_probs_shape():
+    keys = {"round", "final", "weights", "attitude", "uncertainty", "margin", "status", "provider", "latency_ms"}
+    files = sorted((ROOT / "engine/fixtures/trace").glob("*.json"))
+    assert len(files) >= 2
+    for file in files:
+        trace = json.loads(file.read_text(encoding="utf-8"))
+        assert trace["path_probs"] and all(keys <= set(row) for row in trace["path_probs"])
+        assert all(("turn" in row) != row["final"] for row in trace["path_probs"])
+        assert set(trace["path_probs"][0]["weights"]) == {"P1", "P2", "P3", "P4", "P5"}
+        session = json.loads((ROOT / "engine/fixtures/sessions" / file.name).read_text(encoding="utf-8"))
+        assert [r for r in trace["path_probs"] if r["final"]][-1]["weights"]
+        assert session["visitor_id"] == trace["visitor_id"]
