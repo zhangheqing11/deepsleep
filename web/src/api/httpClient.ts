@@ -9,6 +9,7 @@ import type {
   RunStatusResponse,
   SessionListItem,
 } from './draftTypes';
+import { authHeader, noteUnauthorized } from './auth';
 import { ApiError } from './errors';
 import { claimResponseMeta } from './requestLog';
 
@@ -38,6 +39,7 @@ async function request<T>(method: string, path: string, opts: RequestOptions = {
       headers: {
         Accept: 'application/json',
         ...(body !== undefined ? { 'Content-Type': 'application/json' } : {}),
+        ...authHeader(),
         ...headers,
       },
       body: body !== undefined ? JSON.stringify(body) : undefined,
@@ -71,6 +73,7 @@ async function request<T>(method: string, path: string, opts: RequestOptions = {
 
   if (!res.ok) {
     if (isErrorEnvelope(data)) {
+      if (res.status === 401) noteUnauthorized(data.error.code);
       throw new ApiError({
         kind: 'http',
         status: res.status,

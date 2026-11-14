@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import { api } from './api';
+import { refreshAuth, useAuth } from './api/auth';
 import { SessionView } from './components/SessionView';
 import { useConsoleRun } from './hooks/useConsoleRun';
 import { isUserRoute, useHashRoute, type ConsoleRoute } from './hooks/useHashRoute';
@@ -8,6 +9,8 @@ import { ConsoleLayout } from './layouts/ConsoleLayout';
 import { applyAppearance, useAppearance } from './lib/appearance';
 import { BoardPage } from './pages/board/BoardPage';
 import { UserApp } from './pages/app/UserApp';
+import { LoginPage } from './pages/auth/LoginPage';
+import { MeApp } from './pages/me/MeApp';
 import { DebugPage } from './pages/console/DebugPage';
 import { EvolutionPage } from './pages/console/EvolutionPage';
 import { RunsPage } from './pages/console/RunsPage';
@@ -54,6 +57,15 @@ export function App() {
     applyAppearance(appearance);
   }, [appearance]);
 
+  // 后端开启登录时，三套界面都先过登录页；没开启时 auth.state 是 open，什么都不拦
+  const auth = useAuth();
+  useEffect(() => {
+    void refreshAuth();
+  }, []);
+  if (auth.state === 'checking') return null;
+  if (auth.state === 'signed-out') return <LoginPage reason={auth.reason} />;
+
   if (route.name === 'board') return <BoardPage />;
+  if (route.name === 'me') return <MeApp route={route} />;
   return isUserRoute(route) ? <UserApp route={route} /> : <ConsoleApp route={route} />;
 }

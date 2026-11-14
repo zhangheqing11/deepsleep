@@ -46,6 +46,7 @@ function Shell({ children, back }: { children: React.ReactNode; back?: boolean }
         </a>
         <nav className="ua-nav" aria-label="页面">
           {back && <a className="ua-link" href={HREF.app}>换一位来访</a>}
+          <a className="ua-link" href={HREF.me}>用户视角</a>
           <a className="ua-link" href={HREF.board}>进化看板</a>
           <ThemeToggle />
         </nav>

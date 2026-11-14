@@ -1,9 +1,9 @@
 {
-  "name": "deepsleep · 同一句心事，两次回应",
+  "name": "deepsleep · 会自己变好的睡眠管家",
   "short_name": "deepsleep",
-  "description": "deepsleep 用户端：以一位模拟来访的身份，看教练学习前后的两次回应。全部为模拟数据。",
+  "description": "deepsleep 用户端：一位来访会看到的今晚安排、和教练的对话与自评。全部为模拟数据。",
   "lang": "zh-CN",
-  "start_url": "./#/app",
+  "start_url": "./#/me",
   "scope": "./",
   "display": "standalone",
   "orientation": "portrait",

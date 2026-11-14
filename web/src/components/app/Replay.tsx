@@ -30,14 +30,17 @@ function toolSummary(result: Record<string, unknown>): string {
   return parts.join('，');
 }
 
-function StepView({ step }: { step: Step }) {
+export interface SpeakerNames { agent: string; visitor: string }
+const DEFAULT_NAMES: SpeakerNames = { agent: '教练', visitor: '来访' };
+
+function StepView({ step, names }: { step: Step; names: SpeakerNames }) {
   switch (step.kind) {
     case 'round':
       return <li className="ua-round" role="separator">第 {step.round} 轮</li>;
     case 'tool':
       return (
         <li className="ua-event">
-          教练补做了一次{label(TOOL_LABEL, step.call.tool)}
+          {names.agent}补做了一次{label(TOOL_LABEL, step.call.tool)}
           {toolSummary(step.call.result as Record<string, unknown>) && <>：{toolSummary(step.call.result as Record<string, unknown>)}</>}
         </li>
       );
@@ -53,7 +56,7 @@ function StepView({ step }: { step: Step }) {
       }
       return (
         <li className={`ua-msg ${speaker}`}>
-          <span className="ua-who">{speaker === 'agent' ? '教练' : '来访'}</span>
+          <span className="ua-who">{speaker === 'agent' ? names.agent : names.visitor}</span>
           <p>{text}</p>
         </li>
       );
@@ -63,10 +66,10 @@ function StepView({ step }: { step: Step }) {
   }
 }
 
-export function Transcript({ steps, shown, typing }: { steps: Step[]; shown: number; typing: boolean }) {
+export function Transcript({ steps, shown, typing, names = DEFAULT_NAMES }: { steps: Step[]; shown: number; typing: boolean; names?: SpeakerNames }) {
   return (
     <ol className="ua-log" aria-live="polite">
-      {steps.slice(0, shown).map((s, i) => <StepView key={i} step={s} />)}
+      {steps.slice(0, shown).map((s, i) => <StepView key={i} step={s} names={names} />)}
       {typing && (
         <li className="ua-msg agent ua-typing" aria-label="教练正在回应">
           <span className="ua-who">教练</span>

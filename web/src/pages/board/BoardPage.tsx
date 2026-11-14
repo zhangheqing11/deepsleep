@@ -40,6 +40,7 @@ export function BoardPage() {
           <ThemeToggle />
           <a className="bd-link" href={HREF.runs}>控制台</a>
           <a className="bd-link" href={HREF.app}>来访视角</a>
+          <a className="bd-link" href={HREF.me}>用户视角</a>
         </div>
       </header>
       <main className="bd-main">

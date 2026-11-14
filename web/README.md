@@ -1,12 +1,13 @@
 # web/ — deepsleep 前端
 
-React 18 + TypeScript + Vite。一个项目、三套界面：
+React 18 + TypeScript + Vite。一个项目、四套界面（后端开启登录时，都先过登录页）：
 
 | 地址 | 界面 | 内容 |
 |---|---|---|
 | `#/`（默认，未知地址也回到这里） | 进化看板 | 给评委看的一屏：阶段、主指标对比、学到了什么、怎么回退、安全线；只读，随实验自动更新 |
 | `#/console` | 开发者控制台 | 运行与报告（含最近运行、对比）、模拟来访、进化记录、调试 |
 | `#/app`、`#/app/v/:visitor_id` | 用户端：来访视角 | 以一位模拟来访的身份看同一句心事的两次回应（学习前 / 学习后）：逐句回放会谈、两场对比、来访自评；**只读实验数据，没有输入框** |
+| `#/me`、`#/me/chat`、`#/me/profile`（可带 `/v/:visitor_id`） | 用户视角 | 一位来访自己打开应用会看到的页面：今晚的安排、和教练的对话、我的自评与账号；数据是一位模拟来访与最新一版教练的会谈，**没有输入框** |
 
 旧链接 `#/runs/:run_id/sessions/:visitor_id` 仍可用；旧的 `#/app/chat`、`#/app/settings` 回到用户端首页。
 
@@ -23,7 +24,7 @@ npm run build
 
 ## 装到手机（PWA）
 
-用户端可以“添加到主屏幕”，打开后全屏显示，进入来访列表。
+用户端可以“添加到主屏幕”，打开后全屏显示，进入用户视角（`#/me`）。
 
 ```bash
 npm run build
@@ -65,7 +66,8 @@ src/
 │   ├── httpClient.ts      fetch 实现：统一错误结构、request_id、Idempotency-Key
 │   ├── mockClient.ts      前端本地模拟适配器
 │   ├── errors.ts          ApiError：network / http / invalid_response / aborted
-│   └── requestLog.ts      调试页用的请求记录（仅内存）
+│   ├── requestLog.ts      调试页用的请求记录（仅内存）
+│   └── auth.ts            登录状态：/auth/me、/auth/login、/auth/logout；令牌只放 sessionStorage，不进请求记录
 ├── hooks/
 │   ├── useConsoleRun.ts   控制台“当前运行”状态，切换控制台页面时轮询不中断
 │   ├── useRunPoller.ts    1 秒串行轮询；终态停止；卸载 abort；网络失败退避
@@ -78,6 +80,8 @@ src/
 ├── pages/board/           BoardPage（进化看板外壳：顶栏、数据来源与连接状态）
 ├── pages/console/         RunsPage、VisitorsPage、EvolutionPage（后端只读数据）、DebugPage
 ├── pages/app/             UserApp（来访列表、来访页：会谈 / 对比 / 自评）
+├── pages/me/              MeApp（用户视角：今晚 / 对话 / 我的）
+├── pages/auth/            LoginPage
 ├── components/            评测流程组件（RunLauncher、RunProgress、ReportView、SessionList、SessionView）与 console/ 子组件
 ├── components/board/      看板的纯展示组件：只吃一份 BoardData，不发请求
 ├── components/app/        用户端的纯展示组件：会谈记录、收尾、两场对比、自评
@@ -85,7 +89,9 @@ src/
 ├── styles.css             颜色变量（日间 / 夜间可手动切换）、内置字体与基础组件
 ├── shell.css              控制台外壳样式
 ├── board.css              进化看板样式
-└── app.css                用户端样式
+├── app.css                来访视角样式（会谈、计划、自评的样式也被用户视角复用）
+├── me.css                 用户视角样式
+└── login.css              登录页样式
 ```
 
 ## 约定
@@ -101,6 +107,8 @@ src/
 - 会谈记录里没有“哪一句出自哪条规则”，用户端只并列展示新规则与两场会谈的差别，不做逐句归因。
 - 自评页只展示模拟来访的作答。PHQ-9、GAD-7 用通行中文版题目；ISI、STOP-Bang 有版权，只概括每题看什么。题目与说明待按 BACKLOG B3 审定。
 - 外观偏好（深浅色）只保存在本机浏览器。
+- **登录**：进入页面时先问 `GET /auth/me`。后端没开登录（`API_AUTH_MODE=none`，默认）时不出现登录页；开启（`demo`）后三套界面都先登录，令牌放 `sessionStorage`，随每个请求以 `Authorization: Bearer` 发出；任何接口返回 `AUTH_REQUIRED` / `INVALID_TOKEN` / `TOKEN_EXPIRED` 都会清掉令牌回到登录页（后端重启后令牌失效属于这种情况）。账号由启动后端的人用环境变量设置，前端没有注册入口，账号密码不落盘、不进调试页的请求记录。前端本地模拟（mock 适配器）没有登录。
+- 用户视角与来访视角读的是同一份会谈：默认进入第一位没有触发安全线、和最新一版教练谈过的来访，页面顶部始终标明这是哪位模拟来访的数据。
 
 ## 进化后台入口
 
@@ -144,6 +152,7 @@ src/
 ```bash
 npm run test:board   # 聚合缓存、结论推导、图表与各阶段静态渲染；无浏览器或模型调用
 npm run test:app     # 用户端：会谈配对、逐步回放、对比与自评的静态渲染；措辞边界
+npm run test:auth    # 登录状态机（假 fetch）、令牌存放、登录页与用户视角的静态渲染
 ```
 
 交叉评审的其他待修项与给 Claude 的分批任务见 [reviews/CROSS_REVIEW_FIXES.md](reviews/CROSS_REVIEW_FIXES.md)。
@@ -160,5 +169,5 @@ npm run test:app     # 用户端：会谈配对、逐步回放、对比与自评
 
 ```bash
 npm run test:read-api  # 使用已有 Vite + Node test；适配器、轮询、静态渲染回归，无浏览器或模型调用
-npm run typecheck && npm run build && npm run test:sw && npm run test:board && npm run test:app
+npm run typecheck && npm run build && npm run test:sw && npm run test:board && npm run test:app && npm run test:auth
 ```
