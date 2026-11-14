@@ -2,6 +2,7 @@ import type { ReactNode } from 'react';
 import type { HealthResponse } from '../api/draftTypes';
 import { DataSourceBanner } from '../components/DataSourceBanner';
 import { HealthBar } from '../components/HealthBar';
+import { DevconsoleNavLink } from '../components/console/DevconsoleNavLink';
 import type { AdapterKind } from '../config';
 import { HREF, type ConsoleRoute } from '../hooks/useHashRoute';
 import type { ResourceState } from '../hooks/useResource';
@@ -59,6 +60,8 @@ export function ConsoleLayout({
             </a>
           );
         })}
+        <div className="nav-sep" role="presentation" />
+        <DevconsoleNavLink />
       </nav>
       <main className="console-sheet">
         <DataSourceBanner adapter={adapter} mode={health.status === 'ok' ? health.data.execution_mode : null} unavailable={health.status === 'error'} />
