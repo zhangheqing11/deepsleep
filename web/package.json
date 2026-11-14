@@ -10,6 +10,7 @@
     "test:read-api": "node --test tests/read-api.test.mjs",
     "test:sw": "node --test tests/sw.test.mjs",
     "test:board": "node --test tests/board.test.mjs",
+    "test:app": "node --test tests/app.test.mjs",
     "build": "tsc --noEmit -p tsconfig.json && vite build",
     "preview": "vite preview",
     "preview:lan": "vite preview --host",

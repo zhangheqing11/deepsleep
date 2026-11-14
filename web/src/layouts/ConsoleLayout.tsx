@@ -49,8 +49,8 @@ export function ConsoleLayout({
           <a className="quiet-link small" href={HREF.board}>
             ← 进化看板
           </a>
-          <a className="quiet-link small" href={HREF.chat}>
-            用户端演示 →
+          <a className="quiet-link small" href={HREF.app}>
+            来访视角 →
           </a>
         </div>
       </header>

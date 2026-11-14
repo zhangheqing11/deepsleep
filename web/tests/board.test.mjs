@@ -86,7 +86,7 @@ test('进化看板：聚合、结论与各阶段展示', async (t) => {
       assert.equal(parseRoute('#/console').name, 'console-runs');
       assert.equal(parseRoute('#/console/evolution').name, 'console-evolution');
       assert.deepEqual(parseRoute('#/runs/r1/sessions/A-001'), { name: 'console-session', runId: 'r1', visitorId: 'A-001' });
-      assert.equal(parseRoute('#/app/chat').name, 'app-chat');
+      assert.equal(parseRoute('#/app/chat').name, 'app-home');
     });
 
     await t.test('完成的报告和进化记录只读一次，版本按序排列', async () => {

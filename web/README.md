@@ -6,9 +6,9 @@ React 18 + TypeScript + Vite。一个项目、三套界面：
 |---|---|---|
 | `#/`（默认，未知地址也回到这里） | 进化看板 | 给评委看的一屏：阶段、主指标对比、学到了什么、怎么回退、安全线；只读，随实验自动更新 |
 | `#/console` | 开发者控制台 | 运行与报告（含最近运行、对比）、模拟来访、进化记录、调试 |
-| `#/app/chat`、`#/app/settings` | 用户端交互演示 | 聊一聊、我的；**固定示例内容，未连接模型** |
+| `#/app`、`#/app/v/:visitor_id` | 用户端：来访视角 | 以一位模拟来访的身份看同一句心事的两次回应（学习前 / 学习后）：逐句回放会谈、两场对比、来访自评；**只读实验数据，没有输入框** |
 
-旧链接 `#/runs/:run_id/sessions/:visitor_id` 仍可用。
+旧链接 `#/runs/:run_id/sessions/:visitor_id` 仍可用；旧的 `#/app/chat`、`#/app/settings` 回到用户端首页。
 
 ## 启动
 
@@ -23,7 +23,7 @@ npm run build
 
 ## 装到手机（PWA）
 
-用户端可以“添加到主屏幕”，打开后全屏显示，进入“聊一聊”。
+用户端可以“添加到主屏幕”，打开后全屏显示，进入来访列表。
 
 ```bash
 npm run build
@@ -65,26 +65,27 @@ src/
 │   ├── httpClient.ts      fetch 实现：统一错误结构、request_id、Idempotency-Key
 │   ├── mockClient.ts      前端本地模拟适配器
 │   ├── errors.ts          ApiError：network / http / invalid_response / aborted
-│   ├── requestLog.ts      调试页用的请求记录（仅内存）
-│   └── chatDemo.ts        ⚠ 用户端聊天演示剧本（固定回复，接口形状为前端占位草案）
+│   └── requestLog.ts      调试页用的请求记录（仅内存）
 ├── hooks/
 │   ├── useConsoleRun.ts   控制台“当前运行”状态，切换控制台页面时轮询不中断
-│   ├── useChat.ts         演示聊天：发送中 / 失败重试（同一消息 ID）/ 反馈 / 建议 / 记忆确认
 │   ├── useRunPoller.ts    1 秒串行轮询；终态停止；卸载 abort；网络失败退避
 │   ├── useCreateRun.ts    幂等提交：网络失败后重试复用同一个 key
 │   ├── useRunData.ts      health / 报告（409 重试）/ 会谈列表 / 单个会谈
 │   ├── useBoard.ts        看板读取循环：任何失败都不停止，失败期间保留上一份数据
+│   ├── useReplay.ts       用户端读取循环（实验在跑时跟着刷新）与会谈缓存
 │   └── useResource.ts     可取消的一次性请求
-├── layouts/               ConsoleLayout（外框 + 左侧导航）、AppLayout（手机宽度 + 底部两项导航）
+├── layouts/               ConsoleLayout（外框 + 左侧导航）
 ├── pages/board/           BoardPage（进化看板外壳：顶栏、数据来源与连接状态）
 ├── pages/console/         RunsPage、VisitorsPage、EvolutionPage（后端只读数据）、DebugPage
-├── pages/app/             ChatPage、SettingsPage
+├── pages/app/             UserApp（来访列表、来访页：会谈 / 对比 / 自评）
 ├── components/            评测流程组件（RunLauncher、RunProgress、ReportView、SessionList、SessionView）与 console/ 子组件
 ├── components/board/      看板的纯展示组件：只吃一份 BoardData，不发请求
-├── lib/                   存储、格式化、中文文案；board.ts 是看板的数据聚合与结论推导；userDemoStore.ts 是用户端演示的本机偏好与记忆
+├── components/app/        用户端的纯展示组件：会谈记录、收尾、两场对比、自评
+├── lib/                   存储、格式化、中文文案；board.ts 是看板的数据聚合与结论推导；replay.ts 是用户端的会谈配对与逐步回放；scales.ts 是量表说明与题目；appearance.ts 是本机外观偏好
 ├── styles.css             颜色变量（日间 / 夜间可手动切换）、内置字体与基础组件
-├── shell.css              控制台外壳与用户端样式
-└── board.css              进化看板样式
+├── shell.css              控制台外壳样式
+├── board.css              进化看板样式
+└── app.css                用户端样式
 ```
 
 ## 约定
@@ -95,8 +96,11 @@ src/
 - 进化记录从后端读取，默认最新一条；进行中轮询状态，审核倒计时使用 `review.deadline`。版本历史、任意两版差异与正文只读展示，不发起学习或回滚。
 - 最近运行优先读取 `GET /runs?limit=50`；读取失败时明确提示并显示本机最近 20 条缓存。当前实验每秒串行轮询，done/failed 停止；重新查询可读取新实验。
 - 实验完成后一键按“运行 1 / 对照 / 运行 2”对比。差值为运行 2 减对照，比例用百分点；任一值为 null 显示“暂无”。不同分组或相同 run_id 会提示，不把较好数值当作学习效果结论。
-- 用户端演示只能选择预设消息，不开放自由输入：自由输入属于真实用户数据，且演示没有安全层，待团队决定并接入后端聊天接口后再开放。
-- 用户端偏好和“我记住的事”只保存在本机浏览器；导出、删除数据等按钮标为“待接入”。
+- 用户端没有输入框，也不生成任何教练的话：页面上的人只是替模拟来访把会谈记录里的下一句“说出来”，教练、来访、安全层的每一句都原样来自 `GET /runs/{id}/sessions/{visitor}`。开放自由输入仍需团队决定并接入后端聊天接口与安全层。
+- 学习前取对照、学习后取运行 2（同一批来访）；对照没跑完时退到运行 1。两侧手册版本相同时称“对照 / 运行 2”，并说明差别不是学习的结果。
+- 会谈记录里没有“哪一句出自哪条规则”，用户端只并列展示新规则与两场会谈的差别，不做逐句归因。
+- 自评页只展示模拟来访的作答。PHQ-9、GAD-7 用通行中文版题目；ISI、STOP-Bang 有版权，只概括每题看什么。题目与说明待按 BACKLOG B3 审定。
+- 外观偏好（深浅色）只保存在本机浏览器。
 
 ## 进化后台入口
 
@@ -138,7 +142,8 @@ src/
 - 第一屏是结论、主对比、学到了什么、回退与安全线；轨迹与证据在往下滚动的第二屏。
 
 ```bash
-npm run test:board     # 聚合缓存、结论推导、图表与各阶段静态渲染；无浏览器或模型调用
+npm run test:board   # 聚合缓存、结论推导、图表与各阶段静态渲染；无浏览器或模型调用
+npm run test:app     # 用户端：会谈配对、逐步回放、对比与自评的静态渲染；措辞边界
 ```
 
 交叉评审的其他待修项与给 Claude 的分批任务见 [reviews/CROSS_REVIEW_FIXES.md](reviews/CROSS_REVIEW_FIXES.md)。
@@ -155,5 +160,5 @@ npm run test:board     # 聚合缓存、结论推导、图表与各阶段静态�
 
 ```bash
 npm run test:read-api  # 使用已有 Vite + Node test；适配器、轮询、静态渲染回归，无浏览器或模型调用
-npm run typecheck && npm run build && npm run test:sw && npm run test:board
+npm run typecheck && npm run build && npm run test:sw && npm run test:board && npm run test:app
 ```

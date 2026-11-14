@@ -4,7 +4,7 @@ import { useBoard } from '../../hooks/useBoard';
 import { HREF } from '../../hooks/useHashRoute';
 import { Moon } from '../../layouts/ConsoleLayout';
 import { EMPTY_BOARD } from '../../lib/board';
-import { setThemeChoice, useSavedPreferences } from '../../lib/userDemoStore';
+import { isDark, setThemeChoice, useAppearance } from '../../lib/appearance';
 import '../../board.css';
 
 function clock(ms: number): string {
@@ -12,8 +12,7 @@ function clock(ms: number): string {
 }
 
 function ThemeToggle() {
-  const theme = useSavedPreferences().appearance.theme;
-  const dark = theme === 'dark' || (theme === 'system' && typeof window !== 'undefined' && window.matchMedia('(prefers-color-scheme: dark)').matches);
+  const dark = isDark(useAppearance());
   return (
     <button type="button" className="bd-link" onClick={() => setThemeChoice(dark ? 'light' : 'dark')}>
       {dark ? '切到浅色' : '切到深色'}
@@ -40,7 +39,7 @@ export function BoardPage() {
           {!error && updatedAt !== null && <span className="bd-fresh">更新于 {clock(updatedAt)}</span>}
           <ThemeToggle />
           <a className="bd-link" href={HREF.runs}>控制台</a>
-          <a className="bd-link" href={HREF.chat}>用户端演示</a>
+          <a className="bd-link" href={HREF.app}>来访视角</a>
         </div>
       </header>
       <main className="bd-main">

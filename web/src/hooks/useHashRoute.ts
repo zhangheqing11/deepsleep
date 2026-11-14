@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 // 三套界面共用一个 hash 路由：
 //   #/             进化看板（评委看的首页；未知地址也回到这里）
 //   #/console/...  开发者控制台
-//   #/app/...      用户端交互演示
+//   #/app/...      用户端：以一位模拟来访的身份看两场会谈
 // 旧链接 #/runs/:id/sessions/:vid 仍然可用。
 
 export type ConsoleRoute =
@@ -13,7 +13,8 @@ export type ConsoleRoute =
   | { name: 'console-evolution' }
   | { name: 'console-debug' };
 
-export type UserRoute = { name: 'app-chat' } | { name: 'app-settings' };
+export type VisitorTab = 'talk' | 'compare' | 'scales';
+export type UserRoute = { name: 'app-home' } | { name: 'app-visitor'; visitorId: string; tab: VisitorTab };
 
 export type BoardRoute = { name: 'board' };
 
@@ -37,6 +38,12 @@ export function parseRoute(hash: string): Route {
     if (runId && visitorId) return { name: 'console-session', runId, visitorId };
   }
 
+  const visitor = path.match(/^\/app\/v\/([^/]+)(?:\/(compare|scales))?$/);
+  if (visitor) {
+    const visitorId = safeDecode(visitor[1]);
+    if (visitorId) return { name: 'app-visitor', visitorId, tab: (visitor[2] as VisitorTab | undefined) ?? 'talk' };
+  }
+
   switch (path) {
     case '/console':
     case '/console/runs':
@@ -47,11 +54,11 @@ export function parseRoute(hash: string): Route {
       return { name: 'console-evolution' };
     case '/console/debug':
       return { name: 'console-debug' };
+    // 旧的用户端地址（聊一聊、我的）都回到用户端首页
     case '/app':
     case '/app/chat':
-      return { name: 'app-chat' };
     case '/app/settings':
-      return { name: 'app-settings' };
+      return { name: 'app-home' };
     default:
       return { name: 'board' };
   }
@@ -63,16 +70,19 @@ export const HREF = {
   visitors: '#/console/visitors',
   evolution: '#/console/evolution',
   debug: '#/console/debug',
-  chat: '#/app/chat',
-  settings: '#/app/settings',
+  app: '#/app',
 };
 
 export function sessionHref(runId: string, visitorId: string): string {
   return `#/console/runs/${encodeURIComponent(runId)}/sessions/${encodeURIComponent(visitorId)}`;
 }
 
+export function visitorHref(visitorId: string, tab: VisitorTab = 'talk'): string {
+  return `#/app/v/${encodeURIComponent(visitorId)}${tab === 'talk' ? '' : `/${tab}`}`;
+}
+
 export function isUserRoute(r: Route): r is UserRoute {
-  return r.name === 'app-chat' || r.name === 'app-settings';
+  return r.name === 'app-home' || r.name === 'app-visitor';
 }
 
 export function useHashRoute(): Route {
