@@ -9,7 +9,6 @@ import asyncio
 from contextlib import contextmanager
 from dataclasses import replace
 from datetime import datetime
-import fcntl
 import json
 import os
 from pathlib import Path
@@ -28,6 +27,7 @@ from .evolve.config import load_config as evolve_config
 from .evolve.pipeline import evolve
 from .evolve.reflector import load_sessions, load_traces
 from .evolve.repo import PlaybookRepo
+from .file_lock import file_lock
 from .playbook import Playbook, parse_sections
 from .run import build_deps, build_report, load_visitors
 from .session import SessionRunner
@@ -70,15 +70,11 @@ def command_lock():
     """Avoid two operator commands racing the latest manifest or playbook repo."""
     directory = VAR_DIR / "demo"
     directory.mkdir(parents=True, exist_ok=True)
-    with (directory / ".lock").open("a") as stream:
-        try:
-            fcntl.flock(stream, fcntl.LOCK_EX | fcntl.LOCK_NB)
-        except BlockingIOError:
-            raise ValueError("另一个 demo 命令正在运行") from None
-        try:
+    try:
+        with file_lock(directory / ".lock", blocking=False):
             yield
-        finally:
-            fcntl.flock(stream, fcntl.LOCK_UN)
+    except BlockingIOError:
+        raise ValueError("另一个 demo 命令正在运行") from None
 
 
 def save_manifest(manifest):

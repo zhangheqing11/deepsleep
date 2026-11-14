@@ -20,5 +20,15 @@ def offline(monkeypatch):
     def forbidden(*args, **kwargs):
         raise AssertionError("Tests must not access the network")
 
-    monkeypatch.setattr(socket.socket, "connect", forbidden)
+    # On Windows asyncio implements socket.socketpair() with a localhost
+    # connect. Block external network access while allowing that loop
+    # bootstrap connection so async tests can run on both platforms.
+    def guarded_connect(sock, address):
+        host = address[0] if isinstance(address, tuple) else ""
+        if host in ("127.0.0.1", "::1", "localhost"):
+            return original_connect(sock, address)
+        return forbidden(sock, address)
+
+    original_connect = socket.socket.connect
+    monkeypatch.setattr(socket.socket, "connect", guarded_connect)
     monkeypatch.setattr(socket.socket, "connect_ex", forbidden)
