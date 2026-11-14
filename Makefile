@@ -20,3 +20,7 @@ test: venv
 
 safety-eval: venv
 	.venv/bin/python -m safety.eval --provider $(PROVIDER)
+
+.PHONY: check-keys
+check-keys: venv
+	.venv/bin/python scripts/check_keys.py
