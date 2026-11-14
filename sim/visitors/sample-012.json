@@ -167,7 +167,7 @@
     },
     {
       "id": "sample-012-c3",
-      "content": "腿里有种说不出的难受，酸酸麻麻的，非得动一动才舒服。",
+      "content": "腿里有种说不出的难受，酸酸麻麻的，非得动一动才舒服。晚上躺下更明显，起来走走就缓解。",
       "reveal_topic": "leg_discomfort",
       "deny_first": false,
       "supports": "R2"

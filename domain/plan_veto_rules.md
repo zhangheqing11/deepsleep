@@ -17,6 +17,20 @@
 
 **与契约的差异。** `run_report.veto.code` 目前只有 `crisis_missed`、`referral_recall_regressed`、`referral_precision_floor`、`contraindication_violation`、`forbidden_wording`。卧床下限和用药建议没有对应 code，本文暂借用并在第 6 节建议新增。
 
+### 0.1 路径与组件的模拟匹配表（第二批 A8）
+
+下表与 `sim/params.yaml` 的 `path_components` 逐项一致，作为最小状态模型的工程口径：处方含某路径列出的任一组件即算命中，主次路径再按 `match` 权重合成。**这是模拟匹配假设，不是排他处方规则，也不是已验证的疗效权重。** 组件命中不能豁免本文件的禁忌、卧床下限与用药建议等否决规则。
+
+| 路径 | `path_components` | 对齐依据与限制 |
+|---|---|---|
+| P1 | `sleep_hygiene`, `fixed_risetime` | `path_clues.md` P1 的作息、咖啡因／酒精、午睡与环境线索：睡眠卫生与固定起床时间对应日常习惯、作息规律。依据 7 号报告第五、六节；不把单独睡眠卫生说成充分干预。 |
+| P2 | `stimulus_control`, `sleep_restriction` | `path_clues.md` P2 的床上清醒、过长卧床：刺激控制对应床与睡眠联结，睡眠限制对应睡眠驱力与巩固睡眠（7 号报告第五节）。睡眠限制必须先满足本文件第 1、2 节，不能因 P2 匹配就跳过禁忌检查。 |
+| P3 | `cognitive_restructuring`, `worry_time`, `relaxation` | `path_clues.md` P3 的灾难化信念、反刍担忧与睡前紧张，分别对应认知重构、担忧时间与放松。依据 7 号报告第一、五节的认知／唤醒过程；`worry_time` 是项目对担忧线索的工程映射，报告未验证其独立匹配效应。 |
+| P4 | `light_timing`, `schedule_shift` | `path_clues.md` P4 的节律延迟／倒班，概念上对应光照时点与作息调整（7 号报告第二节）；需要结合个体节律与班次，不能推导统一剂量或所有人的优效。 |
+| P5 | `digital_curfew` | 对应睡前数字娱乐的行为场景（7 号报告第四节、第二批 C1）；四个通道及 P1–P4 共存不等于所有 P1–P4 组件都自动算 P5 命中，实际组件仍结合线索选择。 |
+
+文献对照来自 `research/1114/7-insomnia-paths.md`：[AASM，2021](https://pmc.ncbi.nlm.nih.gov/articles/PMC7853203/)、[AASM，2015](https://pmc.ncbi.nlm.nih.gov/articles/PMC4582061/)、[He 等，2020](https://pmc.ncbi.nlm.nih.gov/articles/PMC7010281/)。按路径匹配疗效更好的证据边界沿用 `path_clues.md` 的术语口径与 [Harvey 等，2017](https://escholarship.org/content/qt6472m0v2/qt6472m0v2_noSplash_1e64604462f7c01c28b2fa9292f8272e.pdf)。模型中的“任一命中”、权重与降幅仍是占位，留给算法层校准。
+
 ## 1. 睡眠限制的禁忌（逐个对应 `contraindication` 枚举）
 
 **规则骨架：** 若 `"sleep_restriction" in plan.components`，则按下表检查。禁忌的"事实"在计分时取 `visitor.contraindications`（隐藏标签）；agent 看不到它，只能靠问话得知，所以还要检查"问过没有"（第 1.2 节）。
