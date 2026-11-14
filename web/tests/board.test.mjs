@@ -248,6 +248,13 @@ test('进化看板：聚合、结论与各阶段展示', async (t) => {
       assert.match(row, /dot base/);
     });
 
+    await t.test('版本没有提交哈希（模拟数据源的初始版本 sha 为 null）：显示“—”，整页不崩', () => {
+      const noSha = versions.map((v) => (v.version === 'v1' ? { ...v, sha: null } : v));
+      const page = html(full({ versions: [...noSha].reverse() }));
+      assert.match(page, /<code>—<\/code>/);
+      assert.match(page, /<code>c2a4e6b8<\/code>/);
+    });
+
     await t.test('证据接口字段未冻结：结构不对就当作没有', async () => {
       const raw = { contract: false, visitors: [], summary: { by_step: [
         { round: 2, step: 1, n: 6, mean_p_true: 0.4 }, { round: 1, step: 2, n: 6, mean_p_true: 0.3 }, { round: 1, step: 1, n: 6, mean_p_true: 0.2 }] } };

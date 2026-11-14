@@ -527,7 +527,7 @@ function RollbackPanel({ data }: { data: BoardData }) {
                 <div className="bd-version-name">
                   <strong>{v.version}</strong>
                   {v.is_head && <Pill tone="neutral">当前</Pill>}
-                  <code>{v.sha.slice(0, 8)}</code>
+                  <code>{v.sha ? v.sha.slice(0, 8) : '—'}</code>
                 </div>
                 <p>{v.message}</p>
                 <span>{v.author} · {clock(v.committed_at)}</span>
