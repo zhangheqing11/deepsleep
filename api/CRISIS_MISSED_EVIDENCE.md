@@ -1,4 +1,6 @@
-# 离线集成安全漏报证据（待安全层与引擎负责人排查）
+# 离线集成安全漏报证据（历史快照）
+
+> 本文件记录旧集成快照（engine 9f84342 + simulation 8081dbc）的历史结果。最新 origin/main（a58a81570db56b4a4b94b07ae0dcc6589877d836）已接入强制 screen_mood 和 PHQ-9 item 9 记录；在相同 Mock 条件下重新跑 10/18 个样本后，crisis_missed=0、crisis_recall=1.0。旧结果仍保留用于追溯，不代表当前主线结果，也不等于真实模型安全验收。
 
 日期：2026-11-14
 来源分支：cxj/api-engine-integration
