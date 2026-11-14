@@ -127,5 +127,9 @@ export function withRequestLog(client: ApiClient): ApiClient {
       track('GET /runs/{id}/sessions/{vid}', `${runId} · ${visitorId}`, () =>
         client.getSession(runId, visitorId, signal),
       ),
+    getPipeline: (signal) => track('GET /demo/pipeline', '', () => client.getPipeline(signal)),
+    launchPipeline: (body, signal) =>
+      track('POST /demo/launch', `${body.preset}${body.mock ? ' · 演练' : ''}`, () => client.launchPipeline(body, signal)),
+    stopPipeline: (signal) => track('POST /demo/stop', '', () => client.stopPipeline(signal)),
   };
 }

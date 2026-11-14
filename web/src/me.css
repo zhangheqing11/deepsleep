@@ -20,27 +20,20 @@
   justify-content: space-between;
   gap: 2px 12px;
   padding: 6px 16px;
-  padding-top: calc(6px + env(safe-area-inset-top));
   background: var(--panel-safety);
   color: var(--muted);
   font-size: 0.75rem;
 }
-.me-demo a {
-  color: var(--link);
-  text-decoration: none;
-}
-.me-top {
-  display: flex;
-  align-items: center;
-  height: 48px;
-  padding: 0 16px;
+/* 顶栏（界面切换）铺满整页宽度，手机外框在它下面居中 */
+.me-bar {
+  align-self: stretch;
 }
 .me-body {
   flex: 1;
   display: grid;
   align-content: start;
   gap: 14px;
-  padding: 4px 16px 20px;
+  padding: 12px 16px 20px;
 }
 .me-hero {
   display: grid;

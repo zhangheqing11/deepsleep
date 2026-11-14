@@ -2,8 +2,7 @@ import { describeError } from '../../api/errors';
 import { EvolutionBoard } from '../../components/board/Board';
 import { SignOutButton } from '../../components/SignOutButton';
 import { useBoard } from '../../hooks/useBoard';
-import { HREF } from '../../hooks/useHashRoute';
-import { Moon } from '../../layouts/ConsoleLayout';
+import { BrandLink, SurfaceName, SurfaceNav } from '../../components/SurfaceNav';
 import { EMPTY_BOARD } from '../../lib/board';
 import { isDark, setThemeChoice, useAppearance } from '../../lib/appearance';
 import '../../board.css';
@@ -27,11 +26,11 @@ export function BoardPage() {
   return (
     <div className="bd">
       <header className="bd-bar">
-        <a className="bd-brand" href={HREF.board}>
-          <Moon size={20} />
-          <span>deepsleep</span>
-        </a>
-        <span className="bd-scope">会自己改写 playbook 的睡眠管家</span>
+        <div className="sf-left">
+          <BrandLink className="bd-brand" />
+          <SurfaceName surface="board" />
+          <SurfaceNav current="board" />
+        </div>
         <div className="bd-bar-right" aria-live="polite">
           {data?.mock && <span className="bd-pill bd-pill-warning">模拟数据，不代表真实学习效果</span>}
           {error && updatedAt !== null && (
@@ -39,9 +38,6 @@ export function BoardPage() {
           )}
           {!error && updatedAt !== null && <span className="bd-fresh">更新于 {clock(updatedAt)}</span>}
           <ThemeToggle />
-          <a className="bd-link" href={HREF.runs}>控制台</a>
-          <a className="bd-link" href={HREF.app}>来访视角</a>
-          <a className="bd-link" href={HREF.me}>用户视角</a>
           <SignOutButton className="bd-link" />
         </div>
       </header>

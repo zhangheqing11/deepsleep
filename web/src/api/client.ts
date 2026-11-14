@@ -13,6 +13,7 @@ import type {
 } from './draftTypes';
 
 import type { RunListItem, ExperimentResponse, RunEvidence, EvolutionListItem, EvolutionStatus, EvolutionInsights, PlaybookVersion, Playbook, PlaybookDiff } from './extensionTypes';
+import type { PipelineLaunchRequest, PipelineLaunchResponse, PipelineResponse, PipelineStopResponse } from './extensionTypes';
 
 export interface ApiClient {
   readonly adapter: AdapterKind;
@@ -41,4 +42,8 @@ export interface ApiClient {
   getReport(runId: string, signal?: AbortSignal): Promise<RunReport>;
   listSessions(runId: string, signal?: AbortSignal): Promise<ListResponse<SessionListItem>>;
   getSession(runId: string, visitorId: string, signal?: AbortSignal): Promise<Session>;
+  /** 全链路演示（api/PIPELINE_API.md，非契约） */
+  getPipeline(signal?: AbortSignal): Promise<PipelineResponse>;
+  launchPipeline(body: PipelineLaunchRequest, signal?: AbortSignal): Promise<PipelineLaunchResponse>;
+  stopPipeline(signal?: AbortSignal): Promise<PipelineStopResponse>;
 }

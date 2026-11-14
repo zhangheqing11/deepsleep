@@ -20,6 +20,7 @@ import type { ApiClient } from './client';
 import type { Evolution, RunReport, Session } from './contractTypes';
 import type { CreateRunRequest, RunStatusResponse, SessionListItem } from './draftTypes';
 import { ApiError } from './errors';
+import { MOCK_PIPELINE } from './mockPipeline';
 
 export type MockScenario = 'normal' | 'fail' | 'report_delay' | 'network_flaky';
 
@@ -389,6 +390,17 @@ export const mockClient: ApiClient = {
       };
     });
     return { items };
+  },
+
+  // 全链路演示：固定快照，不随时间推进；本地模拟没有后端，不能启动或停止。
+  async getPipeline(signal) { await latency(signal); return clone(MOCK_PIPELINE); },
+  async launchPipeline(_body, signal) {
+    await latency(signal);
+    throw httpError(501, 'RUNS_VIA_CLI', '模拟数据模式下不能启动或停止全链路：前端本地模拟没有连接后端。');
+  },
+  async stopPipeline(signal) {
+    await latency(signal);
+    throw httpError(501, 'RUNS_VIA_CLI', '模拟数据模式下不能启动或停止全链路：前端本地模拟没有连接后端。');
   },
 
   async getSession(runId, visitorId, signal) {

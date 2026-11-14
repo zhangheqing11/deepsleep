@@ -2,7 +2,7 @@ import { useState, type FormEvent } from 'react';
 import { registrationProblem, signIn, signUp, type AuthState } from '../../api/auth';
 import { describeError, toApiError, type ApiError } from '../../api/errors';
 import { HREF } from '../../hooks/useHashRoute';
-import { Moon } from '../../layouts/ConsoleLayout';
+import { Moon } from '../../components/SurfaceNav';
 import '../../login.css';
 
 const REASON: Record<Extract<AuthState, { state: 'signed-out' }>['reason'], string | null> = {

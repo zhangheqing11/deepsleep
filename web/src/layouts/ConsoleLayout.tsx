@@ -4,24 +4,19 @@ import { DataSourceBanner } from '../components/DataSourceBanner';
 import { HealthBar } from '../components/HealthBar';
 import { DevconsoleNavLink } from '../components/console/DevconsoleNavLink';
 import { SignOutButton } from '../components/SignOutButton';
+import { BrandLink, SurfaceName, SurfaceNav } from '../components/SurfaceNav';
 import type { AdapterKind } from '../config';
 import { HREF, type ConsoleRoute } from '../hooks/useHashRoute';
 import type { ResourceState } from '../hooks/useResource';
 
-const NAV: { key: ConsoleRoute['name'][]; href: string; label: string }[] = [
+/** 控制台侧栏：只放控制台自己的页面；跨界面的切换在顶栏 */
+export const CONSOLE_NAV: { key: ConsoleRoute['name'][]; href: string; label: string }[] = [
+  { key: ['console-pipeline'], href: HREF.pipeline, label: '全链路演示' },
   { key: ['console-runs', 'console-session'], href: HREF.runs, label: '运行与报告' },
   { key: ['console-visitors'], href: HREF.visitors, label: '模拟来访' },
   { key: ['console-evolution'], href: HREF.evolution, label: '进化记录' },
   { key: ['console-debug'], href: HREF.debug, label: '调试与日志' },
 ];
-
-export function Moon({ size = 22 }: { size?: number }) {
-  return (
-    <svg className="mark" viewBox="0 0 32 32" width={size} height={size} aria-hidden="true">
-      <path d="M20 4a12 12 0 1 0 8 20A10 10 0 0 1 20 4z" fill="currentColor" />
-    </svg>
-  );
-}
 
 /** 控制台外壳：窄侧栏 + 一整块连续的白色工作区 */
 export function ConsoleLayout({
@@ -39,28 +34,22 @@ export function ConsoleLayout({
 }) {
   return (
     <div className="console">
-      <a className="console-brand" href={HREF.runs}>
-        <Moon size={20} />
-        <span>deepsleep</span>
-      </a>
+      <BrandLink className="console-brand" />
       <header className="console-bar">
-        <span className="small muted">开发者控制台</span>
+        <div className="sf-left">
+          <SurfaceName surface="console" />
+          <SurfaceNav current="console" />
+        </div>
         <div className="row">
           <HealthBar adapter={adapter} health={health} onRetry={onRetryHealth} />
-          <a className="quiet-link small" href={HREF.board}>
-            ← 进化看板
-          </a>
-          <a className="quiet-link small" href={HREF.app}>
-            来访视角 →
-          </a>
           <SignOutButton className="quiet-btn small" />
         </div>
       </header>
       <nav className="console-nav" aria-label="控制台导航">
-        {NAV.map((n) => {
+        {CONSOLE_NAV.map((n) => {
           const active = n.key.includes(route.name);
           return (
-            <a key={n.href} href={n.href} className={active ? 'active' : ''} aria-current={active ? 'page' : undefined}>
+            <a key={n.href + n.label} href={n.href} className={active ? 'active' : ''} aria-current={active ? 'page' : undefined}>
               {n.label}
             </a>
           );

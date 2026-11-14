@@ -267,6 +267,20 @@
   gap: 14px;
   align-items: start;
 }
+/* 来访页里回到来访列表：本界面内的局部导航 */
+.ua-crumb {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0 8px;
+  margin-left: -10px;
+}
+.ua-crumb .ua-link {
+  color: var(--link);
+}
+.ua-crumb .ua-who {
+  display: inline;
+}
 .ua-opening h1 {
   margin-top: 4px;
   font-size: clamp(1.25rem, 4.4vw, 1.75rem);

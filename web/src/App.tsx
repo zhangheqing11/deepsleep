@@ -13,6 +13,7 @@ import { LoginPage } from './pages/auth/LoginPage';
 import { MeApp } from './pages/me/MeApp';
 import { DebugPage } from './pages/console/DebugPage';
 import { EvolutionPage } from './pages/console/EvolutionPage';
+import { PipelinePage } from './pages/console/PipelinePage';
 import { RunsPage } from './pages/console/RunsPage';
 import { VisitorsPage } from './pages/console/VisitorsPage';
 
@@ -25,6 +26,9 @@ function ConsoleApp({ route }: { route: ConsoleRoute }) {
 
   let page;
   switch (route.name) {
+    case 'console-pipeline':
+      page = <PipelinePage />;
+      break;
     case 'console-session':
       page = <SessionView runId={route.runId} visitorId={route.visitorId} adapter={api.adapter} mode={mode} />;
       break;

@@ -4,9 +4,9 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import { dismissWelcome, signOut, useAuth } from '../../api/auth';
 import { describeError } from '../../api/errors';
 import { Ending, IsiSpark, Scales, Transcript } from '../../components/app/Replay';
-import { HREF, meHref, visitorHref, type MeRoute, type MeTab } from '../../hooks/useHashRoute';
+import { BrandLink, SurfaceName, SurfaceNav } from '../../components/SurfaceNav';
+import { meHref, visitorHref, type MeRoute, type MeTab } from '../../hooks/useHashRoute';
 import { useCatalog, useSession } from '../../hooks/useReplay';
-import { Moon } from '../../layouts/ConsoleLayout';
 import { isDark, setThemeChoice, useAppearance } from '../../lib/appearance';
 import { CARD_LABEL, COMPONENT_LABEL, label } from '../../lib/labels';
 import { advance, buildSteps, digest, initialShown, pendingLine, type Catalog, type Side, type VisitorEntry } from '../../lib/replay';
@@ -49,14 +49,15 @@ function Frame({ children, visitorId, tab, pinned }: { children: React.ReactNode
   const id = pinned ? visitorId : null;
   return (
     <div className="ua me">
+      <header className="ua-bar me-bar">
+        <div className="sf-left">
+          <BrandLink className="ua-brand" />
+          <SurfaceName surface="me" />
+          <SurfaceNav current="me" />
+        </div>
+      </header>
       <div className="me-phone">
-        <p className="me-demo">
-          演示：这是模拟来访{visitorId ? ` ${visitorId} ` : ''}的数据
-          {visitorId && <a href={visitorHref(visitorId)}>评委怎么看这位来访</a>}
-        </p>
-        <header className="me-top">
-          <span className="ua-brand"><Moon size={20} /><span>deepsleep</span></span>
-        </header>
+        <p className="me-demo">演示：这是模拟来访{visitorId ? ` ${visitorId} ` : ''}的数据</p>
         <main className="me-body">{children}</main>
         <nav className="me-tabbar" aria-label="主导航">
           {TABS.map((t) => (
@@ -271,10 +272,6 @@ function Profile({ catalog, entry, side }: { catalog: Catalog; entry: VisitorEnt
         <ul className="me-switch">
           {others.map((v) => <li key={v.id}><a href={meHref(v.id, 'tonight')}>{v.id}{v.safety ? ' · 安全线示例' : ''}</a></li>)}
         </ul>
-        <p className="me-links">
-          <a className="ua-link" href={HREF.app}>所有来访与两次回应</a>
-          <a className="ua-link" href={HREF.board}>进化看板</a>
-        </p>
       </section>
     </>
   );
