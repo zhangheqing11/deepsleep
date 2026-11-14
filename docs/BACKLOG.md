@@ -3,17 +3,33 @@
 > **给所有 AI 会话**：开工前先扫一眼本文件，确认你要做的事有没有已定的约定。
 > 新的共识一旦形成就写进来；做完的移到文末"已完成"，并写上日期和 PR。
 > 每项写清：要做什么、为什么这样定、归到哪个 PR 或分支、前置条件、谁来做。
-> 维护人：统筹同学（harness 组）。最后更新：2026-11-14 午。
+> 维护人：统筹同学（harness 组）。最后更新：2026-11-14 晚（集成）。
 
-## 进行中的分支（还没合入 main）
+## 集成现状（2026-11-14 晚，集成总控会话）
 
-| 分支 | 内容 | 状态 |
+各组件已全部合入 main 并接通：**来访生成 → 编排器（会谈 + 计分 + 进化）→ 后端只读接口 → 前端控制台**。
+
+| 环节 | 现状 | PR |
 |---|---|---|
-| （待开）v0.1.1 契约修复分支 | 契约 v0.1.0 已合入 main（[PR #1](https://github.com/zhangheqing11/deepsleep/pull/1)，2026-11-14，前端组与数据科学同学已线下 approve）。校验器漏检、示例补全和字段调整（F07/F08/F16）按 [`docs/reviews/pr1-contracts-fixes.md`](reviews/pr1-contracts-fixes.md) 修，作为 `[contract]` 后续 PR | 修复已做完并复验，本地分支未 push，待 G1–G4 定案（见 G 节） |
-| `zhq/domain-safety` | 安全层：规则 + 判断器链（ds flash → Jev → 规则兜底）、history_check、定稿词表与 48 条测试集、已审定话术、热线已实测、对比工具、处方硬否决 | [PR #6](https://github.com/zhangheqing11/deepsleep/pull/6)：判断器链与热线核实已推送；按 [`reviews/pr6-safety-fixes.md`](reviews/pr6-safety-fixes.md) 修 S1–S10 中（Codex），修完复验再合并。剩 A4 阈值冻结（待留出集） |
-| `zhq/sim-scoring-min` | S2：18 个样例来访、模拟来访、筛查、4 周状态模型（占位）、计分、`make smoke`、`docs/handoff-algo.md` | 已 push（8081dbc），88 测试 + smoke 通过；未开 PR |
-| `zhq/engine-session` | S3：两轮会谈循环、接安全层、playbook v1、50 路并发；**正按 I 节三环架构改造** | 已 push（520d984），278 测试通过；未开 PR |
-| `zhq/engine-evolve` | S4：反思器、硬规则、C 门禁、只否决审核、playbook 仓库；**正按 I 节补多维评估** | 已 push（d9194c0），311 测试通过；未开 PR |
+| 来访 | `data/visitors/{A,B,C,offline}` 45/45/30/30，`python -m sim.generate`（确定性，模板占位，待数据科学同学替换）；另有进化实测用临时集 `data/visitors/interim/` | #34 #36 #35 |
+| 编排 | `python -m engine.demo reset / run1 / learn / run2 / all`；`make demo-run1`（运行 1 + 学习）、`make demo-run2`（运行 2 + 对照）、`make demo-mock`（零 API）；状态写 `var/demo/experiment.json`；读仓库根 `.env` | #33 #37 |
+| playbook 版本 | 初始版本 v1，agent 第一代 v2（`reset_to_v0` 保留为别名） | #31 |
+| 学习进度 | `var/evolve/<id>/status.json`（反思 / 候选验证 / 审核倒计时 / 提交） | #29 |
+| 后端 | `API_DATA_SOURCE=files`（默认）只读 `var/`；`/runs`、`/demo/experiment`、`/evolutions*`、`/playbook/*`、`/runs/{id}/evidence`；`POST /runs` → 501 `RUNS_VIA_CLI`；`API_SERVE_WEB=1` 同源托管 `web/dist`。规格见 `api/READ_API.md` | #38 |
+| 前端 | 默认 http；运行列表读后端；「当前实验」卡 + 三方对比；进化页读真实进化、进度与版本 diff | #39 |
+| 家居 / 日程 | 只做 mock 展示，不进会谈（团队 11/14 定）；直传文件已移到 `mocks/user_context/` | #32 |
+
+**路演启动（操作员机器）**：`cd web && npm run build`，然后 `API_DATA_SOURCE=files API_SERVE_WEB=1 .venv/bin/python -m uvicorn api.main:app --host 0.0.0.0 --port 8000`（单进程，不 --reload），浏览器开 `http://<IP>:8000/`；终端执行 `make demo-run1`、`make demo-run2`。
+
+**集成遗留**
+
+| # | 事项 | 状态 |
+|---|---|---|
+| IN1 | 单次运行耗时远超 AGENTS §2「约 1 分钟」：会谈数 = N_A + 2·N_B + (1+K)·N_C；5/5/5 真实彩排运行 1 约 2 分钟、反思器 gpt-6-astra xhigh 数分钟。需定现场规模 | 待统筹定 |
+| IN2 | 新增前端界面文字约 80 条（#39 PR 描述）未走 B 节文案流程 | 待复核 |
+| IN3 | 实验清单没写计划人数，`/runs/{id}` 的 `progress.total` 为 null | 小改，编排器 |
+| IN4 | AGENTS §3 第 8 条写反思器 Opus 5.5，main 已改为 OpenAI gpt-6-astra（#30），文档未同步 | 待统筹确认后改 AGENTS |
+| IN5 | 进化后台 devconsole（`docs/handoff-admin-dashboard.md`，另一会话）可直接复用 #38 的只读接口，不必另做 B1/B2 | 通知对应会话 |
 
 ## 并行开发计划（统筹会话 11/14 10:00 定）
 
