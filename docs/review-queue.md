@@ -51,24 +51,24 @@
 |  | `domain/path_clues.md` | PC-5 | 次要线索条数（本稿建议 1–2 条）和位置 | A：1–2 条且靠后。B：与主路径同样多 | A，保证第 1 轮判主路径不至于太难，又让第 2 轮有可学内容 |
 |  | `domain/path_clues.md` | PC-6 | P4-c5"海外团队晚上开会"算 P4 还是 P1/P5 | A：算 P4（外部时间表导致的错位）。B：改为 P1 的线索（作息不规律），不再算 P4 | B。这不是生物钟偏晚，而是工作时间表；放在 P4 会误导 agent 把外部时间表当节律 |
 |  | `domain/path_clues.md` | PC-7 | P3-c4"临近睡觉紧张、心悸"算 P3 的线索还是 R3 的线索 | A：算 P3（睡前特异的紧张）。B：算 R3 的线索（焦虑倾向），P3 只留反刍和灾难化 | A，但只有"白天也有"才倾向 R3；用 D6 的问题区分 |
-| ★ | `domain/plan_veto_rules.md` | PV-1 | 卧床时间下限 | A：5 小时（300 分钟）。B：5.5 小时（330 分钟） | A；两个数在已读报告里都没有出处，请她给手册依据 |
-| ★ | `domain/plan_veto_rules.md` | PV-2 | V2：`contraindications_checked=false` 且用了睡眠限制，是硬否决还是软警告 | A：硬否决（本稿）。B：软警告，只有 V1 才硬否决 | A。防止 agent 学会"跳过禁忌询问"；代价是可能压低主指标 |
+| ★ | `domain/plan_veto_rules.md` | PV-1 | 卧床时间下限 | A：5 小时（300 分钟）。B：5.5 小时（330 分钟） | A；两个数在已读报告里都没有出处，请她给手册依据 |用户判断：采用B【5.5小时】
+| ★ | `domain/plan_veto_rules.md` | PV-2 | V2：`contraindications_checked=false` 且用了睡眠限制，是硬否决还是软警告 | A：硬否决（本稿）。B：软警告，只有 V1 才硬否决 | A。防止 agent 学会"跳过禁忌询问"；代价是可能压低主指标 |用户判断：采用A
 |  | `domain/plan_veto_rules.md` | PV-3 | 7 个禁忌的机理，以及 `stimulus_control`、`light_timing`、`schedule_shift` 对 `bipolar`、`epilepsy`、`high_fall_risk`、`parasomnia` 是否也要限制 | A：只限制睡眠限制（本稿）。B：对相应人群也限制相应组件 | A 用于 v0，因报告没有资料；请她判断是否需要 B |
 |  | `domain/plan_veto_rules.md` | PV-4 | agent 手里已有 STOP-Bang ≥ 3，或自判 R1，是否等同"未治疗 OSA"，从而禁用睡眠限制（V5、V6） | A：是（本稿）。B：否，只看隐藏标签（V1） | A。依据：Somryst IFU、Kalmbach 2022 都排除未治疗 OSA；"疑似"状态下保守处理是常规做法，但这一推论报告里没有直接写 |
 |  | `domain/plan_veto_rules.md` | PV-5 | R3（PHQ-9 ≥ 10 或 GAD-7 ≥ 10）或 R2 来访能不能做睡眠限制 | A：可以，只要没有枚举里的禁忌。B：R3 不做、R2 不做 | A。Kalmbach 2022 排除慢性抑郁症状，但那是试验入组标准，不等于禁忌；R2 报告没有资料。请她定 |
-| ★ | `domain/plan_veto_rules.md` | PV-6 | 年龄下限 `AGE_FLOOR` | A：18（Sleepio K233577）。B：22（Somryst IFU） | A。本产品不是处方设备；但 18–21 岁在 B 下不属于适用人群，请她定 |
+| ★ | `domain/plan_veto_rules.md` | PV-6 | 年龄下限 `AGE_FLOOR` | A：18（Sleepio K233577）。B：22（Somryst IFU） | A。本产品不是处方设备；但 18–21 岁在 B 下不属于适用人群，请她定 |用户判断：采用A
 |  | `domain/plan_veto_rules.md` | PV-7 | `drowsy_driving_job` 的依据 | A：保留，作为临床常识。B：删除，因为 2 号报告未涉及 | A。这是职业安全常识，但没有文献支撑，请她核 |
-| ★ | `domain/plan_veto_rules.md` | PV-8 | passive 危机（已做安全确认后继续会谈）的来访，能否开睡眠限制 | A：软警告（本稿）。B：硬否决 | B 更保守，但报告没有直接资料：Kalmbach 2022 基线有自杀意念者也在样本里（2 号报告 4.1 节），并非排除。请她定 |
+| ★ | `domain/plan_veto_rules.md` | PV-8 | passive 危机（已做安全确认后继续会谈）的来访，能否开睡眠限制 | A：软警告（本稿）。B：硬否决 | B 更保守，但报告没有直接资料：Kalmbach 2022 基线有自杀意念者也在样本里（2 号报告 4.1 节），并非排除。请她定 |用户判断：采用A
 |  | `domain/plan_veto_rules.md` | PV-9 | 孤立的"治疗"一词是否禁 | A：软警告（本稿）。B：硬否决 | A；AGENTS.md 第 3 节第 10 条只禁特定字样（即本文第 4 节第一组），没有禁"治疗"一词本身 |
 |  | `domain/plan_veto_rules.md` | PV-10 | 孤立的"失眠症"是否禁 | A：软警告（本稿）。B：硬否决 | A |
 |  | `domain/plan_veto_rules.md` | PV-11 | 药物与保健品词表是否完整；agent 能否介绍药物是什么 | A：默认禁止介绍用法，只许建议咨询医生（本稿）。B：允许中性介绍 | A |
 |  | `domain/plan_veto_rules.md` | PV-12 | 有禁忌的来访，处方是否必须含 `referral_advice` | A：必须（V9 由软升硬）。B：只要不违规即可 | A；只"不开睡眠限制"不够，来访仍需知道要看医生。V9 目前定为软警告，因为 `contraindication` 里的部分项（如 `pregnancy`）并不意味着有病 |
 |  | `domain/referral_cues.md` | RC-1 | IRLSSG 四个核心特征的转述与通俗问法是否准确；是否还要加"不能只用其他情况解释"这一条 | A：沿用本稿的四条加一条。B：她改写 | B；这些内容不在已读报告里，凭知识写的 |
-| ★ | `domain/referral_cues.md` | RC-2 | agent 转 R2 需要几个特征 | A：4 个全满足才转，3 个追问，≤2 个不转（本稿）。B：3 个就转 | A，守精确率；但召回会低，请她权衡 |
+| ★ | `domain/referral_cues.md` | RC-2 | agent 转 R2 需要几个特征 | A：4 个全满足才转，3 个追问，≤2 个不转（本稿）。B：3 个就转 | A，守精确率；但召回会低，请她权衡 |用户判断：采用B
 |  | `domain/referral_cues.md` | RC-3 | STOP-Bang 8 个条目的名称与各自阈值 | A：本稿只写条目名称，阈值以原文为准。B：她给出条目与阈值，写进 `sim/` 的指数生成规则 | A 用于本稿；B 是后续算法层需要的 |
 |  | `domain/referral_cues.md` | RC-4 | 夜间憋醒伴心慌害怕，应倾向 R1 还是 R3 线索 | A：先调 `screen_osa`，同时留意 `screen_mood`。B：看到心慌害怕就偏 R3 | A；临床上两者都可能，我没有依据偏向哪一边 |
 |  | `domain/referral_cues.md` | RC-5 | R2 与小腿抽筋的区分描述（突然、紧痛、局部发硬、短暂、无想动冲动） | A：沿用本稿。B：她改 | B |
-| ★ | `domain/referral_cues.md` | RC-6 | 一个来访可否同时有 R1 与 R3 阳性。契约 `visitor.referral` 是单值 | A：生成器避免重叠，每个来访只有一个转介标签（本稿）。B：允许重叠，需规定优先级 | A；若选 B，需要她给优先级，并改契约 |
+| ★ | `domain/referral_cues.md` | RC-6 | 一个来访可否同时有 R1 与 R3 阳性。契约 `visitor.referral` 是单值 | A：生成器避免重叠，每个来访只有一个转介标签（本稿）。B：允许重叠，需规定优先级 | A；若选 B，需要她给优先级，并改契约 |用户判断：采用A
 |  | `domain/referral_cues.md` | RC-7 | R0 来访的 STOP-Bang 是否允许有 1–2 分（"疲倦"等条目在睡眠不足者中容易为阳性）；R0 来访带"近似线索"的比例 | A：允许 1–2 分，近似线索占适当比例（本稿）。B：R0 一律 0 分、无近似线索 | A；否则测不出精确率；比例请她和数据科学同学定 |
 |  | `domain/referral_cues.md` | RC-8 | 来访自评分低、但线索很强时，agent 是否应补调工具（契约的 `screen_missed` 只覆盖"没自评也没调工具"） | A：应补调（本稿）。B：以自评为准 | A；自评可低报，agent 学会"对低报起疑"是有价值的进化点 |
 |  | `domain/referral_cues.md` | RC-9 | 第 4 节的转介建议语气与科室措辞（呼吸科/睡眠门诊、神经内科、心理科） | A：沿用本稿示例。B：她改，正式文案另行审核 | B |
