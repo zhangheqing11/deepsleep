@@ -8,7 +8,7 @@
 | 文件 | 内容 |
 |---|---|
 | `safety/lexicon.yaml` | `explicit`（一律 `level: active`）、`ambiguous`、`exclude`（X1–X8 只排除重叠的模糊命中，X9 仅上下文提示），以及 `past_time`（同句 explicit 改道判断器）。每条 `{id, pattern(正则), level?, example}` |
-| `safety/scripts.yaml` | 固定话术：`history_check`（核验过去已结束风险当前是否仍有的兜底）、`history_verify_patterns`（核验正则表）、`safety_check`（被动意念时插入的一句安全确认）、`crisis_protocol`（主动意念时的完整话术，含热线占位 `{hotlines}`）、`hotlines` 列表 `[{name, number, hours, verified: bool}]`。文案为占位，正式文案另行审核 |
+| `safety/scripts.yaml` | 固定话术：`history_check`（核验过去已结束风险当前是否仍有的兜底）、`history_verify_patterns`（核验正则表）、`safety_check`（被动意念时插入的一句安全确认）、`crisis_protocol`（主动意念时的完整话术，含热线占位 `{hotlines}`）、`hotlines` 列表 `[{name, number, verified: bool}]`，渲染为每行"名称：号码"。话术已定稿（11/14） |
 | `safety/config.yaml` | `judge_provider: ds_flash \| jev \| gemini_decision \| startlux \| mock`、`judge_timeout_s: 2.5`、`judge_timeout_overrides: {startlux: 8.0}`（AutoThink 较慢，演示前按实测冻结）、`tau_flag`（P(passive)+P(active) ≥ 此值至少判 passive，默认 0.2）、`tau_active`（P(active) ≥ 此值判 active，默认 0.5） |
 | `safety/testset.jsonl` | 独立测试集，每行 `{id, text, label: none\|history\|passive\|active, cssrs, difficulty}`；48 条自写样本（none 21、history 3、passive 14、active 10）；不得复制公开数据或据此反复调 prompt |
 
