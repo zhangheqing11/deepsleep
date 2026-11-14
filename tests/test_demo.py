@@ -16,6 +16,7 @@ MOCK = ["--mock", "--dev", "--visitors-dir", "sim/visitors"]
 def sandbox(tmp_path, monkeypatch):
     monkeypatch.setattr(demo, "VAR_DIR", tmp_path / "var")
     monkeypatch.setattr(demo, "PLAYBOOK_REPO", tmp_path / "var/playbook-repo")
+    monkeypatch.setattr(demo, "load_dotenv", lambda *a, **k: None)  # never read the repo-root .env
     attempts = []
 
     def forbidden(*args, **kwargs):

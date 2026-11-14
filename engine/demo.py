@@ -23,7 +23,7 @@ from scoring.score import score_run
 from safety.judges import MockJudge
 from safety.layer import SafetyLayer
 from .adapters_sim import S2OutcomeModel, S2RendererClient, S2Screening, S2VisitorSim
-from .config import ROOT, load_config
+from .config import ROOT, load_config, load_dotenv
 from .evolve.config import load_config as evolve_config
 from .evolve.pipeline import evolve
 from .evolve.reflector import load_sessions, load_traces
@@ -357,6 +357,9 @@ def main(argv=None):
     for flag in ("n-a", "n-b", "n-c", "max-sessions"):
         parser.add_argument(f"--{flag}", type=positive)
     args = parser.parse_args(argv)
+    # Repo-root .env (gitignored), same as engine.run; existing env vars win. Harmless in mock mode
+    # (no clients are built), and must happen before `learn` builds the reflector clients.
+    load_dotenv()
     try:
         if args.reset and args.cmd != "all":
             raise ValueError("--reset 仅用于 all；也可单独执行 reset")
