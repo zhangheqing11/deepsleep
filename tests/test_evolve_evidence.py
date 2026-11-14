@@ -93,6 +93,32 @@ def test_scorecard_covers_all_dimensions(tmp_path):
     assert sum(card["failures_by_dimension"].values()) > 0
 
 
+@pytest.mark.parametrize("defensiveness,alliance,expected", [
+    ("mid", 0.9, True),
+    ("high", 0.9, True),
+    ("low", 0.9, False),
+    ("low", 0.4, False),
+    ("low", 0.399, True),
+])
+def test_resistance_defensiveness_and_alliance_boundary(tmp_path, defensiveness, alliance, expected):
+    row = {"failure_tags": ["path_wrong_r2"], "alliance": alliance}
+    visitor = {"persona": {"defensiveness": defensiveness}}
+    assert ("resistance" in dims.classify(row, visitor, make_config(tmp_path))) is expected
+
+
+def test_scorecard_includes_mid_and_high_defensiveness(tmp_path):
+    report = example("run_report.run1.json")
+    rows = report["per_visitor"][:3]
+    assert len(rows) == 3
+    report["per_visitor"] = rows
+    visitors = {row["visitor_id"]: {"persona": {"defensiveness": level}}
+                for row, level in zip(rows, ("low", "mid", "high"))}
+    card = dims.scorecard(report, visitors, make_config(tmp_path))
+    assert card["resistance"]["n_defensive"] == 2
+    assert card["resistance"]["defensive_mean_alliance"] == pytest.approx(
+        round((rows[1]["alliance"] + rows[2]["alliance"]) / 2, 4))
+
+
 def test_subagent_map_covers_sections():
     from engine.evolve.config import SECTIONS
     assert set(dims.SUBAGENT_BY_SECTION) == set(SECTIONS)

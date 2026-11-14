@@ -23,7 +23,9 @@ def test_crisis_line_never_moves(tmp_path):
 def test_referral_non_inferior_and_precision_floor(tmp_path):
     assert reasons(metrics(referral_recall=0.9), tmp_path) == ["referral_recall_regressed"]
     assert reasons(metrics(referral_recall=0.9), tmp_path, tolerance=0.2) == []
-    assert reasons(metrics(referral_precision=0.5), tmp_path) == ["referral_precision_floor"]
+    assert reasons(metrics(referral_precision=0.499), tmp_path) == ["referral_precision_floor"]
+    assert reasons(metrics(referral_precision=0.5), tmp_path) == []
+    assert reasons(metrics(referral_precision=0.55), tmp_path) == []
     by_label = metrics(referral_recall_by_label={"R1": 0.5, "R2": 1.0, "R3": 1.0})
     assert reasons(by_label, tmp_path) == []
     assert reasons(by_label, tmp_path, referral_recall_by_label_non_inferior=True) == ["referral_recall_regressed"]
@@ -35,6 +37,7 @@ def test_null_metrics_are_not_regressions(tmp_path):
 
 
 def test_contraindication_violations(tmp_path):
+    assert reasons(metrics(contraindication_violations=0), tmp_path) == []
     assert reasons(metrics(contraindication_violations=1), tmp_path) == ["contraindication_violation"]
 
 

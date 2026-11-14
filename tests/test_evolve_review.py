@@ -2,9 +2,17 @@ import asyncio
 import json
 
 from engine.evolve import review
+from engine.evolve.config import load_config
 from evolve_support import make_config
 
 ITEMS = [{"candidate_id": "c1", "change_id": "c1-plan_rules-1"}, {"candidate_id": "c2", "change_id": "c2-referral_rules-1"}]
+
+
+def test_approved_review_defaults():
+    config = load_config()
+    assert config["review"]["timeout_s"] == 120
+    assert config["review"]["timeout_policy"] == "pass"
+    assert not review.blocks("timeout", config)
 
 
 def test_no_decision_becomes_timeout(tmp_path):
