@@ -1,0 +1,104 @@
+# L3 参数表：智能家居场景的推荐值
+#
+# 定位：这是"给哪个场景用哪套数值"的知识，属于**冻结层**（赛前锁定，agent 不可见）。
+# 它对 agent 的影响只有一个间接通道：playbook 里可以写"P5 时走 wind_down"，
+# 但 wind_down 具体是多少度、多少亮度，由本文件决定，agent 改不了。
+#
+# 硬约束：本文件里的数值**不是**安全边界。安全边界在 mocks/home_mcp/envelope.py，
+# 那里是代码、有单测、不可被配置覆盖。
+#
+# 关于出处：sleep_home_research 里所有 verified=false 的条目**尚未完成文献核实**，
+# 11/15 08:00 前要么补正式引用，要么在对外材料里删掉"有研究支持"的表述。
+# 不允许凭印象填一个看似权威的引用 —— 这是 AGENTS.md §9 "参数注明出处"的底线。
+
+meta:
+  version: 0
+  frozen: false
+  owner: 数据科学同学
+  updated: "2026-11-14"
+  policy: "verified=false 的条目不得对外声称有文献支持"
+
+rooms:
+  bedroom:
+    light:
+      # 睡前 90–30 分钟：逐步降亮，提示"该收了"
+      wind_down:
+        brightness_pct: 10
+        kelvin: 2700
+        transition_s: 900
+        verified: false
+        note: "睡前逐步降亮、暖色；具体亮度阈值待核实"
+      # 入睡后：接近全黑
+      sleep:
+        brightness_pct: 1
+        kelvin: 2200
+        transition_s: 300
+        verified: false
+        note: "睡眠期保持极低照度；1 是包络下限，不是建议值"
+      # 起床前 30 分钟：缓亮，配合 P4 的相位前移
+      wake:
+        brightness_pct: 70
+        kelvin: 5000
+        transition_s: 600
+        verified: false
+        note: "晨间光照用于相位前移；强度与时长待核实"
+    climate:
+      sleep:
+        target_c: 19
+        mode: cool
+        verified: false
+        note: "卧室偏凉；包络范围 18–26，19 取保守偏凉值"
+    curtain:
+      sleep:
+        position_pct: 0
+        verified: false
+      wake:
+        position_pct: 100
+        verified: false
+
+# 干预路径 → 每类设备用哪些场景。这是"路径决定环境"的落点：
+# 同一套设备，不同诊断走**不同的设备组合**，而不是所有来访一份模板。
+#
+# 为什么按设备分开写（而不是一个场景包干三件）：
+# P2 的临床逻辑是"床只用来睡"，因此它只该动灯，不该顺手把空调窗帘也调了——
+# 否则五条路径的环境效果几乎一样，"个性化"就成了话术。
+paths:
+  P1:                                   # 作息与睡眠卫生：稳定锚点，环境全套到位
+    light: [wind_down, sleep, wake]
+    climate: [sleep]
+    curtain: [sleep, wake]
+  P2:                                   # 床-清醒条件联结：只动灯，强化"床=睡"
+    light: [sleep]
+    climate: []
+    curtain: []
+  P3:                                   # 认知过度唤醒：降唤醒，灯 + 偏凉
+    light: [wind_down, sleep]
+    climate: [sleep]
+    curtain: []
+  P4:                                   # 节律：晨光 + 晨间透光，不碰空调
+    light: [wind_down, sleep, wake]
+    climate: []
+    curtain: [wake]
+  P5:                                   # 数字娱乐：只动灯，用环境变化替代硬提醒
+    light: [wind_down, sleep]
+    climate: []
+    curtain: []
+
+# 安全边界声明（**不作为权威**，权威是 envelope.py；这里只给看板和文档用）
+safety_declared:
+  brightness_floor_pct: 1
+  kelvin_range: [1800, 6500]
+  temp_range_c: [18, 26]
+  max_writes_per_session: 8
+  excluded_capabilities: ["power_off", "power_on", "lock", "alarm", "schedule_cron"]
+
+sources:
+  - claim: "卧室温度偏凉有利于入睡"
+    status: "待核实"
+    todo: "补 AASM / 睡眠卫生指南的正式引用"
+  - claim: "睡前降低照度与色温有助于褪黑素分泌"
+    status: "待核实"
+    todo: "补光照与褪黑素抑制相关文献"
+  - claim: "晨间明亮光有助于相位前移"
+    status: "待核实"
+    todo: "补昼夜节律相位前移的文献，最好与 Arcascope/circadian 的模型参数对齐"
