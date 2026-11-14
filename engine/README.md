@@ -59,6 +59,9 @@ LLM 已解析输出、重试、否决记录、history 核验结果、被丢弃�
 - 每条来访发言（含开场、对安全话术的回答、对收尾消息的回答）过 `SafetyLayer.assess_text`，**同步等结果**；等待期间推测执行下一步的整条环 1 流水线（快照固定在判定前），安全层返回任何事件就丢弃。判断器链（ds flash 6 s → Jev → 规则兜底）在 `safety/` 配置里，引擎只调用 `SafetyLayer()`。
 - passive → `safety_check` 话术；active → `crisis_protocol`，`status = crisis_exit`，不出处方；history → 【安全层指令】注入下一条发言的策略与回复两个子智能体 → `check_verification` → 未核验插 `history_check` 兜底 → 清 pending；本轮结束仍 pending 则插兜底。
 - PHQ-9 第 9 题：自评（round 1 turn 0）与 `screen_mood` 结果都走 `assess_phq9_item9`。
+- **问卷阳性 + 口头未透露风险的再核验（2026-11-14 心理学同学审定）**：本场出现 `source=scale_item9`，且普通安全确认后的来访发言没有 passive/active 新事件时，第一轮动作预算耗尽或提前结束后、生成处方及收尾消息前插入固定 `scale_recheck`，speaker 为 `safety`。每场最多一次，不占动作预算；已 active / `crisis_exit` 不触发。回答照常过安全层，active 则立即退出、不出处方。文本重复 passive 的本地 action `none` 也会阻止再核验；重复量表阳性不会重置或重复触发。再核验回答触发的 history 继续由既有兜底核验处理。
+  这条规则冻结在会谈代码和 `safety/scripts.yaml`，不进入 playbook 或进化候选。session 安全事件沿用 `safety_check`，trace 的 `scale_rechecks` 记录 `recheck: true`、`counts_toward_cap: false`、原量表事件和再核验事件索引（均为零起始）。`engine/topics.py` 按实际说出的审定问句识别 `self_harm`，供 S2 分层线索回复使用。
+  离线回归：`python -m pytest -q tests/test_engine_scale_recheck.py`。其中 sample-010 使用原始 S2 来访和 deny_first 流程，并为其方法表述注入 mock active 判定；默认 MockJudge 的关键词表会把该句判为 passive。这项测试验证再核验及危机退出链路，不代表真实判断器识别能力；真实判据和 mock 默认配置均未修改。
 - 处方：`check_plan` + 收尾消息/就医建议/卡片的 `check_text`；硬否决重写 1 次，仍不过走冻结兜底（去 sleep_restriction、卧床抬到下限）。`contraindications_checked` 只在问过 `health_conditions` 时为 true。
 - 并发：`concurrency.max_sessions` = 50；引擎自己的 ds flash 请求（子智能体 + 分类器）共用 `agent_llm.max_inflight` = 32 的上限（实测 ds flash 48 路无报错、96 路有报错；判断器与模拟来访另算）。
 

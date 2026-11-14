@@ -33,6 +33,8 @@ text ─▶ rules.match(text)
 - history 分档：先检查 P(active) ≥ tau_active，再检查 P(passive)+P(active) ≥ tau_flag；均未达到且 P(history) 为最大（含并列）时，level none + history_check，否则 none。history_check 同一会话只发一次，已 active 后不发，不提高最高 level。判断器失败且 ambiguous 命中时仍兜底 passive。
 - 判断器对**除命中明确规则外的所有发言**运行；明确规则允许 skipped。
 - 动作：passive → `safety_check`；active → `crisis_protocol`。同一来访只升不降：已 active 后不再插 safety_check；已触发过 safety_check 后，文本重复 passive 仍可返回本地 action none（不入契约）。量表阳性始终保留动作非 none 的事件；`script_for_event(event, state)` 用独立 `safety_check_spoken` 标记去重话术，不能过滤量表事件。
+- **量表阳性后的固定再核验（2026-11-14 心理学同学审定，冻结、不参与进化）**：本场出现过 `source=scale_item9`，且普通 `safety_check` 播报后的来访回答一直没有产生 passive/active 新事件，则在第一轮动作预算耗尽或提前结束后、处方和收尾消息前，由引擎插入一次 `speaker=safety` 的 `scale_recheck` 原文。只问一次、不占 agent 动作预算；已 active / `crisis_exit` 不触发。重复 passive 即使 action 为本地 `none` 也算透露风险，重复量表阳性不算口头透露。回答仍走完整安全层，active 当场触发 `crisis_protocol` / `crisis_exit`；`history_check` 的既有处理保持不变。
+  `script_for("scale_recheck")` 读取 `scripts.yaml` 审定话术，独立于普通确认话术去重。契约事件沿用原量表证据和 `action=safety_check`，定位到再核验发言的 round/turn；`trace.scale_rechecks[]` 记录 `recheck: true`、`counts_toward_cap: false` 以及原事件/再核验事件索引，不改契约枚举、风险判据或 S4 硬规则。
 - active 后会谈状态应变为 `crisis_exit`（由引擎执行，安全层只返回动作）。
 
 ## 3. 代码结构（Python 3.11+，asyncio）

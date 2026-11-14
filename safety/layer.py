@@ -133,7 +133,7 @@ class SafetyLayer:
     def script_for(self, action: str) -> str:
         if action == "none":
             return ""
-        if action not in ("history_check", "safety_check", "crisis_protocol"):
+        if action not in ("history_check", "safety_check", "scale_recheck", "crisis_protocol"):
             raise ValueError(f"Unknown safety action: {action}")
         # 用户可见：每条一行"名称：号码"；verified 只供演示前复核，不展示给来访
         hotlines = "\n".join(
