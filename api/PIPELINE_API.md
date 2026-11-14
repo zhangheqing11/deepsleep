@@ -166,3 +166,75 @@ HTTP 服务本身不调用模型：`POST /demo/launch` 只是在仓库根目录�
 ## `POST /api/v1/demo/stop`
 
 终止本服务启动的子进程（及其子进程树：Windows `taskkill /PID <pid> /T /F`；POSIX 先 `killpg(SIGTERM)`，5 秒未退出再 `SIGKILL`）。200：`{"stopped": true}`；409 `NOT_RUNNING`：没有在运行的子进程；403 `LAUNCH_DISABLED`。停止后清单里的 `stage` 可能仍是运行中状态，`GET /demo/pipeline` 在"子进程已退出但清单未到终态"时把 `state` 报为 `failed`，`error` 为"已手动停止"或子进程退出码说明。
+
+---
+
+# 续跑一代与逐代曲线（11/15 增补）
+
+展位演示时评委在不同时间到来，所以进化链不必每次从 v1 重置：每点一次"再进化一代"，就从当前版本 vN 出发跑一轮（运行 vN → 学习 1 代 → vN+1 与 vN 在 B 组对比），曲线随上午推进一代代变长。
+
+## 进化链（lineage）
+
+- `engine.demo reset`（含 `all --reset`）写 `var/demo/lineage.json`：`{"lineage_id": "lin-<时间>-<随机>", "reset_at": "<ISO>"}`。
+- 每个实验的 `progress.json` 增加两个字段：`lineage_id`（实验开始时读 `lineage.json`；文件不存在就新建一条链）和 `from_version`（实验开始时版本库的当前版本）。**清单 `experiment.json` 的格式不变。**
+- 一条进化链 = `lineage_id` 相同的全部实验，按 `started_at` 排序。没有 `lineage_id` 的旧实验不属于任何链。
+
+## 预设 `next`（再进化一代）
+
+`launcher.presets` 增加一项，且每一项增加 `reset` 字段：
+
+```json
+{"key": "next", "label": "再进化一代", "generations": 1, "reset": false,
+ "description": "从当前版本继续：运行（当前版本）→ 学习 1 代 → 新版本与当前版本在 B 组对比", "expected_s": 480}
+```
+
+- 子进程命令**不带** `--reset`：`<Python> -m engine.demo all --generations 1 --visitor-renderer template [--mock]`。版本库不存在时等同于从 v1 开始。
+- 反思器档位写死在代码里：当前版本是 v1（或版本库不存在）时 `low`，否则 `high`。依据：low 档第 1 代与 high 档同级，但之后的两代都没过门禁；high 档在两条链上都采纳了第 2、3 代。
+- `live`、`full` 的 `reset` 为 `true`，行为不变。
+- `launcher` 增加 `current_version`（版本库当前版本，不存在为 `null`）与 `lineage_mode`（当前链里实验的模式：`real` | `mock` | `null`）。
+- 409 `LINEAGE_MODE_MISMATCH`：`next` 的 `mock` 与当前链的模式不一致（演练数据和真实数据不能接在同一条链上）。提示"请先从 v1 重新开始"。
+- 步骤文案按实际版本写：运行 1 的 `detail` 为"用当前 playbook（vN）跑 A 组来访"（vN 为 v1 时仍可写"初始"），最后一步为"学习后的版本与 vN 并行跑 B 组来访"。
+
+## `GET /demo/pipeline` 增加 `curve`
+
+当前进化链在留出集 B 上的逐代成绩。B 组从不参与学习和门禁，所以每个版本在 B 上的成绩都不带选择偏差。`available=false` 时没有该字段；当前实验不属于任何链时 `points` 为空数组。
+
+```json
+"curve": {
+  "lineage_id": "lin-20261115-093000-ab12",
+  "mode": "real",
+  "cohort": "B",
+  "experiments": 3,
+  "points": [
+    {"version": "v1", "mean": 0.567, "n_runs": 2, "delta_pp": null,
+     "referral_recall": 0.47, "referral_precision": 0.45,
+     "learned": null, "evolution_id": null,
+     "runs": [{"run_id": "exp-...-control", "role": "control", "experiment_id": "exp-...", "isi_response_rate": 0.556, "n": 45}]},
+    {"version": "v2", "mean": 0.667, "n_runs": 2, "delta_pp": 10.0,
+     "referral_recall": 0.78, "referral_precision": 0.82,
+     "learned": "优先修复 8 名转介漏判者：……", "evolution_id": "exp-...-learn-g1",
+     "runs": []}
+  ],
+  "rejected": [
+    {"experiment_id": "exp-...", "evolution_id": "exp-...-learn-g1", "from_version": "v2", "finished_at": "..."}
+  ]
+}
+```
+
+- `points`：按版本号升序，只包含在 B 组至少有一次已完成运行（`run_report.json` 已生成）的版本。数据来自链内每个实验的对照（`control`，版本 = 实验开始时的版本）和运行 2（`run2`，版本 = 学习后的版本）。同一版本的多次运行取 ISI 有效率的算术平均为 `mean`，`runs` 列出每一次。运行 2 的版本与对照相同（该代未采纳）时，两次都计入该版本。
+- `delta_pp`：与上一个点的 `mean` 之差（百分点）；第一个点为 `null`。
+- `referral_recall` / `referral_precision`：该版本各次运行的平均；没有则 `null`。
+- `learned`：产生该版本的那一代 `evolution.json` 里被采纳候选的摘要（一句话）；起点版本为 `null`。
+- `rejected`：链内未采纳新版本（`kept_previous`）的各代。
+- `mode`：链内实验的模式；`curve` 只统计与当前实验模式相同的实验。
+- 当前实验运行中，其对照或运行 2 报告一生成就计入。
+
+实现补充（后端）：
+
+- 当前实验不属于任何链时 `curve` 为 `{"lineage_id": null, "mode": <当前实验模式>, "cohort": "B", "experiments": 0, "points": [], "rejected": []}`；`rejected` 总是数组。`experiments` = 链内与当前实验模式相同的实验数（含尚无 B 组报告的）。
+- 只计入状态不是 `failed` 的对照 / 运行 2 批次（报告已写出但批次无效时不计）；点的版本取 `run_report.json` 的 `playbook_version`。`runs` 与 `rejected` 按实验 `started_at` 先后排列。
+- `learned` / `evolution_id` 来自链内 `outcome=committed` 且 `to_version` 为该版本的那一代；找不到（起点版本）为 `null`。
+- `launcher.lineage_mode` 取 `lineage.json` 所指链内最近开始的实验的模式；`lineage.json` 不存在或链内还没有实验时为 `null`（此时 `next` 不会 409）。409 的检查顺序：`ALREADY_RUNNING` 先于 `LINEAGE_MODE_MISMATCH`。
+- `next` 的 `expected_s` 480 = 运行 60 + 学习 320 + 最后一步 100（服务端默认步骤时长）。
+- 运行 1 的版本未知（清单与进度文件都还没有）时，`detail` 为"用当前 playbook 跑 A 组来访"/"学习后的版本与起点版本并行跑 B 组来访"。
+- `lineage_id` 形如 `lin-20261115-093000-1a2b3c4d`（随机部分 8 位十六进制）。`lineage.json` 损坏也视为不存在（新建一条链）。

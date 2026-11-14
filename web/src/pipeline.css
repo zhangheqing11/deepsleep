@@ -636,6 +636,46 @@ button.pl-step-head[aria-expanded='true'] .pl-chevron {
   color: var(--muted);
   font-size: 0.88em;
 }
+/* 从哪里出发：续跑写“从 vN 继续”，重置类预设写“从 v1 重新开始” */
+.pl-preset-from {
+  width: fit-content;
+  font-size: 0.85em;
+  font-weight: 500;
+  color: var(--ok-ink);
+}
+.pl-preset-from.is-reset {
+  padding: 0 0.5em;
+  border-radius: 4px;
+  background: var(--surface-2);
+  color: var(--text);
+}
+.pl-conflict {
+  color: var(--warn-ink);
+}
+
+/* ---------- 逐代曲线（左栏：步骤后面） ---------- */
+/* 学习进行中时展开的那一步很高，曲线放在步骤下面会把 1920×1080 的整页撑出一屏；
+   所以大屏上左栏再分两列，曲线在步骤右边；窄一些时落到步骤下面。 */
+.pl-stepcol {
+  min-width: 0;
+}
+.pl-curve {
+  gap: 0.5em;
+  min-width: 0;
+}
+@media (min-width: 1700px) {
+  .pl-main {
+    display: grid;
+    grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr);
+    align-items: start;
+    gap: 1.6em;
+  }
+}
+@media (max-width: 1699px) {
+  .pl-curve {
+    margin-top: 0.6em;
+  }
+}
 .pl-presets:disabled .pl-preset,
 .pl-presets:disabled .pl-check {
   cursor: not-allowed;

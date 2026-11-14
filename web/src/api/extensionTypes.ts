@@ -165,6 +165,8 @@ export interface PipelinePreset {
   generations: number;
   description: string;
   expected_s: number;
+  /** 11/15 增补：true = 先把 playbook 重置为 v1（开始一条新的进化链）；false = 从当前版本继续（`next`）。旧后端不发，按 true 处理 */
+  reset?: boolean;
 }
 
 export interface PipelineLauncher {
@@ -178,6 +180,56 @@ export interface PipelineLauncher {
   presets: PipelinePreset[];
   /** 子进程输出的最后 20 行 */
   log_tail: string[];
+  /** 附加：上次启动是否 mock、是否经 POST /demo/stop 停止 */
+  mock?: boolean;
+  stopped?: boolean;
+  /** 11/15 增补：版本库当前版本；版本库不存在为 null。旧后端不发 */
+  current_version?: string | null;
+  /** 11/15 增补：当前进化链里实验的模式；没有链为 null。旧后端不发 */
+  lineage_mode?: 'real' | 'mock' | null;
+}
+
+// ---------- 逐代曲线（api/PIPELINE_API.md「续跑一代与逐代曲线」，11/15 增补） ----------
+
+export interface PipelineCurveRun {
+  run_id: string;
+  /** control = 实验开始时的版本；run2 = 学习后的版本 */
+  role: string;
+  experiment_id: string;
+  isi_response_rate: number | null;
+  n: number;
+}
+
+export interface PipelineCurvePoint {
+  version: string;
+  /** 该版本在 B 组各次运行的 ISI 有效率算术平均 */
+  mean: number | null;
+  n_runs: number;
+  /** 与上一个点的 mean 之差（百分点）；第一个点为 null */
+  delta_pp: number | null;
+  referral_recall?: number | null;
+  referral_precision?: number | null;
+  /** 产生该版本的那一代被采纳候选的摘要；起点版本为 null */
+  learned?: string | null;
+  evolution_id?: string | null;
+  runs?: PipelineCurveRun[];
+}
+
+export interface PipelineCurveRejected {
+  experiment_id: string;
+  evolution_id: string;
+  from_version: string;
+  finished_at?: string | null;
+}
+
+export interface PipelineCurve {
+  lineage_id: string | null;
+  mode: 'real' | 'mock' | null;
+  cohort: string;
+  experiments: number;
+  /** 按版本号升序；当前实验不属于任何链时为空数组 */
+  points: PipelineCurvePoint[];
+  rejected?: PipelineCurveRejected[];
 }
 
 export interface PipelineSnapshot {
@@ -196,6 +248,8 @@ export interface PipelineSnapshot {
   steps: PipelineStep[];
   result: PipelineResult;
   launcher: PipelineLauncher;
+  /** 11/15 增补：当前进化链在留出集 B 上的逐代成绩。旧后端不发 */
+  curve?: PipelineCurve | null;
 }
 
 export type PipelineResponse = PipelineSnapshot | { available: false; launcher: PipelineLauncher };

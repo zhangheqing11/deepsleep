@@ -6,7 +6,7 @@ import type { ApiClient } from '../api/client';
 import type { Evolution, EvolutionCandidate, Metrics, PerVisitorRow, RunReport } from '../api/contractTypes';
 import type { RunStatusResponse } from '../api/draftTypes';
 import { isAbortError, toApiError, type ApiError } from '../api/errors';
-import type { EvolutionStatus, Experiment, ExperimentRun, PlaybookVersion } from '../api/extensionTypes';
+import type { EvolutionStatus, Experiment, ExperimentRun, PipelineCurve, PlaybookVersion } from '../api/extensionTypes';
 import { pct, pointDelta } from './format';
 
 export type RunRole = 'run1' | 'control' | 'run2';
@@ -44,6 +44,8 @@ export interface BoardData {
   versions: PlaybookVersion[] | null;
   /** 任一运行为模拟执行，或前端使用本地模拟数据 */
   mock: boolean;
+  /** 当前进化链在留出集 B 上的逐代成绩（GET /demo/pipeline 的 curve）；读不到或后端没有时为 null */
+  curve?: PipelineCurve | null;
 }
 
 /** 跨轮询保留的只读缓存：完成的报告和进化记录不会再变。 */
@@ -56,10 +58,12 @@ export interface BoardCache {
   versionsKey: string | null;
   /** 已读过的证据；null 表示后端明确没有，不再重复请求 */
   evidence: Map<string, EvidenceStep[] | null>;
+  /** 最近一次读到的逐代曲线；读取失败时沿用（曲线属于进化链，不随实验换场清空） */
+  curve: PipelineCurve | null;
 }
 
 export function createBoardCache(): BoardCache {
-  return { experimentId: null, reports: new Map(), finalStatus: new Map(), evolution: null, versions: null, versionsKey: null, evidence: new Map() };
+  return { experimentId: null, reports: new Map(), finalStatus: new Map(), evolution: null, versions: null, versionsKey: null, evidence: new Map(), curve: null };
 }
 
 const emptySlot = (role: RunRole): RunSlot => ({ role, node: null, report: null, status: null, error: null, evidence: null });
@@ -73,6 +77,7 @@ export const EMPTY_BOARD: BoardData = {
   evolutionStatus: null,
   versions: null,
   mock: false,
+  curve: null,
 };
 
 /** 子资源读取失败不打断整页：返回 null，由下一次轮询重试。取消请求照常抛出。 */
@@ -120,7 +125,7 @@ export async function readBoard(api: ApiClient, cache: BoardCache, signal: Abort
   const experiment = 'experiment_id' in response ? response : null;
   const experimentId = experiment?.experiment_id ?? null;
   if (cache.experimentId !== experimentId) {
-    Object.assign(cache, createBoardCache(), { experimentId });
+    Object.assign(cache, createBoardCache(), { experimentId, curve: cache.curve });
   }
 
   const [run1, control, run2] = await Promise.all([
@@ -149,8 +154,20 @@ export async function readBoard(api: ApiClient, cache: BoardCache, signal: Abort
     }
   }
 
+  // 逐代曲线：全链路接口的 curve（11/15 增补）。读取失败沿用上一份；后端没有这个字段（旧后端、available=false）时为 null。
+  const pipeline = await soft(signal, () => api.getPipeline(signal));
+  if (pipeline.data) cache.curve = readCurve(pipeline.data);
+
   const mock = api.adapter === 'mock' || [run1, control, run2].some((s) => s.status?.execution_mode === 'mock');
-  return { experiment, run1, control, run2, evolution: cache.evolution, evolutionStatus, versions: cache.versions, mock };
+  return { experiment, run1, control, run2, evolution: cache.evolution, evolutionStatus, versions: cache.versions, mock, curve: cache.curve };
+}
+
+/** 只认结构对的 curve：必须有 points 数组；否则当作没有 */
+export function readCurve(response: unknown): PipelineCurve | null {
+  const r = response as { available?: unknown; curve?: unknown } | null;
+  if (!r || r.available !== true) return null;
+  const curve = r.curve as PipelineCurve | null | undefined;
+  return curve && typeof curve === 'object' && Array.isArray(curve.points) ? curve : null;
 }
 
 /**

@@ -104,8 +104,11 @@ def test_no_experiment(tmp_path):
     assert set(body) == {"available", "launcher"} and body["available"] is False
     launcher = body["launcher"]
     assert launcher["enabled"] is False and launcher["state"] == "idle" and launcher["log_tail"] == []
-    assert [p["key"] for p in launcher["presets"]] == ["live", "full"]
-    assert [p["generations"] for p in launcher["presets"]] == [1, 3]
+    assert [p["key"] for p in launcher["presets"]] == ["live", "full", "next"]
+    assert [p["generations"] for p in launcher["presets"]] == [1, 3, 1]
+    assert [p["reset"] for p in launcher["presets"]] == [True, True, False]
+    assert [p["expected_s"] for p in launcher["presets"]] == [400, 1480, 480]
+    assert launcher["current_version"] is None and launcher["lineage_mode"] is None
 
 
 def test_running_experiment(running):
@@ -386,3 +389,184 @@ def test_launch_refused_while_cli_holds_lock(tmp_path, fake_popen):
             assert response.status_code == 409 and response.json()["error"]["code"] == "ALREADY_RUNNING"
         assert FakeProcess.instances == []
         assert client.post(PREFIX + "/launch", json={"preset": "live"}).status_code == 202
+
+
+# --------------------------------------------------------------------------------------------
+# Evolution chain: curve on cohort B, the "next" preset
+# --------------------------------------------------------------------------------------------
+
+LIN = "lin-20261115-093000-ab12cd34"
+
+
+def chain_experiment(root, eid, started, from_version, runs, generation, lineage=LIN, mock=False, summary=None,
+                     finished=True):
+    """One experiment of a chain. ``runs``: {role: (version, isi, state)}; isi None → no report yet."""
+    batches = [batch(f"{eid}-run1", "run1", from_version, "A", "done", started, started)]
+    for role, (version, isi, state) in runs.items():
+        batches.append(batch(f"{eid}-{role}", role, version, "B", state, started,
+                             started if state != "running" else None))
+        if isi is not None:
+            report(root, f"{eid}-{role}", isi, n=3, version=version, referral_recall=isi, referral_precision=1 - isi)
+    outcome, to_version = generation
+    evolution_id = f"{eid}-learn"
+    write(root / f"var/demo/{eid}/progress.json", {
+        "schema": "demo-progress/1", "experiment_id": eid, "started_at": started, "updated_at": started,
+        "commands": ["run1", "learn", "run2"], "generations_planned": 1, "mock": mock, "lineage_id": lineage,
+        "from_version": from_version, "batches": batches,
+        "generations": [{"index": 1, "evolution_id": evolution_id, "from_version": from_version, "state": "done",
+                         "started_at": started, "finished_at": started, "outcome": outcome,
+                         "to_version": to_version}]})
+    chosen = "c2" if outcome == "committed" else None
+    write(root / f"var/evolve/{evolution_id}/evolution.json", {
+        "evolution_id": evolution_id, "from_version": from_version, "to_version": to_version, "outcome": outcome,
+        "chosen": chosen, "candidates": [{"id": "c1", "summary": "未采纳的候选", "passed": False},
+                                         {"id": "c2", "summary": summary, "passed": outcome == "committed"}]})
+    doc = {"experiment_id": eid, "updated_at": started, "stage": "done" if finished else "run2", "error": None,
+           "evolution": {"evolution_id": evolution_id, "state": "done", "generations": [evolution_id]}}
+    for key, split in (("run1", "A"), ("run2", "B"), ("control", "B")):
+        version = from_version if key == "run1" else runs.get(key, (from_version,))[0]
+        state = "done" if finished or key == "run1" else runs.get(key, (None, None, "running"))[2]
+        doc[key] = {"run_id": f"{eid}-{key}", "playbook_version": version, "split": split, "state": state}
+    write(root / f"var/demo/experiment.{eid}.json", doc)
+    return doc
+
+
+@pytest.fixture
+def chain(tmp_path):
+    """v1 control + v2 run 2; v2 control + v3 run 2; v3 control + v3 run 2 (kept_previous)."""
+    root = tmp_path
+    write(root / "var/demo/lineage.json", {"lineage_id": LIN, "reset_at": ago(400)})
+    chain_experiment(root, "exp-a", ago(300), "v1", {"control": ("v1", 0.5, "done"), "run2": ("v2", 0.6, "done")},
+                     ("committed", "v2"), summary="补问作息")
+    chain_experiment(root, "exp-b", ago(200), "v2", {"control": ("v2", 0.7, "done"), "run2": ("v3", 0.8, "done")},
+                     ("committed", "v3"), summary="先筛转介")
+    current = chain_experiment(root, "exp-c", ago(100), "v3",
+                               {"control": ("v3", 0.9, "done"), "run2": ("v3", 0.7, "done")},
+                               ("kept_previous", None))
+    write(root / "var/demo/experiment.json", current)
+    # Excluded: another chain, the same chain in mock mode, an unreadable file, a foreign experiment id.
+    chain_experiment(root, "exp-other", ago(250), "v1", {"control": ("v1", 0.0, "done")}, ("kept_previous", None),
+                     lineage="lin-other")
+    chain_experiment(root, "exp-mock", ago(150), "v1", {"control": ("v1", 0.0, "done"), "run2": ("v2", 0.0, "done")},
+                     ("committed", "v2"), mock=True, summary="mock")
+    (root / "var/demo/exp-broken").mkdir(parents=True)
+    (root / "var/demo/exp-broken/progress.json").write_text("{not json", encoding="utf-8")
+    write(root / "var/demo/exp-alias/progress.json", {"experiment_id": "exp-a", "lineage_id": LIN, "mock": False,
+                                                      "started_at": ago(50), "batches": [], "generations": []})
+    (root / "var/playbook-repo/.git").mkdir(parents=True)
+    (root / "var/playbook-repo/VERSION").write_text("v3\n", encoding="utf-8")
+    return root
+
+
+def test_curve_over_chain(chain):
+    with client_for(chain) as client:
+        body = get_pipeline(client)
+    assert body["experiment_id"] == "exp-c" and body["state"] == "done"
+    curve = body["curve"]
+    assert (curve["lineage_id"], curve["mode"], curve["cohort"], curve["experiments"]) == (LIN, "real", "B", 3)
+    points = curve["points"]
+    assert [p["version"] for p in points] == ["v1", "v2", "v3"]
+    assert [p["n_runs"] for p in points] == [1, 2, 3]
+    assert [p["mean"] for p in points] == [pytest.approx(0.5), pytest.approx(0.65), pytest.approx(0.8)]
+    assert points[0]["delta_pp"] is None
+    assert points[1]["delta_pp"] == pytest.approx(15.0) and points[2]["delta_pp"] == pytest.approx(15.0)
+    assert [p["learned"] for p in points] == [None, "补问作息", "先筛转介"]
+    assert [p["evolution_id"] for p in points] == [None, "exp-a-learn", "exp-b-learn"]
+    assert points[1]["referral_recall"] == pytest.approx(0.65)
+    assert points[1]["referral_precision"] == pytest.approx(0.35)
+    assert [(r["experiment_id"], r["role"]) for r in points[1]["runs"]] == [("exp-a", "run2"), ("exp-b", "control")]
+    assert [(r["experiment_id"], r["role"]) for r in points[2]["runs"]] == [
+        ("exp-b", "run2"), ("exp-c", "control"), ("exp-c", "run2")]
+    assert points[0]["runs"] == [{"run_id": "exp-a-control", "role": "control", "experiment_id": "exp-a",
+                                  "isi_response_rate": 0.5, "n": 3}]
+    rejected = curve["rejected"]
+    assert [(r["experiment_id"], r["evolution_id"], r["from_version"]) for r in rejected] == [
+        ("exp-c", "exp-c-learn", "v3")]
+    assert rejected[0]["finished_at"]
+    # Step texts name the actual versions; the existing fields are unchanged.
+    steps = {s["key"]: s for s in body["steps"]}
+    assert steps["run1"]["detail"] == "用当前 playbook（v3）跑 A 组来访"
+    assert steps["final"]["detail"] == "学习后的版本与 v3 并行跑 B 组来访"
+    assert body["playbook"] == {"from_version": "v3", "current_version": "v3"}
+    assert body["result"]["delta_pp"] == pytest.approx(-20.0)
+    assert (body["launcher"]["current_version"], body["launcher"]["lineage_mode"]) == ("v3", "real")
+
+
+def test_curve_while_current_experiment_runs(chain):
+    (chain / "var/runs/exp-c-run2/run_report.json").unlink()                # run 2 still in progress
+    current = chain_experiment(chain, "exp-c", ago(100), "v3",
+                               {"control": ("v3", 0.9, "done"), "run2": ("v4", None, "running")},
+                               ("committed", "v4"), summary="新学到的", finished=False)
+    write(chain / "var/demo/experiment.json", current)
+    with client_for(chain) as client:
+        body = get_pipeline(client)
+    assert body["state"] == "running"
+    points = body["curve"]["points"]
+    assert [p["version"] for p in points] == ["v1", "v2", "v3"]             # v4 has no B report yet
+    assert points[2]["n_runs"] == 2 and points[2]["mean"] == pytest.approx(0.85)
+    assert body["curve"]["rejected"] == []
+    report(chain, "exp-c-run2", 0.95, version="v4")                          # report written → counted
+    with client_for(chain) as client:
+        points = get_pipeline(client)["curve"]["points"]
+    assert [p["version"] for p in points] == ["v1", "v2", "v3", "v4"]
+    assert points[3]["learned"] == "新学到的" and points[3]["delta_pp"] == pytest.approx(10.0)
+
+
+def test_curve_in_mock_mode_only_counts_mock_experiments(chain):
+    mock = json.loads((chain / "var/demo/experiment.exp-mock.json").read_text(encoding="utf-8"))
+    write(chain / "var/demo/experiment.json", mock)
+    with client_for(chain) as client:
+        curve = get_pipeline(client)["curve"]
+    assert (curve["mode"], curve["experiments"]) == ("mock", 1)
+    assert [(p["version"], p["learned"]) for p in curve["points"]] == [("v1", None), ("v2", "mock")]
+
+
+def test_old_experiment_has_empty_curve(running):
+    with client_for(running) as client:
+        body = get_pipeline(client)
+    assert body["curve"] == {"lineage_id": None, "mode": "real", "cohort": "B", "experiments": 0,
+                             "points": [], "rejected": []}
+    assert body["steps"][0]["detail"] == "用初始 playbook（v1）跑 A 组来访"
+    assert body["steps"][-1]["detail"] == "学习后的版本与 v1 并行跑 B 组来访"
+
+
+def test_next_preset_without_repo_uses_low_effort_and_no_reset(tmp_path, fake_popen):
+    with client_for(tmp_path, demo_launch=True) as client:
+        body = get_pipeline(client)
+        assert (body["launcher"]["current_version"], body["launcher"]["lineage_mode"]) == (None, None)
+        response = client.post(PREFIX + "/launch", json={"preset": "next", "mock": True})
+        assert response.status_code == 202 and response.json() == {"pid": 4242, "preset": "next", "mock": True}
+    proc = FakeProcess.instances[0]
+    assert proc.command == [sys.executable, "-m", "engine.demo", "all", "--generations", "1",
+                            "--visitor-renderer", "template", "--mock"]
+    assert proc.kwargs["env"]["REFLECTOR_REASONING_EFFORT"] == "low"
+
+
+def test_next_preset_effort_by_current_version(tmp_path, fake_popen):
+    (tmp_path / "var/playbook-repo/.git").mkdir(parents=True)
+    (tmp_path / "var/playbook-repo/VERSION").write_text("v1\n", encoding="utf-8")
+    with client_for(tmp_path, demo_launch=True) as client:
+        assert client.post(PREFIX + "/launch", json={"preset": "next"}).status_code == 202
+        FakeProcess.instances[-1].returncode = 0
+        (tmp_path / "var/playbook-repo/VERSION").write_text("v2\n", encoding="utf-8")
+        assert get_pipeline(client)["launcher"]["current_version"] == "v2"
+        assert client.post(PREFIX + "/launch", json={"preset": "next"}).status_code == 202
+        FakeProcess.instances[-1].returncode = 0
+        assert client.post(PREFIX + "/launch", json={"preset": "live"}).status_code == 202
+    efforts = [p.kwargs["env"]["REFLECTOR_REASONING_EFFORT"] for p in FakeProcess.instances]
+    assert efforts == ["low", "high", "low"]                                # live stays low at any version
+    assert "--reset" not in FakeProcess.instances[1].command and "--reset" in FakeProcess.instances[2].command
+    assert "--mock" not in FakeProcess.instances[1].command
+
+
+def test_next_refused_when_mode_differs_from_chain(chain, fake_popen):
+    with client_for(chain, demo_launch=True) as client:
+        response = client.post(PREFIX + "/launch", json={"preset": "next", "mock": True})
+        assert response.status_code == 409 and response.json()["error"]["code"] == "LINEAGE_MODE_MISMATCH"
+        assert "v1" in response.json()["error"]["message"]
+        assert FakeProcess.instances == []
+        # Resetting presets start a new chain, so any mode is fine; so is "next" in the chain's own mode.
+        assert client.post(PREFIX + "/launch", json={"preset": "live", "mock": True}).status_code == 202
+        FakeProcess.instances[-1].returncode = 0
+        assert client.post(PREFIX + "/launch", json={"preset": "next", "mock": False}).status_code == 202
+    assert FakeProcess.instances[-1].kwargs["env"]["REFLECTOR_REASONING_EFFORT"] == "high"   # repo at v3

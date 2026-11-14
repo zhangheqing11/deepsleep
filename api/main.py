@@ -74,7 +74,8 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     application.state.auth = AuthService(settings)
     files = runs is None
     application.state.pipeline = PipelineView(read_store) if files else None
-    application.state.launcher = Launcher(settings.demo_launch and files, settings.data_root)
+    application.state.launcher = Launcher(settings.demo_launch and files, settings.data_root,
+                                          store=read_store if files else None)
     application.include_router(read_router)
     application.include_router(pipeline_router)
     application.include_router(router if runs is not None else files_router)

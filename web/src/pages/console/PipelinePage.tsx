@@ -13,13 +13,21 @@ import type {
   PipelineStep,
 } from '../../api/extensionTypes';
 import { Badge, ErrorNotice, Notice, Spinner } from '../../components/common';
+import { LiveGenerationCurve } from '../../components/GenerationCurve';
 import { HREF } from '../../hooks/useHashRoute';
 import { usePipeline, type PipelinePoll } from '../../hooks/usePipeline';
 import {
   aboutMinutes,
   CANDIDATE_STATE_LABEL,
   clock,
+  continueFromText,
   defaultOpen,
+  defaultPreset,
+  isResetPreset,
+  launchConfirmText,
+  lineageConflict,
+  orderPresets,
+  RESET_TAG,
   deltaPoints,
   displayState,
   outcomeSentence,
@@ -110,7 +118,7 @@ export function PipelineView({ poll, now, actions }: { poll: Omit<PipelinePoll, 
           <div className="pl-titles">
             <h1>全链路演示</h1>
             <p className="pl-lede">
-              运行 1 用初版手册谈 A 组来访 → 系统读自己没谈好的会谈、改写手册并在验证集上过门禁 → 运行 2 用学到的版本谈 B 组来访，同时用 v1 谈同一批作对照。
+              运行 1 用当前手册谈 A 组来访 → 系统读自己没谈好的会谈、改写手册并在验证集上过门禁 → 运行 2 用学到的版本谈 B 组来访，同时用出发时的版本谈同一批作对照。
             </p>
           </div>
           <div className="pl-status">
@@ -186,16 +194,25 @@ export function PipelineView({ poll, now, actions }: { poll: Omit<PipelinePoll, 
       {data && (
         <div className="pl-grid">
           <section className="pl-main" aria-labelledby="pl-steps-title">
-            <h2 id="pl-steps-title" className="pl-h2">
-              步骤
-            </h2>
-            {snap && snap.steps.length > 0 ? (
-              <Stepper steps={snap.steps} receivedAt={receivedAt} now={now} />
-            ) : (
-              <p className="empty">
-                还没有全链路实验。选好模式后点“开始全链路”{launcher?.enabled ? '' : '，或在终端执行 make demo-run1'}。开始后这里会列出全部步骤。
-              </p>
-            )}
+            {/* 左栏：步骤，后面是逐代曲线。大屏上两者并排，让整页在 1920×1080 下不用滚动；窄一些时曲线落到步骤下面 */}
+            <div className="pl-stepcol">
+              <h2 id="pl-steps-title" className="pl-h2">
+                步骤
+              </h2>
+              {snap && snap.steps.length > 0 ? (
+                <Stepper steps={snap.steps} receivedAt={receivedAt} now={now} />
+              ) : (
+                <p className="empty">
+                  还没有全链路实验。选好模式后点右侧的启动按钮{launcher?.enabled ? '' : '，或在终端执行 make demo-run1'}。开始后这里会列出全部步骤。
+                </p>
+              )}
+            </div>
+            <section className="pl-card pl-curve" aria-labelledby="pl-curve-title">
+              <h2 id="pl-curve-title" className="pl-h2">
+                逐代曲线
+              </h2>
+              <LiveGenerationCurve curve={snap?.curve ?? null} size="compact" />
+            </section>
           </section>
           {launcher && <Launcher launcher={launcher} snap={snap} actions={actions} />}
           <Results snap={snap} />
@@ -212,16 +229,20 @@ export function PipelineView({ poll, now, actions }: { poll: Omit<PipelinePoll, 
 // ---------- 启动控件 ----------
 
 function Launcher({ launcher, snap, actions }: { launcher: PipelineLauncher; snap: PipelineSnapshot | null; actions: PipelineActions }) {
-  const presets = launcher.presets ?? [];
+  const presets = orderPresets(launcher.presets);
   const [picked, setPicked] = useState<string | null>(null);
   const [mock, setMock] = useState(false);
   const [confirm, setConfirm] = useState<'launch' | 'stop' | null>(null);
-  const preset = presets.find((p) => p.key === picked) ?? presets.find((p) => p.key === launcher.preset) ?? presets[0] ?? null;
+  // 默认是“再进化一代”（后端提供时）；用户点过的优先
+  const preset = presets.find((p) => p.key === picked) ?? defaultPreset(presets);
+  const continuing = preset !== null && !isResetPreset(preset);
+  const conflict = lineageConflict(launcher, preset, mock);
 
   const pipelineRunning = snap?.state === 'running';
   const ownRunning = launcher.enabled && launcher.state === 'running';
   const busy = actions.busy !== null;
-  const canStart = launcher.enabled && !pipelineRunning && !ownRunning && preset !== null && !busy;
+  const canStart = launcher.enabled && !pipelineRunning && !ownRunning && preset !== null && !busy && conflict === null;
+  const mismatch = actions.error?.op === 'launch' && actions.error.error.code === 'LINEAGE_MODE_MISMATCH';
 
   // 状态变了（例如启动成功、进程退出）就收起确认框
   useEffect(() => setConfirm(null), [ownRunning]);
@@ -255,6 +276,9 @@ function Launcher({ launcher, snap, actions }: { launcher: PipelineLauncher; sna
                     学习 {p.generations} 代 · {aboutMinutes(p.expected_s)}
                   </span>
                 </span>
+                <span className={`pl-preset-from${isResetPreset(p) ? ' is-reset' : ''}`}>
+                  {isResetPreset(p) ? RESET_TAG : continueFromText(launcher)}
+                </span>
                 <span className="pl-preset-desc">{p.description}</span>
               </label>
             ))}
@@ -265,8 +289,9 @@ function Launcher({ launcher, snap, actions }: { launcher: PipelineLauncher; sna
             </label>
           </fieldset>
           <button type="button" className="btn btn-primary pl-start" disabled={!canStart} onClick={() => setConfirm('launch')}>
-            {actions.busy === 'launch' ? '正在启动…' : '开始全链路'}
+            {actions.busy === 'launch' ? '正在启动…' : continuing ? '再进化一代' : '开始全链路'}
           </button>
+          {launcher.enabled && conflict && !pipelineRunning && <p className="pl-note pl-conflict">{conflict}</p>}
           {!launcher.enabled && (
             <p className="pl-note">
               此后端未开启一键启动；请在终端执行 <code>make demo-run1</code>
@@ -280,9 +305,7 @@ function Launcher({ launcher, snap, actions }: { launcher: PipelineLauncher; sna
 
       {confirm === 'launch' && preset && (
         <div className="pl-confirm" role="group" aria-label="确认开始">
-          <p>
-            将把 playbook 重置为 v1，并开始一次新的实验：<b>{preset.label}</b>（{preset.description}，{aboutMinutes(preset.expected_s)}）。页面会改为显示新实验。
-          </p>
+          <p>{launchConfirmText(preset, launcher)}</p>
           <p className={mock ? 'muted' : 'pl-cost'}>
             {mock ? '演练模式不调用任何模型，不产生费用；会谈内容是模板生成的。' : '真实模式会调用模型 API，会产生费用。'}
           </p>
@@ -327,7 +350,13 @@ function Launcher({ launcher, snap, actions }: { launcher: PipelineLauncher; sna
       {actions.error && (
         <ErrorNotice
           error={actions.error.error}
-          title={actions.error.op === 'launch' ? '没能启动' : '没能停止'}
+          title={
+            mismatch
+              ? '没能启动：演练与真实不能接在同一条链上，请先从 v1 重新开始'
+              : actions.error.op === 'launch'
+                ? '没能启动'
+                : '没能停止'
+          }
           action={
             <button type="button" className="quiet-btn" onClick={actions.dismiss}>
               知道了

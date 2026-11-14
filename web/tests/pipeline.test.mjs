@@ -39,7 +39,11 @@ function checkLauncher(l, path = 'launcher') {
   for (const [i, p] of l.presets.entries()) {
     check(isStr(p.key) && isStr(p.label) && isStr(p.description), `${path}.presets[${i}]`, p);
     check(Number.isInteger(p.generations) && p.generations > 0 && isNum(p.expected_s), `${path}.presets[${i}]`, p);
+    check(p.reset === undefined || typeof p.reset === 'boolean', `${path}.presets[${i}].reset`, p.reset);
   }
+  // 11/15 增补：旧后端不发，发了就要对
+  check(l.current_version === undefined || strOrNull(l.current_version), `${path}.current_version`, l.current_version);
+  check(l.lineage_mode === undefined || l.lineage_mode === null || oneOf('real', 'mock')(l.lineage_mode), `${path}.lineage_mode`, l.lineage_mode);
   check(Array.isArray(l.log_tail) && l.log_tail.every(isStr) && l.log_tail.length <= 20, `${path}.log_tail`, l.log_tail);
 }
 function checkRunResult(r, path) {
@@ -97,6 +101,31 @@ function checkSnapshot(s) {
   for (const k of ['run1', 'control', 'run2']) checkRunResult(s.result[k], `result.${k}`);
   check(numOrNull(s.result.delta_pp), 'result.delta_pp', s.result.delta_pp);
   checkLauncher(s.launcher);
+  if (s.curve !== undefined && s.curve !== null) checkCurve(s.curve);
+}
+function checkCurve(c) {
+  check(strOrNull(c.lineage_id) && (c.mode === null || oneOf('real', 'mock')(c.mode)) && isStr(c.cohort), 'curve', c);
+  check(Number.isInteger(c.experiments), 'curve.experiments', c.experiments);
+  check(Array.isArray(c.points), 'curve.points', c.points);
+  let prev = null;
+  for (const [i, p] of c.points.entries()) {
+    const q = `curve.points[${i}]`;
+    check(isStr(p.version) && rateOrNull(p.mean) && Number.isInteger(p.n_runs) && numOrNull(p.delta_pp), q, p);
+    check(i === 0 ? p.delta_pp === null : true, `${q}.delta_pp 第一个点为 null`, p.delta_pp);
+    if (prev) check(Number(p.version.slice(1)) > Number(prev.version.slice(1)), `${q} 按版本升序`, p.version);
+    check(rateOrNull(p.referral_recall ?? null) && rateOrNull(p.referral_precision ?? null), q, p);
+    check(p.learned === undefined || strOrNull(p.learned), `${q}.learned`, p.learned);
+    if (p.runs) {
+      check(p.runs.length === p.n_runs, `${q} runs 与 n_runs 一致`, p.runs.length);
+      for (const r of p.runs) check(isStr(r.run_id) && oneOf('control', 'run2')(r.role) && isStr(r.experiment_id) && rateOrNull(r.isi_response_rate) && Number.isInteger(r.n), `${q}.runs`, r);
+      // mean 是各次运行的算术平均（三位小数）
+      const avg = p.runs.reduce((a, r) => a + r.isi_response_rate, 0) / p.runs.length;
+      check(Math.abs(avg - p.mean) < 0.001, `${q}.mean 是 runs 的平均`, [avg, p.mean]);
+    }
+    if (prev) check(Math.abs((p.mean - prev.mean) * 100 - p.delta_pp) < 0.06, `${q}.delta_pp 是与上一个点之差`, p.delta_pp);
+    prev = p;
+  }
+  for (const r of c.rejected ?? []) check(isStr(r.experiment_id) && isStr(r.evolution_id) && isStr(r.from_version), 'curve.rejected', r);
 }
 
 test('全链路演示', async (t) => {
@@ -191,7 +220,7 @@ test('全链路演示', async (t) => {
       assert.equal(lib.stepSummary(final), '等待中 · 预计约 1 分钟');
       assert.equal(lib.stepSummary({ ...final, kind: 'practice', state: 'skipped' }), '上一代没有采纳新版本，跳过练习');
       const kept = { ...clone(gen1), state: 'done', eta_s: null, generation: { ...clone(gen1.generation), outcome: 'kept_previous' } };
-      assert.match(lib.stepSummary(kept), /^三份候选均未通过，保留 v1 · 72 \/ 90 场会谈 · 用时 01:35$/);
+      assert.match(lib.stepSummary(kept), /^三份候选均未通过，保留 v3 · 72 \/ 90 场会谈 · 用时 01:35$/);
       assert.deepEqual(MOCK_PIPELINE.steps.map(lib.defaultOpen), [false, true, false]);
       assert.equal(lib.defaultOpen({ state: 'failed' }), true);
     });
@@ -307,7 +336,7 @@ test('全链路演示', async (t) => {
       assert.match(plain, /已完成 72 \/ 90 场会谈/);
       assert.match(plain, /claude-opus-5-5/);
       assert.doesNotMatch(plain, /降级/);
-      assert.match(plain, /上一代基线v1 · ISI 有效率 52\.2%/);
+      assert.match(plain, /上一代基线v3 · ISI 有效率 52\.2%/);
       assert.match(plain, /c1已验证58\.3%—/);
       assert.match(plain, /候选 2 · 第 1 次/);
       // 未开始的步骤不能展开，但在计划里
@@ -325,8 +354,8 @@ test('全链路演示', async (t) => {
 
     await t.test('结果：没有的写“尚未生成”或“—”，不写成 0', () => {
       const plain = text(view(MOCK_PIPELINE));
-      assert.match(plain, /运行 1（v1 · A 组）ISI 有效率51\.1%转介召回 80\.0% \/ 精确率 66\.7%/);
-      assert.match(plain, /对照（v1 · B 组）ISI 有效率尚未生成/);
+      assert.match(plain, /运行 1（v3 · A 组）ISI 有效率51\.1%转介召回 80\.0% \/ 精确率 66\.7%/);
+      assert.match(plain, /对照（v3 · B 组）ISI 有效率尚未生成/);
       assert.match(plain, /运行 2（新版本 · B 组）ISI 有效率尚未生成比对照 —/);
       assert.match(plain, /ISI 为规则状态模型的四周模拟值，所有来访均为模拟数据/);
       assert.match(plain, /运行日志/);
@@ -341,18 +370,18 @@ test('全链路演示', async (t) => {
       gen.generation = { ...gen.generation, phase: 'done', outcome: 'kept_previous', candidates: gen.generation.candidates.map((c) => ({ ...c, state: 'done', isi: 0.5, passed: false })) };
       done.steps[2] = { ...done.steps[2], state: 'done', elapsed_s: 80, batches: [] };
       const r = (isi, v) => ({ isi_response_rate: isi, referral_recall: 0.75, referral_precision: 0.6, n: 45, playbook_version: v });
-      done.result = { run1: r(0.511, 'v1'), control: r(0.533, 'v1'), run2: r(0.533, 'v1'), delta_pp: 0 };
+      done.result = { run1: r(0.511, 'v3'), control: r(0.533, 'v3'), run2: r(0.533, 'v3'), delta_pp: 0 };
       const html = view(done, { /* 用户手动展开第 1 代需要交互；这里检查折叠摘要 */ });
       const plain = text(html);
       assert.match(html, /pl-pill-done">已完成</);
       assert.match(plain, /总用时06:42/);
-      assert.match(plain, /三份候选均未通过，保留 v1/);
+      assert.match(plain, /三份候选均未通过，保留 v3/);
       assert.doesNotMatch(html, /pl-step is-failed|notice-danger/);
       assert.match(html, /href="#\/console\/evolution">查看进化记录</);
       assert.match(html, /href="#\/">回到进化看板</);
       assert.match(plain, /比对照 ±0\.0 个百分点/);
-      // 进程已退出：重新出现启动控件
-      assert.match(plain, /开始全链路/);
+      // 进程已退出：重新出现启动控件；默认是“再进化一代”
+      assert.match(html, /<button type="button" class="btn btn-primary pl-start">再进化一代<\/button>/);
       assert.match(plain, /现场模式学习 1 代 · 约 7 分钟/);
       assert.match(plain, /完整模式学习 3 代 · 约 25 分钟/);
       assert.match(plain, /演练（不调用模型）/);
@@ -364,7 +393,7 @@ test('全链路演示', async (t) => {
       gen.state = 'failed'; gen.eta_s = null; // 失败的步骤默认展开，借此检查展开后的结论
       gen.generation = { ...gen.generation, outcome: 'kept_previous', candidates: gen.generation.candidates.map((c) => ({ ...c, state: 'done', isi: 0.5, passed: false })) };
       const html = view(failedGen);
-      assert.match(html, /<p class="pl-outcome is-kept_previous">三份候选均未通过，保留 v1<\/p>/);
+      assert.match(html, /<p class="pl-outcome is-kept_previous">三份候选均未通过，保留 v3<\/p>/);
       assert.match(html, /<span class="pl-fail">未通过<\/span>/);
     });
 
@@ -379,7 +408,7 @@ test('全链路演示', async (t) => {
       s.launcher = { ...s.launcher, enabled: false, state: 'idle', pid: null };
       const html = view(s);
       assert.match(text(html), /此后端未开启一键启动；请在终端执行 make demo-run1/);
-      assert.match(html, /<button type="button" class="btn btn-primary pl-start" disabled="">开始全链路<\/button>/);
+      assert.match(html, /<button type="button" class="btn btn-primary pl-start" disabled="">再进化一代<\/button>/);
       assert.match(html, /<fieldset class="pl-presets" disabled="">/);
       assert.match(text(html), /已完成 72 \/ 90 场会谈/);
     });
@@ -390,7 +419,7 @@ test('全链路演示', async (t) => {
       assert.match(html, /pl-pill-none">尚未开始</);
       assert.match(plain, /还没有全链路实验/);
       assert.equal(plain.match(/尚未生成/g).length, 3);
-      assert.match(html, /<button type="button" class="btn btn-primary pl-start">开始全链路<\/button>/);
+      assert.match(html, /<button type="button" class="btn btn-primary pl-start">再进化一代<\/button>/);
       assert.match(plain, /（暂无输出）/);
     });
 

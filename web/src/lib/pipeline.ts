@@ -1,6 +1,8 @@
 // 全链路演示页的纯逻辑：时间格式、整体进度、每步会谈数、结论句。只做展示推导，不计算任何指标。
 import type {
   PipelineGeneration,
+  PipelineLauncher,
+  PipelinePreset,
   PipelineResponse,
   PipelineResult,
   PipelineSnapshot,
@@ -183,6 +185,69 @@ export function stepSummary(step: PipelineStep): string {
   }
   if (step.elapsed_s !== null) parts.push(`用时 ${clock(step.elapsed_s)}`);
   return parts.join(' · ');
+}
+
+// ---------- 启动预设：续跑一代（next）与从 v1 重新开始（11/15 增补） ----------
+
+/** 会把 playbook 重置为 v1 的预设。旧后端不发 reset 字段，它的预设都会重置。 */
+export function isResetPreset(p: Pick<PipelinePreset, 'reset'>): boolean {
+  return p.reset !== false;
+}
+
+/** 续跑一代（reset=false）排在最前面，其余保持后端给的顺序 */
+export function orderPresets<T extends Pick<PipelinePreset, 'reset'>>(presets: readonly T[] | null | undefined): T[] {
+  const list = [...(presets ?? [])];
+  return [...list.filter((p) => !isResetPreset(p)), ...list.filter((p) => isResetPreset(p))];
+}
+
+/** 默认选中：排好序后的第一项（后端提供“再进化一代”时就是它） */
+export function defaultPreset<T extends Pick<PipelinePreset, 'reset'>>(presets: readonly T[] | null | undefined): T | null {
+  return orderPresets(presets)[0] ?? null;
+}
+
+/** 续跑从哪个版本出发：版本库不存在或还在 v1 时是 v1 */
+export function continueVersion(launcher: Pick<PipelineLauncher, 'current_version'> | null | undefined): string {
+  const v = launcher?.current_version;
+  return v ? v : 'v1';
+}
+
+/** 续跑预设下面那一行：“从 v2 继续”；还在 v1 时是“从 v1 开始” */
+export function continueFromText(launcher: Pick<PipelineLauncher, 'current_version'> | null | undefined): string {
+  const v = continueVersion(launcher);
+  return v === 'v1' ? '从 v1 开始' : `从 ${v} 继续`;
+}
+
+export const RESET_TAG = '从 v1 重新开始';
+
+const MODE_NAME = { mock: '演练', real: '真实' } as const;
+
+/**
+ * 续跑时演练与真实不能接在同一条链上：返回禁用提示；不冲突（或重置类预设、或后端没给链的模式）返回 null。
+ * 服务端仍会用 409 LINEAGE_MODE_MISMATCH 把关，这里只是提前提示。
+ */
+export function lineageConflict(
+  launcher: Pick<PipelineLauncher, 'lineage_mode'> | null | undefined,
+  preset: Pick<PipelinePreset, 'reset'> | null | undefined,
+  mock: boolean,
+): string | null {
+  if (!preset || isResetPreset(preset)) return null;
+  const mode = launcher?.lineage_mode;
+  if (mode !== 'mock' && mode !== 'real') return null;
+  if ((mode === 'mock') === mock) return null;
+  return `当前进化链是${MODE_NAME[mode]}数据，演练与真实不能接在同一条链上；请先从 v1 重新开始`;
+}
+
+/** 确认框的第一段：续跑说明不重置；重置类预设保留原警告，并说明进化链与曲线从头开始 */
+export function launchConfirmText(
+  preset: Pick<PipelinePreset, 'label' | 'description' | 'expected_s' | 'reset'>,
+  launcher: Pick<PipelineLauncher, 'current_version'> | null | undefined,
+): string {
+  const what = `${preset.label}（${preset.description}，${aboutMinutes(preset.expected_s)}）`;
+  if (!isResetPreset(preset)) {
+    const v = continueVersion(launcher);
+    return `将从当前版本 ${v} 继续，不重置 playbook，开始一次新的实验：${what}。这一代在 B 组的成绩会接在逐代曲线后面。页面会改为显示新实验。`;
+  }
+  return `将把 playbook 重置为 v1，并开始一次新的实验：${what}。这会开始一条新的进化链，逐代曲线从头开始。页面会改为显示新实验。`;
 }
 
 /** 默认展开：进行中和失败的步骤展开，其余折叠 */
