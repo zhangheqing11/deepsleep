@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from hashlib import sha256
+from hashlib import scrypt, sha256
 import hmac
 import secrets
 import time
@@ -19,7 +19,7 @@ from api.errors import APIError
 class AuthUser:
     id: str
     display_name: str
-    role: Literal["operator"] = "operator"
+    role: Literal["operator", "user"] = "operator"
 
 
 @dataclass(frozen=True)
@@ -29,6 +29,21 @@ class _TokenRecord:
 
 
 ANONYMOUS_USER = AuthUser(id="anonymous", display_name="匿名演示")
+
+# 自助注册的演示账号只存在进程内存里：重启即清空，不落盘。上限防止内存被填满。
+MAX_REGISTERED_ACCOUNTS = 200
+
+
+@dataclass(frozen=True)
+class _Account:
+    user: AuthUser
+    salt: bytes
+    digest: bytes
+
+
+def _account_digest(password: str, salt: bytes) -> bytes:
+    """Salted scrypt for self-registered accounts (the configured demo account keeps its SHA-256 env digest)."""
+    return scrypt(password.encode("utf-8"), salt=salt, n=2**14, r=8, p=1, dklen=32)
 
 
 def password_digest(password: str) -> str:
@@ -46,6 +61,7 @@ class AuthService:
     def __init__(self, settings: Settings):
         self.settings = settings
         self._tokens: dict[str, _TokenRecord] = {}
+        self._accounts: dict[str, _Account] = {}
 
     @property
     def enabled(self) -> bool:
@@ -58,11 +74,29 @@ class AuthService:
         supplied_digest = password_digest(password)
         valid_password = hmac.compare_digest(supplied_digest, self.settings.auth_password_sha256)
         if not (valid_user and valid_password):
-            raise APIError(401, "INVALID_CREDENTIALS", "用户名或密码错误。")
+            account = self._accounts.get(username.casefold())
+            if account is None or not hmac.compare_digest(_account_digest(password, account.salt), account.digest):
+                raise APIError(401, "INVALID_CREDENTIALS", "用户名或密码错误。")
+            return self._issue(account.user)
+        return self._issue(AuthUser(id=self.settings.auth_username, display_name="演示用户"))
+
+    def register(self, username: str, password: str, display_name: str | None) -> tuple[str, AuthUser, int]:
+        """Create an in-memory demo account and sign it in. Nothing is persisted."""
+        if not self.enabled:
+            raise APIError(503, "AUTH_DISABLED", "当前服务未启用登录。")
+        key = username.casefold()
+        if key == self.settings.auth_username.casefold() or key in self._accounts:
+            raise APIError(409, "USERNAME_TAKEN", "这个账号已经有人用了。")
+        if len(self._accounts) >= MAX_REGISTERED_ACCOUNTS:
+            raise APIError(503, "REGISTRATION_FULL", "演示账号数量已达上限。")
+        salt = secrets.token_bytes(16)
+        user = AuthUser(id=username, display_name=(display_name or "").strip() or username, role="user")
+        self._accounts[key] = _Account(user=user, salt=salt, digest=_account_digest(password, salt))
+        return self._issue(user)
+
+    def _issue(self, user: AuthUser) -> tuple[str, AuthUser, int]:
         token = secrets.token_urlsafe(32)
-        expires_at = time.time() + self.settings.auth_ttl_s
-        user = AuthUser(id=self.settings.auth_username, display_name="演示用户")
-        self._tokens[token] = _TokenRecord(user=user, expires_at=expires_at)
+        self._tokens[token] = _TokenRecord(user=user, expires_at=time.time() + self.settings.auth_ttl_s)
         return token, user, self.settings.auth_ttl_s
 
     def authenticate(self, authorization: str | None) -> AuthUser:

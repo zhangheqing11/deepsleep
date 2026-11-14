@@ -10,6 +10,14 @@ class LoginRequest(BaseModel):
     password: str = Field(min_length=1, max_length=256)
 
 
+class RegisterRequest(BaseModel):
+    model_config = ConfigDict(extra="forbid", strict=True)
+
+    username: str = Field(min_length=3, max_length=32, pattern=r"^[A-Za-z0-9_.-]+$")
+    password: str = Field(min_length=6, max_length=256)
+    display_name: str | None = Field(default=None, max_length=20)
+
+
 class UserPublic(BaseModel):
     id: str
     display_name: str

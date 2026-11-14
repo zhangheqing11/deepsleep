@@ -140,4 +140,6 @@ files 模式已经读取引擎落盘产物；HTTP 不执行引擎、评分、反
 
 默认 API_AUTH_MODE=none，保持已有 Mock 联调兼容。演示时设为 demo，并通过 API_AUTH_PASSWORD_SHA256 提供演示密码的 SHA-256 摘要。登录接口为 POST /api/v1/auth/login；成功后前端把 access_token 保存在 sessionStorage，并为运行、报告、会谈和看板只读接口添加 Authorization: Bearer <access_token>。
 
-GET /api/v1/health、登录接口保持公开；GET /api/v1/auth/me 用于恢复登录状态，POST /api/v1/auth/logout 用于退出。token 只保存在当前后端进程内，服务重启后失效。
+`POST /api/v1/auth/register`（`{username, password, display_name?}`，成功返回 201 和与登录相同的结构）让演示现场的人自助注册一个账号并直接登录：账号 3–32 位字母、数字或 `_ . -`，密码至少 6 位；重名返回 409 `USERNAME_TAKEN`；注册的账号角色为 `user`，密码以加盐 scrypt 摘要保存在进程内存里，不落盘，服务重启后清空，最多 200 个。未开启登录时返回 503 `AUTH_DISABLED`。
+
+GET /api/v1/health、登录与注册接口保持公开；GET /api/v1/auth/me 用于恢复登录状态，POST /api/v1/auth/logout 用于退出。token 只保存在当前后端进程内，服务重启后失效。

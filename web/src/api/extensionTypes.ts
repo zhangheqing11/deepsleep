@@ -70,7 +70,8 @@ export type EvolutionInsights = Record<string, unknown>;
 export type RunEvidence = { available: false } | { contract: false; summary: Record<string, unknown>; visitors: unknown[] };
 export interface PlaybookVersion {
   version: string;
-  sha: string;
+  /** 模拟数据源（API_DATA_SOURCE=mock）里的初始版本没有提交，为 null */
+  sha: string | null;
   author: string;
   message: string;
   committed_at: string;

@@ -10,6 +10,7 @@ from __future__ import annotations
 import os
 from pathlib import Path
 import re
+import stat
 import shutil
 import subprocess
 
@@ -18,10 +19,16 @@ from .config import resolve
 _TAG = re.compile(r"^v(\d+)$")
 
 
-def _clear_readonly(func, path, _exc_info):
-    """Windows: git object files are read-only, so rmtree needs to clear the flag and retry."""
-    os.chmod(path, 0o700)
-    func(path)
+def _decode_git_output(value: bytes | str) -> str:
+    """Decode Git output consistently across Windows code pages."""
+    if isinstance(value, str):
+        return value.replace("\r\n", "\n")
+    try:
+        text = value.decode("utf-8")
+    except UnicodeDecodeError:
+        encoding = "mbcs" if os.name == "nt" else "latin-1"
+        text = value.decode(encoding, errors="replace")
+    return text.replace("\r\n", "\n")
 
 
 class PlaybookRepo:
@@ -38,11 +45,14 @@ class PlaybookRepo:
                "GIT_COMMITTER_NAME": name, "GIT_COMMITTER_EMAIL": email,
                "GIT_CONFIG_NOSYSTEM": "1", "GIT_TERMINAL_PROMPT": "0"}
         cmd = ["git", "-c", "commit.gpgsign=false", "-c", "tag.gpgsign=false",
+               "-c", "i18n.logOutputEncoding=utf-8",
                "-c", "core.hooksPath=/dev/null", "-c", "init.defaultBranch=main", *args]
-        result = subprocess.run(cmd, cwd=self.path, env=env, capture_output=True, text=True)
+        result = subprocess.run(cmd, cwd=self.path, env=env, capture_output=True)
+        stdout = _decode_git_output(result.stdout)
+        stderr = _decode_git_output(result.stderr)
         if result.returncode != 0:
-            raise RuntimeError(f"git {' '.join(args)} 失败: {result.stderr.strip()}")
-        return result.stdout.strip()
+            raise RuntimeError(f"git {' '.join(args)} 失败: {stderr.strip()}")
+        return stdout.strip()
 
     def exists(self) -> bool:
         return (self.path / ".git").is_dir()
@@ -71,11 +81,19 @@ class PlaybookRepo:
 
     def reset_to_initial(self, initial_text: str | None = None) -> str:
         """One-click demo reset: wipe the repo and re-create it at v1."""
+        configured = resolve(self.config["path"]).resolve()
+        target = self.path.resolve()
         ours = self.exists() and (self.path / "VERSION").is_file()
-        if self.path.name != Path(self.config["path"]).name or (self.path.exists() and not ours):
+        if target != configured or self.path.name != configured.name or (self.path.exists() and not ours):
             raise RuntimeError(f"拒绝删除非 playbook 版本库路径: {self.path}")
         if self.path.exists():
-            shutil.rmtree(self.path, onerror=_clear_readonly)
+            def remove_readonly(func, path, _exc_info):
+                # Git may leave object/pack files read-only on Windows.
+                # Restrict the retry to the path reported by rmtree.
+                os.chmod(path, stat.S_IRUSR | stat.S_IWUSR)
+                func(path)
+
+            shutil.rmtree(self.path, onerror=remove_readonly)
         return self.init(initial_text)
 
     # Compatibility alias for unmerged callers; resets to initial v1.

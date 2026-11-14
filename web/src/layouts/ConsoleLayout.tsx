@@ -2,6 +2,8 @@ import type { ReactNode } from 'react';
 import type { HealthResponse } from '../api/draftTypes';
 import { DataSourceBanner } from '../components/DataSourceBanner';
 import { HealthBar } from '../components/HealthBar';
+import { DevconsoleNavLink } from '../components/console/DevconsoleNavLink';
+import { SignOutButton } from '../components/SignOutButton';
 import type { AdapterKind } from '../config';
 import { HREF, type ConsoleRoute } from '../hooks/useHashRoute';
 import type { ResourceState } from '../hooks/useResource';
@@ -21,7 +23,7 @@ export function Moon({ size = 22 }: { size?: number }) {
   );
 }
 
-/** 控制台外壳：灰绿窄侧栏 + 一整块连续的白色工作区 */
+/** 控制台外壳：窄侧栏 + 一整块连续的白色工作区 */
 export function ConsoleLayout({
   route,
   adapter,
@@ -45,9 +47,13 @@ export function ConsoleLayout({
         <span className="small muted">开发者控制台</span>
         <div className="row">
           <HealthBar adapter={adapter} health={health} onRetry={onRetryHealth} />
-          <a className="quiet-link small" href={HREF.chat}>
-            用户端演示 →
+          <a className="quiet-link small" href={HREF.board}>
+            ← 进化看板
           </a>
+          <a className="quiet-link small" href={HREF.app}>
+            来访视角 →
+          </a>
+          <SignOutButton className="quiet-btn small" />
         </div>
       </header>
       <nav className="console-nav" aria-label="控制台导航">
@@ -59,6 +65,8 @@ export function ConsoleLayout({
             </a>
           );
         })}
+        <div className="nav-sep" role="presentation" />
+        <DevconsoleNavLink />
       </nav>
       <main className="console-sheet">
         <DataSourceBanner adapter={adapter} mode={health.status === 'ok' ? health.data.execution_mode : null} unavailable={health.status === 'error'} />

@@ -18,11 +18,6 @@ import tempfile
 import time
 from uuid import uuid4
 
-try:  # POSIX
-    import fcntl
-except ImportError:  # Windows: same non-blocking exclusive lock via msvcrt
-    fcntl = None
-    import msvcrt
 
 from scoring.score import score_run
 from safety.judges import MockJudge
@@ -34,6 +29,7 @@ from .evolve.lineage import evolve_lineage
 from .evolve.pipeline import evolve
 from .evolve.reflector import load_sessions, load_traces
 from .evolve.repo import PlaybookRepo
+from .file_lock import file_lock
 from .playbook import Playbook, parse_sections
 from .run import build_deps, build_report, load_visitors
 from .session import SessionRunner
@@ -90,23 +86,11 @@ def command_lock():
     """Avoid two operator commands racing the latest manifest or playbook repo."""
     directory = VAR_DIR / "demo"
     directory.mkdir(parents=True, exist_ok=True)
-    with (directory / ".lock").open("a") as stream:
-        try:
-            if fcntl is not None:
-                fcntl.flock(stream, fcntl.LOCK_EX | fcntl.LOCK_NB)
-            else:
-                stream.seek(0)
-                msvcrt.locking(stream.fileno(), msvcrt.LK_NBLCK, 1)
-        except OSError:  # BlockingIOError (POSIX) / PermissionError (Windows)
-            raise ValueError("另一个 demo 命令正在运行") from None
-        try:
+    try:
+        with file_lock(directory / ".lock", blocking=False):
             yield
-        finally:
-            if fcntl is not None:
-                fcntl.flock(stream, fcntl.LOCK_UN)
-            else:
-                stream.seek(0)
-                msvcrt.locking(stream.fileno(), msvcrt.LK_UNLCK, 1)
+    except BlockingIOError:
+        raise ValueError("另一个 demo 命令正在运行") from None
 
 
 def save_manifest(manifest):

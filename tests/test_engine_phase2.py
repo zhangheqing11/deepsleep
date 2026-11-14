@@ -9,7 +9,7 @@ from test_engine_session import (SAY, ScriptedLLM, ScriptedSim, deps_for, run, v
 
 @pytest.mark.parametrize('early', [False, True])
 def test_hidden_item9_forced_screen_even_if_agent_ends_early(early):
-    v = json.loads(Path('sim/visitors/sample-003.json').read_text())
+    v = json.loads(Path('sim/visitors/sample-003.json').read_text(encoding='utf-8'))
     assert v['prefilled'][0]['items'][8] == 0
     deps = deps_for(llm=ScriptedLLM(lambda s,m: {'action':'end_round'} if early else SAY))
     deps.screening = S2Screening()
@@ -144,7 +144,7 @@ def test_request_budget_counts_across_instances_and_blocks_before_send(tmp_path)
     RequestBudget(path,2).reserve()
     RequestBudget(path,2).reserve()
     with pytest.raises(RequestBudgetExceeded): RequestBudget(path,2).reserve()
-    assert len(path.read_text().splitlines())==2
+    assert len(path.read_text(encoding='utf-8').splitlines())==2
 
 
 def test_all_forbidden_text_is_omitted_without_blank_transcript():
