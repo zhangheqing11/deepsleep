@@ -108,3 +108,69 @@ LLM 已解析输出、重试、否决记录、history 核验结果、被丢弃�
 每次 run-id 必须唯一，已有目录会拒绝重跑。`--config` 接受冻结配置覆盖 YAML，`--no-merged` 用于受控对照；默认全局真实请求上限 450，由 `var/s3-phase2/request-budget.log` 跨进程累计（HTTP send 前加锁预留，含失败与取消，非服务商账单）。不要删除账本来重复计费；提高 `--budget` 必须取得任务授权。
 
 产物为 `var/integ/<run-id>/` 的 manifest、sessions、trace、calls、summary 和可评分时的 run_report。计分必须同时读 summary.accounting，error 不进入准确率分母。来源摘要标明当前工作区代码，不能把未提交的工作区等同某个 Git 提交。模拟规则模型的 ISI 结果只用于联调，不证明实际干预有效。
+
+## 路演编排
+
+`engine.demo` 将 A 组运行 1、C 组现场基线及候选评估、B 组运行 2 和旧版本 B 组对照连起来。
+使用现有 S2 来访适配、筛查、4 周状态模型及 `build_report` / `score_run`；每场仍是两轮，危机退出除外。
+运行 2 与对照并发执行，整个命令内的会谈（包括并行 C 组候选）共用 `--max-sessions` 上限。
+候选未通过门禁是正常的 `kept_previous`，会用同一版本照常跑 B 组两次，不保证或伪造提升。
+
+在当前 worktree 使用已安装的 Python，不创建环境、不安装依赖：
+
+```bash
+PYTHON=/Users/zhangheqing/bohack/deepsleep/.venv/bin/python
+# 完整离线彩排，所有模型调用均为 mock，仍走真实状态模型和计分。
+make demo-mock
+# 同义 CLI；默认样例确定性切分为 A/B/C 各 6 人。
+$PYTHON -m engine.demo all --mock --dev --visitors-dir sim/visitors --reset
+# 有界彩排可加 --n-a 3 --n-b 3 --n-c 3 --max-sessions 4
+
+# 真实模式：事先在进程环境配置提供方，不由编排器读取外部 .env。
+$PYTHON -m engine.demo reset
+$PYTHON -m engine.demo run1 --experiment stage-demo --n-a 40 --n-b 40 --n-c 40
+$PYTHON -m engine.demo learn --experiment stage-demo
+# 现场第二次运行，沿用原实验配置与来访快照。
+$PYTHON -m engine.demo run2 --experiment stage-demo
+# 一次性执行；--reset 仅 all 支持。
+$PYTHON -m engine.demo all --reset --n-a 40 --n-b 40 --n-c 40
+```
+
+默认来访目录为 `data/visitors/{A,B,C}/`，目录缺失或组为空时明确报错；不会默默改用开发数据。
+`--dev` 从指定目录按 JSON 文件名排序，以索引 `0::3 / 1::3 / 2::3` 切出互不重叠的小组；
+`--n-a/--n-b/--n-c` 是各组人数上限，省略则使用整组。来访目录必须位于当前 worktree 内。
+开发分组会在内存及实验快照中更新 `split`，不改源 JSON。该小样本划分只用于开发，不能当作正式同分布验证集。
+
+`run1` / `all` 创建新实验，未给 ID 时自动生成；`learn` / `run2` 默认读取最近清单，也可指定 `--experiment`。
+首次运行将模式、人数和并发选项保存在 `var/demo/<id>/options.json`，以后命令无需再传；显式传不同值会拒绝。
+A/B/C 的完整数据快照存于同目录的 `cohorts.json`，运行 2 与对照读取同一份 B 组快照。
+初始与学习后的 playbook 分别存 `original.md` / `learned.md`，因此对照不受后续版本库指针变化影响。
+学习前会核对版本库仍是运行 1 的原文与版本。请在首次运行前冻结源码、配置、模型环境变量和 prompts，后续命令不要改动。
+
+Makefile 提供 `demo-reset`、`demo-run1`（顺序执行 run1 + learn）、`demo-run2`、`demo-all`、`demo-mock`。
+可以用 `DEMO_PYTHON=/已有环境/bin/python` 指定解释器，`DEMO_ARGS='--experiment rehearsal --n-a 3 ...'` 传选项。
+这些新目标不依赖旧的 `venv` 目标，也不改已有目标行为。
+
+真实模式必须提供 `DS_BASE_URL`、`DS_API_KEY`、`DS_MODEL`，沿用冻结配置 temperature 0。
+分类器、判断器和反思器选择沿用当前引擎配置及其预置自动降级；缺少 DS 环境直接报错。
+当前进化配置默认反思器为 OpenAI `gpt-6-astra`，而 AGENTS.md 的旧设计表写的是 Opus 5.5；编排器不修改这一选择。
+如果团队决定用 Opus，需要在首次运行前按 [进化引擎说明](evolve/README.md) 配置并冻结。
+`--mock` 明确替换 agent、分类器、判断器、来访渲染和反思器，不初始化真实客户端，即使环境中存在密钥。
+mock 反思器生成三个低关键度候选，照常在 C 组评估；mock agent 不因这些措辞调整而变好，因此通常保留上一代。
+
+产物与大屏读取约定：
+
+- `var/demo/experiment.json` 严格保持交接清单的字段；每个阶段开始前公布 ID 与 `state=running`，通过同目录临时文件 + `os.replace` 原子替换，完成为 `done`，异常为 `stage=failed` 并带 `error`。
+- 每次更新同时保存 `var/demo/experiment.<id>.json`。学习详情在 `var/evolve/<evolution_id>/{status,evolution,insights}.json`；清单中的学习 `done` 表示完成，采纳与否读取 `evolution.outcome`。
+- A/B 及 C 验证批次均在 `var/runs/<run_id>/` 写 `sessions/`、`trace/`、`run_report.json`、`summary.json`。summary 增加 `execution_mode=mock|real`；`real` 仅表示启动模式，是否发生自动降级需同时读 summary 和 trace。
+- 完成后打印三方指标、学习结果、最多三条采纳改动摘要、回退命令，并写 `var/demo/<id>/summary.md`。比率分母为零时显示 `N/A`。
+- 评估不完整（error 或 unknown 被排除）会保留原始产物并报错，不把部分评分视为阶段成功；C 候选评估失败由既有 evolve 记录并淘汰该候选，C 基线失败则整次学习失败。
+- 已完成或失败的阶段不自动重跑，避免重复调用；修复原因后使用新实验 ID。单次只允许一个操作员 demo 命令，进程锁防止覆盖清单。硬断电 / SIGKILL 无法写失败，清单会留在 `running`，需人工检查产物后开新实验。
+- `reset` 调用 `PlaybookRepo.reset_to_initial` 并删除最近清单指针，保留历史清单、报告和快照；它会重建独立 playbook git 库，因此旧实验的版本标签不保证还能回滚。日常回退用 `python -m engine.evolve rollback <版本>` 保留版本历史。
+
+完整演示的会谈数为 `N_A + 2×N_B + (1+K)×N_C`，`K` 是实际进入验证的候选数（0–3）。
+A/B/C 各 40 人且三个候选都有效时，共 280 场、最多 560 轮；开发模式对应 42 场。
+当前 4/3 动作上限及合并策略下，普通完整会谈约需 30–45 次模型请求（agent、分类器、来访措辞、判断器合计），
+因此 280 场约 8,400–12,600 次，再加 1 次反思器、必要时 1 次降级反思器。
+这是依据调用结构的粗估，不是计费上限：提前退出会减少请求，重试、判断器/分类器降级、额外安全核验和推测执行会增加请求。
+本次实现只做 mock 验收，不能据此保证真实模式单次一分钟或主指标提升；高关键度候选仍有既有 120 秒审核窗口。
