@@ -2,6 +2,7 @@ import type { DataMode } from '../lib/settings';
 import { EXECUTION_MODE_LABEL, label } from '../lib/labels';
 import { clockMs } from '../lib/format';
 import type { PollSnapshot } from '../lib/poller';
+import { signOut, useAuth } from '../api/auth';
 import { Badge } from './common';
 
 export function Moon({ size = 22 }: { size?: number }) {
@@ -35,6 +36,7 @@ export function TopBar({
         <SourceBadge mode={mode} fixtureLabel={fixtureLabel} />
         {mode === 'http' && connection && <ConnectionBadge snap={connection} />}
         <ExecutionBadge modes={executionModes} />
+        <SignOutButton />
       </div>
     </header>
   );
@@ -70,4 +72,15 @@ function ExecutionBadge({ modes }: { modes: (string | null)[] }) {
   if (known.length === 0) return <Badge tone="warn">执行模式：后端未提供</Badge>;
   const text = known.map((m) => label(EXECUTION_MODE_LABEL, m)).join(' / ');
   return <Badge tone={known.every((m) => m === 'real') ? 'ok' : 'mock'}>执行模式：{text}</Badge>;
+}
+
+/** 已登录时显示“退出登录”；后端没开登录或使用模拟数据时什么都不渲染。 */
+function SignOutButton() {
+  const auth = useAuth();
+  if (auth.state !== 'signed-in') return null;
+  return (
+    <button type="button" className="signout" onClick={() => void signOut()}>
+      退出登录（{auth.user.display_name}）
+    </button>
+  );
 }

@@ -1,12 +1,14 @@
-import { useMemo } from 'react';
+import { useEffect, useMemo, type ReactNode } from 'react';
 import type { DataClient } from './api/client';
 import type { ExperimentResult } from './api/extensionTypes';
 import { FIXTURES, setupSource } from './api';
+import { refreshAuth, useAuth } from './api/auth';
 import { Notice } from './components/common';
 import { TopBar } from './components/TopBar';
 import { BACKOFF_MS, CONFIG_WARNINGS, EXPERIMENT_POLL_MS, REQUEST_TIMEOUT_MS, STALE_AFTER_FAILURES } from './config';
 import { executionModes, useExperimentData } from './hooks/useExperimentData';
 import { usePoller } from './hooks/usePoller';
+import { LoginPage } from './pages/LoginPage';
 import { OverviewPage } from './pages/OverviewPage';
 
 export function App() {
@@ -36,7 +38,33 @@ export function App() {
   }
 
   const fixtureLabel = setup.fixture ? `开发样例：${FIXTURES[setup.fixture]}` : null;
-  return <Dashboard client={setup.client} fixtureLabel={fixtureLabel} unknownFixture={setup.unknownFixture} />;
+  return (
+    <AuthGate enabled={setup.client.mode === 'http'}>
+      <Dashboard client={setup.client} fixtureLabel={fixtureLabel} unknownFixture={setup.unknownFixture} />
+    </AuthGate>
+  );
+}
+
+/**
+ * 读真实后端时先确认是否需要登录。未登录时不挂载看板，轮询也就不会发出；
+ * 之后任何接口返回 401（令牌过期、后端重启）会回到这里的登录页。模拟数据不需要登录。
+ */
+function AuthGate({ enabled, children }: { enabled: boolean; children: ReactNode }) {
+  const auth = useAuth();
+  useEffect(() => {
+    if (enabled) void refreshAuth();
+  }, [enabled]);
+  if (!enabled || auth.state === 'open' || auth.state === 'signed-in') return <>{children}</>;
+  if (auth.state === 'checking') {
+    return (
+      <main className="login">
+        <p role="status" className="login-fine">
+          正在确认登录状态…
+        </p>
+      </main>
+    );
+  }
+  return <LoginPage reason={auth.reason} />;
 }
 
 function Dashboard({

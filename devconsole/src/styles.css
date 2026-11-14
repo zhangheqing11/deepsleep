@@ -327,3 +327,21 @@ button:focus-visible, a:focus-visible { outline: 2px solid var(--accent); outlin
   .metric-table th, .metric-table td { padding: 4px; }
 }
 .delta-value.delta-empty { color: var(--muted); font-weight: 500; }
+
+/* 登录页：一张居中的卡片，只用上面的变量。 */
+.login { min-height: 100vh; min-height: 100dvh; display: grid; place-items: center; padding: 24px 16px; background: var(--bg); color: var(--text); }
+.login-card { width: 100%; max-width: 380px; display: grid; gap: 14px; padding: 28px 24px 24px; border-radius: var(--radius-lg); background: var(--surface); border: 1px solid var(--border); }
+.login-card h1, .login-card p { margin: 0; }
+.login-card h1 { font-size: 1.75rem; font-weight: 600; line-height: 1.2; letter-spacing: -0.02em; }
+.login-brand { display: inline-flex; align-items: center; gap: 8px; color: var(--accent); font-weight: 600; }
+.login-sub, .login-fine { color: var(--muted); font-size: 0.875rem; }
+.login-fine { font-size: 0.75rem; }
+.login-note { padding: 8px 12px; border-radius: var(--radius); background: var(--info-soft); color: var(--info); font-size: 0.875rem; }
+.login-error { padding: 8px 12px; border-radius: var(--radius); background: var(--danger-soft); color: var(--danger); font-size: 0.875rem; }
+.login-field { display: grid; gap: 4px; font-size: 0.875rem; color: var(--muted); }
+.login-field input { min-height: 40px; padding: 8px 12px; border: 1px solid var(--border); border-radius: var(--radius); background: var(--bg); color: var(--text); font: inherit; }
+.login-field input:focus-visible, .login-submit:focus-visible, .signout:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.login-submit { min-height: 44px; border: 0; border-radius: var(--radius); background: var(--button); color: var(--button-ink); font: inherit; font-weight: 600; cursor: pointer; }
+.login-submit:disabled { opacity: 0.55; cursor: not-allowed; }
+.signout { padding: 4px 10px; border: 1px solid var(--border); border-radius: 999px; background: transparent; color: var(--muted); font: inherit; font-size: 0.8125rem; cursor: pointer; }
+.signout:hover { color: var(--text); border-color: var(--muted); }

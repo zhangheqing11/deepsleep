@@ -24,3 +24,5 @@ export {
   timeline,
   secondsLeft,
 } from '../../src/model/overview';
+
+export { authHeader, getAuthState, noteUnauthorized, refreshAuth, signIn, signOut } from '../../src/api/auth';
