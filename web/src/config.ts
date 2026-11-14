@@ -1,5 +1,7 @@
 // 前端唯一的接口配置入口。组件里不要直接写地址。
 
+import { resolveDevconsoleLink } from './lib/devconsoleLink';
+
 export type AdapterKind = 'mock' | 'http';
 
 const env = import.meta.env;
@@ -25,3 +27,13 @@ export const REPORT_NOT_READY_DELAY_MS = 1000;
 
 /** 当前前端对照的契约版本 */
 export const CONTRACTS_VERSION = '0.1.0';
+
+/**
+ * 进化后台（独立应用 devconsole/）的地址，侧栏入口在新标签页打开它。
+ * 只在这里配置：VITE_DEVCONSOLE_URL。不填时入口显示“尚未配置”。
+ * 开发期可指向同机 devconsole 服务（如 http://localhost:5174/devconsole/）；部署时用后端确认的挂载地址（如 /devconsole/）。
+ */
+export const DEVCONSOLE_LINK = resolveDevconsoleLink(
+  env.VITE_DEVCONSOLE_URL,
+  typeof window === 'undefined' ? 'http://localhost/' : window.location.href,
+);

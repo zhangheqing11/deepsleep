@@ -11,7 +11,8 @@
     "test:sw": "node --test tests/sw.test.mjs",
     "build": "tsc --noEmit -p tsconfig.json && vite build",
     "preview": "vite preview",
-    "preview:lan": "vite preview --host"
+    "preview:lan": "vite preview --host",
+    "test:link": "node --test tests/devconsoleLink.test.mjs"
   },
   "dependencies": {
     "react": "18.3.1",
