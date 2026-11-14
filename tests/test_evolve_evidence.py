@@ -133,3 +133,25 @@ def test_failed_final_record_is_ignored():
     trace = {"path_probs": [s3_record(1, None, 0.9, final=True, status="error")]}
     item = ev.visitor_evidence("A-001", MAIN, SESSION, trace, VISITOR)
     assert item["finals"] == {} and item["curve"] == [] and item["classifier_failures"] == 1
+
+
+def _s3_fixture_traces():
+    from pathlib import Path
+    root = Path(__file__).resolve().parents[1] / "engine" / "fixtures"
+    return sorted(p for p in root.rglob("*.json") if "path_probs" in p.read_text(encoding="utf-8")) if root.exists() else []
+
+
+@pytest.mark.skipif(not _s3_fixture_traces(), reason="S3 mock trace fixtures not merged yet (engine/fixtures/)")
+@pytest.mark.parametrize("path", _s3_fixture_traces(), ids=lambda p: p.name)
+def test_s3_fixture_traces_are_readable(path):
+    import json
+    trace = json.loads(path.read_text(encoding="utf-8"))
+    records = trace["path_probs"]
+    assert records, "fixture should contain classifier records"
+    ok = [r for r in records if r.get("status", "ok") == "ok"]
+    series = ev.classifier_series(None, trace)
+    finals = ev.round_finals(trace)
+    assert len(series) + len(finals) == len(ok)
+    assert ev.classifier_failures(trace) == len(records) - len(ok)
+    for point in series + list(finals.values()):
+        assert abs(sum(point["probs"].values()) - 1) < 1e-6
