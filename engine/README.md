@@ -136,6 +136,16 @@ $PYTHON -m engine.demo run2 --experiment stage-demo
 $PYTHON -m engine.demo all --reset --n-a 40 --n-b 40 --n-c 40
 ```
 
+Windows PowerShell 可直接使用同一解释器运行，不需要 Linux/WSL；演示锁、
+集成请求预算和 playbook Git 状态均使用跨平台实现：
+
+```powershell
+python -m engine.demo all --mock --dev --visitors-dir sim/visitors --reset
+python -m engine.evolve reset
+python -m engine.evolve status
+python -m engine.evolve rollback v1
+```
+
 默认来访目录为 `data/visitors/{A,B,C}/`，目录缺失或组为空时明确报错；不会默默改用开发数据。
 `--dev` 从指定目录按 JSON 文件名排序，以索引 `0::3 / 1::3 / 2::3` 切出互不重叠的小组；
 `--n-a/--n-b/--n-c` 是各组人数上限，省略则使用整组。来访目录必须位于当前 worktree 内。

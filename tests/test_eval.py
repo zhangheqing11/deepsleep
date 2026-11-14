@@ -15,7 +15,7 @@ ROOT = Path(__file__).resolve().parents[1]
 
 @pytest.mark.parametrize("provider", ["rules", "mock"])
 def test_eval_cli_runs_from_root_and_writes_report(provider, tmp_path):
-    result = subprocess.run([sys.executable, "-m", "safety.eval", "--provider", provider, "--output-dir", str(tmp_path)], cwd=ROOT, env={**os.environ, "JUDGE_PROVIDER": "mock"}, capture_output=True, text=True, check=True)
+    result = subprocess.run([sys.executable, "-m", "safety.eval", "--provider", provider, "--output-dir", str(tmp_path)], cwd=ROOT, env={**os.environ, "JUDGE_PROVIDER": "mock"}, capture_output=True, text=True, encoding="utf-8", check=True)
     report = json.loads(result.stdout)
     assert report["provider"] == provider
     assert report["n"] == 48
@@ -31,7 +31,7 @@ def test_eval_cli_runs_from_root_and_writes_report(provider, tmp_path):
         assert [row["id"] for row in report["missed"]] == ["POS-03", "POS-08", "POS-12", "POS-13", "POS-15", "POS-19", "POS-24"]
     saved = list(tmp_path.glob(f"{provider}-*.json"))
     assert len(saved) == 1
-    assert json.loads(saved[0].read_text()) == report
+    assert json.loads(saved[0].read_text(encoding="utf-8")) == report
 
 
 def test_eval_metrics_expose_misses_and_false_alarms():
@@ -51,7 +51,7 @@ def test_eval_metrics_expose_misses_and_false_alarms():
 
 def test_expanded_jsonl_and_empty_denominators(tmp_path):
     path = tmp_path / "large.jsonl"
-    path.write_text("# 占位，待心理学同学审定后替换\n" + "\n".join(json.dumps({"id": str(i), "text": "普通文本", "label": "none", "cssrs": 0, "difficulty": "easy"}) for i in range(150)))
+    path.write_text("# 占位，待心理学同学审定后替换\n" + "\n".join(json.dumps({"id": str(i), "text": "普通文本", "label": "none", "cssrs": 0, "difficulty": "easy"}) for i in range(150)), encoding="utf-8")
     rows = load_testset(path)
     assert len(rows) == 150
     report = asyncio.run(evaluate(rows, "rules"))
@@ -118,7 +118,7 @@ def test_explicit_real_provider_requires_key_and_engine_keeps_fallback(provider,
     result = subprocess.run(
         [sys.executable, "-m", "safety.eval", "--provider", provider,
          "--output-dir", str(tmp_path)], cwd=ROOT, env=os.environ.copy(),
-        capture_output=True, text=True,
+        capture_output=True, text=True, encoding="utf-8",
     )
     assert result.returncode != 0
     assert f"评测 {provider} 缺少 API key" in result.stderr
@@ -189,7 +189,7 @@ def test_cli_loads_root_env_before_config_and_accepts_timeout(monkeypatch, tmp_p
     monkeypatch.delenv("SAFETY_EVAL_NO_DOTENV", raising=False)
     root = tmp_path / "repo"
     (root / "safety").mkdir(parents=True)
-    (root / "safety/config.yaml").write_text((ROOT / "safety/config.yaml").read_text())
+    (root / "safety/config.yaml").write_text((ROOT / "safety/config.yaml").read_text(encoding="utf-8"), encoding="utf-8")
     (root / ".env").write_text("JUDGE_PROVIDER=mock\n")
     monkeypatch.delenv("JUDGE_PROVIDER", raising=False)
     monkeypatch.setattr(config_module, "DEFAULT_CONFIG", root / "safety" / "config.yaml")
