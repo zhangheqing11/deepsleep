@@ -1,6 +1,13 @@
 # web/ — deepsleep 前端
 
-React 18 + TypeScript + Vite。第一轮只做最小流程：**开始运行 → 显示进度 → 展示报告 → 查看会谈**。
+React 18 + TypeScript + Vite。一个项目、两套界面：
+
+| 地址 | 界面 | 内容 |
+|---|---|---|
+| `#/console`（默认） | 开发者控制台 | 运行与报告（含最近运行、对比）、模拟来访、进化记录、调试 |
+| `#/app/chat`、`#/app/settings` | 用户端交互演示 | 聊一聊、我的；**固定示例内容，未连接模型** |
+
+旧链接 `#/runs/:run_id/sessions/:visitor_id` 仍可用。
 
 ## 启动
 
@@ -32,20 +39,30 @@ npm run build
 ```
 src/
 ├── config.ts              接口基础地址、适配器、轮询参数（唯一配置入口）
+├── App.tsx                路由分发：控制台 / 用户端
 ├── api/
-│   ├── contractTypes.ts   run_report / session 类型，手写自 contracts v0.1.0
+│   ├── contractTypes.ts   run_report / session / evolution 类型，手写自 contracts v0.1.0
 │   ├── draftTypes.ts      ⚠ 接口草案类型（health、运行状态、错误结构、会谈列表项），未定稿
 │   ├── client.ts          ApiClient 接口
 │   ├── httpClient.ts      fetch 实现：统一错误结构、request_id、Idempotency-Key
 │   ├── mockClient.ts      前端本地模拟适配器
-│   └── errors.ts          ApiError：network / http / invalid_response / aborted
+│   ├── errors.ts          ApiError：network / http / invalid_response / aborted
+│   ├── requestLog.ts      调试页用的请求记录（仅内存）
+│   └── chatDemo.ts        ⚠ 用户端聊天演示剧本（固定回复，接口形状为前端占位草案）
 ├── hooks/
+│   ├── useConsoleRun.ts   控制台“当前运行”状态，切换控制台页面时轮询不中断
+│   ├── useChat.ts         演示聊天：发送中 / 失败重试（同一消息 ID）/ 反馈 / 建议 / 记忆确认
 │   ├── useRunPoller.ts    1 秒串行轮询；终态停止；卸载 abort；网络失败退避
 │   ├── useCreateRun.ts    幂等提交：网络失败后重试复用同一个 key
 │   ├── useRunData.ts      health / 报告（409 重试）/ 会谈列表 / 单个会谈
 │   └── useResource.ts     可取消的一次性请求
-├── lib/                   存储、格式化、中文文案
-└── components/            页面组件
+├── layouts/               ConsoleLayout（灰绿外框 + 左侧导航）、AppLayout（手机宽度 + 底部两项导航）
+├── pages/console/         RunsPage、VisitorsPage、EvolutionPage（契约示例静态展示）、DebugPage
+├── pages/app/             ChatPage、SettingsPage
+├── components/            评测流程组件（RunLauncher、RunProgress、ReportView、SessionList、SessionView）与 console/ 子组件
+├── lib/                   存储、格式化、中文文案；userDemoStore.ts 是用户端演示的本机偏好与记忆
+├── styles.css             颜色变量（日间 / 夜间可手动切换）与基础组件
+└── shell.css              控制台外壳与用户端样式
 ```
 
 ## 约定
@@ -53,4 +70,7 @@ src/
 - 正式指标、路径、转介全部来自后端，前端只做格式化（比例为 null 显示“暂无”，提升用 `path_acc_gain`）。
 - 当前运行编号存 `localStorage`，刷新后继续查询；未确认的创建请求存 `sessionStorage`。
 - 文案只用“建议”“干预路径”“建议就医”，不使用诊断式表述。
-- 学习、playbook 版本、回滚接口未定，本轮未实现。
+- 学习、playbook 版本、回滚接口未定：进化记录页只静态展示契约示例，没有任何操作按钮。
+- 最近运行只记录本机发起的运行；对比页并排展示两份报告的数值、标出较好的一侧，不计算差值（是否由前端计算待团队确认）。
+- 用户端演示只能选择预设消息，不开放自由输入：自由输入属于真实用户数据，且演示没有安全层，待团队决定并接入后端聊天接口后再开放。
+- 用户端偏好和“我记住的事”只保存在本机浏览器；导出、删除数据等按钮标为“待接入”。

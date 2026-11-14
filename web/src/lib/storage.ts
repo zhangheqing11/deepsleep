@@ -51,6 +51,52 @@ export const currentRunStore = {
   clear: () => removeKey('local', CURRENT_RUN_KEY),
 };
 
+// ---------- 最近运行：本机创建过的运行（后端提供 GET /runs 前的过渡方案） ----------
+
+const RUN_HISTORY_KEY = 'deepsleep.runHistory.v1';
+const RUN_HISTORY_MAX = 20;
+
+export interface RunHistoryEntry {
+  run_id: string;
+  adapter: string;
+  created_at: string;
+  split: string;
+  /** 请求时填的版本；拿到运行状态后改成后端返回的实际版本 */
+  playbook_version: string | null;
+  status: string | null;
+}
+
+export const runHistoryStore = {
+  list(adapter: string): RunHistoryEntry[] {
+    const all = readJson<RunHistoryEntry[]>('local', RUN_HISTORY_KEY) ?? [];
+    return all.filter((e) => e.adapter === adapter);
+  },
+  upsert(entry: Pick<RunHistoryEntry, 'run_id' | 'adapter'> & Partial<RunHistoryEntry>): void {
+    const all = readJson<RunHistoryEntry[]>('local', RUN_HISTORY_KEY) ?? [];
+    const i = all.findIndex((e) => e.run_id === entry.run_id && e.adapter === entry.adapter);
+    if (i >= 0) {
+      all[i] = { ...all[i], ...entry };
+    } else {
+      all.unshift({
+        created_at: new Date().toISOString(),
+        split: '',
+        playbook_version: null,
+        status: null,
+        ...entry,
+      });
+    }
+    writeJson('local', RUN_HISTORY_KEY, all.slice(0, RUN_HISTORY_MAX));
+  },
+  remove(adapter: string, runId: string): void {
+    const all = readJson<RunHistoryEntry[]>('local', RUN_HISTORY_KEY) ?? [];
+    writeJson(
+      'local',
+      RUN_HISTORY_KEY,
+      all.filter((e) => !(e.adapter === adapter && e.run_id === runId)),
+    );
+  },
+};
+
 // ---------- 未确认的创建请求：网络失败后重试复用同一个 Idempotency-Key ----------
 
 const PENDING_CREATE_KEY = 'deepsleep.pendingCreate.v1';

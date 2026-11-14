@@ -145,3 +145,42 @@ export const CARD_LABEL: Record<PlanCard['type'], string> = {
 export function label<K extends string>(map: Record<K, string>, key: K | string): string {
   return (map as Record<string, string>)[key] ?? key;
 }
+
+export const SECTION_LABEL: Record<string, string> = {
+  communication_style: '沟通风格',
+  questioning_strategy: '提问策略',
+  path_discrimination: '路径鉴别',
+  plan_rules: '建议规则',
+  referral_rules: '转介规则',
+};
+
+export const CRITICALITY_LABEL: Record<string, string> = {
+  low: '低',
+  medium: '中',
+  high: '高',
+};
+
+export const CHANGE_OP_LABEL: Record<string, string> = {
+  add: '新增',
+  modify: '修改',
+  delete: '删除',
+};
+
+export const FEEDBACK_STATUS_LABEL: Record<string, string> = {
+  approved: '已确认',
+  edited: '改写后确认',
+  rejected: '已驳回',
+  pending: '待确认',
+  timeout: '超时未确认',
+};
+
+export const FEEDBACK_SOURCE_LABEL: Record<string, string> = {
+  human: '人工纠正',
+  auto_critic: '自动批注',
+};
+
+export const REVIEW_DECISION_LABEL: Record<string, string> = {
+  approve: '同意',
+  reject: '否决',
+  timeout: '超时（不生效）',
+};

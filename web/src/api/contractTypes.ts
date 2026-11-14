@@ -1,5 +1,5 @@
 // 业务数据类型：手写自 contracts/*.schema.json v0.1.0（已合入 main，PR #1）。
-// 这里只收录前端会读取的 run_report 与 session；契约升级（如 v0.1.1）后必须对照 schema 同步。
+// 这里只收录前端会读取的 run_report、session 与 evolution；契约升级（如 v0.1.1）后必须对照 schema 同步。
 // 不要在这里加契约里没有的字段。
 
 export type Path = 'P1' | 'P2' | 'P3' | 'P4' | 'P5';
@@ -235,4 +235,73 @@ export interface Session {
   plan: Plan | null;
   behaviors: Behaviors;
   safety_events: SafetyEvent[];
+}
+
+// ---------- evolution ----------
+
+export type PlaybookSection =
+  | 'communication_style'
+  | 'questioning_strategy'
+  | 'path_discrimination'
+  | 'plan_rules'
+  | 'referral_rules';
+export type Criticality = 'low' | 'medium' | 'high';
+
+export interface EvolutionChange {
+  id: string;
+  op: 'add' | 'modify' | 'delete';
+  section: PlaybookSection;
+  before: string | null;
+  after: string | null;
+  reason: string;
+  criticality_rule: Criticality;
+  criticality_self: Criticality;
+  criticality: Criticality;
+}
+
+export interface EvolutionCandidate {
+  id: 'c1' | 'c2' | 'c3';
+  summary: string;
+  changes: EvolutionChange[];
+  hard_rule_violations: { code: string; change_id: string; message: string }[];
+  /** 被硬规则拦下、未跑验证时为 null */
+  val_metrics: Metrics | null;
+  veto: Veto;
+  passed: boolean;
+}
+
+export interface HumanFeedback {
+  id: string;
+  kind: 'correction' | 'score' | 'demonstration';
+  source: 'human' | 'auto_critic';
+  status: 'approved' | 'rejected' | 'edited' | 'pending' | 'timeout';
+  visitor_id: string | null;
+  text: string | null;
+  score: number | null;
+}
+
+export interface Evolution {
+  schema_version: string;
+  evolution_id: string;
+  created_at: string;
+  from_version: string;
+  /** 全部候选被否决时为 null */
+  to_version: string | null;
+  outcome: 'committed' | 'kept_previous';
+  source_run_id: string;
+  val_split: string;
+  baseline_val_metrics: Metrics;
+  reflector: { model: string; fell_back: boolean; fallback_reason: string | null };
+  failures_used: { visitor_id: string; failure_tags: FailureTag[] }[];
+  human_feedback: HumanFeedback[];
+  candidates: EvolutionCandidate[];
+  human_review: {
+    change_id: string;
+    decision: 'approve' | 'reject' | 'timeout';
+    scores: { safety: number; clinical: number; feasibility: number } | null;
+    comment: string | null;
+  }[];
+  chosen: string | null;
+  commit: { repo: string; sha: string; author: string; message: string } | null;
+  diff: string | null;
 }

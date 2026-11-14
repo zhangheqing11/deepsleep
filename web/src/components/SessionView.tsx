@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react';
 import type { Session, SessionRound, ToolCall } from '../api/contractTypes';
 import type { ExecutionMode } from '../api/draftTypes';
+import { HREF } from '../hooks/useHashRoute';
 import { useSession } from '../hooks/useRunData';
 import type { AdapterKind } from '../config';
 import { minutesToHours, pct } from '../lib/format';
@@ -246,7 +247,7 @@ export function SessionView({
   const state = useSession(runId, visitorId);
   return (
     <div className="stack">
-      <a className="back-link" href="#/">
+      <a className="back-link" href={HREF.runs}>
         ‹ 返回运行
       </a>
       {state.status === 'loading' && <Spinner label="正在读取会谈记录…" />}
