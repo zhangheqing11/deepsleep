@@ -261,6 +261,8 @@ async def _evolve(tracker: StatusTracker, *, run_report: dict, sessions: dict, e
     cand_insight = {cid: _val_insight(m, rich, config) for cid, (m, rich) in unpacked.items()}
     insights = {
         "evolution_id": evolution_id,
+        "reflector": {**evolution["reflector"], "provider": reflection.provider,
+                      "reasoning_effort": reflection.reasoning_effort, "attempts": reflection.attempts},
         "note": "环 3 跨来访进化的补充报告；契约 v0.1.1 前不进 evolution JSON。",
         "changes": change_meta,
         "failure_dimensions": reflection.failure_dimensions,
