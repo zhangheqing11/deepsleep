@@ -1,0 +1,240 @@
+{
+  "schema_version": "0.1.0",
+  "session_id": "fixture-mock/A-001",
+  "run_id": "fixture-mock",
+  "visitor_id": "A-001",
+  "playbook_version": "v0",
+  "models": {
+    "agent": "mock-agent",
+    "visitor": "mock-visitor"
+  },
+  "status": "completed",
+  "error": null,
+  "rounds": [
+    {
+      "round": 1,
+      "transcript": [
+        {
+          "turn": 1,
+          "speaker": "visitor",
+          "text": "最近晚上总睡不踏实，白天有点没精神。",
+          "revealed_clue_ids": []
+        },
+        {
+          "turn": 2,
+          "speaker": "agent",
+          "text": "先了解一下，你平时几点上床、几点起床？",
+          "revealed_clue_ids": []
+        },
+        {
+          "turn": 3,
+          "speaker": "visitor",
+          "text": "我一般十一点上床、七点起床，周末也差不多。",
+          "revealed_clue_ids": [
+            "A-001-c1"
+          ]
+        },
+        {
+          "turn": 4,
+          "speaker": "agent",
+          "text": "躺在床上的时候，你通常是清醒着，还是脑子里在想事情？",
+          "revealed_clue_ids": []
+        },
+        {
+          "turn": 5,
+          "speaker": "visitor",
+          "text": "一躺到床上就清醒，越想赶快睡越睡不着。",
+          "revealed_clue_ids": [
+            "A-001-c2"
+          ]
+        },
+        {
+          "turn": 6,
+          "speaker": "agent",
+          "text": "如果放假可以随便睡，你几点会自然犯困、几点自然醒？",
+          "revealed_clue_ids": []
+        },
+        {
+          "turn": 7,
+          "speaker": "visitor",
+          "text": "这方面好像没什么特别的。",
+          "revealed_clue_ids": []
+        },
+        {
+          "turn": 8,
+          "speaker": "agent",
+          "text": "上床以后会看手机或者刷视频吗？",
+          "revealed_clue_ids": []
+        },
+        {
+          "turn": 9,
+          "speaker": "visitor",
+          "text": "这方面好像没什么特别的。",
+          "revealed_clue_ids": []
+        },
+        {
+          "turn": 10,
+          "speaker": "agent",
+          "text": "家里人有没有说过你打鼾，或者睡觉时呼吸停顿？",
+          "revealed_clue_ids": []
+        },
+        {
+          "turn": 11,
+          "speaker": "visitor",
+          "text": "这方面好像没什么特别的。",
+          "revealed_clue_ids": []
+        },
+        {
+          "turn": 12,
+          "speaker": "agent",
+          "text": "我们先从固定起床时间开始，每天七点起床，这样身体的节律会慢慢稳定下来。",
+          "revealed_clue_ids": []
+        },
+        {
+          "turn": 13,
+          "speaker": "visitor",
+          "text": "这方面好像没什么特别的。",
+          "revealed_clue_ids": []
+        }
+      ],
+      "asked_topics": [
+        "schedule_regularity",
+        "bed_wakefulness",
+        "worry_rumination",
+        "chronotype",
+        "screen_in_bed",
+        "snoring_breathing"
+      ],
+      "path_pred": "P1",
+      "path_confidence": 0.3333,
+      "referral_pred": "R0",
+      "crisis_level": "none"
+    },
+    {
+      "round": 2,
+      "transcript": [
+        {
+          "turn": 1,
+          "speaker": "agent",
+          "text": "在沙发上或者出差住外面的时候，会不会反而容易睡着？",
+          "revealed_clue_ids": []
+        },
+        {
+          "turn": 2,
+          "speaker": "visitor",
+          "text": "没有吧，好像也还好。",
+          "revealed_clue_ids": []
+        },
+        {
+          "turn": 3,
+          "speaker": "agent",
+          "text": "没关系，这些不一定马上说得清，我们慢慢来。",
+          "revealed_clue_ids": []
+        },
+        {
+          "turn": 4,
+          "speaker": "visitor",
+          "text": "这方面好像没什么特别的。",
+          "revealed_clue_ids": []
+        },
+        {
+          "turn": 5,
+          "speaker": "agent",
+          "text": "刚才提到的事，我换个场景再问问：在沙发上或者出差住外面的时候，会不会反而容易睡着？",
+          "revealed_clue_ids": []
+        },
+        {
+          "turn": 6,
+          "speaker": "visitor",
+          "text": "不太想承认，我在沙发上看纸书时倒常常打瞌睡。",
+          "revealed_clue_ids": [
+            "A-001-c3"
+          ]
+        },
+        {
+          "turn": 7,
+          "speaker": "agent",
+          "text": "最近心情怎么样，做事还提得起兴趣吗？",
+          "revealed_clue_ids": []
+        },
+        {
+          "turn": 8,
+          "speaker": "visitor",
+          "text": "这方面好像没什么特别的。",
+          "revealed_clue_ids": []
+        },
+        {
+          "turn": 9,
+          "speaker": "agent",
+          "text": "我们先从固定起床时间开始，每天七点起床，这样身体的节律会慢慢稳定下来。",
+          "revealed_clue_ids": []
+        },
+        {
+          "turn": 10,
+          "speaker": "visitor",
+          "text": "这方面好像没什么特别的。",
+          "revealed_clue_ids": []
+        }
+      ],
+      "asked_topics": [
+        "sleep_elsewhere",
+        "mood"
+      ],
+      "path_pred": "P2",
+      "path_confidence": 0.4545,
+      "referral_pred": "R0",
+      "crisis_level": "none"
+    }
+  ],
+  "plan": {
+    "bedtime": "23:30",
+    "risetime": "07:00",
+    "tib_minutes": 450,
+    "components": [
+      "stimulus_control",
+      "fixed_risetime"
+    ],
+    "rationale_given": true,
+    "contraindications_checked": false,
+    "referral_advice": null,
+    "cards": [
+      {
+        "type": "reminder",
+        "title": "固定起床时间",
+        "body": "明早七点起床，先坚持一周。"
+      }
+    ]
+  },
+  "behaviors": {
+    "goal_setting": 1,
+    "reflection": 7,
+    "emotion_response": 1,
+    "rationale_explained": 2,
+    "lecturing": 0,
+    "premature_advice": 0
+  },
+  "safety_events": [],
+  "context_scales": [
+    {
+      "scale": "isi",
+      "reported_score": 19,
+      "items": null
+    },
+    {
+      "scale": "phq9",
+      "reported_score": 4,
+      "items": [
+        1,
+        1,
+        1,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    }
+  ],
+  "tool_calls": []
+}
