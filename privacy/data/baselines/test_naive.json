@@ -1,0 +1,1966 @@
+{
+  "overall": {
+    "n": 150,
+    "entity_replacement_legal_rate": 0.0,
+    "leakage_rate": 0.3333333333333333,
+    "keep_rate": 0.5549872122762148,
+    "crisis_keep_rate": 0.5925925925925926,
+    "non_entity_exact_rate": 0.22666666666666666,
+    "valid_output_rate": 1.0,
+    "hard_negative_overredaction": 0.7692307692307693,
+    "exact_match": 0.1,
+    "counts": {
+      "entities": 108,
+      "replacement_legal": 0,
+      "leaked": 36,
+      "keep": 391,
+      "kept": 217,
+      "crisis_keep": 27,
+      "crisis_kept": 16,
+      "hard_negative": 65,
+      "overredacted": 50,
+      "exact": 15,
+      "non_entity_exact": 34,
+      "valid": 150,
+      "invalid": 0
+    },
+    "by_label": {
+      "ACCOUNT": {
+        "total": 8,
+        "leaked": 0,
+        "replacement_legal": 0,
+        "leakage_rate": 0.0,
+        "entity_replacement_legal_rate": 0.0
+      },
+      "ADDRESS": {
+        "total": 11,
+        "leaked": 0,
+        "replacement_legal": 0,
+        "leakage_rate": 0.0,
+        "entity_replacement_legal_rate": 0.0
+      },
+      "BIRTH_DATE": {
+        "total": 7,
+        "leaked": 0,
+        "replacement_legal": 0,
+        "leakage_rate": 0.0,
+        "entity_replacement_legal_rate": 0.0
+      },
+      "HOSPITAL": {
+        "total": 12,
+        "leaked": 0,
+        "replacement_legal": 0,
+        "leakage_rate": 0.0,
+        "entity_replacement_legal_rate": 0.0
+      },
+      "ID_NUM": {
+        "total": 8,
+        "leaked": 0,
+        "replacement_legal": 0,
+        "leakage_rate": 0.0,
+        "entity_replacement_legal_rate": 0.0
+      },
+      "ORG": {
+        "total": 11,
+        "leaked": 8,
+        "replacement_legal": 0,
+        "leakage_rate": 0.7272727272727273,
+        "entity_replacement_legal_rate": 0.0
+      },
+      "PERSON": {
+        "total": 28,
+        "leaked": 27,
+        "replacement_legal": 0,
+        "leakage_rate": 0.9642857142857143,
+        "entity_replacement_legal_rate": 0.0
+      },
+      "PHONE": {
+        "total": 8,
+        "leaked": 0,
+        "replacement_legal": 0,
+        "leakage_rate": 0.0,
+        "entity_replacement_legal_rate": 0.0
+      },
+      "PLATE": {
+        "total": 7,
+        "leaked": 0,
+        "replacement_legal": 0,
+        "leakage_rate": 0.0,
+        "entity_replacement_legal_rate": 0.0
+      },
+      "SCHOOL": {
+        "total": 8,
+        "leaked": 1,
+        "replacement_legal": 0,
+        "leakage_rate": 0.125,
+        "entity_replacement_legal_rate": 0.0
+      }
+    }
+  },
+  "by_tag": {
+    "account": {
+      "n": 6,
+      "entity_replacement_legal_rate": 0.0,
+      "leakage_rate": 0.14285714285714285,
+      "keep_rate": 0.5,
+      "crisis_keep_rate": null,
+      "non_entity_exact_rate": 0.3333333333333333,
+      "valid_output_rate": 1.0,
+      "hard_negative_overredaction": null,
+      "exact_match": 0.0,
+      "counts": {
+        "entities": 7,
+        "replacement_legal": 0,
+        "leaked": 1,
+        "keep": 12,
+        "kept": 6,
+        "crisis_keep": 0,
+        "crisis_kept": 0,
+        "hard_negative": 0,
+        "overredacted": 0,
+        "exact": 0,
+        "non_entity_exact": 2,
+        "valid": 6,
+        "invalid": 0
+      },
+      "by_label": {
+        "ACCOUNT": {
+          "total": 6,
+          "leaked": 0,
+          "replacement_legal": 0,
+          "leakage_rate": 0.0,
+          "entity_replacement_legal_rate": 0.0
+        },
+        "PERSON": {
+          "total": 1,
+          "leaked": 1,
+          "replacement_legal": 0,
+          "leakage_rate": 1.0,
+          "entity_replacement_legal_rate": 0.0
+        }
+      }
+    },
+    "address": {
+      "n": 9,
+      "entity_replacement_legal_rate": 0.0,
+      "leakage_rate": 0.0,
+      "keep_rate": 0.5625,
+      "crisis_keep_rate": 1.0,
+      "non_entity_exact_rate": 0.3333333333333333,
+      "valid_output_rate": 1.0,
+      "hard_negative_overredaction": null,
+      "exact_match": 0.0,
+      "counts": {
+        "entities": 10,
+        "replacement_legal": 0,
+        "leaked": 0,
+        "keep": 16,
+        "kept": 9,
+        "crisis_keep": 2,
+        "crisis_kept": 2,
+        "hard_negative": 0,
+        "overredacted": 0,
+        "exact": 0,
+        "non_entity_exact": 3,
+        "valid": 9,
+        "invalid": 0
+      },
+      "by_label": {
+        "ADDRESS": {
+          "total": 9,
+          "leaked": 0,
+          "replacement_legal": 0,
+          "leakage_rate": 0.0,
+          "entity_replacement_legal_rate": 0.0
+        },
+        "ORG": {
+          "total": 1,
+          "leaked": 0,
+          "replacement_legal": 0,
+          "leakage_rate": 0.0,
+          "entity_replacement_legal_rate": 0.0
+        }
+      }
+    },
+    "adversarial": {
+      "n": 3,
+      "entity_replacement_legal_rate": 0.0,
+      "leakage_rate": 0.5,
+      "keep_rate": 0.5,
+      "crisis_keep_rate": 0.25,
+      "non_entity_exact_rate": 0.0,
+      "valid_output_rate": 1.0,
+      "hard_negative_overredaction": 1.0,
+      "exact_match": 0.0,
+      "counts": {
+        "entities": 4,
+        "replacement_legal": 0,
+        "leaked": 2,
+        "keep": 12,
+        "kept": 6,
+        "crisis_keep": 4,
+        "crisis_kept": 1,
+        "hard_negative": 1,
+        "overredacted": 1,
+        "exact": 0,
+        "non_entity_exact": 0,
+        "valid": 3,
+        "invalid": 0
+      },
+      "by_label": {
+        "ADDRESS": {
+          "total": 1,
+          "leaked": 0,
+          "replacement_legal": 0,
+          "leakage_rate": 0.0,
+          "entity_replacement_legal_rate": 0.0
+        },
+        "BIRTH_DATE": {
+          "total": 1,
+          "leaked": 0,
+          "replacement_legal": 0,
+          "leakage_rate": 0.0,
+          "entity_replacement_legal_rate": 0.0
+        },
+        "PERSON": {
+          "total": 2,
+          "leaked": 2,
+          "replacement_legal": 0,
+          "leakage_rate": 1.0,
+          "entity_replacement_legal_rate": 0.0
+        }
+      }
+    },
+    "age_keep": {
+      "n": 7,
+      "entity_replacement_legal_rate": 0.0,
+      "leakage_rate": 0.6666666666666666,
+      "keep_rate": 0.34782608695652173,
+      "crisis_keep_rate": null,
+      "non_entity_exact_rate": 0.0,
+      "valid_output_rate": 1.0,
+      "hard_negative_overredaction": 1.0,
+      "exact_match": 0.0,
+      "counts": {
+        "entities": 3,
+        "replacement_legal": 0,
+        "leaked": 2,
+        "keep": 23,
+        "kept": 8,
+        "crisis_keep": 0,
+        "crisis_kept": 0,
+        "hard_negative": 5,
+        "overredacted": 5,
+        "exact": 0,
+        "non_entity_exact": 0,
+        "valid": 7,
+        "invalid": 0
+      },
+      "by_label": {
+        "ACCOUNT": {
+          "total": 1,
+          "leaked": 0,
+          "replacement_legal": 0,
+          "leakage_rate": 0.0,
+          "entity_replacement_legal_rate": 0.0
+        },
+        "PERSON": {
+          "total": 2,
+          "leaked": 2,
+          "replacement_legal": 0,
+          "leakage_rate": 1.0,
+          "entity_replacement_legal_rate": 0.0
+        }
+      }
+    },
+    "ambiguous": {
+      "n": 32,
+      "entity_replacement_legal_rate": 0.0,
+      "leakage_rate": 0.5,
+      "keep_rate": 0.6133333333333333,
+      "crisis_keep_rate": null,
+      "non_entity_exact_rate": 0.21875,
+      "valid_output_rate": 1.0,
+      "hard_negative_overredaction": 0.75,
+      "exact_match": 0.15625,
+      "counts": {
+        "entities": 12,
+        "replacement_legal": 0,
+        "leaked": 6,
+        "keep": 75,
+        "kept": 46,
+        "crisis_keep": 0,
+        "crisis_kept": 0,
+        "hard_negative": 20,
+        "overredacted": 15,
+        "exact": 5,
+        "non_entity_exact": 7,
+        "valid": 32,
+        "invalid": 0
+      },
+      "by_label": {
+        "ACCOUNT": {
+          "total": 1,
+          "leaked": 0,
+          "replacement_legal": 0,
+          "leakage_rate": 0.0,
+          "entity_replacement_legal_rate": 0.0
+        },
+        "ADDRESS": {
+          "total": 2,
+          "leaked": 0,
+          "replacement_legal": 0,
+          "leakage_rate": 0.0,
+          "entity_replacement_legal_rate": 0.0
+        },
+        "HOSPITAL": {
+          "total": 2,
+          "leaked": 0,
+          "replacement_legal": 0,
+          "leakage_rate": 0.0,
+          "entity_replacement_legal_rate": 0.0
+        },
+        "ORG": {
+          "total": 3,
+          "leaked": 3,
+          "replacement_legal": 0,
+          "leakage_rate": 1.0,
+          "entity_replacement_legal_rate": 0.0
+        },
+        "PERSON": {
+          "total": 3,
+          "leaked": 3,
+          "replacement_legal": 0,
+          "leakage_rate": 1.0,
+          "entity_replacement_legal_rate": 0.0
+        },
+        "SCHOOL": {
+          "total": 1,
+          "leaked": 0,
+          "replacement_legal": 0,
+          "leakage_rate": 0.0,
+          "entity_replacement_legal_rate": 0.0
+        }
+      }
+    },
+    "app_keep": {
+      "n": 6,
+      "entity_replacement_legal_rate": 0.0,
+      "leakage_rate": 0.3333333333333333,
+      "keep_rate": 0.3076923076923077,
+      "crisis_keep_rate": null,
+      "non_entity_exact_rate": 0.0,
+      "valid_output_rate": 1.0,
+      "hard_negative_overredaction": 1.0,
+      "exact_match": 0.0,
+      "counts": {
+        "entities": 3,
+        "replacement_legal": 0,
+        "leaked": 1,
+        "keep": 13,
+        "kept": 4,
+        "crisis_keep": 0,
+        "crisis_kept": 0,
+        "hard_negative": 3,
+        "overredacted": 3,
+        "exact": 0,
+        "non_entity_exact": 0,
+        "valid": 6,
+        "invalid": 0
+      },
+      "by_label": {
+        "ACCOUNT": {
+          "total": 2,
+          "leaked": 0,
+          "replacement_legal": 0,
+          "leakage_rate": 0.0,
+          "entity_replacement_legal_rate": 0.0
+        },
+        "ORG": {
+          "total": 1,
+          "leaked": 1,
+          "replacement_legal": 0,
+          "leakage_rate": 1.0,
+          "entity_replacement_legal_rate": 0.0
+        }
+      }
+    },
+    "cbti_keep": {
+      "n": 2,
+      "entity_replacement_legal_rate": 0.0,
+      "leakage_rate": 1.0,
+      "keep_rate": 0.8333333333333334,
+      "crisis_keep_rate": null,
+      "non_entity_exact_rate": 0.5,
+      "valid_output_rate": 1.0,
+      "hard_negative_overredaction": 0.0,
+      "exact_match": 0.5,
+      "counts": {
+        "entities": 1,
+        "replacement_legal": 0,
+        "leaked": 1,
+        "keep": 6,
+        "kept": 5,
+        "crisis_keep": 0,
+        "crisis_kept": 0,
+        "hard_negative": 1,
+        "overredacted": 0,
+        "exact": 1,
+        "non_entity_exact": 1,
+        "valid": 2,
+        "invalid": 0
+      },
+      "by_label": {
+        "PERSON": {
+          "total": 1,
+          "leaked": 1,
+          "replacement_legal": 0,
+          "leakage_rate": 1.0,
+          "entity_replacement_legal_rate": 0.0
+        }
+      }
+    },
+    "city_keep": {
+      "n": 4,
+      "entity_replacement_legal_rate": 0.0,
+      "leakage_rate": 0.0,
+      "keep_rate": 0.2222222222222222,
+      "crisis_keep_rate": null,
+      "non_entity_exact_rate": 0.0,
+      "valid_output_rate": 1.0,
+      "hard_negative_overredaction": 1.0,
+      "exact_match": 0.0,
+      "counts": {
+        "entities": 3,
+        "replacement_legal": 0,
+        "leaked": 0,
+        "keep": 9,
+        "kept": 2,
+        "crisis_keep": 0,
+        "crisis_kept": 0,
+        "hard_negative": 1,
+        "overredacted": 1,
+        "exact": 0,
+        "non_entity_exact": 0,
+        "valid": 4,
+        "invalid": 0
+      },
+      "by_label": {
+        "ADDRESS": {
+          "total": 3,
+          "leaked": 0,
+          "replacement_legal": 0,
+          "leakage_rate": 0.0,
+          "entity_replacement_legal_rate": 0.0
+        }
+      }
+    },
+    "crisis": {
+      "n": 11,
+      "entity_replacement_legal_rate": 0.0,
+      "leakage_rate": 0.42857142857142855,
+      "keep_rate": 0.5925925925925926,
+      "crisis_keep_rate": 0.5925925925925926,
+      "non_entity_exact_rate": 0.36363636363636365,
+      "valid_output_rate": 1.0,
+      "hard_negative_overredaction": 0.6,
+      "exact_match": 0.18181818181818182,
+      "counts": {
+        "entities": 7,
+        "replacement_legal": 0,
+        "leaked": 3,
+        "keep": 27,
+        "kept": 16,
+        "crisis_keep": 27,
+        "crisis_kept": 16,
+        "hard_negative": 5,
+        "overredacted": 3,
+        "exact": 2,
+        "non_entity_exact": 4,
+        "valid": 11,
+        "invalid": 0
+      },
+      "by_label": {
+        "ADDRESS": {
+          "total": 1,
+          "leaked": 0,
+          "replacement_legal": 0,
+          "leakage_rate": 0.0,
+          "entity_replacement_legal_rate": 0.0
+        },
+        "HOSPITAL": {
+          "total": 2,
+          "leaked": 0,
+          "replacement_legal": 0,
+          "leakage_rate": 0.0,
+          "entity_replacement_legal_rate": 0.0
+        },
+        "PERSON": {
+          "total": 3,
+          "leaked": 3,
+          "replacement_legal": 0,
+          "leakage_rate": 1.0,
+          "entity_replacement_legal_rate": 0.0
+        },
+        "PHONE": {
+          "total": 1,
+          "leaked": 0,
+          "replacement_legal": 0,
+          "leakage_rate": 0.0,
+          "entity_replacement_legal_rate": 0.0
+        }
+      }
+    },
+    "date_birthday": {
+      "n": 5,
+      "entity_replacement_legal_rate": 0.0,
+      "leakage_rate": 0.0,
+      "keep_rate": 0.42857142857142855,
+      "crisis_keep_rate": null,
+      "non_entity_exact_rate": 0.2,
+      "valid_output_rate": 1.0,
+      "hard_negative_overredaction": null,
+      "exact_match": 0.0,
+      "counts": {
+        "entities": 5,
+        "replacement_legal": 0,
+        "leaked": 0,
+        "keep": 7,
+        "kept": 3,
+        "crisis_keep": 0,
+        "crisis_kept": 0,
+        "hard_negative": 0,
+        "overredacted": 0,
+        "exact": 0,
+        "non_entity_exact": 1,
+        "valid": 5,
+        "invalid": 0
+      },
+      "by_label": {
+        "BIRTH_DATE": {
+          "total": 5,
+          "leaked": 0,
+          "replacement_legal": 0,
+          "leakage_rate": 0.0,
+          "entity_replacement_legal_rate": 0.0
+        }
+      }
+    },
+    "date_keep": {
+      "n": 7,
+      "entity_replacement_legal_rate": 0.0,
+      "leakage_rate": 0.5,
+      "keep_rate": 0.4,
+      "crisis_keep_rate": null,
+      "non_entity_exact_rate": 0.0,
+      "valid_output_rate": 1.0,
+      "hard_negative_overredaction": 1.0,
+      "exact_match": 0.0,
+      "counts": {
+        "entities": 2,
+        "replacement_legal": 0,
+        "leaked": 1,
+        "keep": 20,
+        "kept": 8,
+        "crisis_keep": 0,
+        "crisis_kept": 0,
+        "hard_negative": 5,
+        "overredacted": 5,
+        "exact": 0,
+        "non_entity_exact": 0,
+        "valid": 7,
+        "invalid": 0
+      },
+      "by_label": {
+        "BIRTH_DATE": {
+          "total": 1,
+          "leaked": 0,
+          "replacement_legal": 0,
+          "leakage_rate": 0.0,
+          "entity_replacement_legal_rate": 0.0
+        },
+        "ORG": {
+          "total": 1,
+          "leaked": 1,
+          "replacement_legal": 0,
+          "leakage_rate": 1.0,
+          "entity_replacement_legal_rate": 0.0
+        }
+      }
+    },
+    "device_keep": {
+      "n": 6,
+      "entity_replacement_legal_rate": 0.0,
+      "leakage_rate": 1.0,
+      "keep_rate": 0.5,
+      "crisis_keep_rate": null,
+      "non_entity_exact_rate": 0.0,
+      "valid_output_rate": 1.0,
+      "hard_negative_overredaction": 1.0,
+      "exact_match": 0.0,
+      "counts": {
+        "entities": 1,
+        "replacement_legal": 0,
+        "leaked": 1,
+        "keep": 16,
+        "kept": 8,
+        "crisis_keep": 0,
+        "crisis_kept": 0,
+        "hard_negative": 5,
+        "overredacted": 5,
+        "exact": 0,
+        "non_entity_exact": 0,
+        "valid": 6,
+        "invalid": 0
+      },
+      "by_label": {
+        "PERSON": {
+          "total": 1,
+          "leaked": 1,
+          "replacement_legal": 0,
+          "leakage_rate": 1.0,
+          "entity_replacement_legal_rate": 0.0
+        }
+      }
+    },
+    "drug_keep": {
+      "n": 5,
+      "entity_replacement_legal_rate": 0.0,
+      "leakage_rate": 0.0,
+      "keep_rate": 0.3333333333333333,
+      "crisis_keep_rate": null,
+      "non_entity_exact_rate": 0.0,
+      "valid_output_rate": 1.0,
+      "hard_negative_overredaction": 1.0,
+      "exact_match": 0.0,
+      "counts": {
+        "entities": 2,
+        "replacement_legal": 0,
+        "leaked": 0,
+        "keep": 12,
+        "kept": 4,
+        "crisis_keep": 0,
+        "crisis_kept": 0,
+        "hard_negative": 3,
+        "overredacted": 3,
+        "exact": 0,
+        "non_entity_exact": 0,
+        "valid": 5,
+        "invalid": 0
+      },
+      "by_label": {
+        "ADDRESS": {
+          "total": 1,
+          "leaked": 0,
+          "replacement_legal": 0,
+          "leakage_rate": 0.0,
+          "entity_replacement_legal_rate": 0.0
+        },
+        "HOSPITAL": {
+          "total": 1,
+          "leaked": 0,
+          "replacement_legal": 0,
+          "leakage_rate": 0.0,
+          "entity_replacement_legal_rate": 0.0
+        }
+      }
+    },
+    "generic_place": {
+      "n": 3,
+      "entity_replacement_legal_rate": null,
+      "leakage_rate": null,
+      "keep_rate": 0.8571428571428571,
+      "crisis_keep_rate": null,
+      "non_entity_exact_rate": 0.6666666666666666,
+      "valid_output_rate": 1.0,
+      "hard_negative_overredaction": 0.3333333333333333,
+      "exact_match": 0.6666666666666666,
+      "counts": {
+        "entities": 0,
+        "replacement_legal": 0,
+        "leaked": 0,
+        "keep": 7,
+        "kept": 6,
+        "crisis_keep": 0,
+        "crisis_kept": 0,
+        "hard_negative": 3,
+        "overredacted": 1,
+        "exact": 2,
+        "non_entity_exact": 2,
+        "valid": 3,
+        "invalid": 0
+      },
+      "by_label": {}
+    },
+    "hard_negative": {
+      "n": 65,
+      "entity_replacement_legal_rate": null,
+      "leakage_rate": null,
+      "keep_rate": 0.5238095238095238,
+      "crisis_keep_rate": 0.5833333333333334,
+      "non_entity_exact_rate": 0.23076923076923078,
+      "valid_output_rate": 1.0,
+      "hard_negative_overredaction": 0.7692307692307693,
+      "exact_match": 0.23076923076923078,
+      "counts": {
+        "entities": 0,
+        "replacement_legal": 0,
+        "leaked": 0,
+        "keep": 189,
+        "kept": 99,
+        "crisis_keep": 12,
+        "crisis_kept": 7,
+        "hard_negative": 65,
+        "overredacted": 50,
+        "exact": 15,
+        "non_entity_exact": 15,
+        "valid": 65,
+        "invalid": 0
+      },
+      "by_label": {}
+    },
+    "hospital": {
+      "n": 7,
+      "entity_replacement_legal_rate": 0.0,
+      "leakage_rate": 0.0,
+      "keep_rate": 0.7857142857142857,
+      "crisis_keep_rate": 1.0,
+      "non_entity_exact_rate": 0.14285714285714285,
+      "valid_output_rate": 1.0,
+      "hard_negative_overredaction": null,
+      "exact_match": 0.0,
+      "counts": {
+        "entities": 8,
+        "replacement_legal": 0,
+        "leaked": 0,
+        "keep": 14,
+        "kept": 11,
+        "crisis_keep": 2,
+        "crisis_kept": 2,
+        "hard_negative": 0,
+        "overredacted": 0,
+        "exact": 0,
+        "non_entity_exact": 1,
+        "valid": 7,
+        "invalid": 0
+      },
+      "by_label": {
+        "HOSPITAL": {
+          "total": 7,
+          "leaked": 0,
+          "replacement_legal": 0,
+          "leakage_rate": 0.0,
+          "entity_replacement_legal_rate": 0.0
+        },
+        "SCHOOL": {
+          "total": 1,
+          "leaked": 0,
+          "replacement_legal": 0,
+          "leakage_rate": 0.0,
+          "entity_replacement_legal_rate": 0.0
+        }
+      }
+    },
+    "id_num": {
+      "n": 6,
+      "entity_replacement_legal_rate": 0.0,
+      "leakage_rate": 0.14285714285714285,
+      "keep_rate": 0.5555555555555556,
+      "crisis_keep_rate": null,
+      "non_entity_exact_rate": 0.16666666666666666,
+      "valid_output_rate": 1.0,
+      "hard_negative_overredaction": null,
+      "exact_match": 0.0,
+      "counts": {
+        "entities": 7,
+        "replacement_legal": 0,
+        "leaked": 1,
+        "keep": 9,
+        "kept": 5,
+        "crisis_keep": 0,
+        "crisis_kept": 0,
+        "hard_negative": 0,
+        "overredacted": 0,
+        "exact": 0,
+        "non_entity_exact": 1,
+        "valid": 6,
+        "invalid": 0
+      },
+      "by_label": {
+        "ID_NUM": {
+          "total": 6,
+          "leaked": 0,
+          "replacement_legal": 0,
+          "leakage_rate": 0.0,
+          "entity_replacement_legal_rate": 0.0
+        },
+        "PERSON": {
+          "total": 1,
+          "leaked": 1,
+          "replacement_legal": 0,
+          "leakage_rate": 1.0,
+          "entity_replacement_legal_rate": 0.0
+        }
+      }
+    },
+    "long": {
+      "n": 30,
+      "entity_replacement_legal_rate": 0.0,
+      "leakage_rate": 0.5405405405405406,
+      "keep_rate": 0.3983050847457627,
+      "crisis_keep_rate": 0.375,
+      "non_entity_exact_rate": 0.0,
+      "valid_output_rate": 1.0,
+      "hard_negative_overredaction": 1.0,
+      "exact_match": 0.0,
+      "counts": {
+        "entities": 37,
+        "replacement_legal": 0,
+        "leaked": 20,
+        "keep": 118,
+        "kept": 47,
+        "crisis_keep": 8,
+        "crisis_kept": 3,
+        "hard_negative": 10,
+        "overredacted": 10,
+        "exact": 0,
+        "non_entity_exact": 0,
+        "valid": 30,
+        "invalid": 0
+      },
+      "by_label": {
+        "ACCOUNT": {
+          "total": 2,
+          "leaked": 0,
+          "replacement_legal": 0,
+          "leakage_rate": 0.0,
+          "entity_replacement_legal_rate": 0.0
+        },
+        "ADDRESS": {
+          "total": 2,
+          "leaked": 0,
+          "replacement_legal": 0,
+          "leakage_rate": 0.0,
+          "entity_replacement_legal_rate": 0.0
+        },
+        "BIRTH_DATE": {
+          "total": 2,
+          "leaked": 0,
+          "replacement_legal": 0,
+          "leakage_rate": 0.0,
+          "entity_replacement_legal_rate": 0.0
+        },
+        "HOSPITAL": {
+          "total": 5,
+          "leaked": 0,
+          "replacement_legal": 0,
+          "leakage_rate": 0.0,
+          "entity_replacement_legal_rate": 0.0
+        },
+        "ID_NUM": {
+          "total": 2,
+          "leaked": 0,
+          "replacement_legal": 0,
+          "leakage_rate": 0.0,
+          "entity_replacement_legal_rate": 0.0
+        },
+        "ORG": {
+          "total": 5,
+          "leaked": 5,
+          "replacement_legal": 0,
+          "leakage_rate": 1.0,
+          "entity_replacement_legal_rate": 0.0
+        },
+        "PERSON": {
+          "total": 15,
+          "leaked": 14,
+          "replacement_legal": 0,
+          "leakage_rate": 0.9333333333333333,
+          "entity_replacement_legal_rate": 0.0
+        },
+        "PHONE": {
+          "total": 1,
+          "leaked": 0,
+          "replacement_legal": 0,
+          "leakage_rate": 0.0,
+          "entity_replacement_legal_rate": 0.0
+        },
+        "PLATE": {
+          "total": 1,
+          "leaked": 0,
+          "replacement_legal": 0,
+          "leakage_rate": 0.0,
+          "entity_replacement_legal_rate": 0.0
+        },
+        "SCHOOL": {
+          "total": 2,
+          "leaked": 1,
+          "replacement_legal": 0,
+          "leakage_rate": 0.5,
+          "entity_replacement_legal_rate": 0.0
+        }
+      }
+    },
+    "metric_keep": {
+      "n": 6,
+      "entity_replacement_legal_rate": 0.0,
+      "leakage_rate": 0.0,
+      "keep_rate": 0.35714285714285715,
+      "crisis_keep_rate": null,
+      "non_entity_exact_rate": 0.0,
+      "valid_output_rate": 1.0,
+      "hard_negative_overredaction": 1.0,
+      "exact_match": 0.0,
+      "counts": {
+        "entities": 1,
+        "replacement_legal": 0,
+        "leaked": 0,
+        "keep": 14,
+        "kept": 5,
+        "crisis_keep": 0,
+        "crisis_kept": 0,
+        "hard_negative": 5,
+        "overredacted": 5,
+        "exact": 0,
+        "non_entity_exact": 0,
+        "valid": 6,
+        "invalid": 0
+      },
+      "by_label": {
+        "HOSPITAL": {
+          "total": 1,
+          "leaked": 0,
+          "replacement_legal": 0,
+          "leakage_rate": 0.0,
+          "entity_replacement_legal_rate": 0.0
+        }
+      }
+    },
+    "org": {
+      "n": 6,
+      "entity_replacement_legal_rate": 0.0,
+      "leakage_rate": 0.42857142857142855,
+      "keep_rate": 0.7692307692307693,
+      "crisis_keep_rate": null,
+      "non_entity_exact_rate": 0.16666666666666666,
+      "valid_output_rate": 1.0,
+      "hard_negative_overredaction": null,
+      "exact_match": 0.0,
+      "counts": {
+        "entities": 7,
+        "replacement_legal": 0,
+        "leaked": 3,
+        "keep": 13,
+        "kept": 10,
+        "crisis_keep": 0,
+        "crisis_kept": 0,
+        "hard_negative": 0,
+        "overredacted": 0,
+        "exact": 0,
+        "non_entity_exact": 1,
+        "valid": 6,
+        "invalid": 0
+      },
+      "by_label": {
+        "ADDRESS": {
+          "total": 1,
+          "leaked": 0,
+          "replacement_legal": 0,
+          "leakage_rate": 0.0,
+          "entity_replacement_legal_rate": 0.0
+        },
+        "ORG": {
+          "total": 6,
+          "leaked": 3,
+          "replacement_legal": 0,
+          "leakage_rate": 0.5,
+          "entity_replacement_legal_rate": 0.0
+        }
+      }
+    },
+    "path_P1": {
+      "n": 28,
+      "entity_replacement_legal_rate": 0.0,
+      "leakage_rate": 0.14285714285714285,
+      "keep_rate": 0.5223880597014925,
+      "crisis_keep_rate": null,
+      "non_entity_exact_rate": 0.21428571428571427,
+      "valid_output_rate": 1.0,
+      "hard_negative_overredaction": 0.8,
+      "exact_match": 0.10714285714285714,
+      "counts": {
+        "entities": 14,
+        "replacement_legal": 0,
+        "leaked": 2,
+        "keep": 67,
+        "kept": 35,
+        "crisis_keep": 0,
+        "crisis_kept": 0,
+        "hard_negative": 15,
+        "overredacted": 12,
+        "exact": 3,
+        "non_entity_exact": 6,
+        "valid": 28,
+        "invalid": 0
+      },
+      "by_label": {
+        "ADDRESS": {
+          "total": 5,
+          "leaked": 0,
+          "replacement_legal": 0,
+          "leakage_rate": 0.0,
+          "entity_replacement_legal_rate": 0.0
+        },
+        "BIRTH_DATE": {
+          "total": 2,
+          "leaked": 0,
+          "replacement_legal": 0,
+          "leakage_rate": 0.0,
+          "entity_replacement_legal_rate": 0.0
+        },
+        "ID_NUM": {
+          "total": 2,
+          "leaked": 0,
+          "replacement_legal": 0,
+          "leakage_rate": 0.0,
+          "entity_replacement_legal_rate": 0.0
+        },
+        "PERSON": {
+          "total": 2,
+          "leaked": 2,
+          "replacement_legal": 0,
+          "leakage_rate": 1.0,
+          "entity_replacement_legal_rate": 0.0
+        },
+        "PHONE": {
+          "total": 2,
+          "leaked": 0,
+          "replacement_legal": 0,
+          "leakage_rate": 0.0,
+          "entity_replacement_legal_rate": 0.0
+        },
+        "SCHOOL": {
+          "total": 1,
+          "leaked": 0,
+          "replacement_legal": 0,
+          "leakage_rate": 0.0,
+          "entity_replacement_legal_rate": 0.0
+        }
+      }
+    },
+    "path_P2": {
+      "n": 6,
+      "entity_replacement_legal_rate": 0.0,
+      "leakage_rate": 1.0,
+      "keep_rate": 0.7333333333333333,
+      "crisis_keep_rate": null,
+      "non_entity_exact_rate": 0.5,
+      "valid_output_rate": 1.0,
+      "hard_negative_overredaction": 0.4,
+      "exact_match": 0.5,
+      "counts": {
+        "entities": 1,
+        "replacement_legal": 0,
+        "leaked": 1,
+        "keep": 15,
+        "kept": 11,
+        "crisis_keep": 0,
+        "crisis_kept": 0,
+        "hard_negative": 5,
+        "overredacted": 2,
+        "exact": 3,
+        "non_entity_exact": 3,
+        "valid": 6,
+        "invalid": 0
+      },
+      "by_label": {
+        "PERSON": {
+          "total": 1,
+          "leaked": 1,
+          "replacement_legal": 0,
+          "leakage_rate": 1.0,
+          "entity_replacement_legal_rate": 0.0
+        }
+      }
+    },
+    "path_P3": {
+      "n": 16,
+      "entity_replacement_legal_rate": 0.0,
+      "leakage_rate": 0.3333333333333333,
+      "keep_rate": 0.631578947368421,
+      "crisis_keep_rate": null,
+      "non_entity_exact_rate": 0.1875,
+      "valid_output_rate": 1.0,
+      "hard_negative_overredaction": 0.6,
+      "exact_match": 0.125,
+      "counts": {
+        "entities": 12,
+        "replacement_legal": 0,
+        "leaked": 4,
+        "keep": 38,
+        "kept": 24,
+        "crisis_keep": 0,
+        "crisis_kept": 0,
+        "hard_negative": 5,
+        "overredacted": 3,
+        "exact": 2,
+        "non_entity_exact": 3,
+        "valid": 16,
+        "invalid": 0
+      },
+      "by_label": {
+        "ACCOUNT": {
+          "total": 2,
+          "leaked": 0,
+          "replacement_legal": 0,
+          "leakage_rate": 0.0,
+          "entity_replacement_legal_rate": 0.0
+        },
+        "ADDRESS": {
+          "total": 1,
+          "leaked": 0,
+          "replacement_legal": 0,
+          "leakage_rate": 0.0,
+          "entity_replacement_legal_rate": 0.0
+        },
+        "BIRTH_DATE": {
+          "total": 1,
+          "leaked": 0,
+          "replacement_legal": 0,
+          "leakage_rate": 0.0,
+          "entity_replacement_legal_rate": 0.0
+        },
+        "ORG": {
+          "total": 1,
+          "leaked": 0,
+          "replacement_legal": 0,
+          "leakage_rate": 0.0,
+          "entity_replacement_legal_rate": 0.0
+        },
+        "PERSON": {
+          "total": 4,
+          "leaked": 4,
+          "replacement_legal": 0,
+          "leakage_rate": 1.0,
+          "entity_replacement_legal_rate": 0.0
+        },
+        "PHONE": {
+          "total": 1,
+          "leaked": 0,
+          "replacement_legal": 0,
+          "leakage_rate": 0.0,
+          "entity_replacement_legal_rate": 0.0
+        },
+        "SCHOOL": {
+          "total": 2,
+          "leaked": 0,
+          "replacement_legal": 0,
+          "leakage_rate": 0.0,
+          "entity_replacement_legal_rate": 0.0
+        }
+      }
+    },
+    "path_P4": {
+      "n": 23,
+      "entity_replacement_legal_rate": 0.0,
+      "leakage_rate": 0.1875,
+      "keep_rate": 0.6875,
+      "crisis_keep_rate": null,
+      "non_entity_exact_rate": 0.391304347826087,
+      "valid_output_rate": 1.0,
+      "hard_negative_overredaction": 0.7777777777777778,
+      "exact_match": 0.08695652173913043,
+      "counts": {
+        "entities": 16,
+        "replacement_legal": 0,
+        "leaked": 3,
+        "keep": 48,
+        "kept": 33,
+        "crisis_keep": 0,
+        "crisis_kept": 0,
+        "hard_negative": 9,
+        "overredacted": 7,
+        "exact": 2,
+        "non_entity_exact": 9,
+        "valid": 23,
+        "invalid": 0
+      },
+      "by_label": {
+        "ACCOUNT": {
+          "total": 1,
+          "leaked": 0,
+          "replacement_legal": 0,
+          "leakage_rate": 0.0,
+          "entity_replacement_legal_rate": 0.0
+        },
+        "ADDRESS": {
+          "total": 2,
+          "leaked": 0,
+          "replacement_legal": 0,
+          "leakage_rate": 0.0,
+          "entity_replacement_legal_rate": 0.0
+        },
+        "ID_NUM": {
+          "total": 2,
+          "leaked": 0,
+          "replacement_legal": 0,
+          "leakage_rate": 0.0,
+          "entity_replacement_legal_rate": 0.0
+        },
+        "ORG": {
+          "total": 4,
+          "leaked": 3,
+          "replacement_legal": 0,
+          "leakage_rate": 0.75,
+          "entity_replacement_legal_rate": 0.0
+        },
+        "PHONE": {
+          "total": 2,
+          "leaked": 0,
+          "replacement_legal": 0,
+          "leakage_rate": 0.0,
+          "entity_replacement_legal_rate": 0.0
+        },
+        "PLATE": {
+          "total": 4,
+          "leaked": 0,
+          "replacement_legal": 0,
+          "leakage_rate": 0.0,
+          "entity_replacement_legal_rate": 0.0
+        },
+        "SCHOOL": {
+          "total": 1,
+          "leaked": 0,
+          "replacement_legal": 0,
+          "leakage_rate": 0.0,
+          "entity_replacement_legal_rate": 0.0
+        }
+      }
+    },
+    "path_P5": {
+      "n": 15,
+      "entity_replacement_legal_rate": 0.0,
+      "leakage_rate": 0.14285714285714285,
+      "keep_rate": 0.6,
+      "crisis_keep_rate": null,
+      "non_entity_exact_rate": 0.2,
+      "valid_output_rate": 1.0,
+      "hard_negative_overredaction": 0.875,
+      "exact_match": 0.06666666666666667,
+      "counts": {
+        "entities": 7,
+        "replacement_legal": 0,
+        "leaked": 1,
+        "keep": 35,
+        "kept": 21,
+        "crisis_keep": 0,
+        "crisis_kept": 0,
+        "hard_negative": 8,
+        "overredacted": 7,
+        "exact": 1,
+        "non_entity_exact": 3,
+        "valid": 15,
+        "invalid": 0
+      },
+      "by_label": {
+        "ACCOUNT": {
+          "total": 3,
+          "leaked": 0,
+          "replacement_legal": 0,
+          "leakage_rate": 0.0,
+          "entity_replacement_legal_rate": 0.0
+        },
+        "BIRTH_DATE": {
+          "total": 1,
+          "leaked": 0,
+          "replacement_legal": 0,
+          "leakage_rate": 0.0,
+          "entity_replacement_legal_rate": 0.0
+        },
+        "PERSON": {
+          "total": 1,
+          "leaked": 1,
+          "replacement_legal": 0,
+          "leakage_rate": 1.0,
+          "entity_replacement_legal_rate": 0.0
+        },
+        "PLATE": {
+          "total": 1,
+          "leaked": 0,
+          "replacement_legal": 0,
+          "leakage_rate": 0.0,
+          "entity_replacement_legal_rate": 0.0
+        },
+        "SCHOOL": {
+          "total": 1,
+          "leaked": 0,
+          "replacement_legal": 0,
+          "leakage_rate": 0.0,
+          "entity_replacement_legal_rate": 0.0
+        }
+      }
+    },
+    "person": {
+      "n": 12,
+      "entity_replacement_legal_rate": 0.0,
+      "leakage_rate": 0.8666666666666667,
+      "keep_rate": 0.6129032258064516,
+      "crisis_keep_rate": 0.4,
+      "non_entity_exact_rate": 0.16666666666666666,
+      "valid_output_rate": 1.0,
+      "hard_negative_overredaction": null,
+      "exact_match": 0.0,
+      "counts": {
+        "entities": 15,
+        "replacement_legal": 0,
+        "leaked": 13,
+        "keep": 31,
+        "kept": 19,
+        "crisis_keep": 5,
+        "crisis_kept": 2,
+        "hard_negative": 0,
+        "overredacted": 0,
+        "exact": 0,
+        "non_entity_exact": 2,
+        "valid": 12,
+        "invalid": 0
+      },
+      "by_label": {
+        "ACCOUNT": {
+          "total": 1,
+          "leaked": 0,
+          "replacement_legal": 0,
+          "leakage_rate": 0.0,
+          "entity_replacement_legal_rate": 0.0
+        },
+        "ID_NUM": {
+          "total": 1,
+          "leaked": 0,
+          "replacement_legal": 0,
+          "leakage_rate": 0.0,
+          "entity_replacement_legal_rate": 0.0
+        },
+        "PERSON": {
+          "total": 13,
+          "leaked": 13,
+          "replacement_legal": 0,
+          "leakage_rate": 1.0,
+          "entity_replacement_legal_rate": 0.0
+        }
+      }
+    },
+    "phone": {
+      "n": 7,
+      "entity_replacement_legal_rate": 0.0,
+      "leakage_rate": 0.0,
+      "keep_rate": 0.6,
+      "crisis_keep_rate": 0.5,
+      "non_entity_exact_rate": 0.2857142857142857,
+      "valid_output_rate": 1.0,
+      "hard_negative_overredaction": null,
+      "exact_match": 0.0,
+      "counts": {
+        "entities": 8,
+        "replacement_legal": 0,
+        "leaked": 0,
+        "keep": 15,
+        "kept": 9,
+        "crisis_keep": 2,
+        "crisis_kept": 1,
+        "hard_negative": 0,
+        "overredacted": 0,
+        "exact": 0,
+        "non_entity_exact": 2,
+        "valid": 7,
+        "invalid": 0
+      },
+      "by_label": {
+        "PHONE": {
+          "total": 7,
+          "leaked": 0,
+          "replacement_legal": 0,
+          "leakage_rate": 0.0,
+          "entity_replacement_legal_rate": 0.0
+        },
+        "PLATE": {
+          "total": 1,
+          "leaked": 0,
+          "replacement_legal": 0,
+          "leakage_rate": 0.0,
+          "entity_replacement_legal_rate": 0.0
+        }
+      }
+    },
+    "plate": {
+      "n": 6,
+      "entity_replacement_legal_rate": 0.0,
+      "leakage_rate": 0.0,
+      "keep_rate": 0.9,
+      "crisis_keep_rate": null,
+      "non_entity_exact_rate": 0.8333333333333334,
+      "valid_output_rate": 1.0,
+      "hard_negative_overredaction": null,
+      "exact_match": 0.0,
+      "counts": {
+        "entities": 7,
+        "replacement_legal": 0,
+        "leaked": 0,
+        "keep": 10,
+        "kept": 9,
+        "crisis_keep": 0,
+        "crisis_kept": 0,
+        "hard_negative": 0,
+        "overredacted": 0,
+        "exact": 0,
+        "non_entity_exact": 5,
+        "valid": 6,
+        "invalid": 0
+      },
+      "by_label": {
+        "PHONE": {
+          "total": 1,
+          "leaked": 0,
+          "replacement_legal": 0,
+          "leakage_rate": 0.0,
+          "entity_replacement_legal_rate": 0.0
+        },
+        "PLATE": {
+          "total": 6,
+          "leaked": 0,
+          "replacement_legal": 0,
+          "leakage_rate": 0.0,
+          "entity_replacement_legal_rate": 0.0
+        }
+      }
+    },
+    "public_figure": {
+      "n": 1,
+      "entity_replacement_legal_rate": null,
+      "leakage_rate": null,
+      "keep_rate": 1.0,
+      "crisis_keep_rate": null,
+      "non_entity_exact_rate": 1.0,
+      "valid_output_rate": 1.0,
+      "hard_negative_overredaction": 0.0,
+      "exact_match": 1.0,
+      "counts": {
+        "entities": 0,
+        "replacement_legal": 0,
+        "leaked": 0,
+        "keep": 3,
+        "kept": 3,
+        "crisis_keep": 0,
+        "crisis_kept": 0,
+        "hard_negative": 1,
+        "overredacted": 0,
+        "exact": 1,
+        "non_entity_exact": 1,
+        "valid": 1,
+        "invalid": 0
+      },
+      "by_label": {}
+    },
+    "ref_R1": {
+      "n": 11,
+      "entity_replacement_legal_rate": 0.0,
+      "leakage_rate": 0.25,
+      "keep_rate": 0.7931034482758621,
+      "crisis_keep_rate": null,
+      "non_entity_exact_rate": 0.45454545454545453,
+      "valid_output_rate": 1.0,
+      "hard_negative_overredaction": 0.75,
+      "exact_match": 0.09090909090909091,
+      "counts": {
+        "entities": 8,
+        "replacement_legal": 0,
+        "leaked": 2,
+        "keep": 29,
+        "kept": 23,
+        "crisis_keep": 0,
+        "crisis_kept": 0,
+        "hard_negative": 4,
+        "overredacted": 3,
+        "exact": 1,
+        "non_entity_exact": 5,
+        "valid": 11,
+        "invalid": 0
+      },
+      "by_label": {
+        "HOSPITAL": {
+          "total": 3,
+          "leaked": 0,
+          "replacement_legal": 0,
+          "leakage_rate": 0.0,
+          "entity_replacement_legal_rate": 0.0
+        },
+        "PERSON": {
+          "total": 2,
+          "leaked": 2,
+          "replacement_legal": 0,
+          "leakage_rate": 1.0,
+          "entity_replacement_legal_rate": 0.0
+        },
+        "PHONE": {
+          "total": 1,
+          "leaked": 0,
+          "replacement_legal": 0,
+          "leakage_rate": 0.0,
+          "entity_replacement_legal_rate": 0.0
+        },
+        "PLATE": {
+          "total": 1,
+          "leaked": 0,
+          "replacement_legal": 0,
+          "leakage_rate": 0.0,
+          "entity_replacement_legal_rate": 0.0
+        },
+        "SCHOOL": {
+          "total": 1,
+          "leaked": 0,
+          "replacement_legal": 0,
+          "leakage_rate": 0.0,
+          "entity_replacement_legal_rate": 0.0
+        }
+      }
+    },
+    "ref_R2": {
+      "n": 5,
+      "entity_replacement_legal_rate": 0.0,
+      "leakage_rate": 0.2,
+      "keep_rate": 0.5555555555555556,
+      "crisis_keep_rate": null,
+      "non_entity_exact_rate": 0.0,
+      "valid_output_rate": 1.0,
+      "hard_negative_overredaction": 1.0,
+      "exact_match": 0.0,
+      "counts": {
+        "entities": 5,
+        "replacement_legal": 0,
+        "leaked": 1,
+        "keep": 9,
+        "kept": 5,
+        "crisis_keep": 0,
+        "crisis_kept": 0,
+        "hard_negative": 1,
+        "overredacted": 1,
+        "exact": 0,
+        "non_entity_exact": 0,
+        "valid": 5,
+        "invalid": 0
+      },
+      "by_label": {
+        "HOSPITAL": {
+          "total": 1,
+          "leaked": 0,
+          "replacement_legal": 0,
+          "leakage_rate": 0.0,
+          "entity_replacement_legal_rate": 0.0
+        },
+        "ID_NUM": {
+          "total": 2,
+          "leaked": 0,
+          "replacement_legal": 0,
+          "leakage_rate": 0.0,
+          "entity_replacement_legal_rate": 0.0
+        },
+        "ORG": {
+          "total": 1,
+          "leaked": 0,
+          "replacement_legal": 0,
+          "leakage_rate": 0.0,
+          "entity_replacement_legal_rate": 0.0
+        },
+        "PERSON": {
+          "total": 1,
+          "leaked": 1,
+          "replacement_legal": 0,
+          "leakage_rate": 1.0,
+          "entity_replacement_legal_rate": 0.0
+        }
+      }
+    },
+    "ref_R3": {
+      "n": 16,
+      "entity_replacement_legal_rate": 0.0,
+      "leakage_rate": 0.25,
+      "keep_rate": 0.5625,
+      "crisis_keep_rate": 0.6842105263157895,
+      "non_entity_exact_rate": 0.3125,
+      "valid_output_rate": 1.0,
+      "hard_negative_overredaction": 0.625,
+      "exact_match": 0.1875,
+      "counts": {
+        "entities": 8,
+        "replacement_legal": 0,
+        "leaked": 2,
+        "keep": 32,
+        "kept": 18,
+        "crisis_keep": 19,
+        "crisis_kept": 13,
+        "hard_negative": 8,
+        "overredacted": 5,
+        "exact": 3,
+        "non_entity_exact": 5,
+        "valid": 16,
+        "invalid": 0
+      },
+      "by_label": {
+        "ADDRESS": {
+          "total": 1,
+          "leaked": 0,
+          "replacement_legal": 0,
+          "leakage_rate": 0.0,
+          "entity_replacement_legal_rate": 0.0
+        },
+        "BIRTH_DATE": {
+          "total": 1,
+          "leaked": 0,
+          "replacement_legal": 0,
+          "leakage_rate": 0.0,
+          "entity_replacement_legal_rate": 0.0
+        },
+        "HOSPITAL": {
+          "total": 3,
+          "leaked": 0,
+          "replacement_legal": 0,
+          "leakage_rate": 0.0,
+          "entity_replacement_legal_rate": 0.0
+        },
+        "PERSON": {
+          "total": 2,
+          "leaked": 2,
+          "replacement_legal": 0,
+          "leakage_rate": 1.0,
+          "entity_replacement_legal_rate": 0.0
+        },
+        "PHONE": {
+          "total": 1,
+          "leaked": 0,
+          "replacement_legal": 0,
+          "leakage_rate": 0.0,
+          "entity_replacement_legal_rate": 0.0
+        }
+      }
+    },
+    "relation_keep": {
+      "n": 2,
+      "entity_replacement_legal_rate": null,
+      "leakage_rate": null,
+      "keep_rate": 1.0,
+      "crisis_keep_rate": null,
+      "non_entity_exact_rate": 1.0,
+      "valid_output_rate": 1.0,
+      "hard_negative_overredaction": 0.0,
+      "exact_match": 1.0,
+      "counts": {
+        "entities": 0,
+        "replacement_legal": 0,
+        "leaked": 0,
+        "keep": 6,
+        "kept": 6,
+        "crisis_keep": 0,
+        "crisis_kept": 0,
+        "hard_negative": 2,
+        "overredacted": 0,
+        "exact": 2,
+        "non_entity_exact": 2,
+        "valid": 2,
+        "invalid": 0
+      },
+      "by_label": {}
+    },
+    "school": {
+      "n": 6,
+      "entity_replacement_legal_rate": 0.0,
+      "leakage_rate": 0.0,
+      "keep_rate": 0.9230769230769231,
+      "crisis_keep_rate": null,
+      "non_entity_exact_rate": 0.16666666666666666,
+      "valid_output_rate": 1.0,
+      "hard_negative_overredaction": null,
+      "exact_match": 0.0,
+      "counts": {
+        "entities": 7,
+        "replacement_legal": 0,
+        "leaked": 0,
+        "keep": 13,
+        "kept": 12,
+        "crisis_keep": 0,
+        "crisis_kept": 0,
+        "hard_negative": 0,
+        "overredacted": 0,
+        "exact": 0,
+        "non_entity_exact": 1,
+        "valid": 6,
+        "invalid": 0
+      },
+      "by_label": {
+        "HOSPITAL": {
+          "total": 1,
+          "leaked": 0,
+          "replacement_legal": 0,
+          "leakage_rate": 0.0,
+          "entity_replacement_legal_rate": 0.0
+        },
+        "SCHOOL": {
+          "total": 6,
+          "leaked": 0,
+          "replacement_legal": 0,
+          "leakage_rate": 0.0,
+          "entity_replacement_legal_rate": 0.0
+        }
+      }
+    },
+    "shift_keep": {
+      "n": 3,
+      "entity_replacement_legal_rate": null,
+      "leakage_rate": null,
+      "keep_rate": 0.625,
+      "crisis_keep_rate": null,
+      "non_entity_exact_rate": 0.3333333333333333,
+      "valid_output_rate": 1.0,
+      "hard_negative_overredaction": 0.6666666666666666,
+      "exact_match": 0.3333333333333333,
+      "counts": {
+        "entities": 0,
+        "replacement_legal": 0,
+        "leaked": 0,
+        "keep": 8,
+        "kept": 5,
+        "crisis_keep": 0,
+        "crisis_kept": 0,
+        "hard_negative": 3,
+        "overredacted": 2,
+        "exact": 1,
+        "non_entity_exact": 1,
+        "valid": 3,
+        "invalid": 0
+      },
+      "by_label": {}
+    },
+    "substance_keep": {
+      "n": 3,
+      "entity_replacement_legal_rate": null,
+      "leakage_rate": null,
+      "keep_rate": 0.2857142857142857,
+      "crisis_keep_rate": null,
+      "non_entity_exact_rate": 0.0,
+      "valid_output_rate": 1.0,
+      "hard_negative_overredaction": 1.0,
+      "exact_match": 0.0,
+      "counts": {
+        "entities": 0,
+        "replacement_legal": 0,
+        "leaked": 0,
+        "keep": 7,
+        "kept": 2,
+        "crisis_keep": 0,
+        "crisis_kept": 0,
+        "hard_negative": 3,
+        "overredacted": 3,
+        "exact": 0,
+        "non_entity_exact": 0,
+        "valid": 3,
+        "invalid": 0
+      },
+      "by_label": {}
+    },
+    "symptom_keep": {
+      "n": 39,
+      "entity_replacement_legal_rate": 0.0,
+      "leakage_rate": 0.5405405405405406,
+      "keep_rate": 0.4689655172413793,
+      "crisis_keep_rate": 0.375,
+      "non_entity_exact_rate": 0.1282051282051282,
+      "valid_output_rate": 1.0,
+      "hard_negative_overredaction": 0.7368421052631579,
+      "exact_match": 0.1282051282051282,
+      "counts": {
+        "entities": 37,
+        "replacement_legal": 0,
+        "leaked": 20,
+        "keep": 145,
+        "kept": 68,
+        "crisis_keep": 8,
+        "crisis_kept": 3,
+        "hard_negative": 19,
+        "overredacted": 14,
+        "exact": 5,
+        "non_entity_exact": 5,
+        "valid": 39,
+        "invalid": 0
+      },
+      "by_label": {
+        "ACCOUNT": {
+          "total": 2,
+          "leaked": 0,
+          "replacement_legal": 0,
+          "leakage_rate": 0.0,
+          "entity_replacement_legal_rate": 0.0
+        },
+        "ADDRESS": {
+          "total": 2,
+          "leaked": 0,
+          "replacement_legal": 0,
+          "leakage_rate": 0.0,
+          "entity_replacement_legal_rate": 0.0
+        },
+        "BIRTH_DATE": {
+          "total": 2,
+          "leaked": 0,
+          "replacement_legal": 0,
+          "leakage_rate": 0.0,
+          "entity_replacement_legal_rate": 0.0
+        },
+        "HOSPITAL": {
+          "total": 5,
+          "leaked": 0,
+          "replacement_legal": 0,
+          "leakage_rate": 0.0,
+          "entity_replacement_legal_rate": 0.0
+        },
+        "ID_NUM": {
+          "total": 2,
+          "leaked": 0,
+          "replacement_legal": 0,
+          "leakage_rate": 0.0,
+          "entity_replacement_legal_rate": 0.0
+        },
+        "ORG": {
+          "total": 5,
+          "leaked": 5,
+          "replacement_legal": 0,
+          "leakage_rate": 1.0,
+          "entity_replacement_legal_rate": 0.0
+        },
+        "PERSON": {
+          "total": 15,
+          "leaked": 14,
+          "replacement_legal": 0,
+          "leakage_rate": 0.9333333333333333,
+          "entity_replacement_legal_rate": 0.0
+        },
+        "PHONE": {
+          "total": 1,
+          "leaked": 0,
+          "replacement_legal": 0,
+          "leakage_rate": 0.0,
+          "entity_replacement_legal_rate": 0.0
+        },
+        "PLATE": {
+          "total": 1,
+          "leaked": 0,
+          "replacement_legal": 0,
+          "leakage_rate": 0.0,
+          "entity_replacement_legal_rate": 0.0
+        },
+        "SCHOOL": {
+          "total": 2,
+          "leaked": 1,
+          "replacement_legal": 0,
+          "leakage_rate": 0.5,
+          "entity_replacement_legal_rate": 0.0
+        }
+      }
+    },
+    "time_keep": {
+      "n": 39,
+      "entity_replacement_legal_rate": 0.0,
+      "leakage_rate": 0.5405405405405406,
+      "keep_rate": 0.4084507042253521,
+      "crisis_keep_rate": 0.375,
+      "non_entity_exact_rate": 0.05128205128205128,
+      "valid_output_rate": 1.0,
+      "hard_negative_overredaction": 0.8947368421052632,
+      "exact_match": 0.05128205128205128,
+      "counts": {
+        "entities": 37,
+        "replacement_legal": 0,
+        "leaked": 20,
+        "keep": 142,
+        "kept": 58,
+        "crisis_keep": 8,
+        "crisis_kept": 3,
+        "hard_negative": 19,
+        "overredacted": 17,
+        "exact": 2,
+        "non_entity_exact": 2,
+        "valid": 39,
+        "invalid": 0
+      },
+      "by_label": {
+        "ACCOUNT": {
+          "total": 2,
+          "leaked": 0,
+          "replacement_legal": 0,
+          "leakage_rate": 0.0,
+          "entity_replacement_legal_rate": 0.0
+        },
+        "ADDRESS": {
+          "total": 2,
+          "leaked": 0,
+          "replacement_legal": 0,
+          "leakage_rate": 0.0,
+          "entity_replacement_legal_rate": 0.0
+        },
+        "BIRTH_DATE": {
+          "total": 2,
+          "leaked": 0,
+          "replacement_legal": 0,
+          "leakage_rate": 0.0,
+          "entity_replacement_legal_rate": 0.0
+        },
+        "HOSPITAL": {
+          "total": 5,
+          "leaked": 0,
+          "replacement_legal": 0,
+          "leakage_rate": 0.0,
+          "entity_replacement_legal_rate": 0.0
+        },
+        "ID_NUM": {
+          "total": 2,
+          "leaked": 0,
+          "replacement_legal": 0,
+          "leakage_rate": 0.0,
+          "entity_replacement_legal_rate": 0.0
+        },
+        "ORG": {
+          "total": 5,
+          "leaked": 5,
+          "replacement_legal": 0,
+          "leakage_rate": 1.0,
+          "entity_replacement_legal_rate": 0.0
+        },
+        "PERSON": {
+          "total": 15,
+          "leaked": 14,
+          "replacement_legal": 0,
+          "leakage_rate": 0.9333333333333333,
+          "entity_replacement_legal_rate": 0.0
+        },
+        "PHONE": {
+          "total": 1,
+          "leaked": 0,
+          "replacement_legal": 0,
+          "leakage_rate": 0.0,
+          "entity_replacement_legal_rate": 0.0
+        },
+        "PLATE": {
+          "total": 1,
+          "leaked": 0,
+          "replacement_legal": 0,
+          "leakage_rate": 0.0,
+          "entity_replacement_legal_rate": 0.0
+        },
+        "SCHOOL": {
+          "total": 2,
+          "leaked": 1,
+          "replacement_legal": 0,
+          "leakage_rate": 0.5,
+          "entity_replacement_legal_rate": 0.0
+        }
+      }
+    }
+  },
+  "diagnostics": []
+}

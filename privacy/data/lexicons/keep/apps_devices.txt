@@ -1,0 +1,79 @@
+# 用途：离线人工整理的睡眠语境词汇；仅作标注素材，不构成临床建议。
+微信	app
+抖音	app
+快手	app
+小红书	app
+哔哩哔哩	app
+B站	app
+微博	app
+知乎	app
+豆瓣	app
+QQ	app
+淘宝	app
+京东	app
+拼多多	app
+美团	app
+饿了么	app
+支付宝	app
+腾讯视频	app
+爱奇艺	app
+优酷	app
+芒果TV	app
+西瓜视频	app
+网易云音乐	app
+QQ音乐	app
+喜马拉雅	app
+番茄小说	app
+七猫小说	app
+微信读书	app
+得物	app
+钉钉	app
+飞书	app
+小宇宙	app
+汽水音乐	app
+百度网盘	app
+携程	app
+Keep	app
+潮汐	app
+小睡眠	app
+网易新闻	app
+今日头条	app
+王者荣耀	game
+和平精英	game
+原神	game
+崩坏星穹铁道	game
+英雄联盟	game
+金铲铲之战	game
+蛋仔派对	game
+开心消消乐	game
+梦幻西游	game
+阴阳师	game
+第五人格	game
+明日方舟	game
+永劫无间	game
+逆水寒	game
+斗地主	game
+华为手环	device
+小米手环	device
+Apple Watch	device
+华为Watch GT	device
+荣耀手环	device
+OPPO手环	device
+vivo手表	device
+三星Galaxy Watch	device
+Garmin Venu	device
+Fitbit Charge	device
+Oura Ring	device
+iPhone	device
+iPad	device
+Kindle	device
+小米手机	device
+华为手机	device
+OPPO手机	device
+vivo手机	device
+苹果手表	device
+佳明手表	device
+Switch	device
+PS5	device
+Steam Deck	device
+华米手表	device

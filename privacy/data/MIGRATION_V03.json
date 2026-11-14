@@ -1,0 +1,98 @@
+{
+  "dev.src.jsonl": {
+    "changed": 15,
+    "new_hard_negative": 10,
+    "ids": [
+      "dev-096",
+      "dev-097",
+      "dev-098",
+      "dev-099",
+      "dev-100",
+      "dev-106",
+      "dev-107",
+      "dev-108",
+      "dev-109",
+      "dev-110",
+      "dev-119",
+      "dev-124",
+      "dev-131",
+      "dev-133",
+      "dev-140"
+    ],
+    "new_hard_negative_ids": [
+      "dev-096",
+      "dev-097",
+      "dev-098",
+      "dev-099",
+      "dev-100",
+      "dev-106",
+      "dev-107",
+      "dev-108",
+      "dev-109",
+      "dev-110"
+    ]
+  },
+  "seed.src.jsonl": {
+    "changed": 5,
+    "new_hard_negative": 3,
+    "ids": [
+      "seed-003",
+      "seed-013",
+      "seed-014",
+      "seed-016",
+      "seed-017"
+    ],
+    "new_hard_negative_ids": [
+      "seed-013",
+      "seed-016",
+      "seed-017"
+    ]
+  },
+  "sessions.src.jsonl": {
+    "changed": 4,
+    "new_hard_negative": 3,
+    "ids": [
+      "session-09-01",
+      "session-09-02",
+      "session-09-04",
+      "session-09-05"
+    ],
+    "new_hard_negative_ids": [
+      "session-09-01",
+      "session-09-02",
+      "session-09-05"
+    ]
+  },
+  "test.src.jsonl": {
+    "changed": 14,
+    "new_hard_negative": 10,
+    "ids": [
+      "test-096",
+      "test-097",
+      "test-098",
+      "test-099",
+      "test-100",
+      "test-106",
+      "test-107",
+      "test-108",
+      "test-109",
+      "test-110",
+      "test-119",
+      "test-122",
+      "test-135",
+      "test-143"
+    ],
+    "new_hard_negative_ids": [
+      "test-096",
+      "test-097",
+      "test-098",
+      "test-099",
+      "test-100",
+      "test-106",
+      "test-107",
+      "test-108",
+      "test-109",
+      "test-110"
+    ]
+  }
+}

@@ -1,0 +1,2127 @@
+{
+  "rows": 4914,
+  "crisis_rows": 207,
+  "gold_short_keep": 231,
+  "uncovered_crisis_pronouns": [
+    {
+      "file": "gold/dev.jsonl",
+      "id": "dev-150",
+      "start": 50,
+      "context": "凌晨两点才睡，五点又醒；我想把过去和现在分开讲清楚，也想保留我说的现在没有",
+      "note": "v0.2 独立手写长发言；非模板扩写，待第二标注者复核。"
+    },
+    {
+      "file": "gold/dev.jsonl",
+      "id": "dev-150",
+      "start": 68,
+      "context": "现在分开讲清楚，也想保留我说的现在没有了这几个字。",
+      "note": "v0.2 独立手写长发言；非模板扩写，待第二标注者复核。"
+    },
+    {
+      "file": "gold/test.jsonl",
+      "id": "test-111",
+      "start": 3,
+      "context": "林舟是我，我最近一直在囤安眠药，失眠越来越难熬。",
+      "note": "人工独立编写的虚构睡眠对话；无真实来访记录。"
+    },
+    {
+      "file": "gold/test.jsonl",
+      "id": "test-112",
+      "start": 0,
+      "context": "我是住澄月街63号的那个，我已经写好了遗书，昨夜也",
+      "note": "人工独立编写的虚构睡眠对话；无真实来访记录。"
+    },
+    {
+      "file": "gold/test.jsonl",
+      "id": "test-113",
+      "start": 1,
+      "context": "给我回电就用13570826491，我觉得没希望了，",
+      "note": "人工独立编写的虚构睡眠对话；无真实来访记录。"
+    },
+    {
+      "file": "gold/test.jsonl",
+      "id": "test-139",
+      "start": 23,
+      "context": "阵已经过去，现在没有了；我不希望这两段话被拼成现在的状态。昨夜还是五点醒，",
+      "note": "v0.2 独立手写长发言；非模板扩写，待第二标注者复核。"
+    },
+    {
+      "file": "synth/train.jsonl",
+      "id": "synth-00051",
+      "start": 0,
+      "context": "我叫鄂子秋，我以前说过“我真的想结束自己的生命”，",
+      "note": "虚构模板合成；tpl-119。号码仅格式有效，禁止拨打或查询。"
+    },
+    {
+      "file": "synth/train.jsonl",
+      "id": "synth-00052",
+      "start": 0,
+      "context": "我叫宓清月，我想跟你们道别，23点半了还睡不了。",
+      "note": "虚构模板合成；tpl-079。号码仅格式有效，禁止拨打或查询。"
+    },
+    {
+      "file": "synth/train.jsonl",
+      "id": "synth-00053",
+      "start": 14,
+      "context": "一三九四一七一四六五六是我留的，我已经写好了遗书，还有睡得断断续续。我这周",
+      "note": "虚构模板合成；tpl-081。号码仅格式有效，禁止拨打或查询。"
+    },
+    {
+      "file": "synth/train.jsonl",
+      "id": "synth-00053",
+      "start": 36,
+      "context": "遗书，还有睡得断断续续。我这周连续三个晚上醒来后要躺很久，早晨起来眼睛酸，",
+      "note": "虚构模板合成；tpl-081。号码仅格式有效，禁止拨打或查询。"
+    },
+    {
+      "file": "synth/train.jsonl",
+      "id": "synth-00054",
+      "start": 4,
+      "context": "查子青是我名字，我明天就去自杀，想去浙江大学医学院附属邵逸",
+      "note": "虚构模板合成；tpl-082。号码仅格式有效，禁止拨打或查询。"
+    },
+    {
+      "file": "synth/train.jsonl",
+      "id": "synth-00055",
+      "start": 26,
+      "context": "很静，我已经写好了遗书，我睡不下。",
+      "note": "虚构模板合成；tpl-086。号码仅格式有效，禁止拨打或查询。"
+    },
+    {
+      "file": "synth/train.jsonl",
+      "id": "synth-00151",
+      "start": 0,
+      "context": "我叫沙书悦，我以前说过“我打算把安眠药一次性全吃了",
+      "note": "虚构模板合成；tpl-119。号码仅格式有效，禁止拨打或查询。"
+    },
+    {
+      "file": "synth/train.jsonl",
+      "id": "synth-00151",
+      "start": 105,
+      "context": "晚23点半还醒着，关灯后我想了很久，早上起来很累，白天坐着又容易打瞌睡。我",
+      "note": "虚构模板合成；tpl-119。号码仅格式有效，禁止拨打或查询。"
+    },
+    {
+      "file": "synth/train.jsonl",
+      "id": "synth-00151",
+      "start": 129,
+      "context": "，白天坐着又容易打瞌睡。我希望先把睡眠的变化记下来，保留我说的过去和现在这",
+      "note": "虚构模板合成；tpl-119。号码仅格式有效，禁止拨打或查询。"
+    },
+    {
+      "file": "synth/train.jsonl",
+      "id": "synth-00151",
+      "start": 145,
+      "context": "把睡眠的变化记下来，保留我说的过去和现在这些词，别把两段时间混在一起。",
+      "note": "虚构模板合成；tpl-119。号码仅格式有效，禁止拨打或查询。"
+    },
+    {
+      "file": "synth/train.jsonl",
+      "id": "synth-00152",
+      "start": 0,
+      "context": "我在网易工作，我好想睡着就不要再醒，夜里反复想，睡",
+      "note": "虚构模板合成；tpl-085。号码仅格式有效，禁止拨打或查询。"
+    },
+    {
+      "file": "synth/train.jsonl",
+      "id": "synth-00153",
+      "start": 39,
+      "context": "了，那北是登记姓名。后来我开始记睡眠日记，发现上床后还在想工作，关了手机也",
+      "note": "虚构模板合成；tpl-087。号码仅格式有效，禁止拨打或查询。"
+    },
+    {
+      "file": "synth/train.jsonl",
+      "id": "synth-00154",
+      "start": 0,
+      "context": "我在美团工作，我最近一直在囤安眠药，夜里反复想，入",
+      "note": "虚构模板合成；tpl-085。号码仅格式有效，禁止拨打或查询。"
+    },
+    {
+      "file": "synth/train.jsonl",
+      "id": "synth-00155",
+      "start": 4,
+      "context": "班景远是我名字，我想跟你们道别，想去中山大学附属第一医院说",
+      "note": "虚构模板合成；tpl-082。号码仅格式有效，禁止拨打或查询。"
+    },
+    {
+      "file": "synth/train.jsonl",
+      "id": "synth-00251",
+      "start": 0,
+      "context": "我叫蔡子竹，我以前说过“我拿刀片在手腕上划了一下”",
+      "note": "虚构模板合成；tpl-119。号码仅格式有效，禁止拨打或查询。"
+    },
+    {
+      "file": "synth/train.jsonl",
+      "id": "synth-00251",
+      "start": 104,
+      "context": "晚23点半还醒着，关灯后我想了很久，早上起来很累，白天坐着又容易打瞌睡。",
+      "note": "虚构模板合成；tpl-119。号码仅格式有效，禁止拨打或查询。"
+    },
+    {
+      "file": "synth/train.jsonl",
+      "id": "synth-00253",
+      "start": 0,
+      "context": "我在青禾公益协会工作，我最近有过自杀的想法，夜里反",
+      "note": "虚构模板合成；tpl-085。号码仅格式有效，禁止拨打或查询。"
+    },
+    {
+      "file": "synth/train.jsonl",
+      "id": "synth-00254",
+      "start": 16,
+      "context": "6 2248 4734是我留的，我觉得没希望了，还有夜里反复醒。我这周连续",
+      "note": "虚构模板合成；tpl-081。号码仅格式有效，禁止拨打或查询。"
+    },
+    {
+      "file": "synth/train.jsonl",
+      "id": "synth-00254",
+      "start": 36,
+      "context": "希望了，还有夜里反复醒。我这周连续三个晚上醒来后要躺很久，早晨起来眼睛酸，",
+      "note": "虚构模板合成；tpl-081。号码仅格式有效，禁止拨打或查询。"
+    },
+    {
+      "file": "synth/train.jsonl",
+      "id": "synth-00255",
+      "start": 0,
+      "context": "我在京东工作，我老在天台边上待着，总想着跳下去，夜",
+      "note": "虚构模板合成；tpl-085。号码仅格式有效，禁止拨打或查询。"
+    },
+    {
+      "file": "synth/train.jsonl",
+      "id": "synth-00351",
+      "start": 0,
+      "context": "我叫谈书秋，我以前说过“我真想一直睡下去”，现在已",
+      "note": "虚构模板合成；tpl-119。号码仅格式有效，禁止拨打或查询。"
+    },
+    {
+      "file": "synth/train.jsonl",
+      "id": "synth-00351",
+      "start": 100,
+      "context": "晚23点半还醒着，关灯后我想了很久，早上起来很累，白天坐着又容易打瞌睡。",
+      "note": "虚构模板合成；tpl-119。号码仅格式有效，禁止拨打或查询。"
+    },
+    {
+      "file": "synth/train.jsonl",
+      "id": "synth-00352",
+      "start": 3,
+      "context": "薛夏是我名字，我真想一直睡下去，想去兰州大学第一医院说说",
+      "note": "虚构模板合成；tpl-082。号码仅格式有效，禁止拨打或查询。"
+    },
+    {
+      "file": "synth/train.jsonl",
+      "id": "synth-00354",
+      "start": 0,
+      "context": "我叫巩星帆，我已经写好了遗书，2点半了还睡不了。",
+      "note": "虚构模板合成；tpl-079。号码仅格式有效，禁止拨打或查询。"
+    },
+    {
+      "file": "synth/train.jsonl",
+      "id": "synth-00355",
+      "start": 0,
+      "context": "我叫乐露，我最近觉得活着没意思，20点了还睡不了。",
+      "note": "虚构模板合成；tpl-079。号码仅格式有效，禁止拨打或查询。"
+    },
+    {
+      "file": "synth/train.jsonl",
+      "id": "synth-00408",
+      "start": 44,
+      "context": "这个念头了。早上闹钟响了我又不想起，午休趴着倒能睡着，晚上看手机时明明困了",
+      "note": "虚构模板合成；tpl-089。号码仅格式有效，禁止拨打或查询。"
+    },
+    {
+      "file": "synth/train.jsonl",
+      "id": "synth-00418",
+      "start": 19,
+      "context": "好熬，我真想一直睡下去，我又睡不着。",
+      "note": "虚构模板合成；tpl-090。号码仅格式有效，禁止拨打或查询。"
+    },
+    {
+      "file": "synth/train.jsonl",
+      "id": "synth-00451",
+      "start": 0,
+      "context": "我叫仲庭竹，我以前说过“我最近觉得活着没意思”，现",
+      "note": "虚构模板合成；tpl-119。号码仅格式有效，禁止拨打或查询。"
+    },
+    {
+      "file": "synth/train.jsonl",
+      "id": "synth-00451",
+      "start": 101,
+      "context": "昨晚5点多还醒着，关灯后我想了很久，早上起来很累，白天坐着又容易打瞌睡。",
+      "note": "虚构模板合成；tpl-119。号码仅格式有效，禁止拨打或查询。"
+    },
+    {
+      "file": "synth/train.jsonl",
+      "id": "synth-00452",
+      "start": 0,
+      "context": "我在星宁信息服务有限公司工作，我好想睡着就不要再醒",
+      "note": "虚构模板合成；tpl-085。号码仅格式有效，禁止拨打或查询。"
+    },
+    {
+      "file": "synth/train.jsonl",
+      "id": "synth-00453",
+      "start": 34,
+      "context": "算把安眠药一次性全吃了，我睡不下。",
+      "note": "虚构模板合成；tpl-086。号码仅格式有效，禁止拨打或查询。"
+    },
+    {
+      "file": "synth/train.jsonl",
+      "id": "synth-00454",
+      "start": 4,
+      "context": "匡书涵是我名字，我最近觉得活着没意思，想去首都医科大学附属",
+      "note": "虚构模板合成；tpl-082。号码仅格式有效，禁止拨打或查询。"
+    },
+    {
+      "file": "synth/train.jsonl",
+      "id": "synth-00551",
+      "start": 0,
+      "context": "我叫松昕，我以前说过“我老在天台边上待着，总想着跳",
+      "note": "虚构模板合成；tpl-119。号码仅格式有效，禁止拨打或查询。"
+    },
+    {
+      "file": "synth/train.jsonl",
+      "id": "synth-00551",
+      "start": 105,
+      "context": "。昨晚5点还醒着，关灯后我想了很久，早上起来很累，白天坐着又容易打瞌睡。我",
+      "note": "虚构模板合成；tpl-119。号码仅格式有效，禁止拨打或查询。"
+    },
+    {
+      "file": "synth/train.jsonl",
+      "id": "synth-00551",
+      "start": 129,
+      "context": "，白天坐着又容易打瞌睡。我希望先把睡眠的变化记下来，保留我说的过去和现在这",
+      "note": "虚构模板合成；tpl-119。号码仅格式有效，禁止拨打或查询。"
+    },
+    {
+      "file": "synth/train.jsonl",
+      "id": "synth-00551",
+      "start": 145,
+      "context": "把睡眠的变化记下来，保留我说的过去和现在这些词，别把两段时间混在一起。",
+      "note": "虚构模板合成；tpl-119。号码仅格式有效，禁止拨打或查询。"
+    },
+    {
+      "file": "synth/train.jsonl",
+      "id": "synth-00554",
+      "start": 0,
+      "context": "我在眠舟信息服务有限公司工作，我明天就去自杀，夜里",
+      "note": "虚构模板合成；tpl-085。号码仅格式有效，禁止拨打或查询。"
+    },
+    {
+      "file": "synth/train.jsonl",
+      "id": "synth-00555",
+      "start": 37,
+      "context": "边上待着，总想着跳下去，我睡不下。",
+      "note": "虚构模板合成；tpl-086。号码仅格式有效，禁止拨打或查询。"
+    },
+    {
+      "file": "synth/train.jsonl",
+      "id": "synth-00633",
+      "start": 42,
+      "context": "这个念头了。早上闹钟响了我又不想起，午休趴着倒能睡着，晚上看手机时明明困了",
+      "note": "虚构模板合成；tpl-089。号码仅格式有效，禁止拨打或查询。"
+    },
+    {
+      "file": "synth/train.jsonl",
+      "id": "synth-00651",
+      "start": 0,
+      "context": "我叫廖雨辰，我以前说过“我打算把安眠药一次性全吃了",
+      "note": "虚构模板合成；tpl-119。号码仅格式有效，禁止拨打或查询。"
+    },
+    {
+      "file": "synth/train.jsonl",
+      "id": "synth-00651",
+      "start": 105,
+      "context": "晚22点半还醒着，关灯后我想了很久，早上起来很累，白天坐着又容易打瞌睡。",
+      "note": "虚构模板合成；tpl-119。号码仅格式有效，禁止拨打或查询。"
+    },
+    {
+      "file": "synth/train.jsonl",
+      "id": "synth-00652",
+      "start": 3,
+      "context": "吴林是我名字，我老在天台边上待着，总想着跳下去，想去天津",
+      "note": "虚构模板合成；tpl-082。号码仅格式有效，禁止拨打或查询。"
+    },
+    {
+      "file": "synth/train.jsonl",
+      "id": "synth-00653",
+      "start": 0,
+      "context": "我在百度工作，我想从阳台跳下去，夜里反复想，睡不踏",
+      "note": "虚构模板合成；tpl-085。号码仅格式有效，禁止拨打或查询。"
+    },
+    {
+      "file": "synth/train.jsonl",
+      "id": "synth-00654",
+      "start": 30,
+      "context": "算把安眠药一次性全吃了，我睡不下。",
+      "note": "虚构模板合成；tpl-086。号码仅格式有效，禁止拨打或查询。"
+    },
+    {
+      "file": "synth/train.jsonl",
+      "id": "synth-00655",
+      "start": 15,
+      "context": "22-76489536是我留的，我已经写好了遗书，还有入睡很慢。我这周连续",
+      "note": "虚构模板合成；tpl-081。号码仅格式有效，禁止拨打或查询。"
+    },
+    {
+      "file": "synth/train.jsonl",
+      "id": "synth-00655",
+      "start": 35,
+      "context": "好了遗书，还有入睡很慢。我这周连续三个晚上醒来后要躺很久，早晨起来眼睛酸，",
+      "note": "虚构模板合成；tpl-081。号码仅格式有效，禁止拨打或查询。"
+    },
+    {
+      "file": "synth/train.jsonl",
+      "id": "synth-00724",
+      "start": 22,
+      "context": "我真的想结束自己的生命，我又睡不着。",
+      "note": "虚构模板合成；tpl-090。号码仅格式有效，禁止拨打或查询。"
+    },
+    {
+      "file": "synth/train.jsonl",
+      "id": "synth-00751",
+      "start": 0,
+      "context": "我叫廉子秋，我以前说过“我老在天台边上待着，总想着",
+      "note": "虚构模板合成；tpl-119。号码仅格式有效，禁止拨打或查询。"
+    },
+    {
+      "file": "synth/train.jsonl",
+      "id": "synth-00751",
+      "start": 107,
+      "context": "昨晚4点多还醒着，关灯后我想了很久，早上起来很累，白天坐着又容易打瞌睡。我",
+      "note": "虚构模板合成；tpl-119。号码仅格式有效，禁止拨打或查询。"
+    },
+    {
+      "file": "synth/train.jsonl",
+      "id": "synth-00751",
+      "start": 131,
+      "context": "，白天坐着又容易打瞌睡。我希望先把睡眠的变化记下来，保留我说的过去和现在这",
+      "note": "虚构模板合成；tpl-119。号码仅格式有效，禁止拨打或查询。"
+    },
+    {
+      "file": "synth/train.jsonl",
+      "id": "synth-00751",
+      "start": 147,
+      "context": "把睡眠的变化记下来，保留我说的过去和现在这些词，别把两段时间混在一起。",
+      "note": "虚构模板合成；tpl-119。号码仅格式有效，禁止拨打或查询。"
+    },
+    {
+      "file": "synth/train.jsonl",
+      "id": "synth-00752",
+      "start": 15,
+      "context": "二六二二八二六四可以联系我，我真想一直睡下去，昨晚21点多我还在哭。",
+      "note": "虚构模板合成；tpl-088。号码仅格式有效，禁止拨打或查询。"
+    },
+    {
+      "file": "synth/train.jsonl",
+      "id": "synth-00752",
+      "start": 32,
+      "context": "一直睡下去，昨晚21点多我还在哭。",
+      "note": "虚构模板合成；tpl-088。号码仅格式有效，禁止拨打或查询。"
+    },
+    {
+      "file": "synth/train.jsonl",
+      "id": "synth-00753",
+      "start": 36,
+      "context": "了，贝然是登记姓名。后来我开始记睡眠日记，发现上床后还在想工作，关了手机也",
+      "note": "虚构模板合成；tpl-087。号码仅格式有效，禁止拨打或查询。"
+    },
+    {
+      "file": "synth/train.jsonl",
+      "id": "synth-00755",
+      "start": 0,
+      "context": "我叫裴蓓，我真的想结束自己的生命，3点多了还睡不了",
+      "note": "虚构模板合成；tpl-079。号码仅格式有效，禁止拨打或查询。"
+    },
+    {
+      "file": "synth/train.jsonl",
+      "id": "synth-00828",
+      "start": 18,
+      "context": "不好熬，我明天就去自杀，我又睡不着。",
+      "note": "虚构模板合成；tpl-090。号码仅格式有效，禁止拨打或查询。"
+    },
+    {
+      "file": "synth/train.jsonl",
+      "id": "synth-00851",
+      "start": 0,
+      "context": "我叫南宫晓言，我以前说过“我觉得自己是个累赘”，现",
+      "note": "虚构模板合成；tpl-119。号码仅格式有效，禁止拨打或查询。"
+    },
+    {
+      "file": "synth/train.jsonl",
+      "id": "synth-00851",
+      "start": 100,
+      "context": "。昨晚5点还醒着，关灯后我想了很久，早上起来很累，白天坐着又容易打瞌睡。",
+      "note": "虚构模板合成；tpl-119。号码仅格式有效，禁止拨打或查询。"
+    },
+    {
+      "file": "synth/train.jsonl",
+      "id": "synth-00852",
+      "start": 0,
+      "context": "我在美团工作，我已经写好了遗书，夜里反复想，夜里反",
+      "note": "虚构模板合成；tpl-085。号码仅格式有效，禁止拨打或查询。"
+    },
+    {
+      "file": "synth/train.jsonl",
+      "id": "synth-00915",
+      "start": 18,
+      "context": "不好熬，我明天就去自杀，我又睡不着。",
+      "note": "虚构模板合成；tpl-090。号码仅格式有效，禁止拨打或查询。"
+    },
+    {
+      "file": "synth/train.jsonl",
+      "id": "synth-00923",
+      "start": 21,
+      "context": "，我最近有过自杀的想法，我又睡不着。",
+      "note": "虚构模板合成；tpl-090。号码仅格式有效，禁止拨打或查询。"
+    },
+    {
+      "file": "synth/train.jsonl",
+      "id": "synth-00924",
+      "start": 41,
+      "context": "这个念头了。早上闹钟响了我又不想起，午休趴着倒能睡着，晚上看手机时明明困了",
+      "note": "虚构模板合成；tpl-089。号码仅格式有效，禁止拨打或查询。"
+    },
+    {
+      "file": "synth/train.jsonl",
+      "id": "synth-00951",
+      "start": 0,
+      "context": "我叫沙知远，我以前说过“我是不是快死了”，现在已经",
+      "note": "虚构模板合成；tpl-119。号码仅格式有效，禁止拨打或查询。"
+    },
+    {
+      "file": "synth/train.jsonl",
+      "id": "synth-00952",
+      "start": 40,
+      "context": "，范清月是登记姓名。后来我开始记睡眠日记，发现上床后还在想工作，关了手机也",
+      "note": "虚构模板合成；tpl-087。号码仅格式有效，禁止拨打或查询。"
+    },
+    {
+      "file": "synth/train.jsonl",
+      "id": "synth-00954",
+      "start": 29,
+      "context": "很静，我已经写好了遗书，我睡不下。",
+      "note": "虚构模板合成；tpl-086。号码仅格式有效，禁止拨打或查询。"
+    },
+    {
+      "file": "synth/train.jsonl",
+      "id": "synth-01017",
+      "start": 48,
+      "context": "这个念头了。早上闹钟响了我又不想起，午休趴着倒能睡着，晚上看手机时明明困了",
+      "note": "虚构模板合成；tpl-089。号码仅格式有效，禁止拨打或查询。"
+    },
+    {
+      "file": "synth/train.jsonl",
+      "id": "synth-01032",
+      "start": 43,
+      "context": "这个念头了。早上闹钟响了我又不想起，午休趴着倒能睡着，晚上看手机时明明困了",
+      "note": "虚构模板合成；tpl-089。号码仅格式有效，禁止拨打或查询。"
+    },
+    {
+      "file": "synth/train.jsonl",
+      "id": "synth-01051",
+      "start": 0,
+      "context": "我叫司空景舟，我以前说过“我真的想结束自己的生命”",
+      "note": "虚构模板合成；tpl-119。号码仅格式有效，禁止拨打或查询。"
+    },
+    {
+      "file": "synth/train.jsonl",
+      "id": "synth-01051",
+      "start": 103,
+      "context": "昨晚3点多还醒着，关灯后我想了很久，早上起来很累，白天坐着又容易打瞌睡。",
+      "note": "虚构模板合成；tpl-119。号码仅格式有效，禁止拨打或查询。"
+    },
+    {
+      "file": "synth/train.jsonl",
+      "id": "synth-01052",
+      "start": 4,
+      "context": "刁思川是我名字，我只想早点解脱，想去天津市第三中心医院说说",
+      "note": "虚构模板合成；tpl-082。号码仅格式有效，禁止拨打或查询。"
+    },
+    {
+      "file": "synth/train.jsonl",
+      "id": "synth-01053",
+      "start": 4,
+      "context": "贺念帆是我名字，我是不是快死了，想去华中科技大学同济医学院",
+      "note": "虚构模板合成；tpl-082。号码仅格式有效，禁止拨打或查询。"
+    },
+    {
+      "file": "synth/train.jsonl",
+      "id": "synth-01054",
+      "start": 15,
+      "context": "22-74435143是我留的，我拿刀片在手腕上划了一下，还有夜里反复醒。",
+      "note": "虚构模板合成；tpl-081。号码仅格式有效，禁止拨打或查询。"
+    },
+    {
+      "file": "synth/train.jsonl",
+      "id": "synth-01054",
+      "start": 40,
+      "context": "了一下，还有夜里反复醒。我这周连续三个晚上醒来后要躺很久，早晨起来眼睛酸，",
+      "note": "虚构模板合成；tpl-081。号码仅格式有效，禁止拨打或查询。"
+    },
+    {
+      "file": "synth/train.jsonl",
+      "id": "synth-01055",
+      "start": 31,
+      "context": "很静，我已经写好了遗书，我睡不下。",
+      "note": "虚构模板合成；tpl-086。号码仅格式有效，禁止拨打或查询。"
+    },
+    {
+      "file": "synth/train.jsonl",
+      "id": "synth-01151",
+      "start": 0,
+      "context": "我叫苍珍，我以前说过“我最近有过自杀的想法”，现在",
+      "note": "虚构模板合成；tpl-119。号码仅格式有效，禁止拨打或查询。"
+    },
+    {
+      "file": "synth/train.jsonl",
+      "id": "synth-01151",
+      "start": 99,
+      "context": "。昨晚4点还醒着，关灯后我想了很久，早上起来很累，白天坐着又容易打瞌睡。我",
+      "note": "虚构模板合成；tpl-119。号码仅格式有效，禁止拨打或查询。"
+    },
+    {
+      "file": "synth/train.jsonl",
+      "id": "synth-01151",
+      "start": 123,
+      "context": "，白天坐着又容易打瞌睡。我希望先把睡眠的变化记下来，保留我说的过去和现在这",
+      "note": "虚构模板合成；tpl-119。号码仅格式有效，禁止拨打或查询。"
+    },
+    {
+      "file": "synth/train.jsonl",
+      "id": "synth-01151",
+      "start": 139,
+      "context": "把睡眠的变化记下来，保留我说的过去和现在这些词，别把两段时间混在一起。",
+      "note": "虚构模板合成；tpl-119。号码仅格式有效，禁止拨打或查询。"
+    },
+    {
+      "file": "synth/train.jsonl",
+      "id": "synth-01152",
+      "start": 28,
+      "context": "现在已经没有那种念头了；我叫辛景溪，仍会早醒。这周常常五点醒，闹钟还没响就",
+      "note": "虚构模板合成；tpl-083。号码仅格式有效，禁止拨打或查询。"
+    },
+    {
+      "file": "synth/train.jsonl",
+      "id": "synth-01153",
+      "start": 30,
+      "context": "现在已经没有那种念头了；我叫岑枫，仍会早醒。这周常常五点醒，闹钟还没响就开",
+      "note": "虚构模板合成；tpl-083。号码仅格式有效，禁止拨打或查询。"
+    },
+    {
+      "file": "synth/train.jsonl",
+      "id": "synth-01154",
+      "start": 0,
+      "context": "我叫麻晨，我打算把安眠药一次性全吃了，22点多了还",
+      "note": "虚构模板合成；tpl-079。号码仅格式有效，禁止拨打或查询。"
+    },
+    {
+      "file": "synth/train.jsonl",
+      "id": "synth-01251",
+      "start": 0,
+      "context": "我叫项雨宁，我以前说过“我拿刀片在手腕上划了一下”",
+      "note": "虚构模板合成；tpl-119。号码仅格式有效，禁止拨打或查询。"
+    },
+    {
+      "file": "synth/train.jsonl",
+      "id": "synth-01253",
+      "start": 0,
+      "context": "我叫和景舟，我老在天台边上待着，总想着跳下去，4点",
+      "note": "虚构模板合成；tpl-079。号码仅格式有效，禁止拨打或查询。"
+    },
+    {
+      "file": "synth/train.jsonl",
+      "id": "synth-01254",
+      "start": 4,
+      "context": "董清辰是我名字，我觉得自己是个累赘，想去首都医科大学附属北",
+      "note": "虚构模板合成；tpl-082。号码仅格式有效，禁止拨打或查询。"
+    },
+    {
+      "file": "synth/train.jsonl",
+      "id": "synth-01255",
+      "start": 4,
+      "context": "计庭瑶是我名字，我最近一直在囤安眠药，想去河南省人民医院说",
+      "note": "虚构模板合成；tpl-082。号码仅格式有效，禁止拨打或查询。"
+    },
+    {
+      "file": "synth/train.jsonl",
+      "id": "synth-01351",
+      "start": 0,
+      "context": "我叫张星桐，我以前说过“我明天就去自杀”，现在已经",
+      "note": "虚构模板合成；tpl-119。号码仅格式有效，禁止拨打或查询。"
+    },
+    {
+      "file": "synth/train.jsonl",
+      "id": "synth-01352",
+      "start": 37,
+      "context": "，屈清月是登记姓名。后来我开始记睡眠日记，发现上床后还在想工作，关了手机也",
+      "note": "虚构模板合成；tpl-087。号码仅格式有效，禁止拨打或查询。"
+    },
+    {
+      "file": "synth/train.jsonl",
+      "id": "synth-01355",
+      "start": 36,
+      "context": "了，水亦是登记姓名。后来我开始记睡眠日记，发现上床后还在想工作，关了手机也",
+      "note": "虚构模板合成；tpl-087。号码仅格式有效，禁止拨打或查询。"
+    },
+    {
+      "file": "synth/train.jsonl",
+      "id": "synth-01430",
+      "start": 18,
+      "context": "不好熬，我觉得没希望了，我又睡不着。",
+      "note": "虚构模板合成；tpl-090。号码仅格式有效，禁止拨打或查询。"
+    },
+    {
+      "file": "synth/train.jsonl",
+      "id": "synth-01451",
+      "start": 0,
+      "context": "我叫马修，我以前说过“我最近觉得活着没意思”，现在",
+      "note": "虚构模板合成；tpl-119。号码仅格式有效，禁止拨打或查询。"
+    },
+    {
+      "file": "synth/train.jsonl",
+      "id": "synth-01451",
+      "start": 101,
+      "context": "晚21点半还醒着，关灯后我想了很久，早上起来很累，白天坐着又容易打瞌睡。我",
+      "note": "虚构模板合成；tpl-119。号码仅格式有效，禁止拨打或查询。"
+    },
+    {
+      "file": "synth/train.jsonl",
+      "id": "synth-01451",
+      "start": 125,
+      "context": "，白天坐着又容易打瞌睡。我希望先把睡眠的变化记下来，保留我说的过去和现在这",
+      "note": "虚构模板合成；tpl-119。号码仅格式有效，禁止拨打或查询。"
+    },
+    {
+      "file": "synth/train.jsonl",
+      "id": "synth-01451",
+      "start": 141,
+      "context": "把睡眠的变化记下来，保留我说的过去和现在这些词，别把两段时间混在一起。",
+      "note": "虚构模板合成；tpl-119。号码仅格式有效，禁止拨打或查询。"
+    },
+    {
+      "file": "synth/train.jsonl",
+      "id": "synth-01452",
+      "start": 33,
+      "context": "，我好想睡着就不要再醒，我睡不下。",
+      "note": "虚构模板合成；tpl-086。号码仅格式有效，禁止拨打或查询。"
+    },
+    {
+      "file": "synth/train.jsonl",
+      "id": "synth-01453",
+      "start": 27,
+      "context": "，我最近有过自杀的想法，我睡不下。",
+      "note": "虚构模板合成；tpl-086。号码仅格式有效，禁止拨打或查询。"
+    },
+    {
+      "file": "synth/train.jsonl",
+      "id": "synth-01454",
+      "start": 4,
+      "context": "桓若月是我名字，我明天就去自杀，想去首都医科大学附属北京友",
+      "note": "虚构模板合成；tpl-082。号码仅格式有效，禁止拨打或查询。"
+    },
+    {
+      "file": "synth/train.jsonl",
+      "id": "synth-01455",
+      "start": 17,
+      "context": "219-7515可以联系我，我是不是快死了，昨晚22点半我还在哭。",
+      "note": "虚构模板合成；tpl-088。号码仅格式有效，禁止拨打或查询。"
+    },
+    {
+      "file": "synth/train.jsonl",
+      "id": "synth-01455",
+      "start": 33,
+      "context": "不是快死了，昨晚22点半我还在哭。",
+      "note": "虚构模板合成；tpl-088。号码仅格式有效，禁止拨打或查询。"
+    },
+    {
+      "file": "synth/train.jsonl",
+      "id": "synth-01551",
+      "start": 0,
+      "context": "我叫弘明，我以前说过“我最近有过自杀的想法”，现在",
+      "note": "虚构模板合成；tpl-119。号码仅格式有效，禁止拨打或查询。"
+    },
+    {
+      "file": "synth/train.jsonl",
+      "id": "synth-01552",
+      "start": 3,
+      "context": "水睿是我名字，我拿刀片在手腕上划了一下，想去南昌大学第一",
+      "note": "虚构模板合成；tpl-082。号码仅格式有效，禁止拨打或查询。"
+    },
+    {
+      "file": "synth/train.jsonl",
+      "id": "synth-01553",
+      "start": 4,
+      "context": "申庭青是我名字，我真想一直睡下去，想去上海市精神卫生中心说",
+      "note": "虚构模板合成；tpl-082。号码仅格式有效，禁止拨打或查询。"
+    },
+    {
+      "file": "synth/train.jsonl",
+      "id": "synth-01554",
+      "start": 16,
+      "context": "84867661可以联系我，我真想一直睡下去，昨晚22点多我还在哭。",
+      "note": "虚构模板合成；tpl-088。号码仅格式有效，禁止拨打或查询。"
+    },
+    {
+      "file": "synth/train.jsonl",
+      "id": "synth-01554",
+      "start": 33,
+      "context": "一直睡下去，昨晚22点多我还在哭。",
+      "note": "虚构模板合成；tpl-088。号码仅格式有效，禁止拨打或查询。"
+    },
+    {
+      "file": "synth/train.jsonl",
+      "id": "synth-01555",
+      "start": 16,
+      "context": "8 7288 8087是我留的，我老在天台边上待着，总想着跳下去，还有夜里",
+      "note": "虚构模板合成；tpl-081。号码仅格式有效，禁止拨打或查询。"
+    },
+    {
+      "file": "synth/train.jsonl",
+      "id": "synth-01555",
+      "start": 45,
+      "context": "跳下去，还有夜里反复醒。我这周连续三个晚上醒来后要躺很久，早晨起来眼睛酸，",
+      "note": "虚构模板合成；tpl-081。号码仅格式有效，禁止拨打或查询。"
+    },
+    {
+      "file": "synth/train.jsonl",
+      "id": "synth-01622",
+      "start": 45,
+      "context": "这个念头了。早上闹钟响了我又不想起，午休趴着倒能睡着，晚上看手机时明明困了",
+      "note": "虚构模板合成；tpl-089。号码仅格式有效，禁止拨打或查询。"
+    },
+    {
+      "file": "synth/train.jsonl",
+      "id": "synth-01632",
+      "start": 21,
+      "context": "，我希望明天不要再醒来，我又睡不着。",
+      "note": "虚构模板合成；tpl-090。号码仅格式有效，禁止拨打或查询。"
+    },
+    {
+      "file": "synth/train.jsonl",
+      "id": "synth-01651",
+      "start": 0,
+      "context": "我叫左文涵，我以前说过“我明天就去自杀”，现在已经",
+      "note": "虚构模板合成；tpl-119。号码仅格式有效，禁止拨打或查询。"
+    },
+    {
+      "file": "synth/train.jsonl",
+      "id": "synth-01652",
+      "start": 25,
+      "context": "里很静，我想跟你们道别，我睡不下。",
+      "note": "虚构模板合成；tpl-086。号码仅格式有效，禁止拨打或查询。"
+    },
+    {
+      "file": "synth/train.jsonl",
+      "id": "synth-01654",
+      "start": 37,
+      "context": "，狄清溪是登记姓名。后来我开始记睡眠日记，发现上床后还在想工作，关了手机也",
+      "note": "虚构模板合成；tpl-087。号码仅格式有效，禁止拨打或查询。"
+    },
+    {
+      "file": "synth/train.jsonl",
+      "id": "synth-01655",
+      "start": 0,
+      "context": "我叫苏安月，我打算把安眠药一次性全吃了，3点半了还",
+      "note": "虚构模板合成；tpl-079。号码仅格式有效，禁止拨打或查询。"
+    },
+    {
+      "file": "synth/train.jsonl",
+      "id": "synth-01751",
+      "start": 0,
+      "context": "我叫樊予竹，我以前说过“我真想一直睡下去”，现在已",
+      "note": "虚构模板合成；tpl-119。号码仅格式有效，禁止拨打或查询。"
+    },
+    {
+      "file": "synth/train.jsonl",
+      "id": "synth-01751",
+      "start": 98,
+      "context": "。昨晚5点还醒着，关灯后我想了很久，早上起来很累，白天坐着又容易打瞌睡。我",
+      "note": "虚构模板合成；tpl-119。号码仅格式有效，禁止拨打或查询。"
+    },
+    {
+      "file": "synth/train.jsonl",
+      "id": "synth-01751",
+      "start": 122,
+      "context": "，白天坐着又容易打瞌睡。我希望先把睡眠的变化记下来，保留我说的过去和现在这",
+      "note": "虚构模板合成；tpl-119。号码仅格式有效，禁止拨打或查询。"
+    },
+    {
+      "file": "synth/train.jsonl",
+      "id": "synth-01751",
+      "start": 138,
+      "context": "把睡眠的变化记下来，保留我说的过去和现在这些词，别把两段时间混在一起。",
+      "note": "虚构模板合成；tpl-119。号码仅格式有效，禁止拨打或查询。"
+    },
+    {
+      "file": "synth/train.jsonl",
+      "id": "synth-01752",
+      "start": 0,
+      "context": "我叫须念帆，我最近一直在囤安眠药，20点半了还睡不",
+      "note": "虚构模板合成；tpl-079。号码仅格式有效，禁止拨打或查询。"
+    },
+    {
+      "file": "synth/train.jsonl",
+      "id": "synth-01753",
+      "start": 40,
+      "context": "，郭星帆是登记姓名。后来我开始记睡眠日记，发现上床后还在想工作，关了手机也",
+      "note": "虚构模板合成；tpl-087。号码仅格式有效，禁止拨打或查询。"
+    },
+    {
+      "file": "synth/train.jsonl",
+      "id": "synth-01754",
+      "start": 15,
+      "context": "八四二三九六一八可以联系我，我最近一直在囤安眠药，昨晚4点半我还在哭。",
+      "note": "虚构模板合成；tpl-088。号码仅格式有效，禁止拨打或查询。"
+    },
+    {
+      "file": "synth/train.jsonl",
+      "id": "synth-01754",
+      "start": 33,
+      "context": "直在囤安眠药，昨晚4点半我还在哭。",
+      "note": "虚构模板合成；tpl-088。号码仅格式有效，禁止拨打或查询。"
+    },
+    {
+      "file": "synth/train.jsonl",
+      "id": "synth-01755",
+      "start": 27,
+      "context": "现在已经没有那种念头了；我叫喻安宁，仍会早醒。这周常常五点醒，闹钟还没响就",
+      "note": "虚构模板合成；tpl-083。号码仅格式有效，禁止拨打或查询。"
+    },
+    {
+      "file": "synth/train.jsonl",
+      "id": "synth-01851",
+      "start": 0,
+      "context": "我叫利安然，我以前说过“我最近觉得活着没意思”，现",
+      "note": "虚构模板合成；tpl-119。号码仅格式有效，禁止拨打或查询。"
+    },
+    {
+      "file": "synth/train.jsonl",
+      "id": "synth-01851",
+      "start": 101,
+      "context": "昨晚6点多还醒着，关灯后我想了很久，早上起来很累，白天坐着又容易打瞌睡。",
+      "note": "虚构模板合成；tpl-119。号码仅格式有效，禁止拨打或查询。"
+    },
+    {
+      "file": "synth/train.jsonl",
+      "id": "synth-01853",
+      "start": 3,
+      "context": "权璇是我名字，我真想一直睡下去，想去吉林大学第一医院说说",
+      "note": "虚构模板合成；tpl-082。号码仅格式有效，禁止拨打或查询。"
+    },
+    {
+      "file": "synth/train.jsonl",
+      "id": "synth-01855",
+      "start": 31,
+      "context": "现在已经没有那种念头了；我叫鄂初，仍会早醒。这周常常五点醒，闹钟还没响就开",
+      "note": "虚构模板合成；tpl-083。号码仅格式有效，禁止拨打或查询。"
+    },
+    {
+      "file": "synth/train.jsonl",
+      "id": "synth-01908",
+      "start": 44,
+      "context": "这个念头了。早上闹钟响了我又不想起，午休趴着倒能睡着，晚上看手机时明明困了",
+      "note": "虚构模板合成；tpl-089。号码仅格式有效，禁止拨打或查询。"
+    },
+    {
+      "file": "synth/train.jsonl",
+      "id": "synth-01934",
+      "start": 40,
+      "context": "这个念头了。早上闹钟响了我又不想起，午休趴着倒能睡着，晚上看手机时明明困了",
+      "note": "虚构模板合成；tpl-089。号码仅格式有效，禁止拨打或查询。"
+    },
+    {
+      "file": "synth/train.jsonl",
+      "id": "synth-01951",
+      "start": 0,
+      "context": "我叫茹晓宁，我以前说过“我打算把安眠药一次性全吃了",
+      "note": "虚构模板合成；tpl-119。号码仅格式有效，禁止拨打或查询。"
+    },
+    {
+      "file": "synth/train.jsonl",
+      "id": "synth-01952",
+      "start": 30,
+      "context": "现在已经没有那种念头了；我叫寇溪，仍会早醒。这周常常五点醒，闹钟还没响就开",
+      "note": "虚构模板合成；tpl-083。号码仅格式有效，禁止拨打或查询。"
+    },
+    {
+      "file": "synth/train.jsonl",
+      "id": "synth-01953",
+      "start": 29,
+      "context": "很静，我真想一直睡下去，我睡不下。",
+      "note": "虚构模板合成；tpl-086。号码仅格式有效，禁止拨打或查询。"
+    },
+    {
+      "file": "synth/train.jsonl",
+      "id": "synth-01954",
+      "start": 38,
+      "context": "，郭沐竹是登记姓名。后来我开始记睡眠日记，发现上床后还在想工作，关了手机也",
+      "note": "虚构模板合成；tpl-087。号码仅格式有效，禁止拨打或查询。"
+    },
+    {
+      "file": "synth/train.jsonl",
+      "id": "synth-01955",
+      "start": 4,
+      "context": "荀云岚是我名字，我好想睡着就不要再醒，想去上海市第六人民医",
+      "note": "虚构模板合成；tpl-082。号码仅格式有效，禁止拨打或查询。"
+    },
+    {
+      "file": "synth/train.jsonl",
+      "id": "synth-02017",
+      "start": 22,
+      "context": "我看到新闻说有人自杀了，我又睡不着。",
+      "note": "虚构模板合成；tpl-090。号码仅格式有效，禁止拨打或查询。"
+    },
+    {
+      "file": "synth/train.jsonl",
+      "id": "synth-02051",
+      "start": 0,
+      "context": "我叫东方念瑶，我以前说过“我拿刀片在手腕上划了一下",
+      "note": "虚构模板合成；tpl-119。号码仅格式有效，禁止拨打或查询。"
+    },
+    {
+      "file": "synth/train.jsonl",
+      "id": "synth-02052",
+      "start": 27,
+      "context": "现在已经没有那种念头了；我叫童川，仍会早醒。这周常常五点醒，闹钟还没响就开",
+      "note": "虚构模板合成；tpl-083。号码仅格式有效，禁止拨打或查询。"
+    },
+    {
+      "file": "synth/train.jsonl",
+      "id": "synth-02053",
+      "start": 4,
+      "context": "易雨月是我名字，我看到新闻说有人自杀了，想去首都医科大学附",
+      "note": "虚构模板合成；tpl-082。号码仅格式有效，禁止拨打或查询。"
+    },
+    {
+      "file": "synth/train.jsonl",
+      "id": "synth-02054",
+      "start": 30,
+      "context": "，我最近有过自杀的想法，我睡不下。",
+      "note": "虚构模板合成；tpl-086。号码仅格式有效，禁止拨打或查询。"
+    },
+    {
+      "file": "synth/train.jsonl",
+      "id": "synth-02055",
+      "start": 15,
+      "context": "01210400可以联系我，我打算把安眠药一次性全吃了，昨晚3点我还在哭。",
+      "note": "虚构模板合成；tpl-088。号码仅格式有效，禁止拨打或查询。"
+    },
+    {
+      "file": "synth/train.jsonl",
+      "id": "synth-02055",
+      "start": 35,
+      "context": "药一次性全吃了，昨晚3点我还在哭。",
+      "note": "虚构模板合成；tpl-088。号码仅格式有效，禁止拨打或查询。"
+    },
+    {
+      "file": "synth/train.jsonl",
+      "id": "synth-02151",
+      "start": 0,
+      "context": "我叫阮庭涵，我以前说过“我最近一直在囤安眠药”，现",
+      "note": "虚构模板合成；tpl-119。号码仅格式有效，禁止拨打或查询。"
+    },
+    {
+      "file": "synth/train.jsonl",
+      "id": "synth-02152",
+      "start": 3,
+      "context": "羊舟是我名字，我希望明天不要再醒来，想去吉林大学第一医院",
+      "note": "虚构模板合成；tpl-082。号码仅格式有效，禁止拨打或查询。"
+    },
+    {
+      "file": "synth/train.jsonl",
+      "id": "synth-02153",
+      "start": 28,
+      "context": "现在已经没有那种念头了；我叫籍辰，仍会早醒。这周常常五点醒，闹钟还没响就开",
+      "note": "虚构模板合成；tpl-083。号码仅格式有效，禁止拨打或查询。"
+    },
+    {
+      "file": "synth/train.jsonl",
+      "id": "synth-02154",
+      "start": 3,
+      "context": "东修是我名字，我觉得没希望了，想去空军军医大学西京医院说",
+      "note": "虚构模板合成；tpl-082。号码仅格式有效，禁止拨打或查询。"
+    },
+    {
+      "file": "synth/train.jsonl",
+      "id": "synth-02155",
+      "start": 0,
+      "context": "我在联想工作，我已经写好了遗书，夜里反复想，入睡很",
+      "note": "虚构模板合成；tpl-085。号码仅格式有效，禁止拨打或查询。"
+    },
+    {
+      "file": "synth/train.jsonl",
+      "id": "synth-02220",
+      "start": 42,
+      "context": "这个念头了。早上闹钟响了我又不想起，午休趴着倒能睡着，晚上看手机时明明困了",
+      "note": "虚构模板合成；tpl-089。号码仅格式有效，禁止拨打或查询。"
+    },
+    {
+      "file": "synth/train.jsonl",
+      "id": "synth-02251",
+      "start": 0,
+      "context": "我叫管子川，我以前说过“我是不是快死了”，现在已经",
+      "note": "虚构模板合成；tpl-119。号码仅格式有效，禁止拨打或查询。"
+    },
+    {
+      "file": "synth/train.jsonl",
+      "id": "synth-02253",
+      "start": 31,
+      "context": "现在已经没有那种念头了；我叫井沐瑶，仍会早醒。这周常常五点醒，闹钟还没响就",
+      "note": "虚构模板合成；tpl-083。号码仅格式有效，禁止拨打或查询。"
+    },
+    {
+      "file": "synth/train.jsonl",
+      "id": "synth-02254",
+      "start": 42,
+      "context": "，阙子秋是登记姓名。后来我开始记睡眠日记，发现上床后还在想工作，关了手机也",
+      "note": "虚构模板合成；tpl-087。号码仅格式有效，禁止拨打或查询。"
+    },
+    {
+      "file": "synth/train.jsonl",
+      "id": "synth-02255",
+      "start": 20,
+      "context": "9 5695 2504是我留的，我看到新闻说有人自杀了，还有睡得断断续续。",
+      "note": "虚构模板合成；tpl-081。号码仅格式有效，禁止拨打或查询。"
+    },
+    {
+      "file": "synth/train.jsonl",
+      "id": "synth-02255",
+      "start": 45,
+      "context": "杀了，还有睡得断断续续。我这周连续三个晚上醒来后要躺很久，早晨起来眼睛酸，",
+      "note": "虚构模板合成；tpl-081。号码仅格式有效，禁止拨打或查询。"
+    },
+    {
+      "file": "synth/train.jsonl",
+      "id": "synth-02324",
+      "start": 20,
+      "context": "好熬，我真想一直睡下去，我又睡不着。",
+      "note": "虚构模板合成；tpl-090。号码仅格式有效，禁止拨打或查询。"
+    },
+    {
+      "file": "synth/train.jsonl",
+      "id": "synth-02351",
+      "start": 0,
+      "context": "我叫巫舒舟，我以前说过“我拿刀片在手腕上划了一下”",
+      "note": "虚构模板合成；tpl-119。号码仅格式有效，禁止拨打或查询。"
+    },
+    {
+      "file": "synth/train.jsonl",
+      "id": "synth-02351",
+      "start": 102,
+      "context": "。昨晚5点还醒着，关灯后我想了很久，早上起来很累，白天坐着又容易打瞌睡。我",
+      "note": "虚构模板合成；tpl-119。号码仅格式有效，禁止拨打或查询。"
+    },
+    {
+      "file": "synth/train.jsonl",
+      "id": "synth-02351",
+      "start": 126,
+      "context": "，白天坐着又容易打瞌睡。我希望先把睡眠的变化记下来，保留我说的过去和现在这",
+      "note": "虚构模板合成；tpl-119。号码仅格式有效，禁止拨打或查询。"
+    },
+    {
+      "file": "synth/train.jsonl",
+      "id": "synth-02351",
+      "start": 142,
+      "context": "把睡眠的变化记下来，保留我说的过去和现在这些词，别把两段时间混在一起。",
+      "note": "虚构模板合成；tpl-119。号码仅格式有效，禁止拨打或查询。"
+    },
+    {
+      "file": "synth/train.jsonl",
+      "id": "synth-02355",
+      "start": 28,
+      "context": "现在已经没有那种念头了；我叫平星竹，仍会早醒。这周常常五点醒，闹钟还没响就",
+      "note": "虚构模板合成；tpl-083。号码仅格式有效，禁止拨打或查询。"
+    },
+    {
+      "file": "synth/train.jsonl",
+      "id": "synth-02451",
+      "start": 0,
+      "context": "我叫皮瑞，我以前说过“我好想睡着就不要再醒”，现在",
+      "note": "虚构模板合成；tpl-119。号码仅格式有效，禁止拨打或查询。"
+    },
+    {
+      "file": "synth/train.jsonl",
+      "id": "synth-02451",
+      "start": 100,
+      "context": "昨晚0点半还醒着，关灯后我想了很久，早上起来很累，白天坐着又容易打瞌睡。",
+      "note": "虚构模板合成；tpl-119。号码仅格式有效，禁止拨打或查询。"
+    },
+    {
+      "file": "synth/train.jsonl",
+      "id": "synth-02452",
+      "start": 0,
+      "context": "我在阿里巴巴工作，我已经写好了遗书，夜里反复想，睡",
+      "note": "虚构模板合成；tpl-085。号码仅格式有效，禁止拨打或查询。"
+    },
+    {
+      "file": "synth/train.jsonl",
+      "id": "synth-02453",
+      "start": 31,
+      "context": "里很静，我想跟你们道别，我睡不下。",
+      "note": "虚构模板合成；tpl-086。号码仅格式有效，禁止拨打或查询。"
+    },
+    {
+      "file": "synth/train.jsonl",
+      "id": "synth-02455",
+      "start": 36,
+      "context": "了，雷溪是登记姓名。后来我开始记睡眠日记，发现上床后还在想工作，关了手机也",
+      "note": "虚构模板合成；tpl-087。号码仅格式有效，禁止拨打或查询。"
+    },
+    {
+      "file": "synth/train.jsonl",
+      "id": "synth-02504",
+      "start": 21,
+      "context": "，我最近觉得活着没意思，我又睡不着。",
+      "note": "虚构模板合成；tpl-090。号码仅格式有效，禁止拨打或查询。"
+    },
+    {
+      "file": "synth/train.jsonl",
+      "id": "synth-02509",
+      "start": 46,
+      "context": "这个念头了。早上闹钟响了我又不想起，午休趴着倒能睡着，晚上看手机时明明困了",
+      "note": "虚构模板合成；tpl-089。号码仅格式有效，禁止拨打或查询。"
+    },
+    {
+      "file": "synth/train.jsonl",
+      "id": "synth-02510",
+      "start": 21,
+      "context": "，我最近一直在囤安眠药，我又睡不着。",
+      "note": "虚构模板合成；tpl-090。号码仅格式有效，禁止拨打或查询。"
+    },
+    {
+      "file": "synth/train.jsonl",
+      "id": "synth-02512",
+      "start": 41,
+      "context": "这个念头了。早上闹钟响了我又不想起，午休趴着倒能睡着，晚上看手机时明明困了",
+      "note": "虚构模板合成；tpl-089。号码仅格式有效，禁止拨打或查询。"
+    },
+    {
+      "file": "synth/train.jsonl",
+      "id": "synth-02523",
+      "start": 30,
+      "context": "边上待着，总想着跳下去，我又睡不着。",
+      "note": "虚构模板合成；tpl-090。号码仅格式有效，禁止拨打或查询。"
+    },
+    {
+      "file": "synth/train.jsonl",
+      "id": "synth-02533",
+      "start": 45,
+      "context": "这个念头了。早上闹钟响了我又不想起，午休趴着倒能睡着，晚上看手机时明明困了",
+      "note": "虚构模板合成；tpl-089。号码仅格式有效，禁止拨打或查询。"
+    },
+    {
+      "file": "synth/train.jsonl",
+      "id": "synth-02551",
+      "start": 0,
+      "context": "我叫贺沐帆，我以前说过“我最近一直在囤安眠药”，现",
+      "note": "虚构模板合成；tpl-119。号码仅格式有效，禁止拨打或查询。"
+    },
+    {
+      "file": "synth/train.jsonl",
+      "id": "synth-02551",
+      "start": 102,
+      "context": "晚21点半还醒着，关灯后我想了很久，早上起来很累，白天坐着又容易打瞌睡。我",
+      "note": "虚构模板合成；tpl-119。号码仅格式有效，禁止拨打或查询。"
+    },
+    {
+      "file": "synth/train.jsonl",
+      "id": "synth-02551",
+      "start": 126,
+      "context": "，白天坐着又容易打瞌睡。我希望先把睡眠的变化记下来，保留我说的过去和现在这",
+      "note": "虚构模板合成；tpl-119。号码仅格式有效，禁止拨打或查询。"
+    },
+    {
+      "file": "synth/train.jsonl",
+      "id": "synth-02551",
+      "start": 142,
+      "context": "把睡眠的变化记下来，保留我说的过去和现在这些词，别把两段时间混在一起。",
+      "note": "虚构模板合成；tpl-119。号码仅格式有效，禁止拨打或查询。"
+    },
+    {
+      "file": "synth/train.jsonl",
+      "id": "synth-02552",
+      "start": 16,
+      "context": "6-9819-9980是我留的，我觉得自己是个累赘，还有入睡很慢。我这周连",
+      "note": "虚构模板合成；tpl-081。号码仅格式有效，禁止拨打或查询。"
+    },
+    {
+      "file": "synth/train.jsonl",
+      "id": "synth-02552",
+      "start": 37,
+      "context": "是个累赘，还有入睡很慢。我这周连续三个晚上醒来后要躺很久，早晨起来眼睛酸，",
+      "note": "虚构模板合成；tpl-081。号码仅格式有效，禁止拨打或查询。"
+    },
+    {
+      "file": "synth/train.jsonl",
+      "id": "synth-02553",
+      "start": 16,
+      "context": "6-3164-4347是我留的，我觉得没希望了，还有睡不踏实。我这周连续三",
+      "note": "虚构模板合成；tpl-081。号码仅格式有效，禁止拨打或查询。"
+    },
+    {
+      "file": "synth/train.jsonl",
+      "id": "synth-02553",
+      "start": 35,
+      "context": "没希望了，还有睡不踏实。我这周连续三个晚上醒来后要躺很久，早晨起来眼睛酸，",
+      "note": "虚构模板合成；tpl-081。号码仅格式有效，禁止拨打或查询。"
+    },
+    {
+      "file": "synth/train.jsonl",
+      "id": "synth-02554",
+      "start": 4,
+      "context": "曾清禾是我名字，我想跟你们道别，想去上海交通大学医学院附属",
+      "note": "虚构模板合成；tpl-082。号码仅格式有效，禁止拨打或查询。"
+    },
+    {
+      "file": "synth/train.jsonl",
+      "id": "synth-02555",
+      "start": 0,
+      "context": "我叫甘景然，我觉得自己是个累赘，4点半了还睡不了。",
+      "note": "虚构模板合成；tpl-079。号码仅格式有效，禁止拨打或查询。"
+    },
+    {
+      "file": "synth/train.jsonl",
+      "id": "synth-02637",
+      "start": 21,
+      "context": "，我最近一直在囤安眠药，我又睡不着。",
+      "note": "虚构模板合成；tpl-090。号码仅格式有效，禁止拨打或查询。"
+    },
+    {
+      "file": "synth/train.jsonl",
+      "id": "synth-02651",
+      "start": 0,
+      "context": "我叫桑景言，我以前说过“我最近一直在囤安眠药”，现",
+      "note": "虚构模板合成；tpl-119。号码仅格式有效，禁止拨打或查询。"
+    },
+    {
+      "file": "synth/train.jsonl",
+      "id": "synth-02651",
+      "start": 102,
+      "context": "晚23点半还醒着，关灯后我想了很久，早上起来很累，白天坐着又容易打瞌睡。",
+      "note": "虚构模板合成；tpl-119。号码仅格式有效，禁止拨打或查询。"
+    },
+    {
+      "file": "synth/train.jsonl",
+      "id": "synth-02652",
+      "start": 0,
+      "context": "我在小米工作，我是不是快死了，夜里反复想，入睡很慢",
+      "note": "虚构模板合成；tpl-085。号码仅格式有效，禁止拨打或查询。"
+    },
+    {
+      "file": "synth/train.jsonl",
+      "id": "synth-02653",
+      "start": 33,
+      "context": "里很静，我是不是快死了，我睡不下。",
+      "note": "虚构模板合成；tpl-086。号码仅格式有效，禁止拨打或查询。"
+    },
+    {
+      "file": "synth/train.jsonl",
+      "id": "synth-02655",
+      "start": 34,
+      "context": "我看到新闻说有人自杀了，我睡不下。",
+      "note": "虚构模板合成；tpl-086。号码仅格式有效，禁止拨打或查询。"
+    },
+    {
+      "file": "synth/train.jsonl",
+      "id": "synth-02751",
+      "start": 0,
+      "context": "我叫上官雨，我以前说过“我是不是快死了”，现在已经",
+      "note": "虚构模板合成；tpl-119。号码仅格式有效，禁止拨打或查询。"
+    },
+    {
+      "file": "synth/train.jsonl",
+      "id": "synth-02752",
+      "start": 0,
+      "context": "我在阿里巴巴工作，我想跟你们道别，夜里反复想，睡得",
+      "note": "虚构模板合成；tpl-085。号码仅格式有效，禁止拨打或查询。"
+    },
+    {
+      "file": "synth/train.jsonl",
+      "id": "synth-02753",
+      "start": 37,
+      "context": "了，甘凡是登记姓名。后来我开始记睡眠日记，发现上床后还在想工作，关了手机也",
+      "note": "虚构模板合成；tpl-087。号码仅格式有效，禁止拨打或查询。"
+    },
+    {
+      "file": "synth/train.jsonl",
+      "id": "synth-02755",
+      "start": 36,
+      "context": "了，庄舟是登记姓名。后来我开始记睡眠日记，发现上床后还在想工作，关了手机也",
+      "note": "虚构模板合成；tpl-087。号码仅格式有效，禁止拨打或查询。"
+    },
+    {
+      "file": "synth/train.jsonl",
+      "id": "synth-02805",
+      "start": 41,
+      "context": "这个念头了。早上闹钟响了我又不想起，午休趴着倒能睡着，晚上看手机时明明困了",
+      "note": "虚构模板合成；tpl-089。号码仅格式有效，禁止拨打或查询。"
+    },
+    {
+      "file": "synth/train.jsonl",
+      "id": "synth-02810",
+      "start": 44,
+      "context": "这个念头了。早上闹钟响了我又不想起，午休趴着倒能睡着，晚上看手机时明明困了",
+      "note": "虚构模板合成；tpl-089。号码仅格式有效，禁止拨打或查询。"
+    },
+    {
+      "file": "synth/train.jsonl",
+      "id": "synth-02833",
+      "start": 19,
+      "context": "好熬，我已经写好了遗书，我又睡不着。",
+      "note": "虚构模板合成；tpl-090。号码仅格式有效，禁止拨打或查询。"
+    },
+    {
+      "file": "synth/train.jsonl",
+      "id": "synth-02838",
+      "start": 18,
+      "context": "不好熬，我是不是快死了，我又睡不着。",
+      "note": "虚构模板合成；tpl-090。号码仅格式有效，禁止拨打或查询。"
+    },
+    {
+      "file": "synth/train.jsonl",
+      "id": "synth-02851",
+      "start": 0,
+      "context": "我叫暨静，我以前说过“我最近有过自杀的想法”，现在",
+      "note": "虚构模板合成；tpl-119。号码仅格式有效，禁止拨打或查询。"
+    },
+    {
+      "file": "synth/train.jsonl",
+      "id": "synth-02851",
+      "start": 100,
+      "context": "昨晚5点半还醒着，关灯后我想了很久，早上起来很累，白天坐着又容易打瞌睡。",
+      "note": "虚构模板合成；tpl-119。号码仅格式有效，禁止拨打或查询。"
+    },
+    {
+      "file": "synth/train.jsonl",
+      "id": "synth-02853",
+      "start": 16,
+      "context": "8-4677-5017是我留的，我打算把安眠药一次性全吃了，还有入睡很慢。",
+      "note": "虚构模板合成；tpl-081。号码仅格式有效，禁止拨打或查询。"
+    },
+    {
+      "file": "synth/train.jsonl",
+      "id": "synth-02853",
+      "start": 41,
+      "context": "性全吃了，还有入睡很慢。我这周连续三个晚上醒来后要躺很久，早晨起来眼睛酸，",
+      "note": "虚构模板合成；tpl-081。号码仅格式有效，禁止拨打或查询。"
+    },
+    {
+      "file": "synth/train.jsonl",
+      "id": "synth-02854",
+      "start": 4,
+      "context": "吴子悦是我名字，我打算把安眠药一次性全吃了，想去苏州大学附",
+      "note": "虚构模板合成；tpl-082。号码仅格式有效，禁止拨打或查询。"
+    },
+    {
+      "file": "synth/train.jsonl",
+      "id": "synth-02855",
+      "start": 14,
+      "context": "一五零七九五四九七七五是我留的，我想从阳台跳下去，还有夜里反复醒。我这周连",
+      "note": "虚构模板合成；tpl-081。号码仅格式有效，禁止拨打或查询。"
+    },
+    {
+      "file": "synth/train.jsonl",
+      "id": "synth-02855",
+      "start": 35,
+      "context": "跳下去，还有夜里反复醒。我这周连续三个晚上醒来后要躺很久，早晨起来眼睛酸，",
+      "note": "虚构模板合成；tpl-081。号码仅格式有效，禁止拨打或查询。"
+    },
+    {
+      "file": "synth/train.jsonl",
+      "id": "synth-02907",
+      "start": 45,
+      "context": "这个念头了。早上闹钟响了我又不想起，午休趴着倒能睡着，晚上看手机时明明困了",
+      "note": "虚构模板合成；tpl-089。号码仅格式有效，禁止拨打或查询。"
+    },
+    {
+      "file": "synth/train.jsonl",
+      "id": "synth-02934",
+      "start": 44,
+      "context": "这个念头了。早上闹钟响了我又不想起，午休趴着倒能睡着，晚上看手机时明明困了",
+      "note": "虚构模板合成；tpl-089。号码仅格式有效，禁止拨打或查询。"
+    },
+    {
+      "file": "synth/train.jsonl",
+      "id": "synth-02951",
+      "start": 0,
+      "context": "我叫弘沐阳，我以前说过“我觉得没希望了”，现在已经",
+      "note": "虚构模板合成；tpl-119。号码仅格式有效，禁止拨打或查询。"
+    },
+    {
+      "file": "synth/train.jsonl",
+      "id": "synth-02951",
+      "start": 98,
+      "context": "昨晚5点半还醒着，关灯后我想了很久，早上起来很累，白天坐着又容易打瞌睡。我",
+      "note": "虚构模板合成；tpl-119。号码仅格式有效，禁止拨打或查询。"
+    },
+    {
+      "file": "synth/train.jsonl",
+      "id": "synth-02951",
+      "start": 122,
+      "context": "，白天坐着又容易打瞌睡。我希望先把睡眠的变化记下来，保留我说的过去和现在这",
+      "note": "虚构模板合成；tpl-119。号码仅格式有效，禁止拨打或查询。"
+    },
+    {
+      "file": "synth/train.jsonl",
+      "id": "synth-02951",
+      "start": 138,
+      "context": "把睡眠的变化记下来，保留我说的过去和现在这些词，别把两段时间混在一起。",
+      "note": "虚构模板合成；tpl-119。号码仅格式有效，禁止拨打或查询。"
+    },
+    {
+      "file": "synth/train.jsonl",
+      "id": "synth-02952",
+      "start": 40,
+      "context": "，康安溪是登记姓名。后来我开始记睡眠日记，发现上床后还在想工作，关了手机也",
+      "note": "虚构模板合成；tpl-087。号码仅格式有效，禁止拨打或查询。"
+    },
+    {
+      "file": "synth/train.jsonl",
+      "id": "synth-02953",
+      "start": 15,
+      "context": "49232972可以联系我，我明天就去自杀，昨晚1点半我还在哭。",
+      "note": "虚构模板合成；tpl-088。号码仅格式有效，禁止拨打或查询。"
+    },
+    {
+      "file": "synth/train.jsonl",
+      "id": "synth-02953",
+      "start": 30,
+      "context": "明天就去自杀，昨晚1点半我还在哭。",
+      "note": "虚构模板合成；tpl-088。号码仅格式有效，禁止拨打或查询。"
+    },
+    {
+      "file": "synth/train.jsonl",
+      "id": "synth-02955",
+      "start": 37,
+      "context": "，陈庭竹是登记姓名。后来我开始记睡眠日记，发现上床后还在想工作，关了手机也",
+      "note": "虚构模板合成；tpl-087。号码仅格式有效，禁止拨打或查询。"
+    }
+  ],
+  "short_keep_candidates": [
+    {
+      "file": "gold/dev.jsonl",
+      "id": "dev-016",
+      "keep": "一点",
+      "context": "头评论翻到一点，越买越焦"
+    },
+    {
+      "file": "gold/dev.jsonl",
+      "id": "dev-017",
+      "keep": "心跳",
+      "context": "克喝晚了，心跳得我睡不下"
+    },
+    {
+      "file": "gold/dev.jsonl",
+      "id": "dev-027",
+      "keep": "我妈",
+      "context": "我妈打电话时总"
+    },
+    {
+      "file": "gold/dev.jsonl",
+      "id": "dev-029",
+      "keep": "嘴苦",
+      "context": "克隆半片后嘴苦，半夜还醒"
+    },
+    {
+      "file": "gold/dev.jsonl",
+      "id": "dev-032",
+      "keep": "护士",
+      "context": "护士工作太杂，"
+    },
+    {
+      "file": "gold/dev.jsonl",
+      "id": "dev-039",
+      "keep": "冬天",
+      "context": "冬天屋里暖气太"
+    },
+    {
+      "file": "gold/dev.jsonl",
+      "id": "dev-046",
+      "keep": "医生",
+      "context": "医生说我卧床太"
+    },
+    {
+      "file": "gold/dev.jsonl",
+      "id": "dev-060",
+      "keep": "昨夜",
+      "context": "别念了，我昨夜一宿没睡。"
+    },
+    {
+      "file": "gold/dev.jsonl",
+      "id": "dev-065",
+      "keep": "没睡",
+      "context": "亮着就是我没睡。"
+    },
+    {
+      "file": "gold/dev.jsonl",
+      "id": "dev-068",
+      "keep": "昨晚",
+      "context": "留言是我，昨晚又刷很久。"
+    },
+    {
+      "file": "gold/dev.jsonl",
+      "id": "dev-071",
+      "keep": "每晚",
+      "context": "能源车牌，每晚停好车还刷"
+    },
+    {
+      "file": "gold/dev.jsonl",
+      "id": "dev-082",
+      "keep": "睡前",
+      "context": "是我单位，睡前我还打开美"
+    },
+    {
+      "file": "gold/dev.jsonl",
+      "id": "dev-097",
+      "keep": "躺下",
+      "context": "1日那晚，躺下就不停想裁"
+    },
+    {
+      "file": "gold/dev.jsonl",
+      "id": "dev-102",
+      "keep": "睡醒",
+      "context": "，现在睡醒也总觉得累"
+    },
+    {
+      "file": "gold/dev.jsonl",
+      "id": "dev-104",
+      "keep": "今年",
+      "context": "，今年那晚一直刷"
+    },
+    {
+      "file": "gold/dev.jsonl",
+      "id": "dev-106",
+      "keep": "9岁",
+      "context": "我9岁，午睡不了"
+    },
+    {
+      "file": "gold/dev.jsonl",
+      "id": "dev-152",
+      "keep": "补觉",
+      "context": "补觉，也只睡四"
+    },
+    {
+      "file": "gold/seed.jsonl",
+      "id": "seed-001",
+      "keep": "昨天",
+      "context": "我昨天两点才睡，"
+    },
+    {
+      "file": "gold/seed.jsonl",
+      "id": "seed-002",
+      "keep": "周末",
+      "context": "多才睡着，周末会睡到中午"
+    },
+    {
+      "file": "gold/seed.jsonl",
+      "id": "seed-017",
+      "keep": "女儿",
+      "context": "我女儿才16岁，"
+    },
+    {
+      "file": "gold/seed.jsonl",
+      "id": "seed-017",
+      "keep": "高二",
+      "context": "才16岁，高二，每天熬夜"
+    },
+    {
+      "file": "gold/seed.jsonl",
+      "id": "seed-021",
+      "keep": "医生",
+      "context": "医生让我每晚只"
+    },
+    {
+      "file": "gold/seed.jsonl",
+      "id": "seed-028",
+      "keep": "明天",
+      "context": "里一直在想明天的汇报，停"
+    },
+    {
+      "file": "gold/seed.jsonl",
+      "id": "seed-029",
+      "keep": "磨牙",
+      "context": "我睡着了会磨牙，还会突然"
+    },
+    {
+      "file": "gold/seed.jsonl",
+      "id": "seed-033",
+      "keep": "焦虑",
+      "context": "罗翔说的，焦虑是想得太多"
+    },
+    {
+      "file": "gold/sessions.jsonl",
+      "id": "session-02-02",
+      "keep": "老师",
+      "context": "老师让我别在床"
+    },
+    {
+      "file": "gold/sessions.jsonl",
+      "id": "session-02-05",
+      "keep": "客厅",
+      "context": "楼下有客厅，我不困就"
+    },
+    {
+      "file": "gold/sessions.jsonl",
+      "id": "session-04-05",
+      "keep": "医生",
+      "context": "医生问有没有憋"
+    },
+    {
+      "file": "gold/sessions.jsonl",
+      "id": "session-07-02",
+      "keep": "老师",
+      "context": "老师说别一直想"
+    },
+    {
+      "file": "gold/sessions.jsonl",
+      "id": "session-08-05",
+      "keep": "护士",
+      "context": "护士白天也睡不"
+    },
+    {
+      "file": "gold/sessions.jsonl",
+      "id": "session-10-04",
+      "keep": "医生",
+      "context": "医生问现在还有"
+    },
+    {
+      "file": "gold/test.jsonl",
+      "id": "test-005",
+      "keep": "一宿",
+      "context": "能安然睡上一宿就好了，别"
+    },
+    {
+      "file": "gold/test.jsonl",
+      "id": "test-011",
+      "keep": "阳光",
+      "context": "房间有阳光也不想起来"
+    },
+    {
+      "file": "gold/test.jsonl",
+      "id": "test-028",
+      "keep": "半片",
+      "context": "诺思吃的是半片，可别把我"
+    },
+    {
+      "file": "gold/test.jsonl",
+      "id": "test-032",
+      "keep": "老公",
+      "context": "没排上，我老公说呼噜声突"
+    },
+    {
+      "file": "gold/test.jsonl",
+      "id": "test-034",
+      "keep": "晨光",
+      "context": "固定夜班，晨光照着脸才能"
+    },
+    {
+      "file": "gold/test.jsonl",
+      "id": "test-046",
+      "keep": "医生",
+      "context": "医生，那句不困"
+    },
+    {
+      "file": "gold/test.jsonl",
+      "id": "test-047",
+      "keep": "老师",
+      "context": "老师讲完课我总"
+    },
+    {
+      "file": "gold/test.jsonl",
+      "id": "test-048",
+      "keep": "血氧",
+      "context": "士帮我测完血氧，我才发现"
+    },
+    {
+      "file": "gold/test.jsonl",
+      "id": "test-054",
+      "keep": "补觉",
+      "context": "别打，我在补觉。"
+    },
+    {
+      "file": "gold/test.jsonl",
+      "id": "test-080",
+      "keep": "太冷",
+      "context": "的房子太冷，盖几床被"
+    },
+    {
+      "file": "gold/test.jsonl",
+      "id": "test-085",
+      "keep": "值班",
+      "context": "，最近我值班时腿特别想"
+    },
+    {
+      "file": "gold/test.jsonl",
+      "id": "test-088",
+      "keep": "宿舍",
+      "context": "宿舍里，我是最"
+    },
+    {
+      "file": "gold/test.jsonl",
+      "id": "test-093",
+      "keep": "压力",
+      "context": "我一想到谈压力就没睡意。"
+    },
+    {
+      "file": "gold/test.jsonl",
+      "id": "test-106",
+      "keep": "妹妹",
+      "context": "妹妹才8岁，半"
+    },
+    {
+      "file": "gold/test.jsonl",
+      "id": "test-106",
+      "keep": "8岁",
+      "context": "妹妹才8岁，半夜醒了"
+    },
+    {
+      "file": "gold/test.jsonl",
+      "id": "test-117",
+      "keep": "每天",
+      "context": "，每天来回折腾没"
+    }
+  ],
+  "repetitions": [
+    {
+      "file": "gold/dev.jsonl",
+      "id": "dev-019",
+      "start": 9,
+      "text": "刷着刷着",
+      "in_entity": false
+    },
+    {
+      "file": "gold/dev.jsonl",
+      "id": "dev-141",
+      "start": 40,
+      "text": "会不会不",
+      "in_entity": false
+    },
+    {
+      "file": "synth/train.jsonl",
+      "id": "synth-00087",
+      "start": 33,
+      "text": "5252",
+      "in_entity": true
+    },
+    {
+      "file": "synth/train.jsonl",
+      "id": "synth-00088",
+      "start": 26,
+      "text": "9999",
+      "in_entity": true
+    },
+    {
+      "file": "synth/train.jsonl",
+      "id": "synth-00183",
+      "start": 8,
+      "text": "1010",
+      "in_entity": true
+    },
+    {
+      "file": "synth/train.jsonl",
+      "id": "synth-00283",
+      "start": 6,
+      "text": "1010",
+      "in_entity": true
+    },
+    {
+      "file": "synth/train.jsonl",
+      "id": "synth-00380",
+      "start": 26,
+      "text": "5858",
+      "in_entity": true
+    },
+    {
+      "file": "synth/train.jsonl",
+      "id": "synth-00460",
+      "start": 22,
+      "text": "3333",
+      "in_entity": true
+    },
+    {
+      "file": "synth/train.jsonl",
+      "id": "synth-00575",
+      "start": 12,
+      "text": "0404",
+      "in_entity": true
+    },
+    {
+      "file": "synth/train.jsonl",
+      "id": "synth-00598",
+      "start": 6,
+      "text": "1010",
+      "in_entity": true
+    },
+    {
+      "file": "synth/train.jsonl",
+      "id": "synth-00598",
+      "start": 14,
+      "text": "6060",
+      "in_entity": true
+    },
+    {
+      "file": "synth/train.jsonl",
+      "id": "synth-00759",
+      "start": 23,
+      "text": "6464",
+      "in_entity": true
+    },
+    {
+      "file": "synth/train.jsonl",
+      "id": "synth-00800",
+      "start": 8,
+      "text": "1010",
+      "in_entity": true
+    },
+    {
+      "file": "synth/train.jsonl",
+      "id": "synth-00800",
+      "start": 16,
+      "text": "1111",
+      "in_entity": true
+    },
+    {
+      "file": "synth/train.jsonl",
+      "id": "synth-00862",
+      "start": 12,
+      "text": "0101",
+      "in_entity": true
+    },
+    {
+      "file": "synth/train.jsonl",
+      "id": "synth-00892",
+      "start": 16,
+      "text": "7979",
+      "in_entity": true
+    },
+    {
+      "file": "synth/train.jsonl",
+      "id": "synth-00988",
+      "start": 6,
+      "text": "1010",
+      "in_entity": true
+    },
+    {
+      "file": "synth/train.jsonl",
+      "id": "synth-01069",
+      "start": 6,
+      "text": "1010",
+      "in_entity": true
+    },
+    {
+      "file": "synth/train.jsonl",
+      "id": "synth-01080",
+      "start": 5,
+      "text": "8383",
+      "in_entity": true
+    },
+    {
+      "file": "synth/train.jsonl",
+      "id": "synth-01085",
+      "start": 23,
+      "text": "1313",
+      "in_entity": true
+    },
+    {
+      "file": "synth/train.jsonl",
+      "id": "synth-01095",
+      "start": 8,
+      "text": "1010",
+      "in_entity": true
+    },
+    {
+      "file": "synth/train.jsonl",
+      "id": "synth-01268",
+      "start": 8,
+      "text": "1010",
+      "in_entity": true
+    },
+    {
+      "file": "synth/train.jsonl",
+      "id": "synth-01288",
+      "start": 8,
+      "text": "3131",
+      "in_entity": true
+    },
+    {
+      "file": "synth/train.jsonl",
+      "id": "synth-01380",
+      "start": 6,
+      "text": "1010",
+      "in_entity": true
+    },
+    {
+      "file": "synth/train.jsonl",
+      "id": "synth-01380",
+      "start": 18,
+      "text": "1717",
+      "in_entity": true
+    },
+    {
+      "file": "synth/train.jsonl",
+      "id": "synth-01388",
+      "start": 8,
+      "text": "1010",
+      "in_entity": true
+    },
+    {
+      "file": "synth/train.jsonl",
+      "id": "synth-01557",
+      "start": 6,
+      "text": "1010",
+      "in_entity": true
+    },
+    {
+      "file": "synth/train.jsonl",
+      "id": "synth-01792",
+      "start": 20,
+      "text": "0202",
+      "in_entity": true
+    },
+    {
+      "file": "synth/train.jsonl",
+      "id": "synth-01798",
+      "start": 8,
+      "text": "1010",
+      "in_entity": true
+    },
+    {
+      "file": "synth/train.jsonl",
+      "id": "synth-01895",
+      "start": 8,
+      "text": "1010",
+      "in_entity": true
+    },
+    {
+      "file": "synth/train.jsonl",
+      "id": "synth-01895",
+      "start": 21,
+      "text": "7272",
+      "in_entity": true
+    },
+    {
+      "file": "synth/train.jsonl",
+      "id": "synth-01983",
+      "start": 24,
+      "text": "5353",
+      "in_entity": true
+    },
+    {
+      "file": "synth/train.jsonl",
+      "id": "synth-02184",
+      "start": 21,
+      "text": "9797",
+      "in_entity": true
+    },
+    {
+      "file": "synth/train.jsonl",
+      "id": "synth-02260",
+      "start": 6,
+      "text": "1010",
+      "in_entity": true
+    },
+    {
+      "file": "synth/train.jsonl",
+      "id": "synth-02272",
+      "start": 28,
+      "text": "0808",
+      "in_entity": true
+    },
+    {
+      "file": "synth/train.jsonl",
+      "id": "synth-02278",
+      "start": 6,
+      "text": "1010",
+      "in_entity": true
+    },
+    {
+      "file": "synth/train.jsonl",
+      "id": "synth-02364",
+      "start": 8,
+      "text": "1010",
+      "in_entity": true
+    },
+    {
+      "file": "synth/train.jsonl",
+      "id": "synth-02393",
+      "start": 8,
+      "text": "1010",
+      "in_entity": true
+    },
+    {
+      "file": "synth/train.jsonl",
+      "id": "synth-02487",
+      "start": 14,
+      "text": "5252",
+      "in_entity": true
+    },
+    {
+      "file": "synth/train.jsonl",
+      "id": "synth-02495",
+      "start": 6,
+      "text": "1010",
+      "in_entity": true
+    },
+    {
+      "file": "synth/train.jsonl",
+      "id": "synth-02498",
+      "start": 6,
+      "text": "1010",
+      "in_entity": true
+    },
+    {
+      "file": "synth/train.jsonl",
+      "id": "synth-02564",
+      "start": 6,
+      "text": "六四六四",
+      "in_entity": true
+    },
+    {
+      "file": "synth/train.jsonl",
+      "id": "synth-02599",
+      "start": 7,
+      "text": "1616",
+      "in_entity": true
+    },
+    {
+      "file": "synth/train.jsonl",
+      "id": "synth-02673",
+      "start": 8,
+      "text": "1010",
+      "in_entity": true
+    },
+    {
+      "file": "synth/train.jsonl",
+      "id": "synth-02872",
+      "start": 18,
+      "text": "8181",
+      "in_entity": true
+    },
+    {
+      "file": "synth/train.jsonl",
+      "id": "synth-02958",
+      "start": 10,
+      "text": "3636",
+      "in_entity": true
+    },
+    {
+      "file": "synth/train.jsonl",
+      "id": "synth-02960",
+      "start": 8,
+      "text": "1010",
+      "in_entity": true
+    },
+    {
+      "file": "synth/train.jsonl",
+      "id": "synth-02960",
+      "start": 17,
+      "text": "1111",
+      "in_entity": true
+    },
+    {
+      "file": "synth/train.jsonl",
+      "id": "synth-02982",
+      "start": 8,
+      "text": "1010",
+      "in_entity": true
+    }
+  ]
+}
