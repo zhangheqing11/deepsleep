@@ -11,7 +11,8 @@ sys.path.insert(0, str(ROOT))
 
 @pytest.fixture(autouse=True)
 def offline(monkeypatch):
-    for key in ("DS_API_KEY", "DS_BASE_URL", "DS_MODEL", "TYPESAFE_API_KEY", "GEMINI_API_KEY", "GOOGLE_API_KEY", "JUDGE_PROVIDER"):
+    for key in ("DS_API_KEY", "DS_BASE_URL", "DS_MODEL", "TYPESAFE_API_KEY", "GEMINI_API_KEY", "GOOGLE_API_KEY", "JUDGE_PROVIDER",
+                "STARTLUX_API_KEY", "STARTLUX_BASE_URL", "STARTLUX_MODEL"):
         monkeypatch.delenv(key, raising=False)
 
     def forbidden(*args, **kwargs):

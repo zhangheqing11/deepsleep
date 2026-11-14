@@ -20,8 +20,8 @@ def load_config(config=None) -> dict:
     provider = os.getenv("JUDGE_PROVIDER", "").strip()
     if provider:
         values["judge_provider"] = provider
-    if values["judge_provider"] not in ("ds_flash", "jev", "gemini_decision", "mock"):
-        raise ValueError("judge_provider must be ds_flash, jev, gemini_decision or mock")
+    if values["judge_provider"] not in ("ds_flash", "jev", "gemini_decision", "startlux", "mock"):
+        raise ValueError("judge_provider must be ds_flash, jev, gemini_decision, startlux or mock")
     for key in ("tau_flag", "tau_active", "probability_sum_tolerance"):
         value = values[key]
         if isinstance(value, bool) or not isinstance(value, (int, float)) or not 0 <= value <= 1:
@@ -30,6 +30,13 @@ def load_config(config=None) -> dict:
         value = values[key]
         if isinstance(value, bool) or not isinstance(value, (int, float)) or not math.isfinite(value) or value <= 0:
             raise ValueError(f"{key} must be positive and finite")
+    overrides = values.setdefault("judge_timeout_overrides", {})
+    if not isinstance(overrides, Mapping):
+        raise ValueError("judge_timeout_overrides must be a provider-to-timeout mapping")
+    for provider, value in overrides.items():
+        if (isinstance(value, bool) or not isinstance(value, (int, float))
+                or not math.isfinite(value) or value <= 0):
+            raise ValueError(f"judge_timeout_overrides[{provider}] must be positive and finite")
     # The scale criterion is fixed by the specification, not an evolution knob.
     if values["phq9_item9_threshold"] != 0:
         raise ValueError("PHQ-9 item 9 threshold must remain 0")

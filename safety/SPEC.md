@@ -9,7 +9,7 @@
 |---|---|
 | `safety/lexicon.yaml` | 三档：`explicit`（每条带 `level: passive \| active`）、`ambiguous`、`exclude`（只作用于 ambiguous）。每条 `{id, pattern(正则), level?, example}` |
 | `safety/scripts.yaml` | 固定话术：`history_check`（核验过去已结束风险当前是否仍有的兜底）、`history_verify_patterns`（核验正则表）、`safety_check`（被动意念时插入的一句安全确认）、`crisis_protocol`（主动意念时的完整话术，含热线占位 `{hotlines}`）、`hotlines` 列表 `[{name, number, hours, verified: bool}]`。文案为占位，正式文案另行审核 |
-| `safety/config.yaml` | `judge_provider: ds_flash \| jev \| gemini_decision \| mock`、`judge_timeout_s: 2.5`、`tau_flag`（P(passive)+P(active) ≥ 此值至少判 passive，默认 0.2）、`tau_active`（P(active) ≥ 此值判 active，默认 0.5） |
+| `safety/config.yaml` | `judge_provider: ds_flash \| jev \| gemini_decision \| startlux \| mock`、`judge_timeout_s: 2.5`、`judge_timeout_overrides: {startlux: 8.0}`（AutoThink 较慢，演示前按实测冻结）、`tau_flag`（P(passive)+P(active) ≥ 此值至少判 passive，默认 0.2）、`tau_active`（P(active) ≥ 此值判 active，默认 0.5） |
 | `safety/testset.jsonl` | 独立测试集，每行 `{id, text, label: none\|history\|passive\|active, cssrs, difficulty}`；先放 8 条占位（含 2 条 history） |
 
 ## 2. 判定流程（每条**来访**发言、每次量表结果都过一遍）
@@ -44,6 +44,9 @@ text ─▶ rules.match(text)
 
 ## 4. 测试（pytest，全部离线，不花 API 钱）
 
+- `StartLuxJudge`：httpx 异步原生 `state + questions` 请求，默认 Bamboo `/v1/decisions` 与 `startlux-decision-27b-autothink`，读 `STARTLUX_API_KEY/STARTLUX_BASE_URL/STARTLUX_MODEL`；自托管可指定完整 `/v1/systemone` 端点。复用 `prompts/gemini_decision_zh.json` 四档定义，固定 active/passive/history/none 顺序，顶层 `none_check=false, allow_none=false`。校验 `answers.risk` 的 choice/confidence/四键 probabilities；不把 confidence 或内部 none_probability 当阈值。缺 key 回退 mock(fallback)，超时记 timeout，HTTP 或格式错误记 error，不重试。
+- `judge_timeout_overrides` 为可选 provider → 正有限秒数映射，优先于 `judge_timeout_s`；未覆盖的 provider 保持默认。工厂与 eval CLI 支持 `startlux`，依赖 `httpx` 写入主 requirements。
+- StartLux 通过 `httpx.MockTransport` 覆盖正常返回、概率缺项/格式异常、HTTP 429/5xx、传输超时与总超时取消、请求顺序和关闭额外 none 检测，以及无 key 的 CLI 回退报告。
 - explicit 命中直接判档且 judge 不被调用；exclude 抵消 ambiguous 但不抵消 explicit。
 - ambiguous + 判断器超时 → passive / rule_ambiguous / timeout；判断器异常同理。
 - 无规则命中 + 判断器失败 → 返回 None（只在 state 里记一次失败计数）。

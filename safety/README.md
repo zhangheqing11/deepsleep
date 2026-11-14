@@ -13,7 +13,7 @@ make contracts
 ```
 
 `make smoke` 同时运行 contracts 和 test。测试使用假客户端并禁止 socket 连接，不读 `.env`，不调用真实 API。
-`python -m safety.eval --provider rules|mock|ds_flash|jev|gemini_decision` 写入配置指定的报告目录。
+`python -m safety.eval --provider rules|mock|ds_flash|jev|gemini_decision|startlux` 写入配置指定的报告目录。
 激活 `.venv` 后也可直接在根目录运行 `pytest`。
 
 ## 接入约定
@@ -74,6 +74,29 @@ Jev 依赖可选安装：`pip install -r requirements-optional.txt`。
 适配器采用 [TypeSafe 官方 SDK](https://github.com/typesafe-ai/typesafe-sdk-python) 的
 `system_one(state=..., questions={risk: Choice(...)})` 与 `answer.probabilities`，选项顺序为 active/passive/history/none。
 所有判断调用受 `asyncio.wait_for` 限时；请求错误、超时或非法概率不向会谈抛出。
+
+StartLux 是第四个外部判断器候选，使用必装依赖 `httpx` 异步直连原生协议，不依赖 `typesafe-sdk`。
+`make safety-eval PROVIDER=startlux` 读取 `STARTLUX_API_KEY`，缺 key 回退 `mock(fallback)`。
+`STARTLUX_BASE_URL` 留空默认 `https://api.bamboonode.dev`，请求 `POST /v1/decisions`；
+`STARTLUX_MODEL` 留空默认 `startlux-decision-27b-autothink`，认证使用 Bearer API key。
+依据 [官方 API](https://github.com/StartLuxLabs/StartLux-Decision/blob/main/docs/api.md) 与
+[Bamboo 指南](https://bamboonode.dev/docs/ai-model/decisions/startlux)，请求使用 `state + questions`，
+从 `answers.risk.probabilities` 读取四键分布，并校验题型、choice、confidence 与概率格式。
+复用 `prompts/gemini_decision_zh.json` 中冻结的 history 版中文定义，将选项固定为
+**active → passive → history → none**（对应 A–D，与 Jev 的顺序一致，往召回方向偏）。
+显式发送 `none_check: false` 和 `allow_none: false`，覆盖 Bamboo 默认值；
+内部 `none_probability` 不参与分档，与业务类别 `none` 无关，confidence 也不作分档阈值。
+缺项或畸形响应、HTTP 429/5xx 等错误记 `error`，httpx 超时或总时限到期记 `timeout`；不自动重试。
+`judge_timeout_s` 保持 2.5 秒，`judge_timeout_overrides` 按 provider 优先覆盖（默认 `startlux: 8.0`）；
+自定义旧配置未提供 overrides 时仍使用总默认值。**AutoThink 较慢，演示前按实测冻结**。
+
+Bamboo 托管处于**免费测试期**；目前未找到公开的具体限流上限与测试期后价格，机房地区未确认。
+权重采用 [CC BY-NC 4.0](https://huggingface.co/startlux-models/StartLux-Decision-v1.1-27B-AutoThink)，
+只可非商用，本项目非商用黑客松演示可用，商用需联系厂商；推理源码为 Apache-2.0，不能替代权重许可。
+也可自托管：将 `STARTLUX_BASE_URL` 设为完整端点，例如 `http://localhost:8090/v1/systemone`；
+也接受服务根地址或 `/v1` 基址（自动补 `/v1/decisions` 或 `/decisions`）。
+工厂仍要求 `STARTLUX_API_KEY`，自托管应按 [部署文档](https://github.com/StartLuxLabs/StartLux-Decision/blob/main/docs/serving_publicly.md)
+配置 Bearer key。只发送模拟文本；本次仅用假 transport 验证接线，尚未验证真实 API 可用性、延迟或中文四分类性能。
 
 Gemini Decision 候选使用可选依赖 `google-genai>=3.2.0`（同一可选依赖文件）。
 `make safety-eval PROVIDER=gemini_decision` 读取 `GEMINI_API_KEY`，为空时再读 `GOOGLE_API_KEY`；

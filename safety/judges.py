@@ -9,6 +9,8 @@ from pathlib import Path
 from time import perf_counter
 from typing import Protocol
 
+import httpx
+
 from .config import load_config
 
 LEVELS = ("none", "history", "passive", "active")
@@ -42,7 +44,9 @@ class _BoundedJudge:
 
     def __init__(self, config=None):
         self.config = load_config(config)
-        self.timeout = self.config["judge_timeout_s"]
+        self.timeout = self.config["judge_timeout_overrides"].get(
+            self.provider, self.config["judge_timeout_s"],
+        )
 
     async def classify(self, text: str) -> JudgeResult:
         start = perf_counter()
@@ -162,6 +166,60 @@ class JevJudge(_BoundedJudge):
             return await self._request(client, text)
 
 
+class StartLuxJudge(_BoundedJudge):
+    """Native TypeSafe-compatible HTTP protocol; no SDK or automatic retries."""
+    provider = "startlux"
+
+    def __init__(self, config=None, *, transport=None):
+        super().__init__(config)
+        self.transport = transport
+        self.api_key = os.getenv("STARTLUX_API_KEY", "").strip()
+        if transport is None and not self.api_key:
+            raise ValueError("StartLuxJudge requires STARTLUX_API_KEY")
+        self.model = (os.getenv("STARTLUX_MODEL", "").strip()
+                      or "startlux-decision-27b-autothink")
+        base_url = (os.getenv("STARTLUX_BASE_URL", "").strip()
+                    or "https://api.bamboonode.dev").rstrip("/")
+        # Accept an origin, a /v1 base, or an explicit native endpoint for self-hosting.
+        if base_url.endswith(("/v1/systemone", "/v1/decisions")):
+            self.endpoint = base_url
+        else:
+            self.endpoint = base_url + ("/decisions" if base_url.endswith("/v1") else "/v1/decisions")
+        path = Path(__file__).with_name("prompts") / "gemini_decision_zh.json"
+        self.question = json.loads(path.read_text(encoding="utf-8"))
+        # Reuse the frozen history definitions, but fix A-D order toward recall.
+        self.question["criteria"] = {
+            level: self.question["criteria"][level]
+            for level in ("active", "passive", "history", "none")
+        }
+
+    async def _predict(self, text):
+        try:
+            async with httpx.AsyncClient(timeout=self.timeout, transport=self.transport) as client:
+                response = await client.post(
+                    self.endpoint,
+                    headers={"Authorization": f"Bearer {self.api_key}"},
+                    json={
+                        "model": self.model, "state": {"text": text},
+                        "questions": {"risk": self.question},
+                        # Both are on by default at Bamboo; business `none` is a normal option.
+                        "none_check": False, "allow_none": False,
+                    },
+                )
+                response.raise_for_status()
+                answer = response.json()["answers"]["risk"]
+        except httpx.TimeoutException as exc:
+            raise TimeoutError("StartLux decision request timed out") from exc
+        if answer["type"] != "choice" or answer["choice"] not in LEVELS:
+            raise ValueError("Invalid StartLux choice")
+        confidence = answer["confidence"]
+        if (isinstance(confidence, bool) or not isinstance(confidence, (int, float))
+                or not math.isfinite(confidence) or not 0 <= confidence <= 1):
+            raise ValueError("Invalid StartLux confidence")
+        # _BoundedJudge validates all four probabilities; confidence is not a threshold.
+        return answer["probabilities"]
+
+
 class GeminiDecisionJudge(_BoundedJudge):
     provider = "gemini_decision"
 
@@ -240,11 +298,14 @@ def make_judge(config=None) -> Judge:
     keys = {
         "ds_flash": ("DS_API_KEY",), "jev": ("TYPESAFE_API_KEY",),
         "gemini_decision": ("GEMINI_API_KEY", "GOOGLE_API_KEY"),
+        "startlux": ("STARTLUX_API_KEY",),
     }[provider]
     if not any(os.getenv(key, "").strip() for key in keys):
         return MockJudge(config, provider="mock(fallback)")
     if provider == "ds_flash":
         return DsFlashJudge(config)
+    if provider == "startlux":
+        return StartLuxJudge(config)
     try:
         return GeminiDecisionJudge(config) if provider == "gemini_decision" else JevJudge(config)
     except ImportError:

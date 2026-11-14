@@ -50,7 +50,7 @@ def _percentile(values, percentile):
 
 
 async def evaluate(rows, provider="rules", config=None) -> dict:
-    if provider not in ("rules", "mock", "ds_flash", "jev", "gemini_decision"):
+    if provider not in ("rules", "mock", "ds_flash", "jev", "gemini_decision", "startlux"):
         raise ValueError("Unknown evaluation provider")
     config = load_config(config)
     rules = Rules(config["lexicon_path"])
@@ -117,7 +117,7 @@ async def evaluate(rows, provider="rules", config=None) -> dict:
 
 def main(argv=None):
     parser = argparse.ArgumentParser(description="冻结安全层评测；占位集结果不代表正式安全性能。")
-    parser.add_argument("--provider", choices=("rules", "mock", "ds_flash", "jev", "gemini_decision"), required=True)
+    parser.add_argument("--provider", choices=("rules", "mock", "ds_flash", "jev", "gemini_decision", "startlux"), required=True)
     parser.add_argument("--testset", type=Path)
     parser.add_argument("--config", type=Path)
     parser.add_argument("--output-dir", type=Path)
