@@ -22,12 +22,13 @@ _TAG = re.compile(r"^v(\d+)$")
 def _decode_git_output(value: bytes | str) -> str:
     """Decode Git output consistently across Windows code pages."""
     if isinstance(value, str):
-        return value
+        return value.replace("\r\n", "\n")
     try:
-        return value.decode("utf-8")
+        text = value.decode("utf-8")
     except UnicodeDecodeError:
         encoding = "mbcs" if os.name == "nt" else "latin-1"
-        return value.decode(encoding, errors="replace")
+        text = value.decode(encoding, errors="replace")
+    return text.replace("\r\n", "\n")
 
 
 class PlaybookRepo:
