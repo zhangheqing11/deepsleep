@@ -145,3 +145,51 @@ def test_second_generation_builds_on_first(tmp_path):
 @pytest.mark.parametrize("name", ["evolution.v1-v2.json"])
 def test_contract_example_still_valid(name):
     assert VALIDATE(example(name)) == []
+
+
+def test_insights_sidecar_and_contract_stays_clean(tmp_path):
+    evo, _, _ = run_evolve(tmp_path, [BLOCKED, GOOD, WORSE])
+    assert VALIDATE(evo) == []
+    assert all("dimension" not in ch for c in evo["candidates"] for ch in c["changes"])
+    insights = json.loads((tmp_path / "var" / "evolve" / "evo-test" / "insights.json").read_text(encoding="utf-8"))
+    meta = insights["changes"]["c2-path_discrimination-1"]
+    assert meta == {"section": "path_discrimination", "subagent": "strategy_generation", "dimension": "path"}
+    assert insights["changes"]["c1-plan_rules-1"]["subagent"] == "plan_adjustment"
+    assert "safety" in insights["source_run"]["scorecard"]
+
+
+def test_rich_evaluator_gives_val_evidence_and_dimension_deltas(tmp_path):
+    session, visitor = example("session.A-001.json"), example("visitor.A-001.json")
+    main = visitor["main_path"]
+    agent_turns = [(r["round"], t["turn"]) for r in session["rounds"] for t in r["transcript"] if t["speaker"] == "agent"]
+
+    def rich(m, p_values):
+        trace = {"path_probs": [{"round": r, "turn": t, "probs": {p: (v if p == main else (1 - v) / 4)
+                                                                   for p in ("P1", "P2", "P3", "P4", "P5")}}
+                                for (r, t), v in zip(agent_turns, p_values)]}
+        row = dict(RUN["per_visitor"][0], visitor_id="A-001", main_path=main)
+        return {"metrics": m, "per_visitor": [row], "sessions": {"A-001": session},
+                "traces": {"A-001": trace}, "visitors": {"A-001": visitor}}
+
+    class Rich:
+        async def __call__(self, text, *, label):
+            if "标记GOOD" in text:
+                return rich(SCORES["标记GOOD"], [0.4, 0.7, 0.9])
+            return rich(BASELINE, [0.2, 0.3, 0.5])
+
+    evo, insights = asyncio.run(evolve(run_report=RUN, sessions=SESSIONS, evaluator=Rich(), config=make_config(tmp_path),
+                                       primary=MockLLM(reply(GOOD, [], [])), evolution_id="evo-rich",
+                                       return_insights=True))
+    assert VALIDATE(evo) == [] and evo["chosen"] == "c1" and evo["baseline_val_metrics"] == BASELINE
+    base_ev = insights["validation"]["baseline"]["evidence"]
+    cand = insights["validation"]["candidates"]["c1"]
+    assert cand["evidence"]["by_step"][0]["mean_p_true"] > base_ev["by_step"][0]["mean_p_true"]
+    assert cand["scorecard_delta"]["plan"]["isi_response_rate"] == pytest.approx(0.25)
+
+
+def test_add_follows_bullet_style(tmp_path):
+    from engine.evolve.playbook import apply_changes
+    text = ("# x\n\n## communication_style\n- a\n\n## questioning_strategy\n- b\n\n## path_discrimination\n- c\n\n"
+            "## plan_rules\n- d\n\n## referral_rules\n- e\n")
+    out = apply_changes(text, [{"op": "add", "section": "path_discrimination", "before": None, "after": "新规则"}])
+    assert "- c\n- 新规则\n" in out

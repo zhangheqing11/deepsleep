@@ -6,6 +6,12 @@
 # 上一次运行的指标（{{run_label}}，{{n_visitors}} 个来访）
 {{metrics}}
 
+# 分维度指标卡
+{{scorecard}}
+
+# 分类器证据汇总（全部来访；by-step 曲线略）
+{{evidence_summary}}
+
 # 失败案例（共 {{n_failures}} 个，按失败类型优先级挑选）
 {{failures}}
 

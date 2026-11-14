@@ -81,7 +81,7 @@ class Playbook:
             insert_at = len(lines)
             while insert_at > 0 and not lines[insert_at - 1].strip():
                 insert_at -= 1
-            lines.insert(insert_at, change["after"].strip())
+            lines.insert(insert_at, _bullet_like(lines, change["after"].strip()))
             return
         index = self.find_line(key, change["before"] or "")
         if index is None:
@@ -98,6 +98,14 @@ class Playbook:
                 del lines[index]
         else:
             raise ApplyError(f"未知 op: {op}")
+
+
+def _bullet_like(lines: list[str], text: str) -> str:
+    """Match the section's list style (S3's v0 uses "- " bullets)."""
+    rules = [line for line in lines if line.strip()]
+    if rules and all(line.lstrip().startswith("- ") for line in rules) and not text.startswith("- "):
+        return "- " + text
+    return text
 
 
 def apply_changes(text: str, changes: list[dict]) -> str:

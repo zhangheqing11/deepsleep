@@ -5,7 +5,15 @@ reflect → apply check → hard rules → (validation on C ∥ veto-only human 
 
 Evaluator interface (implemented later by S2/S3; mocked in tests)::
 
-    async def evaluator(playbook_text: str, *, label: str) -> dict  # run_report.metrics on split C
+    async def evaluator(playbook_text: str, *, label: str) -> dict
+
+returns either ``run_report.metrics`` on split C, or a rich result
+``{"metrics": ..., "per_visitor": [...], "sessions": {id: session}, "traces": {id: trace},
+"visitors": {id: visitor}}`` from which ring-3 evidence (per-turn true-path weight / entropy,
+key-clue turn) is computed for the baseline and each candidate.
+
+Besides the contract JSON, ``insights.json`` holds what the contract has no field for yet:
+sub-agent and dimension per change, per-dimension scorecards, and classifier evidence.
 """
 from __future__ import annotations
 
@@ -14,6 +22,8 @@ from datetime import datetime
 import json
 from typing import Awaitable, Callable, Iterable
 
+from . import dimensions as dims
+from . import evidence as ev
 from . import gate, review
 from .config import load_config
 from .hard_rules import check_candidate, veto_from_violations
@@ -47,7 +57,16 @@ def _applicable(candidate: dict, base_text: str, dropped: list[str]) -> str:
     return playbook.render()
 
 
-async def _safe_eval(evaluator: Evaluator, text: str, label: str, errors: list[str]) -> dict | None:
+def _unpack(result) -> tuple[dict | None, dict | None]:
+    """(metrics, rich-or-None) from either evaluator return shape."""
+    if result is None:
+        return None, None
+    if isinstance(result.get("metrics"), dict):
+        return result["metrics"], result
+    return result, None
+
+
+async def _safe_eval(evaluator: Evaluator, text: str, label: str, errors: list[str]):
     try:
         return await evaluator(text, label=label)
     except Exception as exc:  # noqa: BLE001 - a failed validation run just fails that candidate
@@ -55,12 +74,39 @@ async def _safe_eval(evaluator: Evaluator, text: str, label: str, errors: list[s
         return None
 
 
+def _val_insight(metrics: dict | None, rich: dict | None, config: dict) -> dict | None:
+    if metrics is None:
+        return None
+    out = {"scorecard": None, "evidence": None}
+    if rich and rich.get("per_visitor"):
+        report = {"metrics": metrics, "per_visitor": rich["per_visitor"]}
+        out["scorecard"] = dims.scorecard(report, rich.get("visitors"), config)
+        out["evidence"] = ev.run_evidence(rich["per_visitor"], rich.get("sessions") or {},
+                                          rich.get("traces") or {}, rich.get("visitors") or {})["summary"]
+    return out
+
+
+def _deltas(card: dict | None, base: dict | None) -> dict | None:
+    """Numeric differences candidate − baseline per dimension (None where not comparable)."""
+    if not card or not base:
+        return None
+    out = {}
+    for d in dims.DIMENSIONS:
+        out[d] = {k: (round(v - base[d][k], 4) if isinstance(v, (int, float)) and isinstance(base[d].get(k), (int, float))
+                      and not isinstance(v, bool) else None)
+                  for k, v in card[d].items() if not isinstance(v, dict)}
+    return out
+
+
 async def evolve(*, run_report: dict, sessions: dict, evaluator: Evaluator,
                  human_feedback: Iterable[dict] = (), baseline_val_metrics: dict | None = None,
                  config: dict | None = None, repo: PlaybookRepo | None = None,
                  primary: LLMClient | None = None, fallback: LLMClient | None = None,
                  use_default_clients: bool = True, review_timeout_s: float | None = None,
-                 evolution_id: str | None = None, write: bool = True) -> dict:
+                 evolution_id: str | None = None, write: bool = True,
+                 traces: dict | None = None, visitors: dict | None = None,
+                 return_insights: bool = False):
+    """Run one learning step; returns the evolution dict, or (evolution, insights) if asked."""
     config = config or load_config()
     repo = repo or PlaybookRepo(config)
     repo.init()
@@ -74,7 +120,7 @@ async def evolve(*, run_report: dict, sessions: dict, evaluator: Evaluator,
         primary, fallback, primary_error = default_clients(config)
     reflection = await reflect(playbook_text=base_text, version=from_version, run_report=run_report,
                                sessions=sessions, feedback=feedback, config=config, primary=primary,
-                               fallback=fallback, primary_error=primary_error)
+                               fallback=fallback, primary_error=primary_error, traces=traces, visitors=visitors)
 
     log: list[str] = list(reflection.dropped_changes)
     texts, violations = {}, {}
@@ -95,9 +141,18 @@ async def evolve(*, run_report: dict, sessions: dict, evaluator: Evaluator,
                          for c in to_validate)),
         review.collect(config, evolution_id, review_items, review_timeout_s),
     )
-    baseline, val_results, reviews = results
-    val_by_id = {c["id"]: m for c, m in zip(to_validate, val_results)}
+    baseline_raw, val_results, reviews = results
+    baseline, baseline_rich = _unpack(baseline_raw)
+    unpacked = {c["id"]: _unpack(r) for c, r in zip(to_validate, val_results)}
+    val_by_id = {cid: m for cid, (m, _) in unpacked.items()}
     blocked_changes = {r["change_id"] for r in reviews if review.blocks(r["decision"], config)}
+
+    # Internal ring-3 fields stay out of the contract JSON (no schema field yet).
+    change_meta = {}
+    for cand in reflection.candidates:
+        for ch in cand["changes"]:
+            change_meta[ch["id"]] = {"section": ch["section"], "subagent": dims.SUBAGENT_BY_SECTION[ch["section"]],
+                                     "dimension": ch.pop("dimension", dims.DEFAULT_DIMENSION_BY_SECTION[ch["section"]])}
 
     candidates = []
     for cand in reflection.candidates:
@@ -145,10 +200,28 @@ async def evolve(*, run_report: dict, sessions: dict, evaluator: Evaluator,
         "commit": commit,
         "diff": diff,
     }
+    baseline_insight = _val_insight(baseline, baseline_rich or {}, config) if baseline_rich else None
+    cand_insight = {cid: _val_insight(m, rich, config) for cid, (m, rich) in unpacked.items()}
+    insights = {
+        "evolution_id": evolution_id,
+        "note": "环 3 跨来访进化的补充报告；契约 v0.1.1 前不进 evolution JSON。",
+        "changes": change_meta,
+        "failure_dimensions": reflection.failure_dimensions,
+        "source_run": {"run_id": run_report["run_id"], "scorecard": reflection.scorecard,
+                       "evidence": reflection.evidence["summary"]},
+        "validation": {
+            "baseline": baseline_insight,
+            "candidates": {cid: {**(ins or {}), "scorecard_delta": _deltas((ins or {}).get("scorecard"),
+                                                                          (baseline_insight or {}).get("scorecard"))}
+                           for cid, ins in cand_insight.items() if ins is not None},
+        },
+    }
     if write:
         out_dir = review.review_dir(config, evolution_id)
+        out_dir.mkdir(parents=True, exist_ok=True)
+        (out_dir / "insights.json").write_text(json.dumps(insights, ensure_ascii=False, indent=2), encoding="utf-8")
         out_dir.mkdir(parents=True, exist_ok=True)
         (out_dir / "evolution.json").write_text(json.dumps(evolution, ensure_ascii=False, indent=2), encoding="utf-8")
         (out_dir / "log.json").write_text(json.dumps({"dropped_or_errors": log + eval_errors}, ensure_ascii=False,
                                                      indent=2), encoding="utf-8")
-    return evolution
+    return (evolution, insights) if return_insights else evolution

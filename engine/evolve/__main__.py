@@ -18,7 +18,7 @@ from pathlib import Path
 from . import review
 from .config import load_config
 from .pipeline import evolve
-from .reflector import load_sessions
+from .reflector import load_sessions, load_traces
 from .repo import PlaybookRepo
 
 
@@ -41,6 +41,7 @@ def main(argv: list[str] | None = None) -> int:
     p.add_argument("--evaluator", required=True, help="module:function，签名 async (playbook_text, *, label) -> metrics")
     p.add_argument("--feedback", type=Path)
     p.add_argument("--baseline", type=Path, help="baseline_val_metrics JSON；缺省时现场评估上一代")
+    p.add_argument("--visitors", type=Path, help="来访 JSON 目录（用于关键线索与防御型判定，可选）")
     args = parser.parse_args(argv)
 
     config = load_config()
@@ -65,7 +66,14 @@ def main(argv: list[str] | None = None) -> int:
         report = json.loads(args.run_report.read_text(encoding="utf-8"))
         feedback = json.loads(args.feedback.read_text(encoding="utf-8")) if args.feedback else []
         baseline = json.loads(args.baseline.read_text(encoding="utf-8")) if args.baseline else None
-        result = asyncio.run(evolve(run_report=report, sessions=load_sessions(report, args.run_report.parent),
+        visitors = {}
+        if args.visitors:
+            for f in sorted(args.visitors.glob("*.json")):
+                v = json.loads(f.read_text(encoding="utf-8"))
+                visitors[v["id"]] = v
+        base = args.run_report.parent
+        result = asyncio.run(evolve(run_report=report, sessions=load_sessions(report, base),
+                                    traces=load_traces(report, base), visitors=visitors,
                                     evaluator=_load_evaluator(args.evaluator), human_feedback=feedback,
                                     baseline_val_metrics=baseline, config=config, repo=repo))
         print(json.dumps({k: result[k] for k in ("evolution_id", "outcome", "from_version", "to_version", "chosen")},

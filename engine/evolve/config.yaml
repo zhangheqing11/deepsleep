@@ -74,3 +74,22 @@ repo:
   agent_email: agent@deepsleep.local
   team_name: deepsleep-team
   team_email: team@deepsleep.local
+
+# 三环架构（11/14）：本模块是环 3 跨来访进化。感知层（PathClassifier）冻结，策略层进化。
+dimensions:
+  # 失败标签 → 评估维度。safety 只做红线：进反思器的指标卡，但不选案例、不允许改动。
+  tag_dimension:
+    path_wrong_r1: path
+    path_wrong_r2: path
+    referral_missed: referral
+    referral_false_alarm: referral
+    screen_missed: screening
+    crisis_missed: safety
+    contraindication_violation: plan
+    plan_infeasible: plan
+    no_isi_response: plan
+  # 抗拒来访：人格卡防御性在此列表中，或同盟低于阈值，失败案例额外归入 resistance。 [待拍板]
+  resistance_defensiveness: [high]
+  resistance_alliance_below: 0.4
+  # 挑案例时按维度轮转，保证各维度都有代表。
+  order: [plan, referral, screening, path, resistance]

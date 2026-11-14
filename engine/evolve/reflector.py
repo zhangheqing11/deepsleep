@@ -12,6 +12,8 @@ import json
 from pathlib import Path
 import re
 
+from . import dimensions as dims
+from . import evidence as ev
 from .config import SECTIONS, SECTION_CRITICALITY, max_criticality, resolve
 from .llm import LLMClient
 
@@ -28,21 +30,53 @@ class ReflectionResult:
     fallback_reason: str | None
     failures_used: list[dict]
     dropped_changes: list[str]  # internal log, not part of the contract
+    failure_dimensions: dict    # visitor_id → dimensions (ring-3 insight, not in the contract)
+    scorecard: dict
+    evidence: dict
 
 
 # -- inputs -----------------------------------------------------------------------------
-def select_failures(run_report: dict, config: dict) -> list[dict]:
+def select_failures(run_report: dict, config: dict, visitors: dict | None = None) -> list[dict]:
+    """Failure rows, round-robin across editable dimensions; within one, by tag priority."""
     rc = config["reflector"]
+    visitors = visitors or {}
     priority = {tag: i for i, tag in enumerate(rc["failure_tag_priority"])}
     excluded = set(rc["excluded_failure_tags"])
-    rows = []
+    queues: dict[str, list] = {d: [] for d in config["dimensions"]["order"]}
     for row in run_report["per_visitor"]:
         tags = [t for t in row["failure_tags"] if t not in excluded]
-        if tags:
-            rank = min(priority.get(t, len(priority)) for t in tags)
-            rows.append((rank, -len(tags), row["visitor_id"], row))
-    rows.sort(key=lambda r: r[:3])
-    return [r[3] for r in rows[: rc["max_failures"]]]
+        if not tags:
+            continue
+        rank = (min(priority.get(t, len(priority)) for t in tags), -len(tags), row["visitor_id"])
+        for d in dims.classify(row, visitors.get(row["visitor_id"]), config):
+            if d in queues:
+                queues[d].append((rank, row))
+    for queue in queues.values():
+        queue.sort(key=lambda item: item[0])
+    picked, seen = [], set()
+    while len(picked) < rc["max_failures"] and any(queues.values()):
+        for queue in queues.values():
+            while queue and queue[0][1]["visitor_id"] in seen:
+                queue.pop(0)
+            if queue and len(picked) < rc["max_failures"]:
+                row = queue.pop(0)[1]
+                seen.add(row["visitor_id"])
+                picked.append(row)
+    return picked
+
+
+def load_traces(run_report: dict, base_dir: str | Path) -> dict[str, dict]:
+    """S3 layout: <out>/sessions/<id>.json next to <out>/trace/<id>.json (debug, not a contract)."""
+    base = Path(base_dir)
+    out = {}
+    for row in run_report["per_visitor"]:
+        vid = row["visitor_id"]
+        ref = Path(row.get("session_ref") or f"sessions/{vid}.json")
+        for candidate in (base / ref.parent.parent / "trace" / f"{vid}.json", base / "trace" / f"{vid}.json"):
+            if candidate.exists():
+                out[vid] = json.loads(candidate.read_text(encoding="utf-8"))
+                break
+    return out
 
 
 def load_sessions(run_report: dict, base_dir: str | Path) -> dict[str, dict]:
@@ -71,15 +105,19 @@ def _transcript(session: dict, limit: int) -> str:
     return text if len(text) <= limit else text[:limit] + "\n…（截断）"
 
 
-def _failure_block(row: dict, session: dict | None, limit: int) -> str:
+def _failure_block(row: dict, session: dict | None, limit: int, row_dims: list[str] | None = None,
+                   evidence_line: str | None = None) -> str:
     lines = [
         f"## 案例 {row['visitor_id']}",
+        f"- 失败维度：{'、'.join(dims.DIMENSION_LABELS[d] for d in row_dims or []) or '未归类'}",
         f"- 失败标签：{', '.join(row['failure_tags'])}",
         f"- 真实主路径 {row['main_path']}；第 1 轮判 {row['path_pred_r1']}，第 2 轮判 {row['path_pred_r2']}",
         f"- 真实转介 {row['referral_true']}；判 {row['referral_pred']}",
         f"- 自评量表 {', '.join(row['prefilled_scales']) or '无'}；agent 调用筛查 {', '.join(row['screened']) or '无'}",
         f"- ISI {row['isi_baseline']} → 第 4 周 {row['isi_week'][-1]}（变化 {row['isi_change']}）；依从 {row['adherence']:.2f}；同盟 {row['alliance']:.2f}",
     ]
+    if evidence_line:
+        lines.append(f"- 分类器证据：{evidence_line}")
     if session:
         plan = session.get("plan") or {}
         if plan:
@@ -103,9 +141,22 @@ def _fill(template: str, values: dict) -> str:
     return template
 
 
+def _scorecard_text(card: dict) -> str:
+    lines = []
+    for d in dims.DIMENSIONS:
+        lines.append(f"- {dims.DIMENSION_LABELS[d]}：{json.dumps(card[d], ensure_ascii=False)}")
+    lines.append("- 各维度失败案例数：" + "，".join(
+        f"{dims.DIMENSION_LABELS[d]} {n}" for d, n in card["failures_by_dimension"].items()))
+    return "\n".join(lines)
+
+
 def build_prompts(*, playbook_text: str, version: str, run_report: dict, failures: list[dict],
-                  sessions: dict, feedback: list[dict], config: dict) -> tuple[str, str]:
+                  sessions: dict, feedback: list[dict], config: dict, visitors: dict | None = None,
+                  traces: dict | None = None, evidence: dict | None = None) -> tuple[str, str]:
     rc = config["reflector"]
+    visitors = visitors or {}
+    evidence = evidence or ev.run_evidence(failures, sessions, traces or {}, visitors)
+    card = dims.scorecard(run_report, visitors, config)
     system = _fill(_read_prompt(rc["prompts"]["system"]),
                    {"max_changes": rc["max_changes_per_candidate"], "max_chars": rc["max_change_chars"]})
     feedback_lines = [f"- [{f['kind']}{' · ' + f['visitor_id'] if f['visitor_id'] else ''}] "
@@ -118,8 +169,14 @@ def build_prompts(*, playbook_text: str, version: str, run_report: dict, failure
         "n_visitors": run_report["n_visitors"],
         "metrics": json.dumps(run_report["metrics"], ensure_ascii=False, indent=1),
         "n_failures": len(failures),
-        "failures": "\n\n".join(_failure_block(r, sessions.get(r["visitor_id"]), rc["max_transcript_chars"])
-                                for r in failures) or "（无）",
+        "scorecard": _scorecard_text(card),
+        "evidence_summary": json.dumps({k: v for k, v in evidence["summary"].items() if k != "by_step"},
+                                       ensure_ascii=False),
+        "failures": "\n\n".join(
+            _failure_block(r, sessions.get(r["visitor_id"]), rc["max_transcript_chars"],
+                           dims.classify(r, visitors.get(r["visitor_id"]), config),
+                           ev.describe(evidence["visitors"][r["visitor_id"]]) if r["visitor_id"] in evidence["visitors"] else None)
+            for r in failures) or "（无）",
         "feedback": "\n".join(feedback_lines) or "（无）",
         "fewshot": _fewshot(config),
     })
@@ -159,7 +216,12 @@ def normalize_change(raw: dict, config: dict) -> dict | None:
         return None
     self_level = raw.get("criticality_self") if raw.get("criticality_self") in _LEVELS else "high"
     rule_level = SECTION_CRITICALITY[section]
-    return {"op": op, "section": section, "before": before, "after": after,
+    dimension = raw.get("dimension")
+    if dimension == "safety":
+        return None  # safety is a red line, never a target
+    if dimension not in dims.EDITABLE_DIMENSIONS:
+        dimension = dims.DEFAULT_DIMENSION_BY_SECTION[section]
+    return {"op": op, "section": section, "before": before, "after": after, "dimension": dimension,
             "reason": _clean_str(raw.get("reason")) or "（反思器未给出理由）",
             "criticality_rule": rule_level, "criticality_self": self_level,
             "criticality": max_criticality(rule_level, self_level)}
@@ -221,18 +283,25 @@ def _reason(exc: BaseException) -> str:
 
 async def reflect(*, playbook_text: str, version: str, run_report: dict, sessions: dict,
                   feedback: list[dict], config: dict, primary: LLMClient | None,
-                  fallback: LLMClient | None, primary_error: str | None = None) -> ReflectionResult:
+                  fallback: LLMClient | None, primary_error: str | None = None,
+                  traces: dict | None = None, visitors: dict | None = None) -> ReflectionResult:
     rc = config["reflector"]
-    failures = select_failures(run_report, config)
+    visitors = visitors or {}
+    failures = select_failures(run_report, config, visitors)
+    evidence = ev.run_evidence(run_report["per_visitor"], sessions, traces or {}, visitors)
     system, user = build_prompts(playbook_text=playbook_text, version=version, run_report=run_report,
-                                 failures=failures, sessions=sessions, feedback=feedback, config=config)
+                                 failures=failures, sessions=sessions, feedback=feedback, config=config,
+                                 visitors=visitors, evidence=evidence)
     failures_used = [{"visitor_id": r["visitor_id"], "failure_tags": r["failure_tags"]} for r in failures]
+    insight = {"failure_dimensions": {r["visitor_id"]: dims.classify(r, visitors.get(r["visitor_id"]), config)
+                                      for r in failures},
+               "scorecard": dims.scorecard(run_report, visitors, config), "evidence": evidence}
     dropped: list[str] = []
     reason = primary_error
     if primary is not None:
         try:
             cands = await _attempt(primary, system, user, rc["primary_timeout_s"], config, dropped)
-            return ReflectionResult(finalize(cands), primary.model, False, None, failures_used, dropped)
+            return ReflectionResult(finalize(cands), primary.model, False, None, failures_used, dropped, **insight)
         except Exception as exc:  # noqa: BLE001 - any failure → automatic fallback
             reason = f"主反思器失败（{_reason(exc)}）"
     elif reason is None:
@@ -242,9 +311,9 @@ async def reflect(*, playbook_text: str, version: str, run_report: dict, session
         model = fallback.model
         try:
             cands = await _attempt(fallback, system, user, rc["fallback_timeout_s"], config, dropped)
-            return ReflectionResult(finalize(cands), fallback.model, True, reason, failures_used, dropped)
+            return ReflectionResult(finalize(cands), fallback.model, True, reason, failures_used, dropped, **insight)
         except Exception as exc:  # noqa: BLE001
             reason = f"{reason}；降级模型也失败（{_reason(exc)}）"
     else:
         reason = f"{reason}；未配置降级模型"
-    return ReflectionResult(finalize([]), model, True, reason, failures_used, dropped)
+    return ReflectionResult(finalize([]), model, True, reason, failures_used, dropped, **insight)

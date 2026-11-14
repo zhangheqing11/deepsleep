@@ -40,9 +40,10 @@ def test_failures_selected_by_priority_and_crisis_excluded(tmp_path):
     rows = select_failures(RUN, config)
     assert rows, "run1 example has failures"
     assert all(set(r["failure_tags"]) - {"crisis_missed"} for r in rows)
-    priority = config["reflector"]["failure_tag_priority"]
-    ranks = [min(priority.index(t) for t in r["failure_tags"] if t in priority) for r in rows]
-    assert ranks == sorted(ranks)
+    # round-robin across dimensions: the first picks come from different dimensions
+    from engine.evolve.dimensions import classify
+    first_dims = [set(classify(r, None, config)) for r in rows[:3]]
+    assert len(set.union(*first_dims)) >= 2
 
 
 def test_prompt_contains_playbook_failures_and_fewshot_placeholder(tmp_path):
@@ -109,4 +110,40 @@ def test_normalize_drops_invalid_and_caps(tmp_path):
     delete = out[1]["changes"][0]
     assert delete["after"] is None and delete["criticality_self"] == "high"
     assert len(dropped) == 4
+    assert out[0]["changes"][1]["dimension"] == "path"          # inferred from path_discrimination
     assert len(finalize(out)) == 3
+
+
+def test_dimension_field_validated_and_safety_dropped(tmp_path):
+    config = make_config(tmp_path)
+    data = {"candidates": [{"summary": "a", "changes": [
+        {**change("questioning_strategy", "补筛规则"), "dimension": "screening"},
+        {**change("communication_style", "先共情"), "dimension": "bogus"},
+        {**change("questioning_strategy", "改安全"), "dimension": "safety"},
+    ]}]}
+    dropped = []
+    out = normalize(data, config, dropped)
+    assert [c["dimension"] for c in out[0]["changes"]] == ["screening", "resistance"]
+    assert len(dropped) == 1
+
+
+def test_prompt_has_scorecard_dimensions_and_evidence(tmp_path):
+    config = make_config(tmp_path)
+    visitors = {v["id"]: v for v in (example(f"visitor.A-00{i}.json") for i in (1, 2, 3))}
+    failures = select_failures(RUN, config, visitors)
+    system, user = build_prompts(playbook_text=FIXTURE_V0.read_text(encoding="utf-8"), version="v0", run_report=RUN,
+                                 failures=failures, sessions=SESSIONS, feedback=[], config=config, visitors=visitors)
+    assert "策略生成" in system and "dimension" in system
+    assert "分维度指标卡" in user and "安全（红线，不可改）" in user and "失败维度" in user
+    assert "分类器证据" in user
+
+
+def test_load_traces_s3_layout(tmp_path):
+    import json
+    from engine.evolve.reflector import load_traces
+    (tmp_path / "sessions").mkdir()
+    (tmp_path / "trace").mkdir()
+    (tmp_path / "trace" / "A-001.json").write_text(json.dumps({"path_probs": []}), encoding="utf-8")
+    report = {"per_visitor": [{"visitor_id": "A-001", "session_ref": "sessions/A-001.json"},
+                              {"visitor_id": "A-002", "session_ref": "sessions/A-002.json"}]}
+    assert set(load_traces(report, tmp_path)) == {"A-001"}
