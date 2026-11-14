@@ -3,15 +3,17 @@
 > **给所有 AI 会话**：开工前先扫一眼本文件，确认你要做的事有没有已定的约定。
 > 新的共识一旦形成就写进来；做完的移到文末"已完成"，并写上日期和 PR。
 > 每项写清：要做什么、为什么这样定、归到哪个 PR 或分支、前置条件、谁来做。
-> 维护人：统筹同学（harness 组）。最后更新：2026-11-14 凌晨。
+> 维护人：统筹同学（harness 组）。最后更新：2026-11-14 午。
 
 ## 进行中的分支（还没合入 main）
 
 | 分支 | 内容 | 状态 |
 |---|---|---|
 | （待开）v0.1.1 契约修复分支 | 契约 v0.1.0 已合入 main（[PR #1](https://github.com/zhangheqing11/deepsleep/pull/1)，2026-11-14，前端组与数据科学同学已线下 approve）。校验器漏检、示例补全和字段调整（F07/F08/F16）按 [`docs/reviews/pr1-contracts-fixes.md`](reviews/pr1-contracts-fixes.md) 修，作为 `[contract]` 后续 PR | 修复已做完并复验，本地分支未 push，待 G1–G4 定案（见 G 节） |
-| `zhq/domain-safety` | 安全层：规则 + 四选一判断器（ds flash / Jev / Gemini Decision / StartLux / Mock）、history_check、定稿词表与 48 条测试集、已审定话术、对比工具、处方硬否决（330 分钟 / 18 岁 / 硬软分级） | [PR #6](https://github.com/zhangheqing11/deepsleep/pull/6) 已开（11/14），等 review。剩 A2/A4：真实 API 对比与阈值冻结 |
-| `zhq/domain-clinical-v0` | 临床内容定稿（线索表、处方否决、转介判据、测试集与词表说明、审核清单与**审核结论 `docs/review-decisions.md`**） | [PR #7](https://github.com/zhangheqing11/deepsleep/pull/7) 已开（11/14），等 review |
+| `zhq/domain-safety` | 安全层：规则 + 判断器链（ds flash → Jev → 规则兜底）、history_check、定稿词表与 48 条测试集、已审定话术、热线已实测、对比工具、处方硬否决 | [PR #6](https://github.com/zhangheqing11/deepsleep/pull/6)：判断器链与热线核实已推送；按 [`reviews/pr6-safety-fixes.md`](reviews/pr6-safety-fixes.md) 修 S1–S10 中（Codex），修完复验再合并。剩 A4 阈值冻结（待留出集） |
+| `zhq/sim-scoring-min` | S2：18 个样例来访、模拟来访、筛查、4 周状态模型（占位）、计分、`make smoke`、`docs/handoff-algo.md` | 已 push（8081dbc），88 测试 + smoke 通过；未开 PR |
+| `zhq/engine-session` | S3：两轮会谈循环、接安全层、playbook v0、50 路并发；**正按 I 节三环架构改造** | 已 push（520d984），278 测试通过；未开 PR |
+| `zhq/engine-evolve` | S4：反思器、硬规则、C 门禁、只否决审核、playbook 仓库；**正按 I 节补多维评估** | 已 push（d9194c0），311 测试通过；未开 PR |
 
 ## 并行开发计划（统筹会话 11/14 10:00 定）
 
@@ -36,6 +38,8 @@
 | A4 | 冻结阈值 `tau_flag` / `tau_active` 和判断器选择 | 根据 A2 的结果，由心理学同学拍板召回与误报的取舍，演示前冻结 | `zhq/domain-safety` | A2 |
 | A5 | 判断器要对所有发言运行，不能只在命中模糊词时调用 | 草稿手算显示，只靠规则会漏掉 7/24 条阳性：语序变体、不含死亡词的计划、"傻事"这类指代 | 已是现有规格，保持 | — |
 | A6 | 不得拿测试集反复调 prompt | 调过 prompt 后，测试集就失去独立性。最终评估要另写一份留出集，最好由另一个人写 | `zhq/domain-safety` | — |
+| A7 | **判断器方案已定（心理学同学 11/14 午）** | 四家真实对比见 `docs/judge-comparison-2026-11-14.md`（只算开发集结果）。主判断器 ds flash（active 10/10、无 VPN），**同步等结果**，超时 6 秒；超时或报错立刻切 Jev（p95 1.1s，history 3/3）；Jev 也失败走规则兜底。不采用"后台判断、晚一回合"，也不采用"只在会后判一次"：active 要当场介入，history_check 要求下一句核验。阈值 `tau_flag`/`tau_active` 仍待留出集（A6）后冻结 | `zhq/domain-safety`（PR #6）：判断器链已实现（8851901，295 测试通过）；真实链在开发集上召回 24/24、精确率 1.00、四类全对，p95 4.9s。待推送 | — |
+| A8 | 会后整体复判 / 判断器带上下文 | 单句判断器看不到跨回合累积的暗示。会后对整场对话复判一次，用于计分审计和第二轮记忆，不替代实时判断；或给实时判断器带最近 2–3 回合上下文 | 主循环跑通后再定 | 主循环 |
 
 ## B. 用户可见文案（统一流程：Sonnet 子代理起草 → 统筹会话验收 → 心理学同学审定）
 
@@ -74,6 +78,8 @@
 - failure_tag 加 `referral_wrong_type`；
 - contraindication 加年龄下限；
 - 一个来访能否同时有多个转介标签（RC-6）。
+- **已同意**：session 新增 `path_probs`（每回合和最终的 P1–P5 权重向量），并进 v0.1.1（心理学同学 11/14 午定）。S3 先写进 trace，不改 `contracts/`。
+- 建议（未定）：审核超时时 `validate.py` 要求 `passed=false`，与"超时视为不生效即放行"冲突，建议只对 reject 检查（S4 报告）；已插过 safety_check 后再判 passive 时 action 只能是 none，但 schema 不允许，且与 PHQ-9 第 9 题事件要求冲突（S3 报告）；`veto.reasons.code` 加 `hard_rule`（S4 报告）。
 
 ## F. 路演素材（朱贺恺）
 
@@ -117,6 +123,25 @@
 - 私有免费仓库开不了分支保护，main 只能靠大家自觉不直接 push。
 - 心理学同学之前写的开题调研文档放在主目录根下，还没入库。要入库的话，放到 `docs/research/`。
 
+## I. 架构：三环（参照 TheraMind，心理学同学 11/14 午定）
+
+参照 Hu et al. 2026（TheraMind，WWW '26，arXiv 2510.25758）的双环架构，扩展为三环。TheraMind 的 cross-session 只在同一病人的多次会谈之间调整疗法，没有跨病人学习；第三环是我们的贡献。叙事："感知层冻结，策略层进化"。
+
+| 环 | 范围 | 内容 | 归属 |
+|---|---|---|---|
+| 环 1 会谈内 | 每回合 | 四个子智能体，各自独立 harness：① `PathClassifier`（替代 reaction classifier 的领域特化版）每回合输出 P1–P5 权重 + attitude（合作/抗拒，保留原版维度）+ uncertainty，run1 前冻结；② 策略生成（不确定时选区分度最高的问题，抗拒时转支持性策略）；③ 回复生成；④ 记忆更新（每轮结束一次） | S3 |
+| 环 2 跨会谈 | 同一来访 第一轮 → 第二轮 | 评估第一轮处方在 4 周模拟中的效果，再决定沿用或调整（TheraMind 的 f_eval / f_select） | S3 |
+| 环 3 跨来访进化 | run1 → run2 | 反思器多维评估（路径、转介、筛查、处方与否决、抗拒处理；安全只做红线）→ 增量改 playbook；章节对应子智能体：`questioning_strategy`/`path_discrimination` → 策略，`communication_style` → 回复，`plan_rules`/`referral_rules` → 环 2 | S4 |
+
+| # | 事项 | 约定 | 状态 |
+|---|---|---|---|
+| I1 | 路径集合 | 沿用 P1–P5，最终 `path_pred` 仍为单一主路径，权重向量另记 | Codex 在核对文献分型与 P1–P5 是否对齐（`research/1114/7-insomnia-paths.md`），有出入再议 |
+| I2 | 子智能体分开调用的延迟 | 每次调用记录延迟，留"策略 + 回复合并为一次调用"的开关；主循环跑通后用模拟测试，结合路演要求决定 | 待测 |
+| I3 | 路径分类器选型 | 接口可插拔（ds flash / Jev / Gemini / StartLux / mock）。测评集用 S2 对话按回合截前缀，独立生成器防泄漏；指标：逐回合准确率与熵曲线、线索敏感度、校准度（Brier）、延迟。最好的一家进主循环并冻结 | 等 S2 对话；另开会话 |
+| I4 | 微调小模型（S5） | **已决定不做**（心理学同学与数据科学同学 11/14 下午定）：用自己的模拟数据训练和测试，容易被追问泄漏；本地模型赢不了 API 就没有讲点；run1 前冻结的时间风险大。路径分类器继续用 API（按 I3 对比结果选 ds flash 或 Jev） | 已定 |
+| I6 | 本地脱敏层（`privacy/`） | 放在来访每条输入之后、任何云端 API 调用之前，替换可识别信息；临床信息（钟点、时长、症状、用药、自伤表述）不改。路线与调研见 `research/1114/8-zh-deid.md`。S3 之后只需在调用 API 前接一个钩子 | **数据科学同学负责**，不归 harness 组；待定：契约存原文还是脱敏文本、是否加"已脱敏"标记 |
+| I5 | 进化证据 | 分类器冻结，进步应体现为 agent 问出更多关键线索：逐回合正确路径权重 / 熵曲线、关键线索出现回合，进 evolution 报告；"一阶导 / 二阶导"等主循环跑通后测 | S4 |
+
 ## 已完成
 
 | 日期 | 事项 | PR |
@@ -127,3 +152,5 @@
 | 2026-11-14 | 后端 Mock 联调接口 | [PR #10](https://github.com/zhangheqing11/deepsleep/pull/10) |
 | 2026-11-14 | 临床内容定稿 | [PR #7](https://github.com/zhangheqing11/deepsleep/pull/7) |
 | 2026-11-14 | 前后端分工更新（崔秀净后端、王译旋前端并行） | [PR #3](https://github.com/zhangheqing11/deepsleep/pull/3) |
+| 2026-11-14 | 临床内容定稿（线索表、处方否决、转介判据、审核结论） | [PR #7](https://github.com/zhangheqing11/deepsleep/pull/7) |
+| 2026-11-14 | 并行开发计划（S1–S4） | [PR #8](https://github.com/zhangheqing11/deepsleep/pull/8) |
