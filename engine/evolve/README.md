@@ -43,6 +43,41 @@ safety 只是红线（进指标卡，不选案例、不能作为改动目标）�
 
 验证与人工审核是并行的，所以分开成两个字段，不合并成一个"阶段"。读取：`engine.evolve.status.read_status(dir)`。
 
+## 反思器提供方与调用记录
+
+默认主反思器是 OpenAI `gpt-6-astra`，使用 Responses API，`reasoning.effort=xhigh`；
+超时、API 错误、拒答、未完成响应、空输出或无有效候选时，自动降级 ds flash。
+OpenAI 沿用现有 prompt 请求 JSON，输出走现有 JSON 解析、改动归一化与门禁；不额外强制 `text.format`。
+三个提供方均关闭 SDK 隐式重试，每次反思最多调用主模型一次、ds flash 一次。
+
+进程环境变量优先于 `config.yaml`，空值使用配置默认值；本模块不会自行读取 `.env`，启动方负责加载：
+
+| 环境变量 | 默认 / 用途 |
+|---|---|
+| `OPENAI_API_KEY` | OpenAI 主反思器密钥 |
+| `REFLECTOR_PROVIDER` | `openai`；可设 `anthropic` |
+| `REFLECTOR_MODEL` | OpenAI 为 `gpt-6-astra`；Anthropic 为 `claude-opus-5-5` |
+| `REFLECTOR_REASONING_EFFORT` | OpenAI 为 `xhigh`；Anthropic 为 `high`（传入 `output_config.effort`） |
+| `REFLECTOR_TIMEOUT_S` | `300` 秒；同时用于 SDK 和外层调用总时限，必须为有限正数 |
+| `ANTHROPIC_API_KEY` | 切回 Anthropic 时使用 |
+| `DS_MODEL` / `DS_BASE_URL` / `DS_API_KEY` | ds flash 降级客户端的独立配置 |
+
+配置对应 `reflector.primary_provider/primary_model/primary_effort/primary_timeout_s`，
+Anthropic 的默认模型及 effort 对应 `anthropic_model/anthropic_effort`。
+切回 Anthropic 时设置 `REFLECTOR_PROVIDER=anthropic`，并清空原有 OpenAI 的模型 / effort 覆盖值，
+或显式设置 `REFLECTOR_MODEL=claude-opus-5-5` 和 `REFLECTOR_REASONING_EFFORT=high`。
+备用超时沿用 `fallback_timeout_s: 90`。演示前冻结这些配置，现场不手工切换。
+
+`evolution.json.reflector` 沿用契约的 `model/fell_back/fallback_reason`，模型取 API 实际返回值。
+`insights.json.reflector` 还包含实际 `provider`、`reasoning_effort` 和 `attempts`：
+每次调用记录主 / 备用角色、模型、effort、`duration_s`、`reasoning_tokens`（API 未返回则为 null）、
+`success` 和 `error`。耗时包含请求与输出解析校验；OpenAI token 数读取 `usage.output_tokens_details.reasoning_tokens`。
+ds flash 没有设置 reasoning effort，记录为 null；SDK 错误仅记录类型、HTTP 状态及 code/param，不落盘原始响应体。
+两次均失败时，模型字段表示最后尝试的模型，`attempts.success=false`，返回三份空候选并保留上一代；
+如果没有客户端能初始化，模型记为 `unavailable`、提供方为 null、调用列表为空。
+
+接口依据：[OpenAI Responses API 官方文档](https://developers.openai.com/api/reference/resources/responses/methods/create)。
+
 ## CLI
 
 ```bash
@@ -61,6 +96,6 @@ python -m engine.evolve run --run-report runs/x/run_report.json --evaluator mypk
 - playbook 里标 `<!-- locked -->` 的安全行是主防线，硬规则禁止 agent 修改或删除；危机范围与绕过禁忌症检查的词表是第二道防线，按 B4 保持现有词表。
 - 人工审核只针对 high 改动，窗口为 120 秒，默认超时放行；硬规则与验证门禁仍须通过。现行 `contracts/validate.py` 仍把 timeout 视为否决，待契约 v0.1.1 按 B1 对齐，本模块不修改契约。
 - 多个通过时：主指标高 → ISI 平均降幅大 → high 改动少 → id 小。
-- 反思器：Opus 5.5 超时 / 报错 / refusal / 输出不可用 → 自动降级 ds flash，`reflector.fell_back` 与原因写进 JSON；都失败则 3 份空候选，保留上一代。
+- 反思器：OpenAI（可切回 Anthropic）失败 → 自动降级 ds flash；提供方与调用详情见上节。
 
 初始版本为团队手写的 v1，agent 第一代为 v2，之后依次递增。配置使用 `repo.initial_path`，旧键 `v0_path` 仅在未提供新键时兼容；`reset_to_v0` 保留为 `reset_to_initial` 的别名，重置目标为 v1。
