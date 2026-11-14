@@ -1,0 +1,205 @@
+{
+  "schema_version": "0.1.0",
+  "id": "offline-006",
+  "split": "offline",
+  "seed": 1668448101,
+  "main_path": "P2",
+  "secondary_path": "P3",
+  "referral": "R0",
+  "crisis": {
+    "level": "none",
+    "phq9_item9": 0,
+    "history": false
+  },
+  "contraindications": [],
+  "indices": {
+    "isi": 20,
+    "phq9": 4,
+    "gad7": 7,
+    "stop_bang": 2,
+    "meq": 49,
+    "dbas16": 4.9,
+    "psas": 23,
+    "screen_min_before_sleep": 25
+  },
+  "diary": [
+    {
+      "day": 1,
+      "bedtime": "22:00",
+      "lights_off": "22:30",
+      "sol_min": 67,
+      "waso_min": 40,
+      "final_wake": "06:20",
+      "risetime": "06:30",
+      "tst_min": 363,
+      "tib_min": 510,
+      "se": 0.7118,
+      "nap_min": 0,
+      "caffeine_after_14": false,
+      "alcohol": false,
+      "screen_in_bed_min": 25
+    },
+    {
+      "day": 2,
+      "bedtime": "22:00",
+      "lights_off": "22:30",
+      "sol_min": 76,
+      "waso_min": 46,
+      "final_wake": "06:20",
+      "risetime": "06:30",
+      "tst_min": 348,
+      "tib_min": 510,
+      "se": 0.6824,
+      "nap_min": 0,
+      "caffeine_after_14": false,
+      "alcohol": false,
+      "screen_in_bed_min": 25
+    },
+    {
+      "day": 3,
+      "bedtime": "21:50",
+      "lights_off": "22:20",
+      "sol_min": 75,
+      "waso_min": 41,
+      "final_wake": "06:20",
+      "risetime": "06:30",
+      "tst_min": 364,
+      "tib_min": 520,
+      "se": 0.7,
+      "nap_min": 0,
+      "caffeine_after_14": false,
+      "alcohol": false,
+      "screen_in_bed_min": 25
+    },
+    {
+      "day": 4,
+      "bedtime": "22:00",
+      "lights_off": "22:30",
+      "sol_min": 70,
+      "waso_min": 46,
+      "final_wake": "06:20",
+      "risetime": "06:30",
+      "tst_min": 354,
+      "tib_min": 510,
+      "se": 0.6941,
+      "nap_min": 0,
+      "caffeine_after_14": false,
+      "alcohol": false,
+      "screen_in_bed_min": 25
+    },
+    {
+      "day": 5,
+      "bedtime": "21:50",
+      "lights_off": "22:20",
+      "sol_min": 71,
+      "waso_min": 37,
+      "final_wake": "06:20",
+      "risetime": "06:30",
+      "tst_min": 372,
+      "tib_min": 520,
+      "se": 0.7154,
+      "nap_min": 0,
+      "caffeine_after_14": false,
+      "alcohol": false,
+      "screen_in_bed_min": 25
+    },
+    {
+      "day": 6,
+      "bedtime": "22:10",
+      "lights_off": "22:40",
+      "sol_min": 63,
+      "waso_min": 46,
+      "final_wake": "06:20",
+      "risetime": "06:30",
+      "tst_min": 351,
+      "tib_min": 500,
+      "se": 0.702,
+      "nap_min": 0,
+      "caffeine_after_14": false,
+      "alcohol": false,
+      "screen_in_bed_min": 25
+    },
+    {
+      "day": 7,
+      "bedtime": "21:50",
+      "lights_off": "22:20",
+      "sol_min": 70,
+      "waso_min": 45,
+      "final_wake": "06:20",
+      "risetime": "06:30",
+      "tst_min": 365,
+      "tib_min": 520,
+      "se": 0.7019,
+      "nap_min": 0,
+      "caffeine_after_14": false,
+      "alcohol": false,
+      "screen_in_bed_min": 25
+    }
+  ],
+  "persona": {
+    "age": 38,
+    "gender": "male",
+    "occupation": "保险内勤",
+    "expressiveness": "verbose",
+    "defensiveness": "mid",
+    "emotionality": "high",
+    "adherence_tendency": 0.77,
+    "constraints": [
+      "下班后还要准备家里的晚饭",
+      "与家人同住"
+    ]
+  },
+  "opening_complaint": "这阵子睡眠不太好，第二天觉得累，有点影响生活。",
+  "clues": [
+    {
+      "reveal_topic": "bed_wakefulness",
+      "supports": "P2",
+      "deny_first": false,
+      "content": "整理单据弄完还觉得困，关了灯躺上去反而醒了，起初也没什么心事。",
+      "id": "offline-006-c1"
+    },
+    {
+      "reveal_topic": "sleep_elsewhere",
+      "supports": "P2",
+      "deny_first": true,
+      "content": "有次在客厅眯着了，回卧室准备正式睡，反而没了困意。",
+      "id": "offline-006-c2"
+    },
+    {
+      "reveal_topic": "worry_rumination",
+      "supports": "P3",
+      "deny_first": false,
+      "content": "最近又添了件心事：每天到睡前都怕重演昨晚。",
+      "id": "offline-006-c3"
+    },
+    {
+      "reveal_topic": "leg_discomfort",
+      "supports": "R0",
+      "deny_first": false,
+      "content": "腿酸跟当天走得多有关，坐下歇歇就好，不是晚上躺着想动。",
+      "id": "offline-006-c4"
+    }
+  ],
+  "prefilled": [
+    {
+      "scale": "isi",
+      "reported_score": 16,
+      "items": null
+    },
+    {
+      "scale": "phq9",
+      "reported_score": 2,
+      "items": [
+        1,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    }
+  ]
+}

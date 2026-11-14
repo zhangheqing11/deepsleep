@@ -1,0 +1,193 @@
+{
+  "schema_version": "0.1.0",
+  "id": "A-039",
+  "split": "A",
+  "seed": 2487394391,
+  "main_path": "P1",
+  "secondary_path": "P4",
+  "referral": "R1",
+  "crisis": {
+    "level": "none",
+    "phq9_item9": 0,
+    "history": false
+  },
+  "contraindications": [
+    "untreated_osa"
+  ],
+  "indices": {
+    "isi": 16,
+    "phq9": 6,
+    "gad7": 9,
+    "stop_bang": 3,
+    "meq": 48,
+    "dbas16": 4.2,
+    "psas": 30,
+    "screen_min_before_sleep": 25
+  },
+  "diary": [
+    {
+      "day": 1,
+      "bedtime": "23:30",
+      "lights_off": "00:00",
+      "sol_min": 25,
+      "waso_min": 23,
+      "final_wake": "06:20",
+      "risetime": "06:30",
+      "tst_min": 332,
+      "tib_min": 420,
+      "se": 0.7905,
+      "nap_min": 80,
+      "caffeine_after_14": true,
+      "alcohol": false,
+      "screen_in_bed_min": 25
+    },
+    {
+      "day": 2,
+      "bedtime": "22:30",
+      "lights_off": "23:00",
+      "sol_min": 37,
+      "waso_min": 0,
+      "final_wake": "06:20",
+      "risetime": "06:30",
+      "tst_min": 403,
+      "tib_min": 480,
+      "se": 0.8396,
+      "nap_min": 80,
+      "caffeine_after_14": true,
+      "alcohol": false,
+      "screen_in_bed_min": 25
+    },
+    {
+      "day": 3,
+      "bedtime": "23:30",
+      "lights_off": "00:00",
+      "sol_min": 12,
+      "waso_min": 33,
+      "final_wake": "06:20",
+      "risetime": "06:30",
+      "tst_min": 335,
+      "tib_min": 420,
+      "se": 0.7976,
+      "nap_min": 80,
+      "caffeine_after_14": true,
+      "alcohol": false,
+      "screen_in_bed_min": 25
+    },
+    {
+      "day": 4,
+      "bedtime": "23:00",
+      "lights_off": "23:30",
+      "sol_min": 36,
+      "waso_min": 15,
+      "final_wake": "06:20",
+      "risetime": "06:30",
+      "tst_min": 359,
+      "tib_min": 450,
+      "se": 0.7978,
+      "nap_min": 80,
+      "caffeine_after_14": true,
+      "alcohol": false,
+      "screen_in_bed_min": 25
+    },
+    {
+      "day": 5,
+      "bedtime": "23:30",
+      "lights_off": "00:00",
+      "sol_min": 27,
+      "waso_min": 0,
+      "final_wake": "06:20",
+      "risetime": "06:30",
+      "tst_min": 353,
+      "tib_min": 420,
+      "se": 0.8405,
+      "nap_min": 80,
+      "caffeine_after_14": true,
+      "alcohol": false,
+      "screen_in_bed_min": 25
+    },
+    {
+      "day": 6,
+      "bedtime": "23:30",
+      "lights_off": "00:00",
+      "sol_min": 55,
+      "waso_min": 6,
+      "final_wake": "09:20",
+      "risetime": "09:30",
+      "tst_min": 499,
+      "tib_min": 600,
+      "se": 0.8317,
+      "nap_min": 80,
+      "caffeine_after_14": true,
+      "alcohol": false,
+      "screen_in_bed_min": 25
+    },
+    {
+      "day": 7,
+      "bedtime": "00:00",
+      "lights_off": "00:30",
+      "sol_min": 52,
+      "waso_min": 18,
+      "final_wake": "09:20",
+      "risetime": "09:30",
+      "tst_min": 460,
+      "tib_min": 570,
+      "se": 0.807,
+      "nap_min": 80,
+      "caffeine_after_14": true,
+      "alcohol": false,
+      "screen_in_bed_min": 25
+    }
+  ],
+  "persona": {
+    "age": 50,
+    "gender": "female",
+    "occupation": "电商运营",
+    "expressiveness": "brief",
+    "defensiveness": "high",
+    "emotionality": "high",
+    "adherence_tendency": 0.46,
+    "constraints": [
+      "促销期晚上也有工作",
+      "住处空间有限"
+    ]
+  },
+  "opening_complaint": "这阵子睡眠不太好，第二天注意力不太集中，有点影响生活。",
+  "clues": [
+    {
+      "reveal_topic": "schedule_regularity",
+      "supports": "P1",
+      "deny_first": false,
+      "content": "一天一个睡觉时间，主要看看店铺数据什么时候忙完。",
+      "id": "A-039-c1"
+    },
+    {
+      "reveal_topic": "caffeine_alcohol",
+      "supports": "P1",
+      "deny_first": false,
+      "content": "我靠浓茶撑下午的精神，有时候喝完已经挺晚了。",
+      "id": "A-039-c2"
+    },
+    {
+      "reveal_topic": "chronotype",
+      "supports": "P4",
+      "deny_first": false,
+      "content": "最近休息日睡得晚，到了该早睡的那晚还没睡意。",
+      "id": "A-039-c3"
+    },
+    {
+      "reveal_topic": "snoring_breathing",
+      "supports": "R1",
+      "deny_first": true,
+      "content": "同住的人说我打鼾很响，不是一直响，会突然没声再接上。",
+      "id": "A-039-c4"
+    },
+    {
+      "reveal_topic": "health_conditions",
+      "supports": "R1",
+      "deny_first": false,
+      "content": "之前检查提示有睡眠呼吸暂停，后续处理一直没开始。",
+      "id": "A-039-c5"
+    }
+  ],
+  "prefilled": []
+}

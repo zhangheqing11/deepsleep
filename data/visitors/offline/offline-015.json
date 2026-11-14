@@ -1,0 +1,212 @@
+{
+  "schema_version": "0.1.0",
+  "id": "offline-015",
+  "split": "offline",
+  "seed": 3544180704,
+  "main_path": "P2",
+  "secondary_path": "P3",
+  "referral": "R0",
+  "crisis": {
+    "level": "none",
+    "phq9_item9": 0,
+    "history": false
+  },
+  "contraindications": [],
+  "indices": {
+    "isi": 17,
+    "phq9": 7,
+    "gad7": 7,
+    "stop_bang": 2,
+    "meq": 45,
+    "dbas16": 4.0,
+    "psas": 22,
+    "screen_min_before_sleep": 15
+  },
+  "diary": [
+    {
+      "day": 1,
+      "bedtime": "22:00",
+      "lights_off": "22:20",
+      "sol_min": 73,
+      "waso_min": 42,
+      "final_wake": "06:20",
+      "risetime": "06:30",
+      "tst_min": 365,
+      "tib_min": 510,
+      "se": 0.7157,
+      "nap_min": 0,
+      "caffeine_after_14": false,
+      "alcohol": false,
+      "screen_in_bed_min": 15
+    },
+    {
+      "day": 2,
+      "bedtime": "22:00",
+      "lights_off": "22:20",
+      "sol_min": 79,
+      "waso_min": 32,
+      "final_wake": "06:20",
+      "risetime": "06:30",
+      "tst_min": 369,
+      "tib_min": 510,
+      "se": 0.7235,
+      "nap_min": 0,
+      "caffeine_after_14": false,
+      "alcohol": false,
+      "screen_in_bed_min": 15
+    },
+    {
+      "day": 3,
+      "bedtime": "22:10",
+      "lights_off": "22:30",
+      "sol_min": 68,
+      "waso_min": 36,
+      "final_wake": "06:20",
+      "risetime": "06:30",
+      "tst_min": 366,
+      "tib_min": 500,
+      "se": 0.732,
+      "nap_min": 0,
+      "caffeine_after_14": false,
+      "alcohol": false,
+      "screen_in_bed_min": 15
+    },
+    {
+      "day": 4,
+      "bedtime": "22:10",
+      "lights_off": "22:30",
+      "sol_min": 73,
+      "waso_min": 39,
+      "final_wake": "06:20",
+      "risetime": "06:30",
+      "tst_min": 358,
+      "tib_min": 500,
+      "se": 0.716,
+      "nap_min": 0,
+      "caffeine_after_14": false,
+      "alcohol": false,
+      "screen_in_bed_min": 15
+    },
+    {
+      "day": 5,
+      "bedtime": "22:00",
+      "lights_off": "22:20",
+      "sol_min": 71,
+      "waso_min": 49,
+      "final_wake": "06:20",
+      "risetime": "06:30",
+      "tst_min": 360,
+      "tib_min": 510,
+      "se": 0.7059,
+      "nap_min": 0,
+      "caffeine_after_14": false,
+      "alcohol": false,
+      "screen_in_bed_min": 15
+    },
+    {
+      "day": 6,
+      "bedtime": "22:00",
+      "lights_off": "22:20",
+      "sol_min": 77,
+      "waso_min": 33,
+      "final_wake": "06:20",
+      "risetime": "06:30",
+      "tst_min": 370,
+      "tib_min": 510,
+      "se": 0.7255,
+      "nap_min": 0,
+      "caffeine_after_14": false,
+      "alcohol": false,
+      "screen_in_bed_min": 15
+    },
+    {
+      "day": 7,
+      "bedtime": "22:00",
+      "lights_off": "22:20",
+      "sol_min": 64,
+      "waso_min": 32,
+      "final_wake": "06:20",
+      "risetime": "06:30",
+      "tst_min": 384,
+      "tib_min": 510,
+      "se": 0.7529,
+      "nap_min": 0,
+      "caffeine_after_14": false,
+      "alcohol": false,
+      "screen_in_bed_min": 15
+    }
+  ],
+  "persona": {
+    "age": 28,
+    "gender": "male",
+    "occupation": "研究生",
+    "expressiveness": "brief",
+    "defensiveness": "low",
+    "emotionality": "high",
+    "adherence_tendency": 0.72,
+    "constraints": [
+      "上午要到实验室",
+      "住处空间有限"
+    ]
+  },
+  "opening_complaint": "睡眠问题拖了一阵了，白天注意力不太集中，不知道先从哪儿改。",
+  "clues": [
+    {
+      "reveal_topic": "bed_wakefulness",
+      "supports": "P2",
+      "deny_first": false,
+      "content": "忙完准备课题去躺着，也没想什么，脑子却特别清醒，关灯很久都睡不着。",
+      "id": "offline-015-c1"
+    },
+    {
+      "reveal_topic": "sleep_elsewhere",
+      "supports": "P2",
+      "deny_first": true,
+      "content": "在沙发上歇着倒能打盹，挪回自己的床就又清醒了。",
+      "id": "offline-015-c2"
+    },
+    {
+      "reveal_topic": "bed_wakefulness",
+      "supports": "P2",
+      "deny_first": false,
+      "content": "关灯后一直在床上熬，不想起来，结果大半天都没睡着。",
+      "id": "offline-015-c3"
+    },
+    {
+      "reveal_topic": "worry_rumination",
+      "supports": "P3",
+      "deny_first": false,
+      "content": "拖得久了也开始担心，今晚会不会又睡不着。",
+      "id": "offline-015-c4"
+    },
+    {
+      "reveal_topic": "leg_discomfort",
+      "supports": "R0",
+      "deny_first": false,
+      "content": "走路特别多那天腿会酸，休息后就缓了，夜里没有非要动腿的感觉。",
+      "id": "offline-015-c5"
+    }
+  ],
+  "prefilled": [
+    {
+      "scale": "isi",
+      "reported_score": 17,
+      "items": null
+    },
+    {
+      "scale": "phq9",
+      "reported_score": 7,
+      "items": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        0,
+        0
+      ]
+    }
+  ]
+}

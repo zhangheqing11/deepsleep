@@ -1,0 +1,177 @@
+{
+  "schema_version": "0.1.0",
+  "id": "B-001",
+  "split": "B",
+  "seed": 1591668565,
+  "main_path": "P3",
+  "secondary_path": "P2",
+  "referral": "R0",
+  "crisis": {
+    "level": "none",
+    "phq9_item9": 0,
+    "history": false
+  },
+  "contraindications": [],
+  "indices": {
+    "isi": 19,
+    "phq9": 3,
+    "gad7": 4,
+    "stop_bang": 1,
+    "meq": 45,
+    "dbas16": 6.7,
+    "psas": 54,
+    "screen_min_before_sleep": 10
+  },
+  "diary": [
+    {
+      "day": 1,
+      "bedtime": "22:50",
+      "lights_off": "23:05",
+      "sol_min": 60,
+      "waso_min": 35,
+      "final_wake": "06:20",
+      "risetime": "06:30",
+      "tst_min": 340,
+      "tib_min": 460,
+      "se": 0.7391,
+      "nap_min": 0,
+      "caffeine_after_14": false,
+      "alcohol": false,
+      "screen_in_bed_min": 10
+    },
+    {
+      "day": 2,
+      "bedtime": "22:50",
+      "lights_off": "23:05",
+      "sol_min": 61,
+      "waso_min": 26,
+      "final_wake": "06:20",
+      "risetime": "06:30",
+      "tst_min": 348,
+      "tib_min": 460,
+      "se": 0.7565,
+      "nap_min": 0,
+      "caffeine_after_14": false,
+      "alcohol": false,
+      "screen_in_bed_min": 10
+    },
+    {
+      "day": 3,
+      "bedtime": "23:10",
+      "lights_off": "23:25",
+      "sol_min": 51,
+      "waso_min": 26,
+      "final_wake": "06:20",
+      "risetime": "06:30",
+      "tst_min": 338,
+      "tib_min": 440,
+      "se": 0.7682,
+      "nap_min": 0,
+      "caffeine_after_14": false,
+      "alcohol": false,
+      "screen_in_bed_min": 10
+    },
+    {
+      "day": 4,
+      "bedtime": "23:00",
+      "lights_off": "23:15",
+      "sol_min": 54,
+      "waso_min": 35,
+      "final_wake": "06:20",
+      "risetime": "06:30",
+      "tst_min": 336,
+      "tib_min": 450,
+      "se": 0.7467,
+      "nap_min": 0,
+      "caffeine_after_14": false,
+      "alcohol": false,
+      "screen_in_bed_min": 10
+    },
+    {
+      "day": 5,
+      "bedtime": "22:50",
+      "lights_off": "23:05",
+      "sol_min": 68,
+      "waso_min": 25,
+      "final_wake": "06:20",
+      "risetime": "06:30",
+      "tst_min": 342,
+      "tib_min": 460,
+      "se": 0.7435,
+      "nap_min": 0,
+      "caffeine_after_14": false,
+      "alcohol": false,
+      "screen_in_bed_min": 10
+    },
+    {
+      "day": 6,
+      "bedtime": "22:50",
+      "lights_off": "23:05",
+      "sol_min": 53,
+      "waso_min": 31,
+      "final_wake": "06:20",
+      "risetime": "06:30",
+      "tst_min": 351,
+      "tib_min": 460,
+      "se": 0.763,
+      "nap_min": 0,
+      "caffeine_after_14": false,
+      "alcohol": false,
+      "screen_in_bed_min": 10
+    },
+    {
+      "day": 7,
+      "bedtime": "22:50",
+      "lights_off": "23:05",
+      "sol_min": 64,
+      "waso_min": 20,
+      "final_wake": "06:20",
+      "risetime": "06:30",
+      "tst_min": 351,
+      "tib_min": 460,
+      "se": 0.763,
+      "nap_min": 0,
+      "caffeine_after_14": false,
+      "alcohol": false,
+      "screen_in_bed_min": 10
+    }
+  ],
+  "persona": {
+    "age": 53,
+    "gender": "female",
+    "occupation": "自由插画师",
+    "expressiveness": "verbose",
+    "defensiveness": "high",
+    "emotionality": "high",
+    "adherence_tendency": 0.47,
+    "constraints": [
+      "在家接单，交稿时间不固定",
+      "周末常有家务安排"
+    ]
+  },
+  "opening_complaint": "这段时间睡得不太顺，起床后没精神，想找找原因。",
+  "clues": [
+    {
+      "reveal_topic": "worry_rumination",
+      "supports": "P3",
+      "deny_first": false,
+      "content": "灯关了，脑子还在排明天的赶画稿，想停也停不下。",
+      "id": "B-001-c1"
+    },
+    {
+      "reveal_topic": "fear_of_sleeplessness",
+      "supports": "P3",
+      "deny_first": false,
+      "content": "明明很累，却一直盯着钟，想着再不睡明天怎么办。",
+      "id": "B-001-c2"
+    },
+    {
+      "reveal_topic": "sleep_elsewhere",
+      "supports": "P2",
+      "deny_first": false,
+      "content": "后来看到卧室的床就开始紧张，去客厅待着反倒松一点。",
+      "id": "B-001-c3"
+    }
+  ],
+  "prefilled": []
+}

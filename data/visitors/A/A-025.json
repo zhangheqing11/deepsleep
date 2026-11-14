@@ -1,0 +1,197 @@
+{
+  "schema_version": "0.1.0",
+  "id": "A-025",
+  "split": "A",
+  "seed": 3133647679,
+  "main_path": "P5",
+  "secondary_path": "P3",
+  "referral": "R0",
+  "crisis": {
+    "level": "none",
+    "phq9_item9": 0,
+    "history": false
+  },
+  "contraindications": [],
+  "indices": {
+    "isi": 21,
+    "phq9": 8,
+    "gad7": 5,
+    "stop_bang": 2,
+    "meq": 45,
+    "dbas16": 3.9,
+    "psas": 31,
+    "screen_min_before_sleep": 105
+  },
+  "diary": [
+    {
+      "day": 1,
+      "bedtime": "23:00",
+      "lights_off": "00:50",
+      "sol_min": 29,
+      "waso_min": 21,
+      "final_wake": "06:20",
+      "risetime": "06:30",
+      "tst_min": 280,
+      "tib_min": 450,
+      "se": 0.6222,
+      "nap_min": 0,
+      "caffeine_after_14": false,
+      "alcohol": false,
+      "screen_in_bed_min": 105
+    },
+    {
+      "day": 2,
+      "bedtime": "23:10",
+      "lights_off": "01:00",
+      "sol_min": 35,
+      "waso_min": 18,
+      "final_wake": "06:20",
+      "risetime": "06:30",
+      "tst_min": 267,
+      "tib_min": 440,
+      "se": 0.6068,
+      "nap_min": 0,
+      "caffeine_after_14": false,
+      "alcohol": false,
+      "screen_in_bed_min": 105
+    },
+    {
+      "day": 3,
+      "bedtime": "23:00",
+      "lights_off": "00:50",
+      "sol_min": 26,
+      "waso_min": 11,
+      "final_wake": "06:20",
+      "risetime": "06:30",
+      "tst_min": 293,
+      "tib_min": 450,
+      "se": 0.6511,
+      "nap_min": 0,
+      "caffeine_after_14": false,
+      "alcohol": false,
+      "screen_in_bed_min": 105
+    },
+    {
+      "day": 4,
+      "bedtime": "23:00",
+      "lights_off": "00:50",
+      "sol_min": 25,
+      "waso_min": 29,
+      "final_wake": "06:20",
+      "risetime": "06:30",
+      "tst_min": 276,
+      "tib_min": 450,
+      "se": 0.6133,
+      "nap_min": 0,
+      "caffeine_after_14": false,
+      "alcohol": false,
+      "screen_in_bed_min": 105
+    },
+    {
+      "day": 5,
+      "bedtime": "22:50",
+      "lights_off": "00:40",
+      "sol_min": 23,
+      "waso_min": 17,
+      "final_wake": "06:20",
+      "risetime": "06:30",
+      "tst_min": 300,
+      "tib_min": 460,
+      "se": 0.6522,
+      "nap_min": 0,
+      "caffeine_after_14": false,
+      "alcohol": false,
+      "screen_in_bed_min": 105
+    },
+    {
+      "day": 6,
+      "bedtime": "23:10",
+      "lights_off": "01:00",
+      "sol_min": 22,
+      "waso_min": 13,
+      "final_wake": "06:20",
+      "risetime": "06:30",
+      "tst_min": 285,
+      "tib_min": 440,
+      "se": 0.6477,
+      "nap_min": 0,
+      "caffeine_after_14": false,
+      "alcohol": false,
+      "screen_in_bed_min": 105
+    },
+    {
+      "day": 7,
+      "bedtime": "23:00",
+      "lights_off": "00:50",
+      "sol_min": 15,
+      "waso_min": 21,
+      "final_wake": "06:20",
+      "risetime": "06:30",
+      "tst_min": 294,
+      "tib_min": 450,
+      "se": 0.6533,
+      "nap_min": 0,
+      "caffeine_after_14": false,
+      "alcohol": false,
+      "screen_in_bed_min": 105
+    }
+  ],
+  "persona": {
+    "age": 45,
+    "gender": "other",
+    "occupation": "行政助理",
+    "expressiveness": "verbose",
+    "defensiveness": "high",
+    "emotionality": "mid",
+    "adherence_tendency": 0.54,
+    "constraints": [
+      "工作日需要早起坐公交",
+      "住处空间有限"
+    ]
+  },
+  "opening_complaint": "这段时间睡得不太顺，起床后没精神，想找找原因。",
+  "clues": [
+    {
+      "reveal_topic": "screen_in_bed",
+      "supports": "P5",
+      "deny_first": true,
+      "content": "睡前在被窝里追剧，回头看时间已经过了105分钟。",
+      "id": "A-025-c1"
+    },
+    {
+      "reveal_topic": "revenge_bedtime",
+      "supports": "P5",
+      "deny_first": false,
+      "content": "一天都给了整理资料，睡前这点自由时间总想拉长。",
+      "id": "A-025-c2"
+    },
+    {
+      "reveal_topic": "revenge_bedtime",
+      "supports": "P5",
+      "deny_first": false,
+      "content": "每晚都想着最后几分钟，等真放下手机又晚了一大截。",
+      "id": "A-025-c3"
+    },
+    {
+      "reveal_topic": "worry_rumination",
+      "supports": "P3",
+      "deny_first": false,
+      "content": "最近又添了件心事：每天到睡前都怕重演昨晚。",
+      "id": "A-025-c4"
+    },
+    {
+      "reveal_topic": "snoring_breathing",
+      "supports": "R0",
+      "deny_first": false,
+      "content": "只是鼻塞那几天偶尔打鼾，没有憋醒，平时也没人说有呼吸停顿。",
+      "id": "A-025-c5"
+    }
+  ],
+  "prefilled": [
+    {
+      "scale": "isi",
+      "reported_score": 17,
+      "items": null
+    }
+  ]
+}

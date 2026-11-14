@@ -1,0 +1,184 @@
+{
+  "schema_version": "0.1.0",
+  "id": "offline-014",
+  "split": "offline",
+  "seed": 3715098987,
+  "main_path": "P1",
+  "secondary_path": "P4",
+  "referral": "R0",
+  "crisis": {
+    "level": "none",
+    "phq9_item9": 0,
+    "history": false
+  },
+  "contraindications": [],
+  "indices": {
+    "isi": 16,
+    "phq9": 8,
+    "gad7": 9,
+    "stop_bang": 1,
+    "meq": 51,
+    "dbas16": 4.7,
+    "psas": 29,
+    "screen_min_before_sleep": 10
+  },
+  "diary": [
+    {
+      "day": 1,
+      "bedtime": "23:00",
+      "lights_off": "23:15",
+      "sol_min": 30,
+      "waso_min": 3,
+      "final_wake": "06:20",
+      "risetime": "06:30",
+      "tst_min": 392,
+      "tib_min": 450,
+      "se": 0.8711,
+      "nap_min": 70,
+      "caffeine_after_14": true,
+      "alcohol": false,
+      "screen_in_bed_min": 10
+    },
+    {
+      "day": 2,
+      "bedtime": "23:00",
+      "lights_off": "23:15",
+      "sol_min": 5,
+      "waso_min": 0,
+      "final_wake": "06:20",
+      "risetime": "06:30",
+      "tst_min": 420,
+      "tib_min": 450,
+      "se": 0.9333,
+      "nap_min": 70,
+      "caffeine_after_14": true,
+      "alcohol": false,
+      "screen_in_bed_min": 10
+    },
+    {
+      "day": 3,
+      "bedtime": "23:00",
+      "lights_off": "23:15",
+      "sol_min": 5,
+      "waso_min": 38,
+      "final_wake": "06:20",
+      "risetime": "06:30",
+      "tst_min": 382,
+      "tib_min": 450,
+      "se": 0.8489,
+      "nap_min": 70,
+      "caffeine_after_14": true,
+      "alcohol": false,
+      "screen_in_bed_min": 10
+    },
+    {
+      "day": 4,
+      "bedtime": "23:30",
+      "lights_off": "23:45",
+      "sol_min": 36,
+      "waso_min": 34,
+      "final_wake": "06:20",
+      "risetime": "06:30",
+      "tst_min": 325,
+      "tib_min": 420,
+      "se": 0.7738,
+      "nap_min": 70,
+      "caffeine_after_14": true,
+      "alcohol": false,
+      "screen_in_bed_min": 10
+    },
+    {
+      "day": 5,
+      "bedtime": "23:30",
+      "lights_off": "23:45",
+      "sol_min": 6,
+      "waso_min": 18,
+      "final_wake": "06:20",
+      "risetime": "06:30",
+      "tst_min": 371,
+      "tib_min": 420,
+      "se": 0.8833,
+      "nap_min": 70,
+      "caffeine_after_14": true,
+      "alcohol": false,
+      "screen_in_bed_min": 10
+    },
+    {
+      "day": 6,
+      "bedtime": "00:30",
+      "lights_off": "00:45",
+      "sol_min": 46,
+      "waso_min": 0,
+      "final_wake": "09:20",
+      "risetime": "09:30",
+      "tst_min": 469,
+      "tib_min": 540,
+      "se": 0.8685,
+      "nap_min": 70,
+      "caffeine_after_14": true,
+      "alcohol": false,
+      "screen_in_bed_min": 10
+    },
+    {
+      "day": 7,
+      "bedtime": "23:30",
+      "lights_off": "23:45",
+      "sol_min": 16,
+      "waso_min": 37,
+      "final_wake": "09:20",
+      "risetime": "09:30",
+      "tst_min": 522,
+      "tib_min": 600,
+      "se": 0.87,
+      "nap_min": 70,
+      "caffeine_after_14": true,
+      "alcohol": false,
+      "screen_in_bed_min": 10
+    }
+  ],
+  "persona": {
+    "age": 36,
+    "gender": "male",
+    "occupation": "行政助理",
+    "expressiveness": "brief",
+    "defensiveness": "high",
+    "emotionality": "low",
+    "adherence_tendency": 0.5,
+    "constraints": [
+      "工作日需要早起坐公交",
+      "周末常有家务安排"
+    ]
+  },
+  "opening_complaint": "这阵子睡眠不太好，第二天没精神，有点影响生活。",
+  "clues": [
+    {
+      "reveal_topic": "schedule_regularity",
+      "supports": "P1",
+      "deny_first": false,
+      "content": "最近忙着整理资料，上床没个准点，早晚能差一个多小时。",
+      "id": "offline-014-c1"
+    },
+    {
+      "reveal_topic": "caffeine_alcohol",
+      "supports": "P1",
+      "deny_first": false,
+      "content": "下午犯困就续一杯奶茶，常常晚饭前还在喝。",
+      "id": "offline-014-c2"
+    },
+    {
+      "reveal_topic": "chronotype",
+      "supports": "P4",
+      "deny_first": false,
+      "content": "作息跟着往后挪了一点，尤其休息日过后更难早睡。",
+      "id": "offline-014-c3"
+    },
+    {
+      "reveal_topic": "mood",
+      "supports": "R0",
+      "deny_first": false,
+      "content": "碰到事情会烦几天，处理完就好了，平时还是愿意画画。",
+      "id": "offline-014-c4"
+    }
+  ],
+  "prefilled": []
+}

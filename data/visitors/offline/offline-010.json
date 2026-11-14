@@ -1,0 +1,205 @@
+{
+  "schema_version": "0.1.0",
+  "id": "offline-010",
+  "split": "offline",
+  "seed": 599764350,
+  "main_path": "P1",
+  "secondary_path": "P4",
+  "referral": "R2",
+  "crisis": {
+    "level": "none",
+    "phq9_item9": 0,
+    "history": false
+  },
+  "contraindications": [],
+  "indices": {
+    "isi": 19,
+    "phq9": 8,
+    "gad7": 4,
+    "stop_bang": 2,
+    "meq": 55,
+    "dbas16": 4.0,
+    "psas": 20,
+    "screen_min_before_sleep": 25
+  },
+  "diary": [
+    {
+      "day": 1,
+      "bedtime": "23:30",
+      "lights_off": "00:00",
+      "sol_min": 11,
+      "waso_min": 5,
+      "final_wake": "06:20",
+      "risetime": "06:30",
+      "tst_min": 364,
+      "tib_min": 420,
+      "se": 0.8667,
+      "nap_min": 60,
+      "caffeine_after_14": true,
+      "alcohol": false,
+      "screen_in_bed_min": 25
+    },
+    {
+      "day": 2,
+      "bedtime": "23:30",
+      "lights_off": "00:00",
+      "sol_min": 20,
+      "waso_min": 2,
+      "final_wake": "06:20",
+      "risetime": "06:30",
+      "tst_min": 358,
+      "tib_min": 420,
+      "se": 0.8524,
+      "nap_min": 60,
+      "caffeine_after_14": true,
+      "alcohol": false,
+      "screen_in_bed_min": 25
+    },
+    {
+      "day": 3,
+      "bedtime": "22:30",
+      "lights_off": "23:00",
+      "sol_min": 25,
+      "waso_min": 0,
+      "final_wake": "06:20",
+      "risetime": "06:30",
+      "tst_min": 415,
+      "tib_min": 480,
+      "se": 0.8646,
+      "nap_min": 60,
+      "caffeine_after_14": true,
+      "alcohol": false,
+      "screen_in_bed_min": 25
+    },
+    {
+      "day": 4,
+      "bedtime": "22:30",
+      "lights_off": "23:00",
+      "sol_min": 30,
+      "waso_min": 0,
+      "final_wake": "06:20",
+      "risetime": "06:30",
+      "tst_min": 410,
+      "tib_min": 480,
+      "se": 0.8542,
+      "nap_min": 60,
+      "caffeine_after_14": true,
+      "alcohol": false,
+      "screen_in_bed_min": 25
+    },
+    {
+      "day": 5,
+      "bedtime": "23:00",
+      "lights_off": "23:30",
+      "sol_min": 15,
+      "waso_min": 28,
+      "final_wake": "06:20",
+      "risetime": "06:30",
+      "tst_min": 367,
+      "tib_min": 450,
+      "se": 0.8156,
+      "nap_min": 60,
+      "caffeine_after_14": true,
+      "alcohol": false,
+      "screen_in_bed_min": 25
+    },
+    {
+      "day": 6,
+      "bedtime": "23:30",
+      "lights_off": "00:00",
+      "sol_min": 31,
+      "waso_min": 50,
+      "final_wake": "09:20",
+      "risetime": "09:30",
+      "tst_min": 479,
+      "tib_min": 600,
+      "se": 0.7983,
+      "nap_min": 60,
+      "caffeine_after_14": true,
+      "alcohol": false,
+      "screen_in_bed_min": 25
+    },
+    {
+      "day": 7,
+      "bedtime": "00:30",
+      "lights_off": "01:00",
+      "sol_min": 48,
+      "waso_min": 34,
+      "final_wake": "09:20",
+      "risetime": "09:30",
+      "tst_min": 418,
+      "tib_min": 540,
+      "se": 0.7741,
+      "nap_min": 60,
+      "caffeine_after_14": true,
+      "alcohol": false,
+      "screen_in_bed_min": 25
+    }
+  ],
+  "persona": {
+    "age": 44,
+    "gender": "male",
+    "occupation": "软件工程师",
+    "expressiveness": "brief",
+    "defensiveness": "high",
+    "emotionality": "low",
+    "adherence_tendency": 0.57,
+    "constraints": [
+      "每周有两天要早起通勤",
+      "与家人同住"
+    ]
+  },
+  "opening_complaint": "睡眠问题拖了一阵了，白天注意力不太集中，不知道先从哪儿改。",
+  "clues": [
+    {
+      "reveal_topic": "schedule_regularity",
+      "supports": "P1",
+      "deny_first": false,
+      "content": "有时改程序没弄完就拖很晚，空下来又早睡，作息一直不固定。",
+      "id": "offline-010-c1"
+    },
+    {
+      "reveal_topic": "caffeine_alcohol",
+      "supports": "P1",
+      "deny_first": false,
+      "content": "我靠浓茶撑下午的精神，有时候喝完已经挺晚了。",
+      "id": "offline-010-c2"
+    },
+    {
+      "reveal_topic": "daytime_sleepiness",
+      "supports": "P1",
+      "deny_first": false,
+      "content": "午后经常一躺就是60分钟，醒了还想赖一会儿。",
+      "id": "offline-010-c3"
+    },
+    {
+      "reveal_topic": "chronotype",
+      "supports": "P4",
+      "deny_first": false,
+      "content": "最近休息日睡得晚，到了该早睡的那晚还没睡意。",
+      "id": "offline-010-c4"
+    },
+    {
+      "reveal_topic": "leg_discomfort",
+      "supports": "R2",
+      "deny_first": true,
+      "content": "晚上静下来腿里像有东西爬，特别想动，躺着更明显。",
+      "id": "offline-010-c5"
+    },
+    {
+      "reveal_topic": "leg_discomfort",
+      "supports": "R2",
+      "deny_first": false,
+      "content": "起来走几步就舒服，躺回去不动又来了。",
+      "id": "offline-010-c6"
+    },
+    {
+      "reveal_topic": "leg_discomfort",
+      "supports": "R2",
+      "deny_first": false,
+      "content": "这个腿的问题主要在晚上，白天很少有。",
+      "id": "offline-010-c7"
+    }
+  ],
+  "prefilled": []
+}

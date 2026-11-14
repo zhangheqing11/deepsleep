@@ -1,0 +1,211 @@
+{
+  "schema_version": "0.1.0",
+  "id": "A-038",
+  "split": "A",
+  "seed": 1912962956,
+  "main_path": "P3",
+  "secondary_path": "P2",
+  "referral": "R1",
+  "crisis": {
+    "level": "none",
+    "phq9_item9": 0,
+    "history": false
+  },
+  "contraindications": [
+    "untreated_osa"
+  ],
+  "indices": {
+    "isi": 13,
+    "phq9": 4,
+    "gad7": 5,
+    "stop_bang": 4,
+    "meq": 49,
+    "dbas16": 6.8,
+    "psas": 46,
+    "screen_min_before_sleep": 25
+  },
+  "diary": [
+    {
+      "day": 1,
+      "bedtime": "23:00",
+      "lights_off": "23:30",
+      "sol_min": 57,
+      "waso_min": 32,
+      "final_wake": "06:20",
+      "risetime": "06:30",
+      "tst_min": 321,
+      "tib_min": 450,
+      "se": 0.7133,
+      "nap_min": 0,
+      "caffeine_after_14": false,
+      "alcohol": false,
+      "screen_in_bed_min": 25
+    },
+    {
+      "day": 2,
+      "bedtime": "23:10",
+      "lights_off": "23:40",
+      "sol_min": 59,
+      "waso_min": 31,
+      "final_wake": "06:20",
+      "risetime": "06:30",
+      "tst_min": 310,
+      "tib_min": 440,
+      "se": 0.7045,
+      "nap_min": 0,
+      "caffeine_after_14": false,
+      "alcohol": false,
+      "screen_in_bed_min": 25
+    },
+    {
+      "day": 3,
+      "bedtime": "23:10",
+      "lights_off": "23:40",
+      "sol_min": 52,
+      "waso_min": 33,
+      "final_wake": "06:20",
+      "risetime": "06:30",
+      "tst_min": 315,
+      "tib_min": 440,
+      "se": 0.7159,
+      "nap_min": 0,
+      "caffeine_after_14": false,
+      "alcohol": false,
+      "screen_in_bed_min": 25
+    },
+    {
+      "day": 4,
+      "bedtime": "23:00",
+      "lights_off": "23:30",
+      "sol_min": 54,
+      "waso_min": 35,
+      "final_wake": "06:20",
+      "risetime": "06:30",
+      "tst_min": 321,
+      "tib_min": 450,
+      "se": 0.7133,
+      "nap_min": 0,
+      "caffeine_after_14": false,
+      "alcohol": false,
+      "screen_in_bed_min": 25
+    },
+    {
+      "day": 5,
+      "bedtime": "22:50",
+      "lights_off": "23:20",
+      "sol_min": 67,
+      "waso_min": 35,
+      "final_wake": "06:20",
+      "risetime": "06:30",
+      "tst_min": 318,
+      "tib_min": 460,
+      "se": 0.6913,
+      "nap_min": 0,
+      "caffeine_after_14": false,
+      "alcohol": false,
+      "screen_in_bed_min": 25
+    },
+    {
+      "day": 6,
+      "bedtime": "22:50",
+      "lights_off": "23:20",
+      "sol_min": 54,
+      "waso_min": 26,
+      "final_wake": "06:20",
+      "risetime": "06:30",
+      "tst_min": 340,
+      "tib_min": 460,
+      "se": 0.7391,
+      "nap_min": 0,
+      "caffeine_after_14": false,
+      "alcohol": false,
+      "screen_in_bed_min": 25
+    },
+    {
+      "day": 7,
+      "bedtime": "23:00",
+      "lights_off": "23:30",
+      "sol_min": 57,
+      "waso_min": 32,
+      "final_wake": "06:20",
+      "risetime": "06:30",
+      "tst_min": 321,
+      "tib_min": 450,
+      "se": 0.7133,
+      "nap_min": 0,
+      "caffeine_after_14": false,
+      "alcohol": false,
+      "screen_in_bed_min": 25
+    }
+  ],
+  "persona": {
+    "age": 34,
+    "gender": "other",
+    "occupation": "软件工程师",
+    "expressiveness": "verbose",
+    "defensiveness": "mid",
+    "emotionality": "mid",
+    "adherence_tendency": 0.64,
+    "constraints": [
+      "每周有两天要早起通勤",
+      "住处空间有限"
+    ]
+  },
+  "opening_complaint": "我想聊聊睡觉的事，最近醒来提不起劲，一直没缓过来。",
+  "clues": [
+    {
+      "reveal_topic": "worry_rumination",
+      "supports": "P3",
+      "deny_first": false,
+      "content": "睡前总惦记改程序有没有弄好，越想越清醒。",
+      "id": "A-038-c1"
+    },
+    {
+      "reveal_topic": "fear_of_sleeplessness",
+      "supports": "P3",
+      "deny_first": false,
+      "content": "明明很累，却一直盯着钟，想着再不睡明天怎么办。",
+      "id": "A-038-c2"
+    },
+    {
+      "reveal_topic": "fear_of_sleeplessness",
+      "supports": "P3",
+      "deny_first": true,
+      "content": "总担心睡不好身体会撑不住，连改程序也做不了了。",
+      "id": "A-038-c3"
+    },
+    {
+      "reveal_topic": "sleep_elsewhere",
+      "supports": "P2",
+      "deny_first": false,
+      "content": "后来看到卧室的床就开始紧张，去客厅待着反倒松一点。",
+      "id": "A-038-c4"
+    },
+    {
+      "reveal_topic": "snoring_breathing",
+      "supports": "R1",
+      "deny_first": true,
+      "content": "家里人说我鼾声大，中间呼吸还会停一下，我自己不大知道。",
+      "id": "A-038-c5"
+    },
+    {
+      "reveal_topic": "health_conditions",
+      "supports": "R1",
+      "deny_first": false,
+      "content": "睡眠检查说呼吸有暂停，但到现在还没接受相关处理。",
+      "id": "A-038-c6"
+    }
+  ],
+  "prefilled": [
+    {
+      "scale": "isi",
+      "reported_score": 8,
+      "items": null
+    },
+    {
+      "scale": "stop_bang",
+      "reported_score": 3,
+      "items": null
+    }
+  ]
+}

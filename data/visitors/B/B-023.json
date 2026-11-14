@@ -1,0 +1,205 @@
+{
+  "schema_version": "0.1.0",
+  "id": "B-023",
+  "split": "B",
+  "seed": 2346501168,
+  "main_path": "P4",
+  "secondary_path": "P1",
+  "referral": "R3",
+  "crisis": {
+    "level": "none",
+    "phq9_item9": 0,
+    "history": false
+  },
+  "contraindications": [],
+  "indices": {
+    "isi": 18,
+    "phq9": 11,
+    "gad7": 5,
+    "stop_bang": 0,
+    "meq": 34,
+    "dbas16": 3.3,
+    "psas": 33,
+    "screen_min_before_sleep": 10
+  },
+  "diary": [
+    {
+      "day": 1,
+      "bedtime": "01:05",
+      "lights_off": "01:20",
+      "sol_min": 81,
+      "waso_min": 13,
+      "final_wake": "07:50",
+      "risetime": "08:00",
+      "tst_min": 296,
+      "tib_min": 415,
+      "se": 0.7133,
+      "nap_min": 0,
+      "caffeine_after_14": true,
+      "alcohol": false,
+      "screen_in_bed_min": 10
+    },
+    {
+      "day": 2,
+      "bedtime": "01:05",
+      "lights_off": "01:20",
+      "sol_min": 80,
+      "waso_min": 6,
+      "final_wake": "07:50",
+      "risetime": "08:00",
+      "tst_min": 304,
+      "tib_min": 415,
+      "se": 0.7325,
+      "nap_min": 0,
+      "caffeine_after_14": true,
+      "alcohol": false,
+      "screen_in_bed_min": 10
+    },
+    {
+      "day": 3,
+      "bedtime": "00:55",
+      "lights_off": "01:10",
+      "sol_min": 83,
+      "waso_min": 7,
+      "final_wake": "07:50",
+      "risetime": "08:00",
+      "tst_min": 310,
+      "tib_min": 425,
+      "se": 0.7294,
+      "nap_min": 0,
+      "caffeine_after_14": true,
+      "alcohol": false,
+      "screen_in_bed_min": 10
+    },
+    {
+      "day": 4,
+      "bedtime": "01:05",
+      "lights_off": "01:20",
+      "sol_min": 82,
+      "waso_min": 6,
+      "final_wake": "07:50",
+      "risetime": "08:00",
+      "tst_min": 302,
+      "tib_min": 415,
+      "se": 0.7277,
+      "nap_min": 0,
+      "caffeine_after_14": true,
+      "alcohol": false,
+      "screen_in_bed_min": 10
+    },
+    {
+      "day": 5,
+      "bedtime": "01:00",
+      "lights_off": "01:15",
+      "sol_min": 88,
+      "waso_min": 6,
+      "final_wake": "07:50",
+      "risetime": "08:00",
+      "tst_min": 301,
+      "tib_min": 420,
+      "se": 0.7167,
+      "nap_min": 0,
+      "caffeine_after_14": true,
+      "alcohol": false,
+      "screen_in_bed_min": 10
+    },
+    {
+      "day": 6,
+      "bedtime": "01:15",
+      "lights_off": "01:30",
+      "sol_min": 86,
+      "waso_min": 10,
+      "final_wake": "10:50",
+      "risetime": "11:00",
+      "tst_min": 464,
+      "tib_min": 585,
+      "se": 0.7932,
+      "nap_min": 0,
+      "caffeine_after_14": true,
+      "alcohol": false,
+      "screen_in_bed_min": 10
+    },
+    {
+      "day": 7,
+      "bedtime": "01:15",
+      "lights_off": "01:30",
+      "sol_min": 83,
+      "waso_min": 14,
+      "final_wake": "10:50",
+      "risetime": "11:00",
+      "tst_min": 463,
+      "tib_min": 585,
+      "se": 0.7915,
+      "nap_min": 0,
+      "caffeine_after_14": true,
+      "alcohol": false,
+      "screen_in_bed_min": 10
+    }
+  ],
+  "persona": {
+    "age": 29,
+    "gender": "female",
+    "occupation": "自由插画师",
+    "expressiveness": "brief",
+    "defensiveness": "mid",
+    "emotionality": "low",
+    "adherence_tendency": 0.69,
+    "constraints": [
+      "在家接单，交稿时间不固定",
+      "与家人同住"
+    ]
+  },
+  "opening_complaint": "最近晚上总睡不踏实，白天没精神，想看看能怎么调整。",
+  "clues": [
+    {
+      "reveal_topic": "chronotype",
+      "supports": "P4",
+      "deny_first": false,
+      "content": "困意总要凌晨才来，休息日按自己的点睡，能安稳睡到快中午。",
+      "id": "B-023-c1"
+    },
+    {
+      "reveal_topic": "chronotype",
+      "supports": "P4",
+      "deny_first": false,
+      "content": "早起特别难受，上午反应慢，越到夜里越清醒。",
+      "id": "B-023-c2"
+    },
+    {
+      "reveal_topic": "caffeine_alcohol",
+      "supports": "P1",
+      "deny_first": false,
+      "content": "我靠奶茶撑下午的精神，有时候喝完已经挺晚了。",
+      "id": "B-023-c3"
+    },
+    {
+      "reveal_topic": "mood",
+      "supports": "R3",
+      "deny_first": true,
+      "content": "这两个月白天心情也低，以前喜欢的散步都提不起兴趣。",
+      "id": "B-023-c4"
+    }
+  ],
+  "prefilled": [
+    {
+      "scale": "isi",
+      "reported_score": 14,
+      "items": null
+    },
+    {
+      "scale": "phq9",
+      "reported_score": 6,
+      "items": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        0,
+        0,
+        0
+      ]
+    }
+  ]
+}

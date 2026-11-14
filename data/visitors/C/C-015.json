@@ -1,0 +1,205 @@
+{
+  "schema_version": "0.1.0",
+  "id": "C-015",
+  "split": "C",
+  "seed": 3420826184,
+  "main_path": "P4",
+  "secondary_path": "P1",
+  "referral": "R0",
+  "crisis": {
+    "level": "none",
+    "phq9_item9": 0,
+    "history": false
+  },
+  "contraindications": [],
+  "indices": {
+    "isi": 15,
+    "phq9": 5,
+    "gad7": 3,
+    "stop_bang": 1,
+    "meq": null,
+    "dbas16": 4.1,
+    "psas": 25,
+    "screen_min_before_sleep": 25
+  },
+  "diary": [
+    {
+      "day": 1,
+      "bedtime": "08:40",
+      "lights_off": "09:10",
+      "sol_min": 16,
+      "waso_min": 26,
+      "final_wake": "14:20",
+      "risetime": "14:30",
+      "tst_min": 268,
+      "tib_min": 350,
+      "se": 0.7657,
+      "nap_min": 0,
+      "caffeine_after_14": true,
+      "alcohol": false,
+      "screen_in_bed_min": 25
+    },
+    {
+      "day": 2,
+      "bedtime": "08:20",
+      "lights_off": "08:50",
+      "sol_min": 17,
+      "waso_min": 34,
+      "final_wake": "14:20",
+      "risetime": "14:30",
+      "tst_min": 279,
+      "tib_min": 370,
+      "se": 0.7541,
+      "nap_min": 0,
+      "caffeine_after_14": true,
+      "alcohol": false,
+      "screen_in_bed_min": 25
+    },
+    {
+      "day": 3,
+      "bedtime": "08:40",
+      "lights_off": "09:10",
+      "sol_min": 17,
+      "waso_min": 22,
+      "final_wake": "14:20",
+      "risetime": "14:30",
+      "tst_min": 271,
+      "tib_min": 350,
+      "se": 0.7743,
+      "nap_min": 0,
+      "caffeine_after_14": true,
+      "alcohol": false,
+      "screen_in_bed_min": 25
+    },
+    {
+      "day": 4,
+      "bedtime": "08:40",
+      "lights_off": "09:10",
+      "sol_min": 31,
+      "waso_min": 39,
+      "final_wake": "14:20",
+      "risetime": "14:30",
+      "tst_min": 240,
+      "tib_min": 350,
+      "se": 0.6857,
+      "nap_min": 0,
+      "caffeine_after_14": true,
+      "alcohol": false,
+      "screen_in_bed_min": 25
+    },
+    {
+      "day": 5,
+      "bedtime": "08:30",
+      "lights_off": "09:00",
+      "sol_min": 28,
+      "waso_min": 20,
+      "final_wake": "14:20",
+      "risetime": "14:30",
+      "tst_min": 272,
+      "tib_min": 360,
+      "se": 0.7556,
+      "nap_min": 0,
+      "caffeine_after_14": true,
+      "alcohol": false,
+      "screen_in_bed_min": 25
+    },
+    {
+      "day": 6,
+      "bedtime": "08:40",
+      "lights_off": "09:10",
+      "sol_min": 25,
+      "waso_min": 34,
+      "final_wake": "14:20",
+      "risetime": "14:30",
+      "tst_min": 251,
+      "tib_min": 350,
+      "se": 0.7171,
+      "nap_min": 0,
+      "caffeine_after_14": true,
+      "alcohol": false,
+      "screen_in_bed_min": 25
+    },
+    {
+      "day": 7,
+      "bedtime": "08:20",
+      "lights_off": "08:50",
+      "sol_min": 26,
+      "waso_min": 40,
+      "final_wake": "14:20",
+      "risetime": "14:30",
+      "tst_min": 264,
+      "tib_min": 370,
+      "se": 0.7135,
+      "nap_min": 0,
+      "caffeine_after_14": true,
+      "alcohol": false,
+      "screen_in_bed_min": 25
+    }
+  ],
+  "persona": {
+    "age": 54,
+    "gender": "other",
+    "occupation": "工厂质检员（轮班）",
+    "expressiveness": "brief",
+    "defensiveness": "mid",
+    "emotionality": "high",
+    "adherence_tendency": 0.39,
+    "constraints": [
+      "白班夜班轮换",
+      "周末常有家务安排"
+    ]
+  },
+  "opening_complaint": "这阵子睡眠不太好，第二天没精神，有点影响生活。",
+  "clues": [
+    {
+      "reveal_topic": "shift_work",
+      "supports": "P4",
+      "deny_first": false,
+      "content": "我做工厂质检员（轮班），白班夜班轮着换，睡觉时间跟着班表跑。",
+      "id": "C-015-c1"
+    },
+    {
+      "reveal_topic": "chronotype",
+      "supports": "P4",
+      "deny_first": false,
+      "content": "下夜班天都亮了，上午补觉容易醒，晚上上班又犯困。",
+      "id": "C-015-c2"
+    },
+    {
+      "reveal_topic": "caffeine_alcohol",
+      "supports": "P1",
+      "deny_first": false,
+      "content": "下午还要忙查验产品，咖啡喝到四五点，晚上也不一定停。",
+      "id": "C-015-c3"
+    },
+    {
+      "reveal_topic": "snoring_breathing",
+      "supports": "R0",
+      "deny_first": false,
+      "content": "只有鼻子不通时偶尔打呼噜，没听说停过呼吸。",
+      "id": "C-015-c4"
+    }
+  ],
+  "prefilled": [
+    {
+      "scale": "isi",
+      "reported_score": 11,
+      "items": null
+    },
+    {
+      "scale": "phq9",
+      "reported_score": 0,
+      "items": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    }
+  ]
+}

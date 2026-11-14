@@ -1,0 +1,184 @@
+{
+  "schema_version": "0.1.0",
+  "id": "C-005",
+  "split": "C",
+  "seed": 3853313392,
+  "main_path": "P3",
+  "secondary_path": "P2",
+  "referral": "R0",
+  "crisis": {
+    "level": "none",
+    "phq9_item9": 0,
+    "history": false
+  },
+  "contraindications": [],
+  "indices": {
+    "isi": 17,
+    "phq9": 9,
+    "gad7": 5,
+    "stop_bang": 2,
+    "meq": 54,
+    "dbas16": 6.1,
+    "psas": 50,
+    "screen_min_before_sleep": 20
+  },
+  "diary": [
+    {
+      "day": 1,
+      "bedtime": "23:00",
+      "lights_off": "23:25",
+      "sol_min": 54,
+      "waso_min": 32,
+      "final_wake": "06:20",
+      "risetime": "06:30",
+      "tst_min": 329,
+      "tib_min": 450,
+      "se": 0.7311,
+      "nap_min": 0,
+      "caffeine_after_14": false,
+      "alcohol": false,
+      "screen_in_bed_min": 20
+    },
+    {
+      "day": 2,
+      "bedtime": "23:00",
+      "lights_off": "23:25",
+      "sol_min": 52,
+      "waso_min": 21,
+      "final_wake": "06:20",
+      "risetime": "06:30",
+      "tst_min": 342,
+      "tib_min": 450,
+      "se": 0.76,
+      "nap_min": 0,
+      "caffeine_after_14": false,
+      "alcohol": false,
+      "screen_in_bed_min": 20
+    },
+    {
+      "day": 3,
+      "bedtime": "23:00",
+      "lights_off": "23:25",
+      "sol_min": 67,
+      "waso_min": 36,
+      "final_wake": "06:20",
+      "risetime": "06:30",
+      "tst_min": 312,
+      "tib_min": 450,
+      "se": 0.6933,
+      "nap_min": 0,
+      "caffeine_after_14": false,
+      "alcohol": false,
+      "screen_in_bed_min": 20
+    },
+    {
+      "day": 4,
+      "bedtime": "23:10",
+      "lights_off": "23:35",
+      "sol_min": 61,
+      "waso_min": 33,
+      "final_wake": "06:20",
+      "risetime": "06:30",
+      "tst_min": 311,
+      "tib_min": 440,
+      "se": 0.7068,
+      "nap_min": 0,
+      "caffeine_after_14": false,
+      "alcohol": false,
+      "screen_in_bed_min": 20
+    },
+    {
+      "day": 5,
+      "bedtime": "23:00",
+      "lights_off": "23:25",
+      "sol_min": 60,
+      "waso_min": 37,
+      "final_wake": "06:20",
+      "risetime": "06:30",
+      "tst_min": 318,
+      "tib_min": 450,
+      "se": 0.7067,
+      "nap_min": 0,
+      "caffeine_after_14": false,
+      "alcohol": false,
+      "screen_in_bed_min": 20
+    },
+    {
+      "day": 6,
+      "bedtime": "23:10",
+      "lights_off": "23:35",
+      "sol_min": 57,
+      "waso_min": 37,
+      "final_wake": "06:20",
+      "risetime": "06:30",
+      "tst_min": 311,
+      "tib_min": 440,
+      "se": 0.7068,
+      "nap_min": 0,
+      "caffeine_after_14": false,
+      "alcohol": false,
+      "screen_in_bed_min": 20
+    },
+    {
+      "day": 7,
+      "bedtime": "23:00",
+      "lights_off": "23:25",
+      "sol_min": 51,
+      "waso_min": 35,
+      "final_wake": "06:20",
+      "risetime": "06:30",
+      "tst_min": 329,
+      "tib_min": 450,
+      "se": 0.7311,
+      "nap_min": 0,
+      "caffeine_after_14": false,
+      "alcohol": false,
+      "screen_in_bed_min": 20
+    }
+  ],
+  "persona": {
+    "age": 49,
+    "gender": "male",
+    "occupation": "中学老师",
+    "expressiveness": "brief",
+    "defensiveness": "high",
+    "emotionality": "low",
+    "adherence_tendency": 0.81,
+    "constraints": [
+      "早上七点半前到校",
+      "周末常有家务安排"
+    ]
+  },
+  "opening_complaint": "这段时间睡得不太顺，起床后提不起劲，想找找原因。",
+  "clues": [
+    {
+      "reveal_topic": "worry_rumination",
+      "supports": "P3",
+      "deny_first": false,
+      "content": "一躺下就开始复盘备课，白天的事在脑子里来回转。",
+      "id": "C-005-c1"
+    },
+    {
+      "reveal_topic": "fear_of_sleeplessness",
+      "supports": "P3",
+      "deny_first": false,
+      "content": "隔一会儿就看时间，发现又少了半小时睡眠就更慌。",
+      "id": "C-005-c2"
+    },
+    {
+      "reveal_topic": "fear_of_sleeplessness",
+      "supports": "P3",
+      "deny_first": true,
+      "content": "总担心睡不好身体会撑不住，连备课也做不了了。",
+      "id": "C-005-c3"
+    },
+    {
+      "reveal_topic": "sleep_elsewhere",
+      "supports": "P2",
+      "deny_first": false,
+      "content": "在别的地方稍微放松些，一到床边又想起之前睡不着。",
+      "id": "C-005-c4"
+    }
+  ],
+  "prefilled": []
+}

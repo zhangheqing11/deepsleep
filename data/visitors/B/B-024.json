@@ -1,0 +1,190 @@
+{
+  "schema_version": "0.1.0",
+  "id": "B-024",
+  "split": "B",
+  "seed": 2955421650,
+  "main_path": "P5",
+  "secondary_path": "P1",
+  "referral": "R0",
+  "crisis": {
+    "level": "none",
+    "phq9_item9": 0,
+    "history": false
+  },
+  "contraindications": [],
+  "indices": {
+    "isi": 20,
+    "phq9": 4,
+    "gad7": 8,
+    "stop_bang": 1,
+    "meq": 47,
+    "dbas16": 3.2,
+    "psas": 25,
+    "screen_min_before_sleep": 90
+  },
+  "diary": [
+    {
+      "day": 1,
+      "bedtime": "22:50",
+      "lights_off": "00:25",
+      "sol_min": 18,
+      "waso_min": 15,
+      "final_wake": "06:20",
+      "risetime": "06:30",
+      "tst_min": 322,
+      "tib_min": 460,
+      "se": 0.7,
+      "nap_min": 60,
+      "caffeine_after_14": true,
+      "alcohol": false,
+      "screen_in_bed_min": 90
+    },
+    {
+      "day": 2,
+      "bedtime": "23:00",
+      "lights_off": "00:35",
+      "sol_min": 18,
+      "waso_min": 24,
+      "final_wake": "06:20",
+      "risetime": "06:30",
+      "tst_min": 303,
+      "tib_min": 450,
+      "se": 0.6733,
+      "nap_min": 60,
+      "caffeine_after_14": true,
+      "alcohol": false,
+      "screen_in_bed_min": 90
+    },
+    {
+      "day": 3,
+      "bedtime": "23:10",
+      "lights_off": "00:45",
+      "sol_min": 19,
+      "waso_min": 16,
+      "final_wake": "06:20",
+      "risetime": "06:30",
+      "tst_min": 300,
+      "tib_min": 440,
+      "se": 0.6818,
+      "nap_min": 60,
+      "caffeine_after_14": true,
+      "alcohol": false,
+      "screen_in_bed_min": 90
+    },
+    {
+      "day": 4,
+      "bedtime": "22:50",
+      "lights_off": "00:25",
+      "sol_min": 34,
+      "waso_min": 12,
+      "final_wake": "06:20",
+      "risetime": "06:30",
+      "tst_min": 309,
+      "tib_min": 460,
+      "se": 0.6717,
+      "nap_min": 60,
+      "caffeine_after_14": true,
+      "alcohol": false,
+      "screen_in_bed_min": 90
+    },
+    {
+      "day": 5,
+      "bedtime": "23:10",
+      "lights_off": "00:45",
+      "sol_min": 20,
+      "waso_min": 23,
+      "final_wake": "06:20",
+      "risetime": "06:30",
+      "tst_min": 292,
+      "tib_min": 440,
+      "se": 0.6636,
+      "nap_min": 60,
+      "caffeine_after_14": true,
+      "alcohol": false,
+      "screen_in_bed_min": 90
+    },
+    {
+      "day": 6,
+      "bedtime": "22:50",
+      "lights_off": "00:25",
+      "sol_min": 34,
+      "waso_min": 15,
+      "final_wake": "06:20",
+      "risetime": "06:30",
+      "tst_min": 306,
+      "tib_min": 460,
+      "se": 0.6652,
+      "nap_min": 60,
+      "caffeine_after_14": true,
+      "alcohol": false,
+      "screen_in_bed_min": 90
+    },
+    {
+      "day": 7,
+      "bedtime": "22:50",
+      "lights_off": "00:25",
+      "sol_min": 25,
+      "waso_min": 29,
+      "final_wake": "06:20",
+      "risetime": "06:30",
+      "tst_min": 301,
+      "tib_min": 460,
+      "se": 0.6543,
+      "nap_min": 60,
+      "caffeine_after_14": true,
+      "alcohol": false,
+      "screen_in_bed_min": 90
+    }
+  ],
+  "persona": {
+    "age": 36,
+    "gender": "male",
+    "occupation": "财务专员",
+    "expressiveness": "brief",
+    "defensiveness": "low",
+    "emotionality": "mid",
+    "adherence_tendency": 0.87,
+    "constraints": [
+      "月末加班多",
+      "周末常有家务安排"
+    ]
+  },
+  "opening_complaint": "最近睡完也不舒服，白天觉得累，想试试调整作息。",
+  "clues": [
+    {
+      "reveal_topic": "screen_in_bed",
+      "supports": "P5",
+      "deny_first": true,
+      "content": "说是上床休息，实际拿着手机刷短视频，要花90分钟。",
+      "id": "B-024-c1"
+    },
+    {
+      "reveal_topic": "revenge_bedtime",
+      "supports": "P5",
+      "deny_first": false,
+      "content": "忙完核对账目才觉得今天能歇一歇，哪怕困也想再玩会儿。",
+      "id": "B-024-c2"
+    },
+    {
+      "reveal_topic": "caffeine_alcohol",
+      "supports": "P1",
+      "deny_first": false,
+      "content": "下午犯困就续一杯咖啡，常常晚饭前还在喝。",
+      "id": "B-024-c3"
+    },
+    {
+      "reveal_topic": "daytime_sleepiness",
+      "supports": "P1",
+      "deny_first": false,
+      "content": "白天会补一觉，大约60分钟，到了晚上睡意又没了。",
+      "id": "B-024-c4"
+    }
+  ],
+  "prefilled": [
+    {
+      "scale": "isi",
+      "reported_score": 20,
+      "items": null
+    }
+  ]
+}

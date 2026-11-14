@@ -1,0 +1,205 @@
+{
+  "schema_version": "0.1.0",
+  "id": "A-011",
+  "split": "A",
+  "seed": 2574522511,
+  "main_path": "P5",
+  "secondary_path": "P3",
+  "referral": "R0",
+  "crisis": {
+    "level": "none",
+    "phq9_item9": 0,
+    "history": false
+  },
+  "contraindications": [],
+  "indices": {
+    "isi": 21,
+    "phq9": 3,
+    "gad7": 2,
+    "stop_bang": 1,
+    "meq": 50,
+    "dbas16": 4.8,
+    "psas": 29,
+    "screen_min_before_sleep": 120
+  },
+  "diary": [
+    {
+      "day": 1,
+      "bedtime": "23:00",
+      "lights_off": "01:05",
+      "sol_min": 25,
+      "waso_min": 30,
+      "final_wake": "06:20",
+      "risetime": "06:30",
+      "tst_min": 260,
+      "tib_min": 450,
+      "se": 0.5778,
+      "nap_min": 0,
+      "caffeine_after_14": false,
+      "alcohol": false,
+      "screen_in_bed_min": 120
+    },
+    {
+      "day": 2,
+      "bedtime": "23:00",
+      "lights_off": "01:05",
+      "sol_min": 32,
+      "waso_min": 19,
+      "final_wake": "06:20",
+      "risetime": "06:30",
+      "tst_min": 264,
+      "tib_min": 450,
+      "se": 0.5867,
+      "nap_min": 0,
+      "caffeine_after_14": false,
+      "alcohol": false,
+      "screen_in_bed_min": 120
+    },
+    {
+      "day": 3,
+      "bedtime": "23:00",
+      "lights_off": "01:05",
+      "sol_min": 31,
+      "waso_min": 25,
+      "final_wake": "06:20",
+      "risetime": "06:30",
+      "tst_min": 259,
+      "tib_min": 450,
+      "se": 0.5756,
+      "nap_min": 0,
+      "caffeine_after_14": false,
+      "alcohol": false,
+      "screen_in_bed_min": 120
+    },
+    {
+      "day": 4,
+      "bedtime": "23:00",
+      "lights_off": "01:05",
+      "sol_min": 34,
+      "waso_min": 28,
+      "final_wake": "06:20",
+      "risetime": "06:30",
+      "tst_min": 253,
+      "tib_min": 450,
+      "se": 0.5622,
+      "nap_min": 0,
+      "caffeine_after_14": false,
+      "alcohol": false,
+      "screen_in_bed_min": 120
+    },
+    {
+      "day": 5,
+      "bedtime": "23:00",
+      "lights_off": "01:05",
+      "sol_min": 25,
+      "waso_min": 21,
+      "final_wake": "06:20",
+      "risetime": "06:30",
+      "tst_min": 269,
+      "tib_min": 450,
+      "se": 0.5978,
+      "nap_min": 0,
+      "caffeine_after_14": false,
+      "alcohol": false,
+      "screen_in_bed_min": 120
+    },
+    {
+      "day": 6,
+      "bedtime": "23:10",
+      "lights_off": "01:15",
+      "sol_min": 16,
+      "waso_min": 28,
+      "final_wake": "06:20",
+      "risetime": "06:30",
+      "tst_min": 261,
+      "tib_min": 440,
+      "se": 0.5932,
+      "nap_min": 0,
+      "caffeine_after_14": false,
+      "alcohol": false,
+      "screen_in_bed_min": 120
+    },
+    {
+      "day": 7,
+      "bedtime": "23:10",
+      "lights_off": "01:15",
+      "sol_min": 16,
+      "waso_min": 22,
+      "final_wake": "06:20",
+      "risetime": "06:30",
+      "tst_min": 267,
+      "tib_min": 440,
+      "se": 0.6068,
+      "nap_min": 0,
+      "caffeine_after_14": false,
+      "alcohol": false,
+      "screen_in_bed_min": 120
+    }
+  ],
+  "persona": {
+    "age": 42,
+    "gender": "other",
+    "occupation": "自由插画师",
+    "expressiveness": "verbose",
+    "defensiveness": "mid",
+    "emotionality": "mid",
+    "adherence_tendency": 0.64,
+    "constraints": [
+      "在家接单，交稿时间不固定",
+      "住处空间有限"
+    ]
+  },
+  "opening_complaint": "最近睡完也不舒服，白天注意力不太集中，想试试调整作息。",
+  "clues": [
+    {
+      "reveal_topic": "screen_in_bed",
+      "supports": "P5",
+      "deny_first": true,
+      "content": "躺床上看直播，常常就是120分钟，停不下来。",
+      "id": "A-011-c1"
+    },
+    {
+      "reveal_topic": "revenge_bedtime",
+      "supports": "P5",
+      "deny_first": false,
+      "content": "忙完赶画稿才觉得今天能歇一歇，哪怕困也想再玩会儿。",
+      "id": "A-011-c2"
+    },
+    {
+      "reveal_topic": "worry_rumination",
+      "supports": "P3",
+      "deny_first": false,
+      "content": "拖得久了也开始担心，今晚会不会又睡不着。",
+      "id": "A-011-c3"
+    },
+    {
+      "reveal_topic": "mood",
+      "supports": "R0",
+      "deny_first": false,
+      "content": "最近有过几天心情差，后来缓过来了，平常还有兴趣听音乐。",
+      "id": "A-011-c4"
+    }
+  ],
+  "prefilled": [
+    {
+      "scale": "isi",
+      "reported_score": 17,
+      "items": null
+    },
+    {
+      "scale": "phq9",
+      "reported_score": 0,
+      "items": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    }
+  ]
+}

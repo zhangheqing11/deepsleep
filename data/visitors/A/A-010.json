@@ -1,0 +1,200 @@
+{
+  "schema_version": "0.1.0",
+  "id": "A-010",
+  "split": "A",
+  "seed": 3565115044,
+  "main_path": "P1",
+  "secondary_path": "P4",
+  "referral": "R1",
+  "crisis": {
+    "level": "none",
+    "phq9_item9": 0,
+    "history": false
+  },
+  "contraindications": [
+    "untreated_osa"
+  ],
+  "indices": {
+    "isi": 14,
+    "phq9": 8,
+    "gad7": 8,
+    "stop_bang": 6,
+    "meq": 51,
+    "dbas16": 5.0,
+    "psas": 36,
+    "screen_min_before_sleep": 10
+  },
+  "diary": [
+    {
+      "day": 1,
+      "bedtime": "23:30",
+      "lights_off": "23:45",
+      "sol_min": 58,
+      "waso_min": 28,
+      "final_wake": "06:20",
+      "risetime": "06:30",
+      "tst_min": 309,
+      "tib_min": 420,
+      "se": 0.7357,
+      "nap_min": 60,
+      "caffeine_after_14": true,
+      "alcohol": false,
+      "screen_in_bed_min": 10
+    },
+    {
+      "day": 2,
+      "bedtime": "23:00",
+      "lights_off": "23:15",
+      "sol_min": 23,
+      "waso_min": 12,
+      "final_wake": "06:20",
+      "risetime": "06:30",
+      "tst_min": 390,
+      "tib_min": 450,
+      "se": 0.8667,
+      "nap_min": 60,
+      "caffeine_after_14": true,
+      "alcohol": false,
+      "screen_in_bed_min": 10
+    },
+    {
+      "day": 3,
+      "bedtime": "22:30",
+      "lights_off": "22:45",
+      "sol_min": 32,
+      "waso_min": 37,
+      "final_wake": "06:20",
+      "risetime": "06:30",
+      "tst_min": 386,
+      "tib_min": 480,
+      "se": 0.8042,
+      "nap_min": 60,
+      "caffeine_after_14": true,
+      "alcohol": false,
+      "screen_in_bed_min": 10
+    },
+    {
+      "day": 4,
+      "bedtime": "22:30",
+      "lights_off": "22:45",
+      "sol_min": 28,
+      "waso_min": 0,
+      "final_wake": "06:20",
+      "risetime": "06:30",
+      "tst_min": 427,
+      "tib_min": 480,
+      "se": 0.8896,
+      "nap_min": 60,
+      "caffeine_after_14": true,
+      "alcohol": false,
+      "screen_in_bed_min": 10
+    },
+    {
+      "day": 5,
+      "bedtime": "23:30",
+      "lights_off": "23:45",
+      "sol_min": 16,
+      "waso_min": 37,
+      "final_wake": "06:20",
+      "risetime": "06:30",
+      "tst_min": 342,
+      "tib_min": 420,
+      "se": 0.8143,
+      "nap_min": 60,
+      "caffeine_after_14": true,
+      "alcohol": false,
+      "screen_in_bed_min": 10
+    },
+    {
+      "day": 6,
+      "bedtime": "00:30",
+      "lights_off": "00:45",
+      "sol_min": 6,
+      "waso_min": 0,
+      "final_wake": "09:20",
+      "risetime": "09:30",
+      "tst_min": 509,
+      "tib_min": 540,
+      "se": 0.9426,
+      "nap_min": 60,
+      "caffeine_after_14": true,
+      "alcohol": false,
+      "screen_in_bed_min": 10
+    },
+    {
+      "day": 7,
+      "bedtime": "23:30",
+      "lights_off": "23:45",
+      "sol_min": 44,
+      "waso_min": 3,
+      "final_wake": "09:20",
+      "risetime": "09:30",
+      "tst_min": 528,
+      "tib_min": 600,
+      "se": 0.88,
+      "nap_min": 60,
+      "caffeine_after_14": true,
+      "alcohol": false,
+      "screen_in_bed_min": 10
+    }
+  ],
+  "persona": {
+    "age": 44,
+    "gender": "female",
+    "occupation": "自由插画师",
+    "expressiveness": "brief",
+    "defensiveness": "mid",
+    "emotionality": "mid",
+    "adherence_tendency": 0.36,
+    "constraints": [
+      "在家接单，交稿时间不固定",
+      "住处空间有限"
+    ]
+  },
+  "opening_complaint": "睡眠问题拖了一阵了，白天觉得累，不知道先从哪儿改。",
+  "clues": [
+    {
+      "reveal_topic": "schedule_regularity",
+      "supports": "P1",
+      "deny_first": false,
+      "content": "一天一个睡觉时间，主要看赶画稿什么时候忙完。",
+      "id": "A-010-c1"
+    },
+    {
+      "reveal_topic": "caffeine_alcohol",
+      "supports": "P1",
+      "deny_first": false,
+      "content": "下午还要忙赶画稿，咖啡喝到四五点，晚上也不一定停。",
+      "id": "A-010-c2"
+    },
+    {
+      "reveal_topic": "daytime_sleepiness",
+      "supports": "P1",
+      "deny_first": false,
+      "content": "白天会补一觉，大约60分钟，到了晚上睡意又没了。",
+      "id": "A-010-c3"
+    },
+    {
+      "reveal_topic": "chronotype",
+      "supports": "P4",
+      "deny_first": false,
+      "content": "晚睡久了，现在休息日也会晚些才困，周一尤其难调回来。",
+      "id": "A-010-c4"
+    },
+    {
+      "reveal_topic": "snoring_breathing",
+      "supports": "R1",
+      "deny_first": true,
+      "content": "家里人说我鼾声大，中间呼吸还会停一下，我自己不大知道。",
+      "id": "A-010-c5"
+    },
+    {
+      "reveal_topic": "health_conditions",
+      "supports": "R1",
+      "deny_first": false,
+      "content": "以前查到过夜间呼吸暂停，后面的处理还没落实。",
+      "id": "A-010-c6"
+    }
+  ],
+  "prefilled": []
+}

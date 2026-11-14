@@ -1,0 +1,184 @@
+{
+  "schema_version": "0.1.0",
+  "id": "C-026",
+  "split": "C",
+  "seed": 3210482302,
+  "main_path": "P1",
+  "secondary_path": "P4",
+  "referral": "R0",
+  "crisis": {
+    "level": "none",
+    "phq9_item9": 0,
+    "history": false
+  },
+  "contraindications": [],
+  "indices": {
+    "isi": 21,
+    "phq9": 6,
+    "gad7": 9,
+    "stop_bang": 1,
+    "meq": 47,
+    "dbas16": 4.6,
+    "psas": 27,
+    "screen_min_before_sleep": 25
+  },
+  "diary": [
+    {
+      "day": 1,
+      "bedtime": "22:30",
+      "lights_off": "23:00",
+      "sol_min": 53,
+      "waso_min": 34,
+      "final_wake": "06:20",
+      "risetime": "06:30",
+      "tst_min": 353,
+      "tib_min": 480,
+      "se": 0.7354,
+      "nap_min": 70,
+      "caffeine_after_14": true,
+      "alcohol": false,
+      "screen_in_bed_min": 25
+    },
+    {
+      "day": 2,
+      "bedtime": "22:30",
+      "lights_off": "23:00",
+      "sol_min": 41,
+      "waso_min": 6,
+      "final_wake": "06:20",
+      "risetime": "06:30",
+      "tst_min": 393,
+      "tib_min": 480,
+      "se": 0.8187,
+      "nap_min": 70,
+      "caffeine_after_14": true,
+      "alcohol": false,
+      "screen_in_bed_min": 25
+    },
+    {
+      "day": 3,
+      "bedtime": "22:30",
+      "lights_off": "23:00",
+      "sol_min": 32,
+      "waso_min": 0,
+      "final_wake": "06:20",
+      "risetime": "06:30",
+      "tst_min": 408,
+      "tib_min": 480,
+      "se": 0.85,
+      "nap_min": 70,
+      "caffeine_after_14": true,
+      "alcohol": false,
+      "screen_in_bed_min": 25
+    },
+    {
+      "day": 4,
+      "bedtime": "22:30",
+      "lights_off": "23:00",
+      "sol_min": 52,
+      "waso_min": 16,
+      "final_wake": "06:20",
+      "risetime": "06:30",
+      "tst_min": 372,
+      "tib_min": 480,
+      "se": 0.775,
+      "nap_min": 70,
+      "caffeine_after_14": true,
+      "alcohol": false,
+      "screen_in_bed_min": 25
+    },
+    {
+      "day": 5,
+      "bedtime": "23:00",
+      "lights_off": "23:30",
+      "sol_min": 13,
+      "waso_min": 23,
+      "final_wake": "06:20",
+      "risetime": "06:30",
+      "tst_min": 374,
+      "tib_min": 450,
+      "se": 0.8311,
+      "nap_min": 70,
+      "caffeine_after_14": true,
+      "alcohol": false,
+      "screen_in_bed_min": 25
+    },
+    {
+      "day": 6,
+      "bedtime": "00:00",
+      "lights_off": "00:30",
+      "sol_min": 38,
+      "waso_min": 18,
+      "final_wake": "09:20",
+      "risetime": "09:30",
+      "tst_min": 474,
+      "tib_min": 570,
+      "se": 0.8316,
+      "nap_min": 70,
+      "caffeine_after_14": true,
+      "alcohol": false,
+      "screen_in_bed_min": 25
+    },
+    {
+      "day": 7,
+      "bedtime": "00:30",
+      "lights_off": "01:00",
+      "sol_min": 55,
+      "waso_min": 21,
+      "final_wake": "09:20",
+      "risetime": "09:30",
+      "tst_min": 424,
+      "tib_min": 540,
+      "se": 0.7852,
+      "nap_min": 70,
+      "caffeine_after_14": true,
+      "alcohol": false,
+      "screen_in_bed_min": 25
+    }
+  ],
+  "persona": {
+    "age": 32,
+    "gender": "other",
+    "occupation": "保险内勤",
+    "expressiveness": "verbose",
+    "defensiveness": "low",
+    "emotionality": "low",
+    "adherence_tendency": 0.63,
+    "constraints": [
+      "下班后还要准备家里的晚饭",
+      "与家人同住"
+    ]
+  },
+  "opening_complaint": "睡眠问题拖了一阵了，白天没精神，不知道先从哪儿改。",
+  "clues": [
+    {
+      "reveal_topic": "schedule_regularity",
+      "supports": "P1",
+      "deny_first": false,
+      "content": "一天一个睡觉时间，主要看整理单据什么时候忙完。",
+      "id": "C-026-c1"
+    },
+    {
+      "reveal_topic": "caffeine_alcohol",
+      "supports": "P1",
+      "deny_first": false,
+      "content": "下午还要忙整理单据，咖啡喝到四五点，晚上也不一定停。",
+      "id": "C-026-c2"
+    },
+    {
+      "reveal_topic": "daytime_sleepiness",
+      "supports": "P1",
+      "deny_first": false,
+      "content": "中午得睡70分钟，不然下午没精神，晚上倒不太困。",
+      "id": "C-026-c3"
+    },
+    {
+      "reveal_topic": "chronotype",
+      "supports": "P4",
+      "deny_first": false,
+      "content": "作息跟着往后挪了一点，尤其休息日过后更难早睡。",
+      "id": "C-026-c4"
+    }
+  ],
+  "prefilled": []
+}

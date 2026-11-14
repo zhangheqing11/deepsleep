@@ -1,0 +1,212 @@
+{
+  "schema_version": "0.1.0",
+  "id": "A-021",
+  "split": "A",
+  "seed": 1066386377,
+  "main_path": "P3",
+  "secondary_path": "P2",
+  "referral": "R0",
+  "crisis": {
+    "level": "none",
+    "phq9_item9": 0,
+    "history": true
+  },
+  "contraindications": [],
+  "indices": {
+    "isi": 12,
+    "phq9": 6,
+    "gad7": 7,
+    "stop_bang": 1,
+    "meq": 44,
+    "dbas16": 6.4,
+    "psas": 48,
+    "screen_min_before_sleep": 15
+  },
+  "diary": [
+    {
+      "day": 1,
+      "bedtime": "22:50",
+      "lights_off": "23:10",
+      "sol_min": 55,
+      "waso_min": 37,
+      "final_wake": "06:20",
+      "risetime": "06:30",
+      "tst_min": 338,
+      "tib_min": 460,
+      "se": 0.7348,
+      "nap_min": 0,
+      "caffeine_after_14": false,
+      "alcohol": false,
+      "screen_in_bed_min": 15
+    },
+    {
+      "day": 2,
+      "bedtime": "23:10",
+      "lights_off": "23:30",
+      "sol_min": 51,
+      "waso_min": 39,
+      "final_wake": "06:20",
+      "risetime": "06:30",
+      "tst_min": 320,
+      "tib_min": 440,
+      "se": 0.7273,
+      "nap_min": 0,
+      "caffeine_after_14": false,
+      "alcohol": false,
+      "screen_in_bed_min": 15
+    },
+    {
+      "day": 3,
+      "bedtime": "22:50",
+      "lights_off": "23:10",
+      "sol_min": 54,
+      "waso_min": 21,
+      "final_wake": "06:20",
+      "risetime": "06:30",
+      "tst_min": 355,
+      "tib_min": 460,
+      "se": 0.7717,
+      "nap_min": 0,
+      "caffeine_after_14": false,
+      "alcohol": false,
+      "screen_in_bed_min": 15
+    },
+    {
+      "day": 4,
+      "bedtime": "22:50",
+      "lights_off": "23:10",
+      "sol_min": 53,
+      "waso_min": 31,
+      "final_wake": "06:20",
+      "risetime": "06:30",
+      "tst_min": 346,
+      "tib_min": 460,
+      "se": 0.7522,
+      "nap_min": 0,
+      "caffeine_after_14": false,
+      "alcohol": false,
+      "screen_in_bed_min": 15
+    },
+    {
+      "day": 5,
+      "bedtime": "22:50",
+      "lights_off": "23:10",
+      "sol_min": 64,
+      "waso_min": 30,
+      "final_wake": "06:20",
+      "risetime": "06:30",
+      "tst_min": 336,
+      "tib_min": 460,
+      "se": 0.7304,
+      "nap_min": 0,
+      "caffeine_after_14": false,
+      "alcohol": false,
+      "screen_in_bed_min": 15
+    },
+    {
+      "day": 6,
+      "bedtime": "23:00",
+      "lights_off": "23:20",
+      "sol_min": 52,
+      "waso_min": 26,
+      "final_wake": "06:20",
+      "risetime": "06:30",
+      "tst_min": 342,
+      "tib_min": 450,
+      "se": 0.76,
+      "nap_min": 0,
+      "caffeine_after_14": false,
+      "alcohol": false,
+      "screen_in_bed_min": 15
+    },
+    {
+      "day": 7,
+      "bedtime": "22:50",
+      "lights_off": "23:10",
+      "sol_min": 58,
+      "waso_min": 25,
+      "final_wake": "06:20",
+      "risetime": "06:30",
+      "tst_min": 347,
+      "tib_min": 460,
+      "se": 0.7543,
+      "nap_min": 0,
+      "caffeine_after_14": false,
+      "alcohol": false,
+      "screen_in_bed_min": 15
+    }
+  ],
+  "persona": {
+    "age": 59,
+    "gender": "other",
+    "occupation": "中学老师",
+    "expressiveness": "brief",
+    "defensiveness": "high",
+    "emotionality": "high",
+    "adherence_tendency": 0.84,
+    "constraints": [
+      "早上七点半前到校",
+      "与家人同住"
+    ]
+  },
+  "opening_complaint": "最近晚上总睡不踏实，白天注意力不太集中，想看看能怎么调整。",
+  "clues": [
+    {
+      "reveal_topic": "worry_rumination",
+      "supports": "P3",
+      "deny_first": false,
+      "content": "睡前总惦记备课有没有弄好，越想越清醒。",
+      "id": "A-021-c1"
+    },
+    {
+      "reveal_topic": "fear_of_sleeplessness",
+      "supports": "P3",
+      "deny_first": false,
+      "content": "隔一会儿就看时间，发现又少了半小时睡眠就更慌。",
+      "id": "A-021-c2"
+    },
+    {
+      "reveal_topic": "sleep_elsewhere",
+      "supports": "P2",
+      "deny_first": false,
+      "content": "现在走进卧室会担心今晚又难睡，在客厅没那么紧绷。",
+      "id": "A-021-c3"
+    },
+    {
+      "reveal_topic": "snoring_breathing",
+      "supports": "R0",
+      "deny_first": false,
+      "content": "感冒堵鼻子时会响几声，平常没这事，也不会憋醒。",
+      "id": "A-021-c4"
+    },
+    {
+      "reveal_topic": "self_harm",
+      "supports": "crisis",
+      "content": "三年前有一次吃了很多药住过院，现在一直在复查，状态挺稳定的。",
+      "deny_first": false,
+      "id": "A-021-c5"
+    }
+  ],
+  "prefilled": [
+    {
+      "scale": "isi",
+      "reported_score": 10,
+      "items": null
+    },
+    {
+      "scale": "phq9",
+      "reported_score": 3,
+      "items": [
+        1,
+        1,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    }
+  ]
+}

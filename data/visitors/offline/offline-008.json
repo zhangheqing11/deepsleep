@@ -1,0 +1,198 @@
+{
+  "schema_version": "0.1.0",
+  "id": "offline-008",
+  "split": "offline",
+  "seed": 1610364766,
+  "main_path": "P2",
+  "secondary_path": "P3",
+  "referral": "R0",
+  "crisis": {
+    "level": "none",
+    "phq9_item9": 0,
+    "history": false
+  },
+  "contraindications": [],
+  "indices": {
+    "isi": 13,
+    "phq9": 7,
+    "gad7": 6,
+    "stop_bang": 2,
+    "meq": 60,
+    "dbas16": 4.5,
+    "psas": 29,
+    "screen_min_before_sleep": 20
+  },
+  "diary": [
+    {
+      "day": 1,
+      "bedtime": "22:00",
+      "lights_off": "22:25",
+      "sol_min": 68,
+      "waso_min": 50,
+      "final_wake": "06:20",
+      "risetime": "06:30",
+      "tst_min": 357,
+      "tib_min": 510,
+      "se": 0.7,
+      "nap_min": 0,
+      "caffeine_after_14": false,
+      "alcohol": false,
+      "screen_in_bed_min": 20
+    },
+    {
+      "day": 2,
+      "bedtime": "22:00",
+      "lights_off": "22:25",
+      "sol_min": 72,
+      "waso_min": 34,
+      "final_wake": "06:20",
+      "risetime": "06:30",
+      "tst_min": 369,
+      "tib_min": 510,
+      "se": 0.7235,
+      "nap_min": 0,
+      "caffeine_after_14": false,
+      "alcohol": false,
+      "screen_in_bed_min": 20
+    },
+    {
+      "day": 3,
+      "bedtime": "22:00",
+      "lights_off": "22:25",
+      "sol_min": 61,
+      "waso_min": 50,
+      "final_wake": "06:20",
+      "risetime": "06:30",
+      "tst_min": 364,
+      "tib_min": 510,
+      "se": 0.7137,
+      "nap_min": 0,
+      "caffeine_after_14": false,
+      "alcohol": false,
+      "screen_in_bed_min": 20
+    },
+    {
+      "day": 4,
+      "bedtime": "22:00",
+      "lights_off": "22:25",
+      "sol_min": 61,
+      "waso_min": 41,
+      "final_wake": "06:20",
+      "risetime": "06:30",
+      "tst_min": 373,
+      "tib_min": 510,
+      "se": 0.7314,
+      "nap_min": 0,
+      "caffeine_after_14": false,
+      "alcohol": false,
+      "screen_in_bed_min": 20
+    },
+    {
+      "day": 5,
+      "bedtime": "22:00",
+      "lights_off": "22:25",
+      "sol_min": 66,
+      "waso_min": 32,
+      "final_wake": "06:20",
+      "risetime": "06:30",
+      "tst_min": 377,
+      "tib_min": 510,
+      "se": 0.7392,
+      "nap_min": 0,
+      "caffeine_after_14": false,
+      "alcohol": false,
+      "screen_in_bed_min": 20
+    },
+    {
+      "day": 6,
+      "bedtime": "22:10",
+      "lights_off": "22:35",
+      "sol_min": 69,
+      "waso_min": 48,
+      "final_wake": "06:20",
+      "risetime": "06:30",
+      "tst_min": 348,
+      "tib_min": 500,
+      "se": 0.696,
+      "nap_min": 0,
+      "caffeine_after_14": false,
+      "alcohol": false,
+      "screen_in_bed_min": 20
+    },
+    {
+      "day": 7,
+      "bedtime": "22:10",
+      "lights_off": "22:35",
+      "sol_min": 74,
+      "waso_min": 39,
+      "final_wake": "06:20",
+      "risetime": "06:30",
+      "tst_min": 352,
+      "tib_min": 500,
+      "se": 0.704,
+      "nap_min": 0,
+      "caffeine_after_14": false,
+      "alcohol": false,
+      "screen_in_bed_min": 20
+    }
+  ],
+  "persona": {
+    "age": 40,
+    "gender": "male",
+    "occupation": "社区店员",
+    "expressiveness": "brief",
+    "defensiveness": "high",
+    "emotionality": "mid",
+    "adherence_tendency": 0.89,
+    "constraints": [
+      "轮流负责开店",
+      "周末常有家务安排"
+    ]
+  },
+  "opening_complaint": "这段时间睡得不太顺，起床后觉得累，想找找原因。",
+  "clues": [
+    {
+      "reveal_topic": "bed_wakefulness",
+      "supports": "P2",
+      "deny_first": false,
+      "content": "整理货架弄完还觉得困，关了灯躺上去反而醒了，起初也没什么心事。",
+      "id": "offline-008-c1"
+    },
+    {
+      "reveal_topic": "sleep_elsewhere",
+      "supports": "P2",
+      "deny_first": true,
+      "content": "挺奇怪，靠在沙发上容易睡，一躺床就精神。",
+      "id": "offline-008-c2"
+    },
+    {
+      "reveal_topic": "worry_rumination",
+      "supports": "P3",
+      "deny_first": false,
+      "content": "后来一想到要睡觉，就会盘算今晚还得熬多久。",
+      "id": "offline-008-c3"
+    }
+  ],
+  "prefilled": [
+    {
+      "scale": "isi",
+      "reported_score": 10,
+      "items": null
+    },
+    {
+      "scale": "phq9",
+      "reported_score": 4,
+      "items": [
+        1,
+        1,
+        1,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    }
+  ]
+}

@@ -1,0 +1,205 @@
+{
+  "schema_version": "0.1.0",
+  "id": "A-045",
+  "split": "A",
+  "seed": 2142011501,
+  "main_path": "P4",
+  "secondary_path": "P1",
+  "referral": "R0",
+  "crisis": {
+    "level": "none",
+    "phq9_item9": 0,
+    "history": false
+  },
+  "contraindications": [],
+  "indices": {
+    "isi": 19,
+    "phq9": 3,
+    "gad7": 4,
+    "stop_bang": 1,
+    "meq": 33,
+    "dbas16": 5.1,
+    "psas": 32,
+    "screen_min_before_sleep": 25
+  },
+  "diary": [
+    {
+      "day": 1,
+      "bedtime": "00:55",
+      "lights_off": "01:25",
+      "sol_min": 81,
+      "waso_min": 12,
+      "final_wake": "07:50",
+      "risetime": "08:00",
+      "tst_min": 292,
+      "tib_min": 425,
+      "se": 0.6871,
+      "nap_min": 60,
+      "caffeine_after_14": true,
+      "alcohol": false,
+      "screen_in_bed_min": 25
+    },
+    {
+      "day": 2,
+      "bedtime": "01:00",
+      "lights_off": "01:30",
+      "sol_min": 90,
+      "waso_min": 6,
+      "final_wake": "07:50",
+      "risetime": "08:00",
+      "tst_min": 284,
+      "tib_min": 420,
+      "se": 0.6762,
+      "nap_min": 60,
+      "caffeine_after_14": true,
+      "alcohol": false,
+      "screen_in_bed_min": 25
+    },
+    {
+      "day": 3,
+      "bedtime": "01:05",
+      "lights_off": "01:35",
+      "sol_min": 80,
+      "waso_min": 12,
+      "final_wake": "07:50",
+      "risetime": "08:00",
+      "tst_min": 283,
+      "tib_min": 415,
+      "se": 0.6819,
+      "nap_min": 60,
+      "caffeine_after_14": true,
+      "alcohol": false,
+      "screen_in_bed_min": 25
+    },
+    {
+      "day": 4,
+      "bedtime": "00:55",
+      "lights_off": "01:25",
+      "sol_min": 84,
+      "waso_min": 9,
+      "final_wake": "07:50",
+      "risetime": "08:00",
+      "tst_min": 292,
+      "tib_min": 425,
+      "se": 0.6871,
+      "nap_min": 60,
+      "caffeine_after_14": true,
+      "alcohol": false,
+      "screen_in_bed_min": 25
+    },
+    {
+      "day": 5,
+      "bedtime": "01:00",
+      "lights_off": "01:30",
+      "sol_min": 87,
+      "waso_min": 6,
+      "final_wake": "07:50",
+      "risetime": "08:00",
+      "tst_min": 287,
+      "tib_min": 420,
+      "se": 0.6833,
+      "nap_min": 60,
+      "caffeine_after_14": true,
+      "alcohol": false,
+      "screen_in_bed_min": 25
+    },
+    {
+      "day": 6,
+      "bedtime": "01:25",
+      "lights_off": "01:55",
+      "sol_min": 82,
+      "waso_min": 7,
+      "final_wake": "10:50",
+      "risetime": "11:00",
+      "tst_min": 446,
+      "tib_min": 575,
+      "se": 0.7757,
+      "nap_min": 60,
+      "caffeine_after_14": true,
+      "alcohol": false,
+      "screen_in_bed_min": 25
+    },
+    {
+      "day": 7,
+      "bedtime": "01:25",
+      "lights_off": "01:55",
+      "sol_min": 82,
+      "waso_min": 14,
+      "final_wake": "10:50",
+      "risetime": "11:00",
+      "tst_min": 439,
+      "tib_min": 575,
+      "se": 0.7635,
+      "nap_min": 60,
+      "caffeine_after_14": true,
+      "alcohol": false,
+      "screen_in_bed_min": 25
+    }
+  ],
+  "persona": {
+    "age": 50,
+    "gender": "male",
+    "occupation": "自由插画师",
+    "expressiveness": "brief",
+    "defensiveness": "high",
+    "emotionality": "high",
+    "adherence_tendency": 0.8,
+    "constraints": [
+      "在家接单，交稿时间不固定",
+      "与家人同住"
+    ]
+  },
+  "opening_complaint": "最近睡完也不舒服，白天注意力不太集中，想试试调整作息。",
+  "clues": [
+    {
+      "reveal_topic": "chronotype",
+      "supports": "P4",
+      "deny_first": false,
+      "content": "早上床也是干躺着，凌晨才有睡意，放假晚睡晚起反而睡得好。",
+      "id": "A-045-c1"
+    },
+    {
+      "reveal_topic": "chronotype",
+      "supports": "P4",
+      "deny_first": false,
+      "content": "早起特别难受，上午反应慢，越到夜里越清醒。",
+      "id": "A-045-c2"
+    },
+    {
+      "reveal_topic": "caffeine_alcohol",
+      "supports": "P1",
+      "deny_first": false,
+      "content": "下午还要忙赶画稿，浓茶喝到四五点，晚上也不一定停。",
+      "id": "A-045-c3"
+    },
+    {
+      "reveal_topic": "daytime_sleepiness",
+      "supports": "P1",
+      "deny_first": false,
+      "content": "午后经常一躺就是60分钟，醒了还想赖一会儿。",
+      "id": "A-045-c4"
+    }
+  ],
+  "prefilled": [
+    {
+      "scale": "isi",
+      "reported_score": 16,
+      "items": null
+    },
+    {
+      "scale": "phq9",
+      "reported_score": 0,
+      "items": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    }
+  ]
+}

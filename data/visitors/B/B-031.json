@@ -1,0 +1,212 @@
+{
+  "schema_version": "0.1.0",
+  "id": "B-031",
+  "split": "B",
+  "seed": 3117344608,
+  "main_path": "P4",
+  "secondary_path": "P1",
+  "referral": "R0",
+  "crisis": {
+    "level": "none",
+    "phq9_item9": 0,
+    "history": false
+  },
+  "contraindications": [],
+  "indices": {
+    "isi": 20,
+    "phq9": 9,
+    "gad7": 4,
+    "stop_bang": 0,
+    "meq": null,
+    "dbas16": 4.9,
+    "psas": 21,
+    "screen_min_before_sleep": 10
+  },
+  "diary": [
+    {
+      "day": 1,
+      "bedtime": "08:20",
+      "lights_off": "08:35",
+      "sol_min": 17,
+      "waso_min": 23,
+      "final_wake": "14:20",
+      "risetime": "14:30",
+      "tst_min": 305,
+      "tib_min": 370,
+      "se": 0.8243,
+      "nap_min": 60,
+      "caffeine_after_14": true,
+      "alcohol": false,
+      "screen_in_bed_min": 10
+    },
+    {
+      "day": 2,
+      "bedtime": "08:40",
+      "lights_off": "08:55",
+      "sol_min": 19,
+      "waso_min": 24,
+      "final_wake": "14:20",
+      "risetime": "14:30",
+      "tst_min": 282,
+      "tib_min": 350,
+      "se": 0.8057,
+      "nap_min": 60,
+      "caffeine_after_14": true,
+      "alcohol": false,
+      "screen_in_bed_min": 10
+    },
+    {
+      "day": 3,
+      "bedtime": "08:40",
+      "lights_off": "08:55",
+      "sol_min": 34,
+      "waso_min": 24,
+      "final_wake": "14:20",
+      "risetime": "14:30",
+      "tst_min": 267,
+      "tib_min": 350,
+      "se": 0.7629,
+      "nap_min": 60,
+      "caffeine_after_14": true,
+      "alcohol": false,
+      "screen_in_bed_min": 10
+    },
+    {
+      "day": 4,
+      "bedtime": "08:40",
+      "lights_off": "08:55",
+      "sol_min": 23,
+      "waso_min": 32,
+      "final_wake": "14:20",
+      "risetime": "14:30",
+      "tst_min": 270,
+      "tib_min": 350,
+      "se": 0.7714,
+      "nap_min": 60,
+      "caffeine_after_14": true,
+      "alcohol": false,
+      "screen_in_bed_min": 10
+    },
+    {
+      "day": 5,
+      "bedtime": "08:20",
+      "lights_off": "08:35",
+      "sol_min": 17,
+      "waso_min": 33,
+      "final_wake": "14:20",
+      "risetime": "14:30",
+      "tst_min": 295,
+      "tib_min": 370,
+      "se": 0.7973,
+      "nap_min": 60,
+      "caffeine_after_14": true,
+      "alcohol": false,
+      "screen_in_bed_min": 10
+    },
+    {
+      "day": 6,
+      "bedtime": "08:30",
+      "lights_off": "08:45",
+      "sol_min": 23,
+      "waso_min": 37,
+      "final_wake": "14:20",
+      "risetime": "14:30",
+      "tst_min": 275,
+      "tib_min": 360,
+      "se": 0.7639,
+      "nap_min": 60,
+      "caffeine_after_14": true,
+      "alcohol": false,
+      "screen_in_bed_min": 10
+    },
+    {
+      "day": 7,
+      "bedtime": "08:20",
+      "lights_off": "08:35",
+      "sol_min": 19,
+      "waso_min": 29,
+      "final_wake": "14:20",
+      "risetime": "14:30",
+      "tst_min": 297,
+      "tib_min": 370,
+      "se": 0.8027,
+      "nap_min": 60,
+      "caffeine_after_14": true,
+      "alcohol": false,
+      "screen_in_bed_min": 10
+    }
+  ],
+  "persona": {
+    "age": 34,
+    "gender": "female",
+    "occupation": "工厂质检员（轮班）",
+    "expressiveness": "brief",
+    "defensiveness": "mid",
+    "emotionality": "high",
+    "adherence_tendency": 0.5,
+    "constraints": [
+      "白班夜班轮换",
+      "住处空间有限"
+    ]
+  },
+  "opening_complaint": "最近晚上总睡不踏实，白天觉得累，想看看能怎么调整。",
+  "clues": [
+    {
+      "reveal_topic": "shift_work",
+      "supports": "P4",
+      "deny_first": false,
+      "content": "排班一变就得换睡觉时间，做工厂质检员（轮班）没法天天一个点睡。",
+      "id": "B-031-c1"
+    },
+    {
+      "reveal_topic": "chronotype",
+      "supports": "P4",
+      "deny_first": false,
+      "content": "夜班后白天补觉睡不踏实，轮回白班时晚上又没睡意。",
+      "id": "B-031-c2"
+    },
+    {
+      "reveal_topic": "caffeine_alcohol",
+      "supports": "P1",
+      "deny_first": false,
+      "content": "下午还要忙查验产品，浓茶喝到四五点，晚上也不一定停。",
+      "id": "B-031-c3"
+    },
+    {
+      "reveal_topic": "daytime_sleepiness",
+      "supports": "P1",
+      "deny_first": false,
+      "content": "午后经常一躺就是60分钟，醒了还想赖一会儿。",
+      "id": "B-031-c4"
+    },
+    {
+      "reveal_topic": "mood",
+      "supports": "R0",
+      "deny_first": false,
+      "content": "最近有过几天心情差，后来缓过来了，平常还有兴趣听音乐。",
+      "id": "B-031-c5"
+    }
+  ],
+  "prefilled": [
+    {
+      "scale": "isi",
+      "reported_score": 16,
+      "items": null
+    },
+    {
+      "scale": "phq9",
+      "reported_score": 5,
+      "items": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        0,
+        0,
+        0,
+        0
+      ]
+    }
+  ]
+}

@@ -1,0 +1,177 @@
+{
+  "schema_version": "0.1.0",
+  "id": "A-032",
+  "split": "A",
+  "seed": 1661870606,
+  "main_path": "P1",
+  "secondary_path": "P4",
+  "referral": "R0",
+  "crisis": {
+    "level": "none",
+    "phq9_item9": 0,
+    "history": false
+  },
+  "contraindications": [],
+  "indices": {
+    "isi": 22,
+    "phq9": 8,
+    "gad7": 5,
+    "stop_bang": 1,
+    "meq": 54,
+    "dbas16": 4.8,
+    "psas": 25,
+    "screen_min_before_sleep": 20
+  },
+  "diary": [
+    {
+      "day": 1,
+      "bedtime": "23:30",
+      "lights_off": "23:55",
+      "sol_min": 59,
+      "waso_min": 50,
+      "final_wake": "06:20",
+      "risetime": "06:30",
+      "tst_min": 276,
+      "tib_min": 420,
+      "se": 0.6571,
+      "nap_min": 60,
+      "caffeine_after_14": true,
+      "alcohol": false,
+      "screen_in_bed_min": 20
+    },
+    {
+      "day": 2,
+      "bedtime": "23:00",
+      "lights_off": "23:25",
+      "sol_min": 31,
+      "waso_min": 0,
+      "final_wake": "06:20",
+      "risetime": "06:30",
+      "tst_min": 384,
+      "tib_min": 450,
+      "se": 0.8533,
+      "nap_min": 60,
+      "caffeine_after_14": true,
+      "alcohol": false,
+      "screen_in_bed_min": 20
+    },
+    {
+      "day": 3,
+      "bedtime": "23:30",
+      "lights_off": "23:55",
+      "sol_min": 6,
+      "waso_min": 0,
+      "final_wake": "06:20",
+      "risetime": "06:30",
+      "tst_min": 379,
+      "tib_min": 420,
+      "se": 0.9024,
+      "nap_min": 60,
+      "caffeine_after_14": true,
+      "alcohol": false,
+      "screen_in_bed_min": 20
+    },
+    {
+      "day": 4,
+      "bedtime": "22:30",
+      "lights_off": "22:55",
+      "sol_min": 32,
+      "waso_min": 8,
+      "final_wake": "06:20",
+      "risetime": "06:30",
+      "tst_min": 405,
+      "tib_min": 480,
+      "se": 0.8438,
+      "nap_min": 60,
+      "caffeine_after_14": true,
+      "alcohol": false,
+      "screen_in_bed_min": 20
+    },
+    {
+      "day": 5,
+      "bedtime": "22:30",
+      "lights_off": "22:55",
+      "sol_min": 16,
+      "waso_min": 4,
+      "final_wake": "06:20",
+      "risetime": "06:30",
+      "tst_min": 425,
+      "tib_min": 480,
+      "se": 0.8854,
+      "nap_min": 60,
+      "caffeine_after_14": true,
+      "alcohol": false,
+      "screen_in_bed_min": 20
+    },
+    {
+      "day": 6,
+      "bedtime": "00:00",
+      "lights_off": "00:25",
+      "sol_min": 40,
+      "waso_min": 31,
+      "final_wake": "09:20",
+      "risetime": "09:30",
+      "tst_min": 464,
+      "tib_min": 570,
+      "se": 0.814,
+      "nap_min": 60,
+      "caffeine_after_14": true,
+      "alcohol": false,
+      "screen_in_bed_min": 20
+    },
+    {
+      "day": 7,
+      "bedtime": "00:30",
+      "lights_off": "00:55",
+      "sol_min": 15,
+      "waso_min": 18,
+      "final_wake": "09:20",
+      "risetime": "09:30",
+      "tst_min": 472,
+      "tib_min": 540,
+      "se": 0.8741,
+      "nap_min": 60,
+      "caffeine_after_14": true,
+      "alcohol": false,
+      "screen_in_bed_min": 20
+    }
+  ],
+  "persona": {
+    "age": 28,
+    "gender": "other",
+    "occupation": "行政助理",
+    "expressiveness": "brief",
+    "defensiveness": "low",
+    "emotionality": "low",
+    "adherence_tendency": 0.77,
+    "constraints": [
+      "工作日需要早起坐公交",
+      "周末常有家务安排"
+    ]
+  },
+  "opening_complaint": "我想聊聊睡觉的事，最近醒来注意力不太集中，一直没缓过来。",
+  "clues": [
+    {
+      "reveal_topic": "schedule_regularity",
+      "supports": "P1",
+      "deny_first": false,
+      "content": "一天一个睡觉时间，主要看整理资料什么时候忙完。",
+      "id": "A-032-c1"
+    },
+    {
+      "reveal_topic": "caffeine_alcohol",
+      "supports": "P1",
+      "deny_first": false,
+      "content": "下午还要忙整理资料，浓茶喝到四五点，晚上也不一定停。",
+      "id": "A-032-c2"
+    },
+    {
+      "reveal_topic": "chronotype",
+      "supports": "P4",
+      "deny_first": false,
+      "content": "最近休息日睡得晚，到了该早睡的那晚还没睡意。",
+      "id": "A-032-c3"
+    }
+  ],
+  "prefilled": []
+}

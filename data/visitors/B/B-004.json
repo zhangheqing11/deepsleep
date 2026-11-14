@@ -1,0 +1,226 @@
+{
+  "schema_version": "0.1.0",
+  "id": "B-004",
+  "split": "B",
+  "seed": 789286343,
+  "main_path": "P1",
+  "secondary_path": "P4",
+  "referral": "R2",
+  "crisis": {
+    "level": "none",
+    "phq9_item9": 0,
+    "history": true
+  },
+  "contraindications": [],
+  "indices": {
+    "isi": 20,
+    "phq9": 5,
+    "gad7": 5,
+    "stop_bang": 0,
+    "meq": 53,
+    "dbas16": 4.0,
+    "psas": 28,
+    "screen_min_before_sleep": 15
+  },
+  "diary": [
+    {
+      "day": 1,
+      "bedtime": "22:30",
+      "lights_off": "22:50",
+      "sol_min": 22,
+      "waso_min": 0,
+      "final_wake": "06:20",
+      "risetime": "06:30",
+      "tst_min": 428,
+      "tib_min": 480,
+      "se": 0.8917,
+      "nap_min": 60,
+      "caffeine_after_14": true,
+      "alcohol": false,
+      "screen_in_bed_min": 15
+    },
+    {
+      "day": 2,
+      "bedtime": "23:30",
+      "lights_off": "23:50",
+      "sol_min": 54,
+      "waso_min": 30,
+      "final_wake": "06:20",
+      "risetime": "06:30",
+      "tst_min": 306,
+      "tib_min": 420,
+      "se": 0.7286,
+      "nap_min": 60,
+      "caffeine_after_14": true,
+      "alcohol": false,
+      "screen_in_bed_min": 15
+    },
+    {
+      "day": 3,
+      "bedtime": "23:30",
+      "lights_off": "23:50",
+      "sol_min": 11,
+      "waso_min": 40,
+      "final_wake": "06:20",
+      "risetime": "06:30",
+      "tst_min": 339,
+      "tib_min": 420,
+      "se": 0.8071,
+      "nap_min": 60,
+      "caffeine_after_14": true,
+      "alcohol": false,
+      "screen_in_bed_min": 15
+    },
+    {
+      "day": 4,
+      "bedtime": "23:00",
+      "lights_off": "23:20",
+      "sol_min": 21,
+      "waso_min": 0,
+      "final_wake": "06:20",
+      "risetime": "06:30",
+      "tst_min": 399,
+      "tib_min": 450,
+      "se": 0.8867,
+      "nap_min": 60,
+      "caffeine_after_14": true,
+      "alcohol": false,
+      "screen_in_bed_min": 15
+    },
+    {
+      "day": 5,
+      "bedtime": "23:30",
+      "lights_off": "23:50",
+      "sol_min": 9,
+      "waso_min": 0,
+      "final_wake": "06:20",
+      "risetime": "06:30",
+      "tst_min": 381,
+      "tib_min": 420,
+      "se": 0.9071,
+      "nap_min": 60,
+      "caffeine_after_14": true,
+      "alcohol": false,
+      "screen_in_bed_min": 15
+    },
+    {
+      "day": 6,
+      "bedtime": "23:30",
+      "lights_off": "23:50",
+      "sol_min": 15,
+      "waso_min": 0,
+      "final_wake": "09:20",
+      "risetime": "09:30",
+      "tst_min": 555,
+      "tib_min": 600,
+      "se": 0.925,
+      "nap_min": 60,
+      "caffeine_after_14": true,
+      "alcohol": false,
+      "screen_in_bed_min": 15
+    },
+    {
+      "day": 7,
+      "bedtime": "00:30",
+      "lights_off": "00:50",
+      "sol_min": 21,
+      "waso_min": 27,
+      "final_wake": "09:20",
+      "risetime": "09:30",
+      "tst_min": 462,
+      "tib_min": 540,
+      "se": 0.8556,
+      "nap_min": 60,
+      "caffeine_after_14": true,
+      "alcohol": false,
+      "screen_in_bed_min": 15
+    }
+  ],
+  "persona": {
+    "age": 32,
+    "gender": "other",
+    "occupation": "自由插画师",
+    "expressiveness": "brief",
+    "defensiveness": "mid",
+    "emotionality": "mid",
+    "adherence_tendency": 0.53,
+    "constraints": [
+      "在家接单，交稿时间不固定",
+      "周末常有家务安排"
+    ]
+  },
+  "opening_complaint": "我想聊聊睡觉的事，最近醒来提不起劲，一直没缓过来。",
+  "clues": [
+    {
+      "reveal_topic": "schedule_regularity",
+      "supports": "P1",
+      "deny_first": false,
+      "content": "最近忙着赶画稿，上床没个准点，早晚能差一个多小时。",
+      "id": "B-004-c1"
+    },
+    {
+      "reveal_topic": "caffeine_alcohol",
+      "supports": "P1",
+      "deny_first": false,
+      "content": "我靠咖啡撑下午的精神，有时候喝完已经挺晚了。",
+      "id": "B-004-c2"
+    },
+    {
+      "reveal_topic": "chronotype",
+      "supports": "P4",
+      "deny_first": false,
+      "content": "作息跟着往后挪了一点，尤其休息日过后更难早睡。",
+      "id": "B-004-c3"
+    },
+    {
+      "reveal_topic": "leg_discomfort",
+      "supports": "R2",
+      "deny_first": true,
+      "content": "一躺下小腿里面就酸麻，非得动一下才受得了。",
+      "id": "B-004-c4"
+    },
+    {
+      "reveal_topic": "leg_discomfort",
+      "supports": "R2",
+      "deny_first": false,
+      "content": "起来走几步就舒服，躺回去不动又来了。",
+      "id": "B-004-c5"
+    },
+    {
+      "reveal_topic": "leg_discomfort",
+      "supports": "R2",
+      "deny_first": false,
+      "content": "这个腿的问题主要在晚上，白天很少有。",
+      "id": "B-004-c6"
+    },
+    {
+      "reveal_topic": "self_harm",
+      "supports": "crisis",
+      "content": "大学的时候有一阵想过死，不过已经五年多没有这种念头了。",
+      "deny_first": false,
+      "id": "B-004-c7"
+    }
+  ],
+  "prefilled": [
+    {
+      "scale": "isi",
+      "reported_score": 18,
+      "items": null
+    },
+    {
+      "scale": "phq9",
+      "reported_score": 2,
+      "items": [
+        1,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    }
+  ]
+}

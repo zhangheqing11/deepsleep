@@ -1,0 +1,426 @@
+{
+  "generator_version": "1",
+  "schema_version": "0.1.0",
+  "seed": 20261115,
+  "total": 150,
+  "counts": {
+    "A": 45,
+    "B": 45,
+    "C": 30,
+    "offline": 30
+  },
+  "sampling": "path × referral × defensiveness joint strata; integer quotas; seeded within-stratum draws",
+  "sources": [
+    "domain/path_clues.md",
+    "domain/referral_cues.md",
+    "domain/plan_veto_rules.md",
+    "docs/review-decisions.md",
+    "docs/decision-queue-2.md",
+    "sim/samples.py"
+  ],
+  "limitations": [
+    "模板与指数联合分布为未有文献出处的工程占位，不代表真实人群发生率",
+    "四组共享模板库，不是独立语言来源的外部验证集",
+    "危机原文复用已审定样例；当前危机仅放在 R3，不代表危机只能出现在 R3",
+    "offline 本批为 30 个，尚非 AGENTS.md 所述 200+ 离线大样本"
+  ],
+  "templates": {
+    "semantic_slots": 31,
+    "clue_variants": 93,
+    "approved_crisis_variants": 5,
+    "opening_variants": 6,
+    "persona_profiles": 15
+  },
+  "overall": {
+    "count": 150,
+    "main_path": {
+      "P1": 30,
+      "P2": 30,
+      "P3": 30,
+      "P4": 30,
+      "P5": 30
+    },
+    "referral": {
+      "R0": 90,
+      "R1": 20,
+      "R2": 20,
+      "R3": 20
+    },
+    "defensiveness": {
+      "high": 50,
+      "low": 50,
+      "mid": 50
+    },
+    "strata": {
+      "P1|R0|high": 6,
+      "P1|R0|low": 6,
+      "P1|R0|mid": 6,
+      "P1|R1|high": 1,
+      "P1|R1|low": 1,
+      "P1|R1|mid": 2,
+      "P1|R2|high": 2,
+      "P1|R2|low": 1,
+      "P1|R2|mid": 1,
+      "P1|R3|high": 1,
+      "P1|R3|low": 2,
+      "P1|R3|mid": 1,
+      "P2|R0|high": 6,
+      "P2|R0|low": 6,
+      "P2|R0|mid": 6,
+      "P2|R1|high": 1,
+      "P2|R1|low": 1,
+      "P2|R1|mid": 2,
+      "P2|R2|high": 2,
+      "P2|R2|low": 1,
+      "P2|R2|mid": 1,
+      "P2|R3|high": 1,
+      "P2|R3|low": 2,
+      "P2|R3|mid": 1,
+      "P3|R0|high": 6,
+      "P3|R0|low": 6,
+      "P3|R0|mid": 6,
+      "P3|R1|high": 1,
+      "P3|R1|low": 1,
+      "P3|R1|mid": 2,
+      "P3|R2|high": 2,
+      "P3|R2|low": 1,
+      "P3|R2|mid": 1,
+      "P3|R3|high": 1,
+      "P3|R3|low": 2,
+      "P3|R3|mid": 1,
+      "P4|R0|high": 6,
+      "P4|R0|low": 6,
+      "P4|R0|mid": 6,
+      "P4|R1|high": 1,
+      "P4|R1|low": 2,
+      "P4|R1|mid": 1,
+      "P4|R2|high": 1,
+      "P4|R2|low": 1,
+      "P4|R2|mid": 2,
+      "P4|R3|high": 2,
+      "P4|R3|low": 1,
+      "P4|R3|mid": 1,
+      "P5|R0|high": 6,
+      "P5|R0|low": 6,
+      "P5|R0|mid": 6,
+      "P5|R1|high": 1,
+      "P5|R1|low": 1,
+      "P5|R1|mid": 2,
+      "P5|R2|high": 1,
+      "P5|R2|low": 2,
+      "P5|R2|mid": 1,
+      "P5|R3|high": 2,
+      "P5|R3|low": 1,
+      "P5|R3|mid": 1
+    },
+    "prefilled": 60,
+    "prefilled_by_defensiveness": {
+      "high": 20,
+      "low": 20,
+      "mid": 20
+    },
+    "underreported": 40,
+    "history": 10,
+    "crisis": {
+      "active": 4,
+      "none": 142,
+      "passive": 4
+    },
+    "contraindications": {
+      "bipolar": 4,
+      "drowsy_driving_job": 4,
+      "untreated_osa": 20
+    },
+    "near_miss": 30
+  },
+  "splits": {
+    "A": {
+      "count": 45,
+      "main_path": {
+        "P1": 9,
+        "P2": 9,
+        "P3": 9,
+        "P4": 9,
+        "P5": 9
+      },
+      "referral": {
+        "R0": 27,
+        "R1": 6,
+        "R2": 6,
+        "R3": 6
+      },
+      "defensiveness": {
+        "high": 15,
+        "low": 15,
+        "mid": 15
+      },
+      "strata": {
+        "P1|R0|high": 1,
+        "P1|R0|low": 1,
+        "P1|R0|mid": 2,
+        "P1|R1|high": 1,
+        "P1|R1|mid": 1,
+        "P1|R2|high": 1,
+        "P1|R2|low": 1,
+        "P1|R3|low": 1,
+        "P2|R0|high": 2,
+        "P2|R0|low": 2,
+        "P2|R0|mid": 1,
+        "P2|R1|mid": 1,
+        "P2|R2|high": 1,
+        "P2|R3|low": 1,
+        "P2|R3|mid": 1,
+        "P3|R0|high": 2,
+        "P3|R0|low": 2,
+        "P3|R0|mid": 2,
+        "P3|R1|mid": 1,
+        "P3|R2|high": 1,
+        "P3|R3|low": 1,
+        "P4|R0|high": 2,
+        "P4|R0|low": 2,
+        "P4|R0|mid": 2,
+        "P4|R1|low": 1,
+        "P4|R2|mid": 1,
+        "P4|R3|high": 1,
+        "P5|R0|high": 2,
+        "P5|R0|low": 2,
+        "P5|R0|mid": 2,
+        "P5|R1|mid": 1,
+        "P5|R2|low": 1,
+        "P5|R3|high": 1
+      },
+      "prefilled": 18,
+      "prefilled_by_defensiveness": {
+        "high": 6,
+        "low": 6,
+        "mid": 6
+      },
+      "underreported": 12,
+      "history": 3,
+      "crisis": {
+        "active": 1,
+        "none": 43,
+        "passive": 1
+      },
+      "contraindications": {
+        "bipolar": 1,
+        "drowsy_driving_job": 1,
+        "untreated_osa": 6
+      },
+      "near_miss": 9
+    },
+    "B": {
+      "count": 45,
+      "main_path": {
+        "P1": 9,
+        "P2": 9,
+        "P3": 9,
+        "P4": 9,
+        "P5": 9
+      },
+      "referral": {
+        "R0": 27,
+        "R1": 6,
+        "R2": 6,
+        "R3": 6
+      },
+      "defensiveness": {
+        "high": 15,
+        "low": 15,
+        "mid": 15
+      },
+      "strata": {
+        "P1|R0|high": 2,
+        "P1|R0|low": 1,
+        "P1|R0|mid": 2,
+        "P1|R1|low": 1,
+        "P1|R2|mid": 1,
+        "P1|R3|high": 1,
+        "P1|R3|low": 1,
+        "P2|R0|high": 1,
+        "P2|R0|low": 2,
+        "P2|R0|mid": 1,
+        "P2|R1|low": 1,
+        "P2|R1|mid": 1,
+        "P2|R2|high": 1,
+        "P2|R2|mid": 1,
+        "P2|R3|high": 1,
+        "P3|R0|high": 2,
+        "P3|R0|low": 2,
+        "P3|R0|mid": 2,
+        "P3|R1|low": 1,
+        "P3|R2|mid": 1,
+        "P3|R3|high": 1,
+        "P4|R0|high": 2,
+        "P4|R0|low": 2,
+        "P4|R0|mid": 2,
+        "P4|R1|high": 1,
+        "P4|R2|low": 1,
+        "P4|R3|mid": 1,
+        "P5|R0|high": 2,
+        "P5|R0|low": 2,
+        "P5|R0|mid": 2,
+        "P5|R1|low": 1,
+        "P5|R2|high": 1,
+        "P5|R3|mid": 1
+      },
+      "prefilled": 18,
+      "prefilled_by_defensiveness": {
+        "high": 6,
+        "low": 6,
+        "mid": 6
+      },
+      "underreported": 12,
+      "history": 3,
+      "crisis": {
+        "active": 1,
+        "none": 43,
+        "passive": 1
+      },
+      "contraindications": {
+        "bipolar": 1,
+        "drowsy_driving_job": 1,
+        "untreated_osa": 6
+      },
+      "near_miss": 9
+    },
+    "C": {
+      "count": 30,
+      "main_path": {
+        "P1": 6,
+        "P2": 6,
+        "P3": 6,
+        "P4": 6,
+        "P5": 6
+      },
+      "referral": {
+        "R0": 18,
+        "R1": 4,
+        "R2": 4,
+        "R3": 4
+      },
+      "defensiveness": {
+        "high": 10,
+        "low": 10,
+        "mid": 10
+      },
+      "strata": {
+        "P1|R0|high": 2,
+        "P1|R0|low": 2,
+        "P1|R0|mid": 1,
+        "P1|R3|mid": 1,
+        "P2|R0|high": 1,
+        "P2|R0|low": 1,
+        "P2|R0|mid": 2,
+        "P2|R1|high": 1,
+        "P2|R2|low": 1,
+        "P3|R0|high": 1,
+        "P3|R0|low": 1,
+        "P3|R0|mid": 1,
+        "P3|R1|high": 1,
+        "P3|R2|low": 1,
+        "P3|R3|mid": 1,
+        "P4|R0|high": 1,
+        "P4|R0|low": 1,
+        "P4|R0|mid": 1,
+        "P4|R1|mid": 1,
+        "P4|R2|high": 1,
+        "P4|R3|low": 1,
+        "P5|R0|high": 1,
+        "P5|R0|low": 1,
+        "P5|R0|mid": 1,
+        "P5|R1|high": 1,
+        "P5|R2|mid": 1,
+        "P5|R3|low": 1
+      },
+      "prefilled": 12,
+      "prefilled_by_defensiveness": {
+        "high": 4,
+        "low": 4,
+        "mid": 4
+      },
+      "underreported": 8,
+      "history": 2,
+      "crisis": {
+        "active": 1,
+        "none": 28,
+        "passive": 1
+      },
+      "contraindications": {
+        "bipolar": 1,
+        "drowsy_driving_job": 1,
+        "untreated_osa": 4
+      },
+      "near_miss": 6
+    },
+    "offline": {
+      "count": 30,
+      "main_path": {
+        "P1": 6,
+        "P2": 6,
+        "P3": 6,
+        "P4": 6,
+        "P5": 6
+      },
+      "referral": {
+        "R0": 18,
+        "R1": 4,
+        "R2": 4,
+        "R3": 4
+      },
+      "defensiveness": {
+        "high": 10,
+        "low": 10,
+        "mid": 10
+      },
+      "strata": {
+        "P1|R0|high": 1,
+        "P1|R0|low": 2,
+        "P1|R0|mid": 1,
+        "P1|R1|mid": 1,
+        "P1|R2|high": 1,
+        "P2|R0|high": 2,
+        "P2|R0|low": 1,
+        "P2|R0|mid": 2,
+        "P2|R3|low": 1,
+        "P3|R0|high": 1,
+        "P3|R0|low": 1,
+        "P3|R0|mid": 1,
+        "P3|R1|mid": 1,
+        "P3|R2|high": 1,
+        "P3|R3|low": 1,
+        "P4|R0|high": 1,
+        "P4|R0|low": 1,
+        "P4|R0|mid": 1,
+        "P4|R1|low": 1,
+        "P4|R2|mid": 1,
+        "P4|R3|high": 1,
+        "P5|R0|high": 1,
+        "P5|R0|low": 1,
+        "P5|R0|mid": 1,
+        "P5|R1|mid": 1,
+        "P5|R2|low": 1,
+        "P5|R3|high": 1
+      },
+      "prefilled": 12,
+      "prefilled_by_defensiveness": {
+        "high": 4,
+        "low": 4,
+        "mid": 4
+      },
+      "underreported": 8,
+      "history": 2,
+      "crisis": {
+        "active": 1,
+        "none": 28,
+        "passive": 1
+      },
+      "contraindications": {
+        "bipolar": 1,
+        "drowsy_driving_job": 1,
+        "untreated_osa": 4
+      },
+      "near_miss": 6
+    }
+  }
+}
