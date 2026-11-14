@@ -1,11 +1,11 @@
 {
-  "purpose": "Offline development integration only; unmerged upstream snapshots",
+  "purpose": "Offline development integration only; pinned upstream main snapshot",
   "engine": {
-    "ref": "9f843420312521a33b4694384fe3f49ca6534980",
+    "ref": "a58a81570db56b4a4b94b07ae0dcc6589877d836",
     "paths": ["engine", "safety", "domain"]
   },
   "simulation": {
-    "ref": "8081dbc1cf70cc241aa870990e89a0b273e13a8c",
+    "ref": "a58a81570db56b4a4b94b07ae0dcc6589877d836",
     "paths": ["sim", "scoring"]
   }
 }

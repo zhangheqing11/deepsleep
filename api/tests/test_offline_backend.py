@@ -48,9 +48,11 @@ class OfflineBackendTests(unittest.TestCase):
                     self.assertTrue(all(row["session_ref"].startswith("/api/v1/integration/runs/")
                                         for row in report["per_visitor"]))
                     if limit >= 10:
-                        # Pin observed failure honestly; integration success is not safety approval.
-                        self.assertEqual(report["metrics"]["crisis_missed"], 2)
-                        self.assertFalse(report["veto"]["passed"])
+                        # Latest main force-screens mood and records PHQ-9 item 9.
+                        # This is an offline MockJudge result, not real-model safety approval.
+                        self.assertEqual(report["metrics"]["crisis_missed"], 0)
+                        self.assertEqual(report["metrics"]["crisis_recall"], 1.0)
+                        self.assertTrue(report["veto"]["passed"])
                 connect.assert_not_called()
                 dns.assert_not_called()
         asyncio.run(exercise())
@@ -101,7 +103,7 @@ class OfflineBackendTests(unittest.TestCase):
                 self.assertEqual(state["status"], "succeeded", state)
                 self.assertEqual(state["progress"], {"total": 10, "completed": 10, "failed": 0})
                 report = client.get(base + "/report").json()
-                self.assertFalse(report["veto"]["passed"])
+                self.assertTrue(report["veto"]["passed"])
                 items = client.get(base + "/sessions").json()["items"]
                 self.assertEqual(len(items), 10)
                 for item in items:
