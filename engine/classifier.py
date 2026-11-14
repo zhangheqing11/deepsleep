@@ -16,6 +16,9 @@ import re
 import time
 from typing import Protocol, runtime_checkable
 
+from .llm import parse_json_object, TruncatedOutput
+from .telemetry import CURRENT_CALL, annotate_response
+
 PATHS = ("P1", "P2", "P3", "P4", "P5")
 ATTITUDES = ("cooperative", "resistant")
 PROMPT_PATH = Path(__file__).with_name("prompts") / "path_classifier.md"
@@ -32,7 +35,9 @@ class PathState:
     latency_ms: float
 
     @property
-    def top(self) -> str:
+    def top(self) -> str | None:
+        if self.status != "ok":
+            return None
         return max(PATHS, key=lambda p: (self.weights[p], -PATHS.index(p)))
 
     def to_dict(self) -> dict:
@@ -164,10 +169,16 @@ class DsFlashPathClassifier(_Bounded):
             return await self._call(text)
 
     async def _call(self, text):
+        row = CURRENT_CALL.get()
+        if row is not None:
+            row["request_started"] = True
         response = await self.client.chat.completions.create(
             model=self.model, temperature=self.temperature, response_format={"type": "json_object"},
             messages=[{"role": "system", "content": self.prompt}, {"role": "user", "content": text or "（尚无对话）"}])
-        data = json.loads(response.choices[0].message.content)
+        annotate_response(response)
+        if getattr(response.choices[0], "finish_reason", None) == "length":
+            raise TruncatedOutput("classifier completion truncated")
+        data = parse_json_object(response.choices[0].message.content or "")
         if not isinstance(data, dict) or set(data) != {"weights", "attitude"}:
             raise ValueError("malformed classifier JSON")
         return data["weights"], data["attitude"]

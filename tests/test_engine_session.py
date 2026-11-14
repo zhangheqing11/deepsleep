@@ -492,9 +492,10 @@ def test_invalid_agent_output_is_retried():
     assert session["status"] == "completed" and any(not c["ok"] for c in trace["llm_calls"])
 
 
-def test_persistent_llm_failure_yields_valid_error_session():
-    session, _ = run(deps_for(llm=ScriptedLLM(lambda s, m: {"action": "dance"})), visitor())
-    assert session["status"] == "error" and "strategy failed" in session["error"] and session["plan"] is None
+def test_persistent_llm_failure_uses_frozen_fallback():
+    session, trace = run(deps_for(llm=ScriptedLLM(lambda s, m: {"action": "dance"})), visitor())
+    assert session["status"] == "completed" and session["plan"] is not None
+    assert any(f["task"] == "strategy" for f in trace["fallbacks"])
     assert_valid(session, visitor())
 
 

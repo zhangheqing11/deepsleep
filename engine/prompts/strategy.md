@@ -15,3 +15,5 @@
 {"action": "tool", "tool": "screen_mood" | "screen_osa", "strategy": {"type": "screen", "intent": "..."}}
 {"action": "end_round", "strategy": {"type": "end", "intent": "..."}}
 话题取值：schedule_regularity weekend_catchup caffeine_alcohol bed_wakefulness sleep_elsewhere worry_rumination fear_of_sleeplessness chronotype shift_work screen_in_bed revenge_bedtime snoring_breathing daytime_sleepiness leg_discomfort mood anxiety self_harm medication life_constraints health_conditions
+
+只返回一个完整 JSON 对象，不要 Markdown 围栏、注释、推理或 JSON 外文字。字段用双引号，空值写 null（不要字符串 "null"）；每个文本字段最多 120 字，列表最多 5 项。

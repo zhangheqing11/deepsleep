@@ -10,9 +10,15 @@ import os
 import re
 from typing import Protocol, runtime_checkable
 
+from .telemetry import CURRENT_CALL, annotate_response
+
 
 class LLMError(RuntimeError):
     pass
+
+
+class TruncatedOutput(LLMError):
+    """The provider exhausted its output budget, even if the prefix parses."""
 
 
 @runtime_checkable
@@ -42,13 +48,24 @@ class DsFlashClient:
 
     async def complete_json(self, messages: list[dict], *, task: str, state: dict) -> dict:
         kwargs = dict(model=self.model, messages=messages, temperature=self.settings["temperature"],
-                      top_p=self.settings["top_p"], max_tokens=self.settings["max_tokens"])
+                      top_p=self.settings["top_p"], max_tokens=state.get("_max_tokens", self.token_limit(task)))
+        row = CURRENT_CALL.get()
+        if row is not None:
+            row["max_tokens"] = kwargs["max_tokens"]
         if self.settings.get("response_format") == "json_object":
             kwargs["response_format"] = {"type": "json_object"}
         async with self._limit:
+            if row is not None:
+                row["request_started"] = True
             response = await asyncio.wait_for(self.client.chat.completions.create(**kwargs),
                                               self.settings["timeout_s"])
+        annotate_response(response)
+        if getattr(response.choices[0], "finish_reason", None) == "length":
+            raise TruncatedOutput("completion reached max_tokens")
         return parse_json_object(response.choices[0].message.content or "")
+
+    def token_limit(self, task):
+        return self.settings.get("max_tokens_by_task", {}).get(task, self.settings["max_tokens"])
 
     async def aclose(self):
         close = getattr(self.client, "close", None)
@@ -58,7 +75,7 @@ class DsFlashClient:
 
 def parse_json_object(text: str) -> dict:
     text = text.strip()
-    fenced = re.search(r"```(?:json)?\s*(\{.*\})\s*```", text, re.DOTALL)
+    fenced = re.fullmatch(r"```(?:json)?\s*([\s\S]*?)\s*```", text, re.IGNORECASE)
     if fenced:
         text = fenced.group(1)
     try:

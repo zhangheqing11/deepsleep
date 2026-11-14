@@ -19,7 +19,7 @@ While the crisis judge runs, the whole loop-1 pipeline for the next action runs 
   any safety event discards it.
 """
 import asyncio
-from dataclasses import dataclass, field
+from dataclasses import asdict, dataclass, field
 import json
 import time
 
@@ -29,7 +29,9 @@ from safety.rules import LEVEL_RANK
 
 from .classifier import PATHS, PathClassifier, PathState
 from .interfaces import PlanOutcomeModel, ScreeningProvider, VisitorReply, VisitorSim
-from .llm import AgentLLM, LLMError
+from .llm import AgentLLM, LLMError, TruncatedOutput
+from .mock_agent import MockAgentLLM
+from .telemetry import CALL_SCOPE, record_call
 from .playbook import Playbook, strip_locks
 from .topics import TOPIC_PATTERNS, tag_topics
 
@@ -84,6 +86,8 @@ class _Round:
     level: str = "none"
     path_state: PathState | None = None
     referral: str | None = None
+    path_pred: str | None = None
+    path_confidence: float | None = None
 
 
 @dataclass(frozen=True)
@@ -118,10 +122,14 @@ class SessionRunner:
         self.deferred: list[str] = []
         self.last_target: str | None = None
         self.sim_memory: dict = {}
+        self._last_path: PathState | None = None
+        self._tasks: set[asyncio.Task] = set()
+        self._scope_number = 0
+        self._discarded_scopes: set[int] = set()
         self._cls_cache: tuple[int, PathState] | None = None
         self.trace = {"visitor_id": visitor["id"], "pipeline": self._pipeline_name(),
                       "classifier": getattr(deps.classifier, "provider", type(deps.classifier).__name__),
-                      "llm_calls": [], "path_probs": [], "strategies": [], "history_checks": [], "vetoes": [],
+                      "fallbacks": [], "llm_calls": [], "path_probs": [], "strategies": [], "history_checks": [], "vetoes": [],
                       "plans": {}, "memory": {}, "round1_outcome": None, "selection": None,
                       "speculation": {"used": 0, "discarded": 0, "discarded_calls": 0}, "ignored_events": []}
 
@@ -142,6 +150,23 @@ class SessionRunner:
                 status = "crisis_exit"
         except Exception as exc:  # contract records the failure instead of crashing the run
             status, error = "error", f"{type(exc).__name__}: {exc}"
+        # Drain every speculative task before returning telemetry, also on session failure.
+        for task in self._tasks:
+            if not task.done():
+                self._discarded_scopes.add(task.engine_scope)
+                task.cancel()
+        if self._tasks:
+            await asyncio.gather(*self._tasks, return_exceptions=True)
+        for call in self.trace["llm_calls"]:
+            call["discarded"] = call["scope"] in self._discarded_scopes
+        self.trace["speculation"]["discarded_calls"] = sum(c["discarded"] for c in self.trace["llm_calls"])
+        for fallback in self.trace["fallbacks"]:
+            fallback["discarded"] = fallback["scope"] in self._discarded_scopes
+        self.trace["all_judge_results"] = [asdict(r) for r in self.safety_state.judge_results]
+        self.trace["status"] = status
+        self.trace["completed"] = status == "completed"
+        self.trace["error_count"] = int(status == "error")
+        self.trace["unknown_path_rounds"] = [r.number for r in self.rounds if r.path_pred is None]
         self.trace["duration_s"] = round(time.perf_counter() - started, 3)
         self.trace["judge_failures"] = self.safety_state.judge_failures
         self.trace["latency_ms"] = self._latency_summary()
@@ -182,7 +207,7 @@ class SessionRunner:
                 continue
             prefetched = await self._agent_says(step, next_left=cap - actions)
         if prefetched is not None:
-            prefetched.cancel()
+            await self._discard(prefetched)
         if not self.crisis:
             await self._flush_history_check()
         await self._close_round()
@@ -190,7 +215,13 @@ class SessionRunner:
     async def _close_round(self) -> None:
         rnd = self.current
         rnd.path_state = await self._classify_current()
-        self.trace["path_probs"].append({"round": rnd.number, "final": True, **rnd.path_state.to_dict()})
+        effective = rnd.path_state if rnd.path_state.status == "ok" else self._last_path
+        rnd.path_pred = effective.top if effective else None
+        rnd.path_confidence = round(effective.weights[effective.top], 4) if effective else None
+        self.trace["path_probs"].append({"round": rnd.number, "final": True, **rnd.path_state.to_dict(),
+                                         "path_pred": rnd.path_pred or "unknown",
+                                         "prediction_source": "current" if rnd.path_state.status == "ok" else
+                                         "previous_success" if effective else "unknown"})
         memory = await self._ask("memory", self._messages("memory", self._snapshot(0)), self._state("memory"),
                                  _valid_memory)
         self.memory[rnd.number] = memory
@@ -228,30 +259,28 @@ class SessionRunner:
                          self.last_target)
 
     async def _agent_step(self, snap: _Snapshot) -> dict:
-        """Classifier -> strategy -> response (or merged). Nothing is committed here (may be speculative)."""
-        calls: list = []
+        """Classifier -> strategy -> response. Only telemetry is committed here; the action may be discarded."""
         cls = await self._classify(snap.entries)
         if self.deps.config["pipeline"]["merge_strategy_response"]:
             result = await self._ask("turn", self._messages("turn", snap, cls), self._state("turn", snap, cls),
-                                     _valid_turn, log=calls)
+                                     _valid_turn)
             strategy = result["strategy"]
         else:
             result = await self._ask("strategy", self._messages("strategy", snap, cls),
-                                     self._state("strategy", snap, cls), _valid_strategy, log=calls)
+                                     self._state("strategy", snap, cls), _valid_strategy)
             strategy = result["strategy"]
             if result["action"] == "say":
                 response = await self._ask("response", self._messages("response", snap, cls, strategy=strategy),
-                                           self._state("response", snap, cls, strategy=strategy), _valid_response,
-                                           log=calls)
+                                           self._state("response", snap, cls, strategy=strategy), _valid_response)
                 result = {**result, **response}
-        return {**result, "strategy": strategy, "classification": cls, "calls": calls, "snapshot": snap}
+        return {**result, "strategy": strategy, "classification": cls, "snapshot": snap}
 
     def _commit_step(self, step: dict) -> None:
         snap, cls = step["snapshot"], step["classification"]
         last_turn = next((e["turn"] for e in reversed(snap.entries) if e["speaker"] == "visitor"
                           and e["round"] == snap.round), 0)
         self.trace["path_probs"].append({"round": snap.round, "turn": last_turn, "final": False, **cls.to_dict()})
-        self.trace["llm_calls"].extend(step["calls"])
+
         strategy = step["strategy"]
         self.trace["strategies"].append({"round": snap.round, "action": step["action"], **strategy})
         if strategy.get("revisit_later") and strategy["revisit_later"] not in self.deferred:
@@ -265,15 +294,16 @@ class SessionRunner:
         key = len(entries)
         if self._cls_cache and self._cls_cache[0] == key:
             return self._cls_cache[1]
-        state = await self.deps.classifier.classify([dict(e) for e in entries])
+        with record_call(self.trace["llm_calls"], "classifier", "classify") as row:
+            state = await self.deps.classifier.classify([dict(e) for e in entries])
+        row.update(ok=state.status == "ok", status=state.status)
         self._cls_cache = (key, state)
+        if state.status == "ok":
+            self._last_path = state
         return state
 
     async def _classify_current(self) -> PathState:
-        state = await self._classify(tuple(self.entries))
-        self.trace["llm_calls"].append({"agent": "classifier", "task": "classify", "ok": state.status == "ok",
-                                        "status": state.status, "ms": state.latency_ms})
-        return state
+        return await self._classify(tuple(self.entries))
 
     async def _agent_says(self, step: dict, *, next_left: int):
         step = await self._vet_text(step)
@@ -335,29 +365,38 @@ class SessionRunner:
             if topic not in self.current.topics:
                 self.current.topics.append(topic)
         self._add("visitor", reply.text, reply.revealed_clue_ids)
-        spec = asyncio.ensure_future(self._agent_step(self._snapshot(next_left))) if speculate else None
+        spec = None
+        if speculate:
+            self._scope_number += 1
+            token = CALL_SCOPE.set(self._scope_number)
+            try:
+                spec = asyncio.create_task(self._agent_step(self._snapshot(next_left)))
+            finally:
+                CALL_SCOPE.reset(token)
+            spec.engine_scope = self._scope_number
+            self._tasks.add(spec)
         assess = asyncio.ensure_future(self.deps.safety.assess_text(reply.text, self.current.number, self.turn,
                                                                     self.safety_state))
         try:
             event = await assess
         except BaseException:
             if spec:
-                spec.cancel()
+                await self._discard(spec)
             raise
         if spec is not None and event is not None:
-            self._discard(spec)
+            await self._discard(spec)
             spec = None
         await self._handle_event(event)
         if spec is not None and self.crisis:
-            self._discard(spec)
+            await self._discard(spec)
             spec = None
         return spec
 
-    def _discard(self, task: asyncio.Future) -> None:
+    async def _discard(self, task: asyncio.Task) -> None:
         self.trace["speculation"]["discarded"] += 1
-        if task.done() and not task.cancelled() and task.exception() is None:
-            self.trace["speculation"]["discarded_calls"] += len(task.result()["calls"]) + 1
+        self._discarded_scopes.add(task.engine_scope)
         task.cancel()
+        await asyncio.gather(task, return_exceptions=True)
 
     async def _handle_event(self, event) -> None:
         if event is None:
@@ -370,11 +409,21 @@ class SessionRunner:
             return
         self.safety_events.append(event.to_dict())
         if event.action == "crisis_protocol":
-            self._add("safety", self.deps.safety.script_for("crisis_protocol"))
+            self._add("safety", self._event_script(event))
             self.crisis = True
         elif event.action == "safety_check":
-            self._add("safety", self.deps.safety.script_for("safety_check"))
-            await self._visitor_speaks(speculate=False)
+            script = self._event_script(event)
+            if script:
+                self._add("safety", script)
+                await self._visitor_speaks(speculate=False)
+
+    def _event_script(self, event):
+        helper = getattr(self.deps.safety, "script_for_event", None)
+        if helper is not None:
+            return helper(event, self.safety_state)
+        # Legacy S1 exports: no dedup API; trace the compatibility path explicitly.
+        self.trace["legacy_safety_api"] = True
+        return self.deps.safety.script_for(event.action)
 
     async def _run_tool(self, tool: str) -> None:
         result = self.deps.screening.screen(self.visitor, tool)
@@ -527,42 +576,61 @@ class SessionRunner:
             "classification": cls.to_dict() if cls else None,
             "asked_topics": list(snap.asked), "deferred_topics": list(snap.deferred), "last_target": snap.last_target,
             "strategy": strategy,
-            "path_top": rnd.path_state.top if rnd.path_state else "P1",
+            "path_top": rnd.path_pred or "unknown",
             "referral": rnd.referral or "R0",
             "round1_outcome": self.outcome,
         }
 
     # ------------------------------------------------------------------ LLM calls
 
-    async def _ask(self, task: str, messages: list[dict], state: dict, validate, *, log: list | None = None) -> dict:
-        log = self.trace["llm_calls"] if log is None else log
+    async def _ask(self, task: str, messages: list[dict], state: dict, validate) -> dict:
         retries = self.deps.config["agent_llm"]["max_retries"]
-        last = None
-        for attempt in range(retries + 1):
-            started = time.perf_counter()
+        truncation_retried = False
+        attempt, failures = 0, 0
+        request_state = dict(state)
+        while True:
             try:
-                result = await self.deps.llm.complete_json(messages, task=task, state=state)
-                validate(result)
+                with record_call(self.trace["llm_calls"], task, task, attempt=attempt) as row:
+                    row["phase"] = "request_and_parse"
+                    result = await self.deps.llm.complete_json(messages, task=task, state=request_state)
+                    row["output"] = result
+                    row["phase"] = "validation"
+                    validate(result)
+                return result
             except asyncio.CancelledError:
                 raise
-            except Exception as exc:
-                last = exc
-                log.append({"agent": task, "task": task, "attempt": attempt, "ok": False,
-                            "error": f"{type(exc).__name__}: {exc}",
-                            "ms": round((time.perf_counter() - started) * 1000, 1)})
-                continue
-            log.append({"agent": task, "task": task, "attempt": attempt, "ok": True, "output": result,
-                        "ms": round((time.perf_counter() - started) * 1000, 1)})
-            return result
-        raise EngineError(f"agent {task} failed after {retries + 1} attempts: {last}")
+            except TruncatedOutput:
+                if truncation_retried:
+                    break
+                settings = self.deps.config["agent_llm"]
+                limit = settings.get("max_tokens_by_task", {}).get(task, settings["max_tokens"])
+                request_state["_max_tokens"] = limit * settings.get("truncation_retry_multiplier", 2)
+                truncation_retried = True
+            except Exception:
+                if truncation_retried or failures >= retries:
+                    break
+                failures += 1
+            attempt += 1
+        # Frozen deterministic policy only sees the same public state as the agent.
+        fallback_state = dict(state)
+        if fallback_state["path_top"] == "unknown":
+            fallback_state["path_top"] = "P1"  # generic plan only; never a classification
+        result = await MockAgentLLM().complete_json(messages, task=task, state=fallback_state)
+        if task == "memory":
+            result["summary"] = "摘要生成失败；后续以原始会谈记录为准。"
+            result["referral_reason"] = "固定规则回退"
+            if result["referral"] == "R0":
+                result["referral"] = next((r.referral for r in reversed(self.rounds) if r.referral), "R0")
+        validate(result)
+        self.trace["fallbacks"].append({"round": state["round"], "task": task,
+                                        "reason": "attempts_exhausted", "attempts": attempt + 1,
+                                        "scope": CALL_SCOPE.get()})
+        return result
 
     def _latency_summary(self) -> dict:
         samples: dict[str, list] = {}
         for call in self.trace["llm_calls"]:
             samples.setdefault(call["agent"], []).append(call["ms"])
-        for row in self.trace["path_probs"]:
-            if not row["final"]:
-                samples.setdefault("classifier", []).append(row["latency_ms"])
         summary = {}
         for agent, values in samples.items():
             ordered = sorted(values)
@@ -602,13 +670,10 @@ class SessionRunner:
     def _session(self, status: str, error: str | None) -> dict:
         rounds = []
         for rnd in self.rounds or [_Round(1)]:
-            state, referral = rnd.path_state, rnd.referral
-            if state is None:
-                # Only reachable on status=error (or the mid-session snapshot given to f_eval): placeholders keep
-                # the record schema-valid (contract has no nullable path_pred); error sessions count as failures.
-                path, confidence = "P1", None
-            else:
-                path, confidence = state.top, round(state.weights[state.top], 4)
+            referral = rnd.referral
+            # Contract cannot encode unknown; confidence=null and trace carry this distinction.
+            # engine.reporting excludes these records, and all error sessions, from scored cohorts.
+            path, confidence = rnd.path_pred or "P1", rnd.path_confidence
             rounds.append({"round": rnd.number, "transcript": list(rnd.transcript), "asked_topics": list(rnd.topics),
                            "path_pred": path, "path_confidence": confidence,
                            "referral_pred": referral or "R0", "crisis_level": rnd.level})
@@ -619,7 +684,11 @@ class SessionRunner:
             "run_id": self.run_id,
             "visitor_id": self.visitor["id"],
             "playbook_version": self.deps.playbook.version,
-            "models": {"agent": self.deps.llm.model_name, "visitor": self.deps.sim.model_name},
+            "models": {"agent": self.deps.llm.model_name + (
+                "(fallback:" + ",".join(sorted({f["task"] for f in self.trace["fallbacks"]
+                                               if f["scope"] not in self._discarded_scopes})) + ")"
+                if any(f["scope"] not in self._discarded_scopes for f in self.trace["fallbacks"]) else ""),
+                       "visitor": self.deps.sim.model_name},
             "status": status,
             "error": error,
             "rounds": rounds,

@@ -21,6 +21,7 @@ from .config import ROOT, load_config, load_dotenv
 from .llm import make_agent_llm
 from .playbook import load_playbook
 from .session import EngineDeps, SessionRunner
+from .reporting import build_report, summarize
 from .stubs import IndexScreening, MockVisitorSim, StubOutcomeModel
 
 PROMPTS = ("boundaries", "strategy", "response", "turn_merged", "memory", "plan", "select")
@@ -84,6 +85,7 @@ def main(argv=None) -> int:
     parser.add_argument("--sim", help="module:factory returning a VisitorSim (default: engine.stubs mock)")
     parser.add_argument("--screening", help="module:factory returning a ScreeningProvider")
     parser.add_argument("--outcome", help="module:factory returning a PlanOutcomeModel (4-week model)")
+    parser.add_argument("--scorer", help="module:function producing run_report (e.g. scoring.score:score_run)")
     parser.add_argument("--mock", action="store_true", help="force the mock agent LLM and mock path classifier")
     parser.add_argument("--merged", action="store_true", help="merge strategy + response into one call")
     args = parser.parse_args(argv)
@@ -109,6 +111,21 @@ def main(argv=None) -> int:
         (out / "sessions" / name).write_text(json.dumps(session, ensure_ascii=False, indent=2), encoding="utf-8")
         (out / "trace" / name).write_text(json.dumps(trace, ensure_ascii=False, indent=2, default=str),
                                           encoding="utf-8")
+    summary = summarize(results)
+    if args.scorer:
+        module, _, name = args.scorer.partition(":")
+        report, summary = build_report({v["id"]: v for v in visitors}, results,
+            scorer=getattr(importlib.import_module(module), name), run_id=args.run_id,
+            label="S3 会谈", role="validation", split="sample", playbook_version=args.playbook_version,
+            models={"agent": deps.llm.model_name, "visitor": deps.sim.model_name,
+                    "judge": getattr(deps.safety.judge, "provider", "unknown")},
+            duration_s=time.perf_counter() - started,
+            session_refs={v["id"]: f'sessions/{v["id"]}.json' for v in visitors})
+        if report is None:
+            (out / "run_report.json").unlink(missing_ok=True)
+        else:
+            (out / "run_report.json").write_text(json.dumps(report, ensure_ascii=False, indent=2), encoding="utf-8")
+    (out / "summary.json").write_text(json.dumps(summary, ensure_ascii=False, indent=2), encoding="utf-8")
     statuses = {}
     for session, _ in results:
         statuses[session["status"]] = statuses.get(session["status"], 0) + 1

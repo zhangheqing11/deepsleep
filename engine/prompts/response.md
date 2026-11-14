@@ -5,3 +5,5 @@
 
 只输出 JSON：{"text": "<对来访说的话>", "acts": [<本句包含的行为>]}
 acts 只能取：goal_setting（一起定目标）、reflection（复述或反映来访的话）、emotion_response（回应情绪）、rationale_explained（解释建议的理由）、lecturing（说教）、premature_advice（信息不足就给建议）。如实标注。
+
+只返回一个完整 JSON 对象，不要 Markdown 围栏、注释、推理或 JSON 外文字。字段用双引号，空值写 null（不要字符串 "null"）；每个文本字段最多 120 字，列表最多 5 项。

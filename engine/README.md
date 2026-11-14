@@ -8,7 +8,7 @@
 ```
 
 输出 `var/runs/<run_id>/sessions/<visitor_id>.json`（契约）和 `trace/<visitor_id>.json`（调试用，不是契约：
-LLM 原始输出、重试、否决记录、history 核验结果、被丢弃的 action=none 安全事件、推测调用命中数）。
+LLM 已解析输出、重试、否决记录、history 核验结果、被丢弃的 action=none 安全事件、推测调用命中数）。
 
 ## 架构（按 TheraMind 第 3 节改造，心理学同学 11/14 拍板）
 
@@ -69,3 +69,18 @@ LLM 原始输出、重试、否决记录、history 核验结果、被丢弃的 a
 
 `PlanOutcomeModel.simulate(visitor, plan, context)` 返回 `{isi_week[5], isi_change, adherence, responder}`（可附加字段）；
 引擎同时把它放进 `memory["round1_outcome"]`，模拟来访第 2 轮可据此讲这 4 周的情况。
+
+## S3 fix1：真实输出、降级与统计口径（2026-11-14）
+
+- JSON 模式原本已启用。真实 deepseek-flash 在 800 token 上限下返回 `finish_reason=length`；推理 token 也消耗这一上限。现在按子智能体设置上限（plan 3200，strategy 1600，turn 2200，response/select 1200，memory 1800），先剥离完整 JSON 围栏再解析。
+- `length` 不接受部分结果，即使部分结果可以解析；只用两倍上限重试一次。重试仍失败就降级，不再启动另一串解析重试。其他请求/结构错误仍遵循冻结的 `max_retries`。
+- 所有子智能体耗尽尝试后使用现有确定性 mock policy 作为固定回退；plan 回退不包含 sleep_restriction，仍经过原处方否决检查。memory 回退不伪造摘要，并保留上一轮已识别的转介。回退记录位于 trace.fallbacks；实际采用的回退任务也标在 session.models.agent 的 `(fallback:...)` 后缀。这里的 completed 表示流程完成，不表示模型全程成功。
+- trace.llm_calls 在调用开始时落记录，包含失败/取消/被丢弃的推测调用。`finish_reason`、`truncated`、`max_tokens`、usage 由 agent/classifier 的 OpenAI 响应采集。未收到响应或 mock 时原因是 null；不推断为 stop。`request_started` 区别已发起请求与等待并发额度时取消的调用，逻辑调用数不等于服务商账单。安全判断器的所有尝试（含 none 和 fallback 前失败）取自 `all_judge_results`，不再从 safety_events 反推数量；安全层 API 未提供 finish_reason，S3 不臆造该字段。
+- 推测调用直接写本会谈 trace，按 scope 标记 discarded，取消后 await 清理；分类缓存不再重复计入调用/延迟。
+- 最终分类超时/错误仍保留均匀权重和原状态用于诊断，但 path_pred 沿用本会谈最近成功分类。没有成功结果时 trace 的 final.path_pred=unknown、unknown_path_rounds 标记该轮。契约不能写 unknown，所以 session 保留兼容占位 P1、path_confidence=null，不能把它作为有效分类。
+- `engine.reporting.build_report` 是 S3 → S2 scorer 的统计入口：排除 error 和 unknown 会谈后才调用 scorer；n_visitors 是可评分人数。完整 attempted/completed/error/crisis_exit、完成率、评分覆盖率、排除名单、全样本危机漏报和所有调用统计写进必须一同读取的 summary。任何排除都会令 report.veto.passed=false（契约没有“评估不完整”原因枚举，原因写在 summary）。全部排除时不生成无定义的空样本 report；summary.report_unavailable 说明原因。原始 S2 score_run 直接接 session 的旧入口不会自动获得这些修复，应改接此适配函数。
+- 批量 CLI 总是写 summary.json；S2 可导入时加 `--scorer scoring.score:score_run` 生成报表。安全摘要覆盖全部尝试，即使某些会谈未进入可评分子集。
+- `engine.adapters_sim` 是可选 S2 薄适配：每会谈独立 simulator、跨轮保留 deny/reveal，按实际 agent/safety 发言标话题，环 2 只把第一轮交给 S2 状态模型。S2 不在本分支；模块延迟导入，使用时提供 S2 模块路径。
+- 安全事件优先调用新版 `script_for_event(event, state)`，空话术不添加空 transcript、不额外触发来访回复；事件仍保留。旧安全层兼容路径显式记 legacy_safety_api，不能据此宣称完成新版去重集成。
+
+真实验收采用 3 个 S2 来访、每轮 1 次动作、merged agent 为真实 ds flash，其余组件 mock，满足总共不超过 30 次真实请求的限制。它验证 JSON 与会谈执行，不替代默认 5/4 动作、全真实服务或 40–50 人并发验收。完整产物不提交到仓库，见本地 `var/s3-fix1/` 与外部任务总结。

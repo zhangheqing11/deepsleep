@@ -7,7 +7,15 @@ agent_llm:
   provider: ds_flash          # ds_flash | mock；缺 DS_* 时自动回退 mock 并在 models.agent 标 mock(fallback)
   temperature: 0
   top_p: 1
-  max_tokens: 800
+  max_tokens: 1600
+  max_tokens_by_task:
+    plan: 3200
+    strategy: 1600
+    turn: 2200
+    response: 1200
+    memory: 1800
+    select: 1200
+  truncation_retry_multiplier: 2
   response_format: json_object
   timeout_s: 20
   max_retries: 2              # 解析失败或请求异常时重试次数（事先写死，不靠人工）
