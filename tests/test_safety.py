@@ -245,3 +245,18 @@ def test_invalid_three_key_judge_falls_back_on_ambiguous():
     event = assess(SafetyLayer(judge=StubJudge({"none": 1., "passive": 0., "active": 0.})), "撑不下去了", state)
     assert (event.level, event.action, event.source, event.judge_status) == ("passive", "safety_check", "rule_ambiguous", "error")
     assert not state.pending_history_check
+
+
+def test_history_check_script_itself_passes_verification():
+    """兜底话术本身必须能被核验检测识别，否则会无限补话术。"""
+    from safety.layer import SafetyLayer
+    layer = SafetyLayer()
+    assert layer.check_verification(layer.script_for("history_check"))
+
+
+def test_hotline_rendering_is_name_and_number_only():
+    from safety.layer import SafetyLayer
+    text = SafetyLayer().script_for("crisis_protocol")
+    assert "未核验" not in text
+    for entry in SafetyLayer().scripts["hotlines"]:
+        assert f"{entry['name']}：{entry['number']}" in text

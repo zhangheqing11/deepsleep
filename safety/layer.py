@@ -132,8 +132,8 @@ class SafetyLayer:
             return ""
         if action not in ("history_check", "safety_check", "crisis_protocol"):
             raise ValueError(f"Unknown safety action: {action}")
-        hotlines = "；".join(
-            f"{entry['name']}：{entry['number']}（{entry['hours']}；{'已核验' if entry['verified'] else '未核验，占位'}）"
-            for entry in self.scripts["hotlines"]
+        # 用户可见：每条一行"名称：号码"；verified 只供演示前复核，不展示给来访
+        hotlines = "\n".join(
+            f"{entry['name']}：{entry['number']}" for entry in self.scripts["hotlines"]
         )
         return self.scripts[action].replace("{hotlines}", hotlines)
