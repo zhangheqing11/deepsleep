@@ -3,10 +3,13 @@
 # 相对路径均相对于仓库根目录。
 
 reflector:
+  primary_provider: openai               # REFLECTOR_PROVIDER 可切回 anthropic
   primary_model_env: REFLECTOR_MODEL      # 环境变量为空时用 primary_model
-  primary_model: claude-opus-5-5
-  primary_effort: high
-  primary_timeout_s: 150
+  primary_model: gpt-6-astra
+  primary_effort: xhigh                  # REFLECTOR_REASONING_EFFORT 可覆盖
+  anthropic_model: claude-opus-5-5        # 切回 anthropic 时的默认值
+  anthropic_effort: high
+  primary_timeout_s: 300                 # REFLECTOR_TIMEOUT_S 可覆盖
   max_tokens: 16000
   fallback_model_env: DS_MODEL            # ds flash，OpenAI 兼容
   fallback_timeout_s: 90

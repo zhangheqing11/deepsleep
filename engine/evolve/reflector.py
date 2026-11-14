@@ -1,21 +1,22 @@
 """Reflector: failures + feedback → exactly 3 normalized incremental candidates.
 
-Primary model Opus 5.5; on timeout, API error, refusal or unusable output it falls
+Primary provider OpenAI (optionally Anthropic); on timeout, API error, refusal or unusable output it falls
 back to ds flash automatically (decision #8) and records why. C1 (auto_critic) will
 feed approved annotations through ``human_feedback``; nothing else changes here.
 """
 from __future__ import annotations
 
 import asyncio
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 import json
 from pathlib import Path
 import re
+import time
 
 from . import dimensions as dims
 from . import evidence as ev
 from .config import SECTIONS, SECTION_CRITICALITY, max_criticality, resolve
-from .llm import LLMClient
+from .llm import LLMClient, error_reason
 
 _OPS = ("add", "modify", "delete")
 _LEVELS = ("low", "medium", "high")
@@ -33,6 +34,9 @@ class ReflectionResult:
     failure_dimensions: dict    # visitor_id → dimensions (ring-3 insight, not in the contract)
     scorecard: dict
     evidence: dict
+    provider: str | None = None
+    reasoning_effort: str | None = None
+    attempts: list[dict] = field(default_factory=list)
 
 
 # -- inputs -----------------------------------------------------------------------------
@@ -267,18 +271,26 @@ def finalize(candidates: list[dict]) -> list[dict]:
 
 # -- orchestration ------------------------------------------------------------------------------
 async def _attempt(client: LLMClient, system: str, user: str, timeout_s: float, config: dict,
-                   dropped: list[str]) -> list[dict]:
-    text = await asyncio.wait_for(client.complete(system, user), timeout=timeout_s)
-    candidates = normalize(extract_json(text), config, dropped)
-    if not candidates:
-        raise ValueError("没有任何格式有效的候选")
-    return candidates
-
-
-def _reason(exc: BaseException) -> str:
-    if isinstance(exc, asyncio.TimeoutError):
-        return "超时"
-    return f"{type(exc).__name__}: {exc}"[:300]
+                   dropped: list[str], attempts: list[dict], role: str) -> list[dict]:
+    started = time.perf_counter()
+    attempt = {"role": role, "provider": getattr(client, "provider", None), "model": client.model,
+               "reasoning_effort": getattr(client, "effort", None), "reasoning_tokens": None,
+               "success": False, "error": None}
+    try:
+        text = await asyncio.wait_for(client.complete(system, user),
+                                      timeout=getattr(client, "timeout_s", timeout_s))
+        candidates = normalize(extract_json(text), config, dropped)
+        if not candidates:
+            raise ValueError("没有任何格式有效的候选")
+        attempt["success"] = True
+        return candidates
+    except Exception as exc:
+        attempt["error"] = error_reason(exc)
+        raise
+    finally:
+        attempt.update(getattr(client, "last_response_metadata", {}))
+        attempt["duration_s"] = round(time.perf_counter() - started, 6)
+        attempts.append(attempt)
 
 
 async def reflect(*, playbook_text: str, version: str, run_report: dict, sessions: dict,
@@ -297,23 +309,31 @@ async def reflect(*, playbook_text: str, version: str, run_report: dict, session
                                       for r in failures},
                "scorecard": dims.scorecard(run_report, visitors, config), "evidence": evidence}
     dropped: list[str] = []
+    attempts: list[dict] = []
+
+    def finish(candidates: list[dict], fell_back: bool, reason: str | None) -> ReflectionResult:
+        # No constructed client means no model was actually called.
+        actual = attempts[-1] if attempts else {}
+        return ReflectionResult(finalize(candidates), actual.get("model", "unavailable"),
+                                fell_back, reason, failures_used, dropped, **insight,
+                                provider=actual.get("provider"), reasoning_effort=actual.get("reasoning_effort"),
+                                attempts=attempts)
+
     reason = primary_error
     if primary is not None:
         try:
-            cands = await _attempt(primary, system, user, rc["primary_timeout_s"], config, dropped)
-            return ReflectionResult(finalize(cands), primary.model, False, None, failures_used, dropped, **insight)
+            cands = await _attempt(primary, system, user, rc["primary_timeout_s"], config, dropped, attempts, "primary")
+            return finish(cands, False, None)
         except Exception as exc:  # noqa: BLE001 - any failure → automatic fallback
-            reason = f"主反思器失败（{_reason(exc)}）"
+            reason = f"主反思器失败（{error_reason(exc)}）"
     elif reason is None:
         reason = "未配置主反思器"
-    model = rc["primary_model"]
     if fallback is not None:
-        model = fallback.model
         try:
-            cands = await _attempt(fallback, system, user, rc["fallback_timeout_s"], config, dropped)
-            return ReflectionResult(finalize(cands), fallback.model, True, reason, failures_used, dropped, **insight)
+            cands = await _attempt(fallback, system, user, rc["fallback_timeout_s"], config, dropped, attempts, "fallback")
+            return finish(cands, True, reason)
         except Exception as exc:  # noqa: BLE001
-            reason = f"{reason}；降级模型也失败（{_reason(exc)}）"
+            reason = f"{reason}；降级模型也失败（{error_reason(exc)}）"
     else:
         reason = f"{reason}；未配置降级模型"
-    return ReflectionResult(finalize([]), model, True, reason, failures_used, dropped, **insight)
+    return finish([], True, reason)
