@@ -1,0 +1,203 @@
+{
+  "schema_version": "0.1.0",
+  "id": "sample-005",
+  "split": "sample",
+  "seed": 90005,
+  "main_path": "P5",
+  "secondary_path": "P4",
+  "referral": "R2",
+  "crisis": {
+    "level": "none",
+    "phq9_item9": 0,
+    "history": false
+  },
+  "contraindications": [],
+  "indices": {
+    "isi": 16,
+    "phq9": 6,
+    "gad7": 5,
+    "stop_bang": 1,
+    "meq": 40,
+    "dbas16": 3.5,
+    "psas": 26,
+    "screen_min_before_sleep": 120
+  },
+  "diary": [
+    {
+      "day": 1,
+      "bedtime": "23:50",
+      "lights_off": "01:30",
+      "sol_min": 98,
+      "waso_min": 22,
+      "final_wake": "07:20",
+      "risetime": "07:30",
+      "tst_min": 230,
+      "tib_min": 460,
+      "se": 0.5,
+      "nap_min": 0,
+      "caffeine_after_14": false,
+      "alcohol": false,
+      "screen_in_bed_min": 110
+    },
+    {
+      "day": 2,
+      "bedtime": "23:40",
+      "lights_off": "01:20",
+      "sol_min": 81,
+      "waso_min": 21,
+      "final_wake": "07:20",
+      "risetime": "07:30",
+      "tst_min": 258,
+      "tib_min": 470,
+      "se": 0.5489,
+      "nap_min": 0,
+      "caffeine_after_14": false,
+      "alcohol": false,
+      "screen_in_bed_min": 110
+    },
+    {
+      "day": 3,
+      "bedtime": "23:40",
+      "lights_off": "01:20",
+      "sol_min": 92,
+      "waso_min": 27,
+      "final_wake": "07:20",
+      "risetime": "07:30",
+      "tst_min": 241,
+      "tib_min": 470,
+      "se": 0.5128,
+      "nap_min": 0,
+      "caffeine_after_14": false,
+      "alcohol": false,
+      "screen_in_bed_min": 110
+    },
+    {
+      "day": 4,
+      "bedtime": "23:50",
+      "lights_off": "01:30",
+      "sol_min": 83,
+      "waso_min": 26,
+      "final_wake": "07:20",
+      "risetime": "07:30",
+      "tst_min": 241,
+      "tib_min": 460,
+      "se": 0.5239,
+      "nap_min": 0,
+      "caffeine_after_14": false,
+      "alcohol": false,
+      "screen_in_bed_min": 110
+    },
+    {
+      "day": 5,
+      "bedtime": "23:30",
+      "lights_off": "01:10",
+      "sol_min": 88,
+      "waso_min": 14,
+      "final_wake": "07:20",
+      "risetime": "07:30",
+      "tst_min": 268,
+      "tib_min": 480,
+      "se": 0.5583,
+      "nap_min": 0,
+      "caffeine_after_14": false,
+      "alcohol": false,
+      "screen_in_bed_min": 110
+    },
+    {
+      "day": 6,
+      "bedtime": "23:30",
+      "lights_off": "01:10",
+      "sol_min": 80,
+      "waso_min": 20,
+      "final_wake": "07:20",
+      "risetime": "07:30",
+      "tst_min": 270,
+      "tib_min": 480,
+      "se": 0.5625,
+      "nap_min": 0,
+      "caffeine_after_14": false,
+      "alcohol": false,
+      "screen_in_bed_min": 110
+    },
+    {
+      "day": 7,
+      "bedtime": "23:50",
+      "lights_off": "01:30",
+      "sol_min": 92,
+      "waso_min": 26,
+      "final_wake": "07:20",
+      "risetime": "07:30",
+      "tst_min": 232,
+      "tib_min": 460,
+      "se": 0.5043,
+      "nap_min": 0,
+      "caffeine_after_14": false,
+      "alcohol": false,
+      "screen_in_bed_min": 110
+    }
+  ],
+  "persona": {
+    "age": 41,
+    "gender": "female",
+    "occupation": "电商运营",
+    "expressiveness": "verbose",
+    "defensiveness": "mid",
+    "emotionality": "mid",
+    "adherence_tendency": 0.5,
+    "constraints": [
+      "晚上要看店铺后台数据"
+    ]
+  },
+  "prefilled": [
+    {
+      "scale": "isi",
+      "reported_score": 13,
+      "items": null
+    }
+  ],
+  "opening_complaint": "晚上老是睡得很晚，睡眠时间不够，想调整一下。",
+  "clues": [
+    {
+      "id": "sample-005-c1",
+      "content": "上床以后刷短视频，一刷就是一两个小时。",
+      "reveal_topic": "screen_in_bed",
+      "deny_first": true,
+      "supports": "P5"
+    },
+    {
+      "id": "sample-005-c2",
+      "content": "白天都是别人的，只有夜里这点时间是自己的，舍不得睡。",
+      "reveal_topic": "revenge_bedtime",
+      "deny_first": false,
+      "supports": "P5"
+    },
+    {
+      "id": "sample-005-c3",
+      "content": "现在就算不看手机，十二点前也不太困了。",
+      "reveal_topic": "chronotype",
+      "deny_first": false,
+      "supports": "P4"
+    },
+    {
+      "id": "sample-005-c4",
+      "content": "一躺下小腿里就像有虫子在爬，特别想动一动。",
+      "reveal_topic": "leg_discomfort",
+      "deny_first": true,
+      "supports": "R2"
+    },
+    {
+      "id": "sample-005-c5",
+      "content": "起来走几步就好了，一躺回去又来。",
+      "reveal_topic": "leg_discomfort",
+      "deny_first": false,
+      "supports": "R2"
+    },
+    {
+      "id": "sample-005-c6",
+      "content": "白天几乎没感觉，一到晚上就特别明显。",
+      "reveal_topic": "leg_discomfort",
+      "deny_first": false,
+      "supports": "R2"
+    }
+  ]
+}

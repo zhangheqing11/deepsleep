@@ -1,0 +1,5 @@
+# 服务运行依赖；独立放在 api/，避免修改团队根目录配置。
+-c constraints.txt
+fastapi>=0.119,<1
+uvicorn>=0.37,<1
+pydantic>=2.12,<3

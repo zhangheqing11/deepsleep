@@ -1,0 +1,183 @@
+{
+  "schema_version": "0.1.0",
+  "id": "sample-004",
+  "split": "sample",
+  "seed": 90004,
+  "main_path": "P4",
+  "secondary_path": "P1",
+  "referral": "R0",
+  "crisis": {
+    "level": "none",
+    "phq9_item9": 0,
+    "history": true
+  },
+  "contraindications": [],
+  "indices": {
+    "isi": 15,
+    "phq9": 5,
+    "gad7": 4,
+    "stop_bang": 0,
+    "meq": 30,
+    "dbas16": 3.8,
+    "psas": 22,
+    "screen_min_before_sleep": 30
+  },
+  "diary": [
+    {
+      "day": 1,
+      "bedtime": "01:40",
+      "lights_off": "01:50",
+      "sol_min": 47,
+      "waso_min": 14,
+      "final_wake": "07:50",
+      "risetime": "08:00",
+      "tst_min": 299,
+      "tib_min": 380,
+      "se": 0.7868,
+      "nap_min": 0,
+      "caffeine_after_14": true,
+      "alcohol": false,
+      "screen_in_bed_min": 30
+    },
+    {
+      "day": 2,
+      "bedtime": "01:30",
+      "lights_off": "01:40",
+      "sol_min": 55,
+      "waso_min": 13,
+      "final_wake": "07:50",
+      "risetime": "08:00",
+      "tst_min": 302,
+      "tib_min": 390,
+      "se": 0.7744,
+      "nap_min": 0,
+      "caffeine_after_14": true,
+      "alcohol": false,
+      "screen_in_bed_min": 30
+    },
+    {
+      "day": 3,
+      "bedtime": "01:20",
+      "lights_off": "01:30",
+      "sol_min": 52,
+      "waso_min": 12,
+      "final_wake": "07:50",
+      "risetime": "08:00",
+      "tst_min": 316,
+      "tib_min": 400,
+      "se": 0.79,
+      "nap_min": 0,
+      "caffeine_after_14": true,
+      "alcohol": false,
+      "screen_in_bed_min": 30
+    },
+    {
+      "day": 4,
+      "bedtime": "01:30",
+      "lights_off": "01:40",
+      "sol_min": 42,
+      "waso_min": 4,
+      "final_wake": "07:50",
+      "risetime": "08:00",
+      "tst_min": 324,
+      "tib_min": 390,
+      "se": 0.8308,
+      "nap_min": 0,
+      "caffeine_after_14": true,
+      "alcohol": false,
+      "screen_in_bed_min": 30
+    },
+    {
+      "day": 5,
+      "bedtime": "01:20",
+      "lights_off": "01:30",
+      "sol_min": 44,
+      "waso_min": 2,
+      "final_wake": "07:50",
+      "risetime": "08:00",
+      "tst_min": 334,
+      "tib_min": 400,
+      "se": 0.835,
+      "nap_min": 0,
+      "caffeine_after_14": true,
+      "alcohol": false,
+      "screen_in_bed_min": 30
+    },
+    {
+      "day": 6,
+      "bedtime": "02:20",
+      "lights_off": "02:30",
+      "sol_min": 42,
+      "waso_min": 17,
+      "final_wake": "10:50",
+      "risetime": "11:00",
+      "tst_min": 441,
+      "tib_min": 520,
+      "se": 0.8481,
+      "nap_min": 0,
+      "caffeine_after_14": true,
+      "alcohol": false,
+      "screen_in_bed_min": 30
+    },
+    {
+      "day": 7,
+      "bedtime": "02:40",
+      "lights_off": "02:50",
+      "sol_min": 48,
+      "waso_min": 2,
+      "final_wake": "10:50",
+      "risetime": "11:00",
+      "tst_min": 430,
+      "tib_min": 500,
+      "se": 0.86,
+      "nap_min": 0,
+      "caffeine_after_14": true,
+      "alcohol": false,
+      "screen_in_bed_min": 30
+    }
+  ],
+  "persona": {
+    "age": 23,
+    "gender": "male",
+    "occupation": "研究生（实验室）",
+    "expressiveness": "brief",
+    "defensiveness": "low",
+    "emotionality": "mid",
+    "adherence_tendency": 0.6,
+    "constraints": [
+      "导师要求早上九点到实验室"
+    ]
+  },
+  "prefilled": [],
+  "opening_complaint": "这阵子睡得很不好，每天早上都很难受，白天也没劲。",
+  "clues": [
+    {
+      "id": "sample-004-c1",
+      "content": "不管几点上床都要两三点才困；放假随我睡，三点睡十一点起，睡得挺好。",
+      "reveal_topic": "chronotype",
+      "deny_first": false,
+      "supports": "P4"
+    },
+    {
+      "id": "sample-004-c2",
+      "content": "从初中起就是夜猫子，早上闹钟响三四遍还起不来。",
+      "reveal_topic": "chronotype",
+      "deny_first": false,
+      "supports": "P4"
+    },
+    {
+      "id": "sample-004-c3",
+      "content": "为了赶早上的组会，每天要喝两三杯咖啡撑着。",
+      "reveal_topic": "caffeine_alcohol",
+      "deny_first": false,
+      "supports": "P1"
+    },
+    {
+      "id": "sample-004-c4",
+      "content": "高中压力大的时候划过手臂，后来早就不这样了，好多年没有过。",
+      "reveal_topic": "self_harm",
+      "deny_first": false,
+      "supports": "crisis"
+    }
+  ]
+}
