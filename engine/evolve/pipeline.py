@@ -31,6 +31,7 @@ from .llm import LLMClient, default_clients
 from .playbook import ApplyError, Playbook, unified_diff
 from .reflector import reflect
 from .repo import PlaybookRepo
+from .status import StatusTracker
 
 Evaluator = Callable[..., Awaitable[dict]]
 SCHEMA_VERSION = "0.1.0"
@@ -106,12 +107,36 @@ async def evolve(*, run_report: dict, sessions: dict, evaluator: Evaluator,
                  evolution_id: str | None = None, write: bool = True,
                  traces: dict | None = None, visitors: dict | None = None,
                  return_insights: bool = False):
-    """Run one learning step; returns the evolution dict, or (evolution, insights) if asked."""
+    """Run one learning step; returns the evolution dict, or (evolution, insights) if asked.
+
+    With ``write=True`` it also keeps ``<run_dir>/<evolution_id>/status.json`` up to date
+    (see ``status.py``) so the dashboard can show reflecting / validating / review / done live.
+    """
     config = config or load_config()
     repo = repo or PlaybookRepo(config)
     repo.init()
     created = _now()
     evolution_id = evolution_id or f"evolution-{created:%Y%m%d-%H%M%S}"
+    tracker = StatusTracker(review.review_dir(config, evolution_id) if write else None,
+                            evolution_id, repo.current_version())
+    try:
+        return await _evolve(tracker, run_report=run_report, sessions=sessions, evaluator=evaluator,
+                             human_feedback=human_feedback, baseline_val_metrics=baseline_val_metrics,
+                             config=config, repo=repo, primary=primary, fallback=fallback,
+                             use_default_clients=use_default_clients, review_timeout_s=review_timeout_s,
+                             evolution_id=evolution_id, created=created, write=write, traces=traces,
+                             visitors=visitors, return_insights=return_insights)
+    except BaseException as exc:  # noqa: BLE001 - record the failure for the dashboard, then re-raise
+        tracker.fail(exc)
+        raise
+
+
+async def _evolve(tracker: StatusTracker, *, run_report: dict, sessions: dict, evaluator: Evaluator,
+                  human_feedback: Iterable[dict], baseline_val_metrics: dict | None, config: dict,
+                  repo: PlaybookRepo, primary: LLMClient | None, fallback: LLMClient | None,
+                  use_default_clients: bool, review_timeout_s: float | None, evolution_id: str,
+                  created: datetime, write: bool, traces: dict | None, visitors: dict | None,
+                  return_insights: bool):
     feedback = list(human_feedback)  # C1: approved auto_critic entries arrive here too
     from_version, base_text = repo.current_version(), repo.read()
 
@@ -121,6 +146,7 @@ async def evolve(*, run_report: dict, sessions: dict, evaluator: Evaluator,
     reflection = await reflect(playbook_text=base_text, version=from_version, run_report=run_report,
                                sessions=sessions, feedback=feedback, config=config, primary=primary,
                                fallback=fallback, primary_error=primary_error, traces=traces, visitors=visitors)
+    tracker.reflector(state="done", model=reflection.model, fell_back=reflection.fell_back)
 
     log: list[str] = list(reflection.dropped_changes)
     texts, violations = {}, {}
@@ -132,15 +158,45 @@ async def evolve(*, run_report: dict, sessions: dict, evaluator: Evaluator,
                      "before": ch["before"], "after": ch["after"], "reason": ch["reason"]}
                     for c in to_validate for ch in c["changes"] if ch["criticality"] == "high"]
 
+    validating_ids = {c["id"] for c in to_validate}
+    for cand in reflection.candidates:
+        tracker.state["validation"]["candidates"][cand["id"]] = (
+            "pending" if cand["id"] in validating_ids else ("blocked" if violations[cand["id"]] else "empty"))
+    tracker.state["validation"]["baseline"] = "skipped" if baseline_val_metrics is not None else "pending"
+    tracker.review(pending_changes=len(review_items))  # also flushes the states above
+    tracker.set(phase="validating")
+
+    async def _baseline():
+        tracker.baseline("running")
+        try:
+            result = await evaluator(base_text, label=from_version)
+        except BaseException:
+            tracker.baseline("error")
+            raise
+        tracker.baseline("done")
+        return result
+
+    async def _candidate(cand: dict):
+        tracker.candidate(cand["id"], "running")
+        result = await _safe_eval(evaluator, texts[cand["id"]], f"{from_version}+{cand['id']}", eval_errors)
+        tracker.candidate(cand["id"], "done" if result is not None else "error")
+        return result
+
+    async def _review():
+        reviews = await review.collect(config, evolution_id, review_items, review_timeout_s,
+                                       on_open=tracker.review_open)
+        if review_items:
+            tracker.review(state="done")
+        return reviews
+
     eval_errors: list[str] = []
-    baseline_task = (evaluator(base_text, label=from_version) if baseline_val_metrics is None
-                     else asyncio.sleep(0, result=baseline_val_metrics))
+    baseline_task = _baseline() if baseline_val_metrics is None else asyncio.sleep(0, result=baseline_val_metrics)
     results = await asyncio.gather(
         baseline_task,
-        asyncio.gather(*(_safe_eval(evaluator, texts[c["id"]], f"{from_version}+{c['id']}", eval_errors)
-                         for c in to_validate)),
-        review.collect(config, evolution_id, review_items, review_timeout_s),
+        asyncio.gather(*(_candidate(c) for c in to_validate)),
+        _review(),
     )
+    tracker.set(phase="committing")
     baseline_raw, val_results, reviews = results
     baseline, baseline_rich = _unpack(baseline_raw)
     unpacked = {c["id"]: _unpack(r) for c, r in zip(to_validate, val_results)}
@@ -180,6 +236,7 @@ async def evolve(*, run_report: dict, sessions: dict, evaluator: Evaluator,
         commit = {"repo": "var/playbook-repo", "sha": sha, "author": config["repo"]["agent_name"],
                   "message": f"{to_version}: {cand['summary']}"}
 
+    tracker.set(outcome="committed" if chosen else "kept_previous", chosen=chosen, to_version=to_version)
     evolution = {
         "schema_version": SCHEMA_VERSION,
         "evolution_id": evolution_id,
@@ -224,4 +281,5 @@ async def evolve(*, run_report: dict, sessions: dict, evaluator: Evaluator,
         (out_dir / "evolution.json").write_text(json.dumps(evolution, ensure_ascii=False, indent=2), encoding="utf-8")
         (out_dir / "log.json").write_text(json.dumps({"dropped_or_errors": log + eval_errors}, ensure_ascii=False,
                                                      indent=2), encoding="utf-8")
+    tracker.set(phase="done")  # after evolution.json is on disk: "done" means the result is readable
     return (evolution, insights) if return_insights else evolution
