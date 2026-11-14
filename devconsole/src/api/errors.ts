@@ -61,7 +61,8 @@ const CODE_MESSAGES: Record<string, string> = {
   VALIDATION_ERROR: '请求参数不合法',
   SERVICE_UNAVAILABLE: '依赖服务暂不可用，请稍后重试',
   EVOLUTION_NOT_FOUND: '未找到该学习记录',
-  NOT_READY: '学习尚未完成',
+  NOT_READY: '尚未生成，稍后会自动重试',
+  DATA_UNAVAILABLE: '后端读到的数据不完整或不合法，暂时无法显示',
 };
 
 export function describeError(e: ApiError): string {

@@ -25,7 +25,7 @@ npm run build        # 产物在 dist/，资源路径以 /devconsole/ 开头
 | 值 | 状态 | 数据 | 页面标识 |
 |---|---|---|---|
 | `mock`（默认） | 可用 | 报告和进化记录读 `contracts/examples` 的正式示例；实验清单、运行进度和学习状态读 `src/fixtures/devSamples.ts` 里手写的**开发样例** | 顶栏显示“数据来源：模拟数据”，页面顶部有黄色横幅 |
-| `http` | 可用，但依赖的后端接口**尚未实现** | 读后端只读接口（见下表） | “数据来源：实时后端”，另有连接状态和执行模式 |
+| `http` | 可用 | 读后端只读接口（#38，见下表） | “数据来源：实时后端”，另有连接状态和执行模式 |
 | `snapshot` | **未实现** | 回放包，要等后端导出格式（B4）确定 | 页面直接说明不可用，不显示数据 |
 
 填了不认识的值会显示配置错误，**不会悄悄退回 mock**。HTTP 请求失败时也不会改用 mock。
@@ -52,28 +52,27 @@ mock 模式可以用 URL 参数切换开发样例，用来检查各种状态下�
 - 运行进度和学习状态到终态后停止轮询；报告在运行完成后再读，遇到 409 `REPORT_NOT_READY` 时稍后重试。
 - 失败按 2 / 4 / 8 秒退避。连续失败 3 次后，页面标为“断连 · 数据过期”，保留最后一次成功读到的数据，并继续自动重试。
 
-## 需要的后端接口（只读，待崔秀净确认，**目前 api/ 都还没有实现**）
+## 后端接口（#38 已实现，规格见 `api/READ_API.md`）
 
-前缀 `/api/v1`，错误结构和 `X-Request-ID` 沿用现有约定。
+前缀 `/api/v1`，全部是 GET，错误结构和 `X-Request-ID` 沿用现有约定。后端启动方式见 `api/READ_API.md`：`API_DATA_SOURCE=files` 读 `var/` 里的真实产物，`API_DATA_SOURCE=mock` 读契约示例。
 
-| 接口 | 前端怎么用 | 前端能接受的格式 |
+| 接口 | 前端怎么用 | 前端处理 |
 |---|---|---|
-| `GET /demo/experiment` | 发现当前实验 | `engine/demo.py` 写出的 `var/demo/experiment.json` 原样返回；没有实验时返回 `{"available": false}`（200）。接口不存在（404）会显示成错误，不会当成“没有实验” |
-| `GET /runs/{run_id}` | 进度、执行模式 | 现有 Mock 的字段；`progress.completed` 和草案里的 `progress.done` 都能读。`execution_mode` 缺失时显示“后端未提供”。只有后端真的提供 `partial_metrics` 时才显示阶段统计 |
-| `GET /runs/{run_id}/report` | 最终指标 | 契约 `run_report`；未就绪时返回 409 `REPORT_NOT_READY` |
-| `GET /evolutions/{id}/status` | 学习进度 | `engine/evolve/status.py` 的 `status.json` 原样返回 |
-| `GET /evolutions/{id}` | 学到了什么 | 契约 `evolution`；学习进行中返回 404 `NOT_READY`，用来和“不存在”区分 |
+| `GET /demo/experiment` | 发现当前实验 | 原样读取 `engine/demo.py` 的清单；`{"available": false}` 显示“还没有实验”；接口不存在（404）显示错误，不当成“没有实验” |
+| `GET /runs/{run_id}` | 进度、执行模式 | `progress.total` 可能为 null，此时只显示已完成数；只有后端提供 `partial_metrics` 时才显示阶段统计（#38 没有提供） |
+| `GET /runs/{run_id}/report` | 最终指标 | 进行中返回 404 `NOT_READY`（后端 Mock 是 409 `REPORT_NOT_READY`），两种都稍后重试 |
+| `GET /evolutions/{id}/status` | 学习进度 | `status.json` 原样 |
+| `GET /evolutions/{id}` | 学到了什么 | 进行中返回 404 `NOT_READY`，稍后重试 |
 
-需要后端确认的问题：
+文件还没写出时返回 404 `NOT_FOUND`；数据损坏时返回 404 `DATA_UNAVAILABLE`。轮询遇到这两种情况都会显示原因，并按退避继续重试，不会停下。
 
-1. `engine/demo.py` 生成的真实运行 ID（`<experiment>-run1` 等）能不能用 `/runs/{id}` 查到？现在的 Mock `/runs/{id}` 只认自己创建的运行。如果清单里有 ID、详情却返回 404，页面会显示“未找到该运行”。
-2. `progress` 字段约定：沿用 Mock 的 `completed / failed / total`，还是草案的 `done`？前端两种都能读，但需要定一个。
-3. `partial_metrics` 实际有没有？没有的话，前端只显示进度，最终指标等报告生成后再显示。
-4. `review.deadline` 的格式：`status.py` 用的是 `astimezone().isoformat()`，带时区偏移，前端按这个解析，请确认不会改成不带时区的格式。
-5. `/devconsole/` 怎么托管：同源（后端用 `StaticFiles` 挂 `devconsole/dist`），还是单独端口？双机演示时，另一台电脑要访问的地址是什么（不能是 localhost）？
-6. 如果 `cxj/api-auth-demo` 的 Bearer 鉴权合入，并且这些只读接口也需要鉴权，进化后台要怎么拿令牌？现在前端**不带任何令牌**，也不做登录。
+仍需后端确认的问题：
 
-错误样例（前端已有测试覆盖）：404 无错误结构，表示接口未部署；404 `RUN_NOT_FOUND` / `EVOLUTION_NOT_FOUND`；404 `NOT_READY`；409 `REPORT_NOT_READY`；没有错误结构的 502/503，按网络问题处理；200 但不是 JSON（例如 SPA 回退页），显示数据格式错误。
+1. `/devconsole/` 的托管方式：`API_SERVE_WEB=1` 目前只托管 `web/dist`，路径是 `/`。进化后台是加一个 `/devconsole/` 静态挂载，还是单独开端口？双机演示时，显示器那台电脑要访问的地址是什么（不能是 localhost）？
+2. `cxj/api-auth-demo` 的 Bearer 鉴权如果合入，并且覆盖这些只读接口，进化后台怎么拿令牌？现在前端**不带任何令牌**，也不做登录。
+3. `partial_metrics`：#38 没有提供。前端运行中只显示进度，最终指标等报告生成后再显示。如果以后要提供，请先给出字段格式。
+
+错误样例（前端都有测试覆盖）：404 无错误结构；404 `NOT_FOUND`；404 `NOT_READY`；409 `REPORT_NOT_READY`；404 `DATA_UNAVAILABLE`；没有错误结构的 502/503，按网络问题处理；200 但不是 JSON（例如 SPA 回退页），显示数据格式错误。
 
 ## 原控制台入口的识别文件
 

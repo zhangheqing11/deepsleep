@@ -64,12 +64,13 @@ export function parseRunState(v: unknown, expectedRunId: string): RunState {
   let progress: RunState['progress'] = null;
   if (o.progress !== undefined && o.progress !== null) {
     const pr = obj(o.progress, '响应.progress');
-    const total = int(pr.total, '响应.progress.total');
+    // files 数据源拿不到计划人数时 total 为 null（api/READ_API.md）
+    const total = pr.total === null || pr.total === undefined ? null : int(pr.total, '响应.progress.total');
     // 现有 Mock 叫 completed，交接草案叫 done；字段约定待后端统一。
     const doneRaw = pr.completed !== undefined ? pr.completed : pr.done;
     const completed = doneRaw === undefined || doneRaw === null ? null : int(doneRaw, '响应.progress.completed');
     const failed = pr.failed === undefined || pr.failed === null ? null : int(pr.failed, '响应.progress.failed');
-    if ((completed ?? 0) + (failed ?? 0) > total) throw new ShapeError('响应.progress', '完成数超过总数');
+    if (total !== null && (completed ?? 0) + (failed ?? 0) > total) throw new ShapeError('响应.progress', '完成数超过总数');
     progress = { total, completed, failed };
   }
   let error: RunState['error'] = null;

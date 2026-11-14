@@ -112,6 +112,12 @@ test('运行状态：Mock 的 completed 与草案的 done 都能读；缺进度�
   assert.equal(noProg.execution_mode, null, '后端没给执行模式就是 null');
   assert.equal(noProg.partial_metrics, null, '后端没给阶段统计就不显示');
   assert.throws(() => m.parseRunState({ ...base, progress: { total: 2, completed: 3 } }, 'r1'), /超过总数/);
+  // api/READ_API.md：files 数据源拿不到计划人数时 total=null
+  assert.deepEqual(m.parseRunState({ ...base, progress: { total: null, completed: 2, failed: 0 } }, 'r1').progress, {
+    total: null,
+    completed: 2,
+    failed: 0,
+  });
   assert.throws(() => m.parseRunState({ ...base, run_id: 'r2' }, 'r1'), /run_id/);
 });
 

@@ -3,7 +3,7 @@
 //  - ExperimentManifest：engine/demo.py（main@0732150）写出的 var/demo/experiment.json；
 //  - EvolveStatus：engine/evolve/status.py（schema "evolve-status/1"，main@cf570fb 起）；
 //  - RunState：后端 Mock /runs/{id}（api/run_models.py）+ 交接文档提议的 progress.done / partial_metrics（未实现）。
-// HTTP 读接口（/demo/experiment、/evolutions/{id}、/evolutions/{id}/status）尚未在 api/ 实现，字段以后端确认为准。
+// HTTP 读接口由 api/read_routes.py 提供（#38，规格 api/READ_API.md）。
 // 这里只写页面真正读取的字段；后端可以多给，前端不依赖。
 
 import type { Metrics } from './contractTypes';
@@ -41,7 +41,8 @@ export interface RunState {
   /** mock | real；后端没给时为 null，页面显示“后端未提供” */
   execution_mode: string | null;
   progress: {
-    total: number;
+    /** 后端拿不到计划人数时为 null（api/READ_API.md） */
+    total: number | null;
     /** 现有 Mock 叫 completed，交接草案叫 done；两者都没有时为 null */
     completed: number | null;
     failed: number | null;

@@ -1,7 +1,6 @@
 // HTTP 适配器：只发 GET。失败一律抛 ApiError，不回退到 mock。
 // 单次超时、取消、退避由 lib/poller.ts 负责；这里只做请求、错误信封解析和结构校验。
-// ⚠ 用到的读接口（/demo/experiment、/evolutions/{id}、/evolutions/{id}/status）尚未在 api/ 实现，
-//   以交接草案为准，待后端确认，见 README“需要的后端接口”。
+// 读接口由后端 api/read_routes.py 提供（#38，规格见 api/READ_API.md）。
 
 import type { DataClient } from './client';
 import { ApiError } from './errors';
