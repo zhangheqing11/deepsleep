@@ -72,6 +72,17 @@
 
 验收结论：契约本身可用，`make contracts` 通过；但校验器有漏检、示例引用不完整，且缺少 temperature 与状态模型版本的记录。逐项修复清单、验证方法和验收标准见 [`docs/reviews/pr1-contracts-fixes.md`](reviews/pr1-contracts-fixes.md)，完整证据见 [`docs/reviews/pr1-contracts-codex-report.md`](reviews/pr1-contracts-codex-report.md)。PR #1 已作为 v0.1.0 合入 main；已有字段保持稳定，F07、F08、F16 会新增或收紧字段，依赖方在 v0.1.1 合入时同步。修复走独立分支和 `[contract]` PR，复验后合并。
 
+**状态（2026-11-14，统筹同学说"不着急改，先记下"）**：修复已由 Codex 做完并经验收会话独立复验，做成本地分支 `zhq/contracts-v0.1.1`（提交 `1ef9c1b`，只在统筹同学本机 `deepsleep` 仓库里，**未 push、未开 PR**）。`make contracts` 全绿，55 项测试（1 项预期失败 M23），验收会话手工变异 11 项全部符合预期。要推送前先定下面四件事：
+
+| # | 待定事项 | 说明 | 谁定 |
+|---|---|---|---|
+| G1 | `schema_version` 升级方式 | 该分支把 `models.temperature`（session 与 run_report）和 run_report 的 `state_model` 设为**必填**，这是对 v0.1.0 的不兼容变更，但 `schema_version` 仍是 `"0.1.0"`、README 标题也没改。建议升到 `0.2.0`（备选 `0.1.1`）；`engine/` `sim/` 还没写，现在改成本最低 | 统筹同学 |
+| G2 | F06 精确率下限数值 | 目前只在 README 标"下限待定"，M23 为预期失败；数值定了才能在门禁里执行，并决定"无预测阳性时 precision=null"怎么处理、门禁规则字段与版本号怎么放 | 统筹同学 + 朱贺恺 |
+| G3 | F07/F08/F16 字段名确认 | `models.temperature{agent,visitor}`、`state_model{version,params_digest}`、版本号 `^v\d+$`、sha 为 40/64 位十六进制、`hard_rule_violations.code` 复用 veto code 枚举。按 AGENTS.md 7.3 要通知前端组与数据科学同学 | 数据科学同学 + 前端组 |
+| G4 | F17 状态示例未做 | 没有 `crisis_exit`、`error`、active 危机流程、`kept_previous`、反思器回退（`fell_back=true`）的示例，前端暂时无法对着示例开发这些状态 | 修复分支之后补 |
+
+另：该分支一并新增了 34 个占位示例（13 个 visitor、21 个 session），用来让 `run_report.session_ref` 全部指向存在的文件；这些是合成占位，不是临床内容。
+
 ## H. 仓库与流程
 
 - 私有免费仓库开不了分支保护，main 只能靠大家自觉不直接 push。
