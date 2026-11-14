@@ -1,4 +1,4 @@
-.PHONY: venv contracts smoke test safety-eval
+.PHONY: venv contracts smoke test safety-eval engine-mock
 
 PROVIDER ?= rules
 EVAL_ARGS ?=
@@ -26,3 +26,7 @@ safety-eval: venv
 .PHONY: check-keys
 check-keys: venv
 	.venv/bin/python scripts/check_keys.py
+
+# 会谈引擎：契约示例来访 + mock agent，输出到 var/runs/<run-id>/
+engine-mock: venv
+	.venv/bin/python -m engine.run --mock --run-id dev-mock

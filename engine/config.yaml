@@ -1,0 +1,25 @@
+# 会谈引擎冻结配置（AGENTS.md §2：演示时冻结，现场不改）。相对路径相对本文件。
+schema_version: "0.1.0"
+playbook_path: playbook_v0.md
+system_prompt_path: prompts/agent_system.md
+
+agent_llm:
+  provider: ds_flash          # ds_flash | mock；缺 DS_* 时自动回退 mock 并在 models.agent 标 mock(fallback)
+  temperature: 0
+  top_p: 1
+  max_tokens: 800
+  response_format: json_object
+  timeout_s: 20
+  max_retries: 2              # 解析失败或请求异常时重试次数（事先写死，不靠人工）
+  max_inflight: 32            # 全进程同时在途的 agent LLM 请求上限
+
+# C4：每轮 agent 动作上限（发言与筛查工具调用都占一个回合）；收尾处方消息不计入。
+round_turn_cap:
+  1: 5
+  2: 4
+
+concurrency:
+  max_sessions: 50            # 同时进行的会谈数
+
+# 给来访的收尾消息与 agent 发言命中 domain/vetoes 硬否决时，最多让 agent 重写的次数
+veto_rewrite_attempts: 1
