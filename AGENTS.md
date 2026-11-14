@@ -165,7 +165,7 @@ deepsleep/
 |---|---|
 | ✅ | 方案定稿（`docs/PLAN.md`），设计决定锁定（第 3 节） |
 | ✅ | 建 GitHub 仓库、放入本文件和 PR 模板（11/13）；私有免费仓库开不了分支保护，main 靠自觉 |
-| 🔄 | `contracts/` 初版 + 示例 JSON：[PR #1](https://github.com/zhangheqing11/deepsleep/pull/1) 等 approve（11/14） |
+| ✅ | `contracts/` v0.1.0 + 示例 JSON：[PR #1](https://github.com/zhangheqing11/deepsleep/pull/1) 已合入 main（11/14）；v0.1.1 修复见 `docs/BACKLOG.md` G 节 |
 | ⬜ | 10 个手写样例来访 + 最小计分，端到端跑通 v1（不学习） |
 | ⬜ | 前端：看板静态版（对着示例 JSON） |
 | ⬜ | `docs/handoff-algo.md`（11/14 下午数据科学同学接手前） |

@@ -9,8 +9,8 @@
 
 | 分支 | 内容 | 状态 |
 |---|---|---|
-| `zhq/contracts-v0` | 契约 v0.1.0 | [PR #1](https://github.com/zhangheqing11/deepsleep/pull/1) 等前端组和数据科学同学 approve。补丁 2（history_check、批注字段）已推送（`79fc916`）。**验收发现校验器漏检等问题，修复清单见 [`docs/reviews/pr1-contracts-fixes.md`](reviews/pr1-contracts-fixes.md)，修完再合** |
-| `zhq/domain-safety` | 安全层骨架：规则 + 判断器（ds flash / Jev / Gemini Decision / Mock），对比工具 `safety/eval.py`，处方否决 `domain/vetoes.py` | 本地提交。基于契约分支，等 PR #1 合并后 rebase 再开 PR |
+| （待开）v0.1.1 契约修复分支 | 契约 v0.1.0 已合入 main（[PR #1](https://github.com/zhangheqing11/deepsleep/pull/1)，2026-11-14，前端组与数据科学同学已线下 approve）。校验器漏检、示例补全和字段调整（F07/F08/F16）按 [`docs/reviews/pr1-contracts-fixes.md`](reviews/pr1-contracts-fixes.md) 修，作为 `[contract]` 后续 PR | Codex 已在本地修复中，验收后开 PR |
+| `zhq/domain-safety` | 安全层骨架：规则 + 判断器（ds flash / Jev / Gemini Decision / Mock），对比工具 `safety/eval.py`，处方否决 `domain/vetoes.py` | 本地提交。基于契约分支，PR #1 已合并，可 rebase 到 main 后开 PR |
 | `zhq/domain-clinical-v0` | 临床草稿：线索表、危机测试集、词表、处方否决、转介判据、`docs/review-queue.md` | 本地提交。等心理学同学审定 |
 
 ## A. 安全层（`safety/`）
@@ -68,9 +68,9 @@
 - 竞品空白：Sleepio 明确声明不提供危机支持；Somryst 写明不用于紧急情况。
 - 安全线叙事："进化过程中安全线始终不动"，v1 和 v2 的危机召回保持不变。
 
-## G. PR #1 契约验收遗留（修复清单）
+## G. 契约 v0.1.1 修复（PR #1 验收遗留）
 
-验收结论：契约本身可用，`make contracts` 通过；但校验器有漏检、示例引用不完整，且缺少 temperature 与状态模型版本的记录。逐项修复清单、验证方法和验收标准见 [`docs/reviews/pr1-contracts-fixes.md`](reviews/pr1-contracts-fixes.md)，完整证据见 [`docs/reviews/pr1-contracts-codex-report.md`](reviews/pr1-contracts-codex-report.md)。修在 `zhq/contracts-v0` 分支，PR #1 修完并复验后再合。
+验收结论：契约本身可用，`make contracts` 通过；但校验器有漏检、示例引用不完整，且缺少 temperature 与状态模型版本的记录。逐项修复清单、验证方法和验收标准见 [`docs/reviews/pr1-contracts-fixes.md`](reviews/pr1-contracts-fixes.md)，完整证据见 [`docs/reviews/pr1-contracts-codex-report.md`](reviews/pr1-contracts-codex-report.md)。PR #1 已作为 v0.1.0 合入 main；已有字段保持稳定，F07、F08、F16 会新增或收紧字段，依赖方在 v0.1.1 合入时同步。修复走独立分支和 `[contract]` PR，复验后合并。
 
 ## H. 仓库与流程
 
@@ -82,4 +82,5 @@
 | 日期 | 事项 | PR |
 |---|---|---|
 | 2026-11-14 | 共享待办 BACKLOG | [PR #2](https://github.com/zhangheqing11/deepsleep/pull/2) |
+| 2026-11-14 | 契约 v0.1.0（schema + 示例 + 校验器） | [PR #1](https://github.com/zhangheqing11/deepsleep/pull/1) |
 | 2026-11-14 | 前后端分工更新（崔秀净后端、王译旋前端并行） | [PR #3](https://github.com/zhangheqing11/deepsleep/pull/3) |
