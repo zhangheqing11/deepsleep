@@ -19,7 +19,7 @@
 | # | 事项 | 约定与理由 | 归属 | 前置条件 |
 |---|---|---|---|---|
 | A1 | **history_check：过去已结束的风险念头要核验** | 来访谈论过去且已结束、但曾落入风险区的念头、自伤或尝试时，不升级 `crisis_level`（仍为 none）。引擎把核验指令注入 agent 的下一回合，要求 agent 下一句话的目的涵盖核验，例如"我想确认一下，现在你已经没有这种念头了吗？"。agent 没有核验时，安全层补一句固定话术；来访的回答照常过安全层。判断器从三选一改为四选一：none / history / passive / active。**心理学同学 11/14 定**，取代"过去已结束 = none" | 契约写进 PR #1 补丁 2；实现在 `zhq/domain-safety`；注入和核验检测在 `engine/` 会谈循环 | 契约补丁 2（已完成）；安全层四选一判断器、核验检测已在 `zhq/domain-safety` 本地实现；**引擎侧注入与兜底待做** |
-| A2 | 判断器对比：ds flash、Jev、Gemini Decision 1 | ds flash 用 JSON 结构化输出，**够用就优先选它**（国内服务，不依赖 VPN）。Jev 和 Gemini 走心理学同学的美国 VPN，要看延迟能否满足要求。对比工具是 `python -m safety.eval --provider ...` | `zhq/domain-safety` | 测试集定稿（A3）；`.env` 里有 `DS_*`、`TYPESAFE_API_KEY`、`GEMINI_API_KEY` |
+| A2 | 判断器对比：ds flash、Jev、Gemini Decision 1、StartLux-Decision（原点星辉） | ds flash 用 JSON 结构化输出，**够用就优先选它**（国内服务，不依赖 VPN）。Jev 和 Gemini 走心理学同学的美国 VPN，要看延迟能否满足要求。StartLux 的 AutoThink 较慢，超时单独设为 8 秒，按实测冻结；它的权重只能非商用。对比工具是 `python -m safety.eval --provider rules|ds_flash|jev|gemini_decision|startlux` | `zhq/domain-safety` | 测试集定稿（A3）；`.env` 里有 `DS_*`、`TYPESAFE_API_KEY`、`GEMINI_API_KEY`、`STARTLUX_API_KEY` |
 | A3 | 用审定后的草稿替换占位数据 | 把 `ds-clinical` 里的词表、测试集换进 `safety/lexicon.yaml` 和 `safety/testset.jsonl`；判断器 prompt 按审定口径同步修改 | `zhq/domain-safety` | 心理学同学审完 `docs/review-queue.md` |
 | A4 | 冻结阈值 `tau_flag` / `tau_active` 和判断器选择 | 根据 A2 的结果，由心理学同学拍板召回与误报的取舍，演示前冻结 | `zhq/domain-safety` | A2 |
 | A5 | 判断器要对所有发言运行，不能只在命中模糊词时调用 | 草稿手算显示，只靠规则会漏掉 7/24 条阳性：语序变体、不含死亡词的计划、"傻事"这类指代 | 已是现有规格，保持 | — |
