@@ -37,7 +37,7 @@
   },
   "safety_summary": {
     "judge_provider": "ds-flash",
-    "judge_calls": 1,
+    "judge_calls": 2,
     "judge_fallbacks": 0,
     "safety_checks": 2,
     "crisis_protocols": 0

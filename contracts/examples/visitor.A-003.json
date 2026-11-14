@@ -8,7 +8,8 @@
   "referral": "R3",
   "crisis": {
     "level": "passive",
-    "phq9_item9": 1
+    "phq9_item9": 1,
+    "history": false
   },
   "contraindications": [],
   "indices": {

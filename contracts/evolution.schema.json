@@ -94,6 +94,23 @@
               "demonstration"
             ]
           },
+          "source": {
+            "type": "string",
+            "enum": [
+              "human",
+              "auto_critic"
+            ]
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "approved",
+              "rejected",
+              "edited",
+              "pending",
+              "timeout"
+            ]
+          },
           "visitor_id": {
             "type": [
               "string",
@@ -117,6 +134,8 @@
         "required": [
           "id",
           "kind",
+          "source",
+          "status",
           "visitor_id",
           "text",
           "score"

@@ -35,11 +35,15 @@
           "type": "integer",
           "minimum": 0,
           "maximum": 3
+        },
+        "history": {
+          "type": "boolean"
         }
       },
       "required": [
         "level",
-        "phq9_item9"
+        "phq9_item9",
+        "history"
       ],
       "additionalProperties": false
     },

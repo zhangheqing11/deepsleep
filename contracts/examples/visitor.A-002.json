@@ -8,7 +8,8 @@
   "referral": "R1",
   "crisis": {
     "level": "none",
-    "phq9_item9": 0
+    "phq9_item9": 0,
+    "history": false
   },
   "contraindications": [
     "untreated_osa"

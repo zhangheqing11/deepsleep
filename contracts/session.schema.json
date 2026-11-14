@@ -262,7 +262,10 @@
             "$ref": "https://deepsleep.local/contracts/common.schema.json#/$defs/safety_source"
           },
           "action": {
-            "$ref": "https://deepsleep.local/contracts/common.schema.json#/$defs/safety_action"
+            "$ref": "https://deepsleep.local/contracts/common.schema.json#/$defs/safety_action",
+            "not": {
+              "const": "none"
+            }
           },
           "judge_status": {
             "$ref": "https://deepsleep.local/contracts/common.schema.json#/$defs/judge_status"
@@ -279,6 +282,9 @@
               "none": {
                 "$ref": "https://deepsleep.local/contracts/common.schema.json#/$defs/ratio"
               },
+              "history": {
+                "$ref": "https://deepsleep.local/contracts/common.schema.json#/$defs/ratio"
+              },
               "passive": {
                 "$ref": "https://deepsleep.local/contracts/common.schema.json#/$defs/ratio"
               },
@@ -288,6 +294,7 @@
             },
             "required": [
               "none",
+              "history",
               "passive",
               "active"
             ],
@@ -308,7 +315,33 @@
           "judge_probs",
           "matched"
         ],
-        "additionalProperties": false
+        "additionalProperties": false,
+        "if": {
+          "properties": {
+            "action": {
+              "const": "history_check"
+            }
+          },
+          "required": [
+            "action"
+          ]
+        },
+        "then": {
+          "properties": {
+            "level": {
+              "const": "none"
+            }
+          }
+        },
+        "else": {
+          "properties": {
+            "level": {
+              "not": {
+                "const": "none"
+              }
+            }
+          }
+        }
       }
     },
     "context_scales": {

@@ -45,8 +45,18 @@
       "type": "string",
       "enum": [
         "none",
+        "history_check",
         "safety_check",
         "crisis_protocol"
+      ]
+    },
+    "judge_label": {
+      "type": "string",
+      "enum": [
+        "none",
+        "history",
+        "passive",
+        "active"
       ]
     },
     "judge_status": {

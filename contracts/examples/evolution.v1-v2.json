@@ -62,8 +62,28 @@
     {
       "id": "feedback-1",
       "kind": "correction",
+      "source": "human",
+      "status": "approved",
       "visitor_id": "A-001",
       "text": "第一轮可以追问在沙发上是否更容易睡着，先区分床上清醒与单纯作息问题。",
+      "score": null
+    },
+    {
+      "id": "feedback-2",
+      "kind": "correction",
+      "source": "auto_critic",
+      "status": "approved",
+      "visitor_id": "A-008",
+      "text": "来访未自评且有呼吸风险线索，会谈未补筛；建议先调用 screen_osa。",
+      "score": null
+    },
+    {
+      "id": "feedback-3",
+      "kind": "correction",
+      "source": "auto_critic",
+      "status": "rejected",
+      "visitor_id": "A-003",
+      "text": "第一轮路径判断错误可能只是来访表达太简略，建议把主要失败原因归于表达方式。",
       "score": null
     }
   ],

@@ -109,6 +109,18 @@ def check_session(data: dict, visitors: dict) -> list[str]:
     round_numbers = [item['round'] for item in data['rounds']]
     if round_numbers != list(range(1, len(round_numbers) + 1)):
         errors.append('rounds.round 必须从 1 连续递增且不重复')
+    for index, event in enumerate(data['safety_events']):
+        if event['action'] == 'history_check':
+            prefix = f'safety_events[{index}]'
+            if event['level'] != 'none':
+                errors.append(f'{prefix}: history_check 的 level 必须为 none')
+            # Check that a follow-up exists; its wording needs semantic review.
+            if visitor and not any(
+                turn['turn'] > event['turn'] and turn['speaker'] in ('agent', 'safety')
+                for round_data in data['rounds'] if round_data['round'] == event['round']
+                for turn in round_data['transcript']
+            ):
+                errors.append(f'{prefix}: history_check 之后同一轮必须存在 agent 或 safety 的下一句发言')
     scale_triggers = [(1, 0)] if any(
         entry['scale'] == 'phq9' and entry['items'][8] > 0
         for entry in data['context_scales']
@@ -269,6 +281,9 @@ def check_run_report(data: dict, visitors: dict) -> list[str]:
 
 def check_evolution(data: dict, visitors: dict) -> list[str]:
     errors = []
+    for index, feedback in enumerate(data['human_feedback']):
+        if feedback['source'] == 'human' and feedback['status'] != 'approved':
+            errors.append(f'human_feedback[{index}]: source=human 时 status 必须为 approved')
     candidates = {}
     changes = {}
     for candidate in data['candidates']:

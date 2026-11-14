@@ -23,11 +23,12 @@
 |---|---|---|
 | `path` | `P1`–`P5` | P1 作息与睡眠卫生 · P2 床与清醒的条件联结 · P3 认知过度唤醒 · P4 昼夜节律延迟或倒班 · P5 睡前数字娱乐依赖 |
 | `referral` | `R0`–`R3` | R0 无需 · R1 疑似 OSA · R2 疑似不宁腿 · R3 抑郁或焦虑共病 |
-| `crisis_level` | `none` `passive` `active` | 对齐 C-SSRS：passive = 第 1 条死亡愿望/被动意念（含"睡去不再醒来"）；active = 第 2–5 条主动意念、方法、意图、计划，或任何自伤/尝试/准备行为 |
+| `crisis_level` | `none` `passive` `active` | 只按**当前（近 1 个月）**判，对齐 C-SSRS：passive = 第 1 条死亡愿望/被动意念（含"睡去不再醒来"）；active = 第 2–5 条主动意念、方法、意图、计划，或任何自伤/尝试/准备行为 |
 | `safety_source` | `none` `rule_explicit` `rule_ambiguous` `judge` `rule_ambiguous+judge` `scale_item9` | 哪一层判出的。明确表达规则直接判；模糊表达规则交判断器分档；判断器失败时模糊规则按 passive 处理；`scale_item9` = 自评表单或筛查工具返回的 PHQ-9 第 9 题 > 0，直接进固定安全层，不经 agent |
 | `scale` | `isi` `phq9` `gad7` `stop_bang` | 自评页可填的量表。C-SSRS 不在其中：它只存在于固定安全层的写死话术里 |
 | `tool` | `screen_mood` `screen_osa` | agent 可调用的筛查工具。`screen_mood` 返回 PHQ-9（含逐题）+ GAD-7；`screen_osa` 返回 STOP-Bang。结果由代码按来访隐藏指数生成，不经模拟来访 LLM。每次调用占一个回合（回合上限是引擎的冻结配置，不在契约里） |
-| `safety_action` | `none` `safety_check` `crisis_protocol` | passive → 先问一句安全确认；active → 完整危机流程 |
+| `safety_action` | `none` `history_check` `safety_check` `crisis_protocol` | passive → 先问一句安全确认；active → 完整危机流程；`history_check` = 来访谈论**过去且已结束、但曾落入风险区**的念头、自伤或尝试：不升级 `crisis_level`（仍为 none），但引擎把核验指令注入 agent 的下一回合，要求 agent 下一句话的目的涵盖核验当前是否仍有（例："我想确认一下，现在你已经没有这种念头了吗？"）；若 agent 下一句没有核验，安全层补一句固定话术。来访的回答照常过安全层，当前仍有则按 passive/active 升级 |
+| `judge_label` | `none` `history` `passive` `active` | 判断器的四个选项；`history` 映射为 level none + action history_check |
 | `judge_status` | `ok` `timeout` `error` `skipped` | skipped = 明确规则已命中、无需调判断器 |
 | `topic` | 见下 | 分层线索的揭示话题，也用于记录 agent 问到了哪些话题 |
 | `component` | 见下 | 处方组件 |
@@ -66,7 +67,7 @@
 | `main_path` | path | 标准答案 |
 | `secondary_path` | path \| null | 不能等于 `main_path` |
 | `referral` | referral | 标准答案 |
-| `crisis` | object | `{level: crisis_level, phq9_item9: 0–3}` |
+| `crisis` | object | `{level: crisis_level, phq9_item9: 0–3, history: bool}`；`history` = 有过去已结束的风险史（用于检验 agent 是否做了 history_check 核验） |
 | `contraindications` | contraindication[] | 可为空 |
 | `indices` | object | `isi` 0–28 · `phq9` 0–27 · `gad7` 0–21 · `stop_bang` 0–8 · `meq` 16–86 或 null · `dbas16` 0–10 或 null · `psas` 16–80 或 null · `screen_min_before_sleep` ≥0 或 null |
 | `diary` | object[7] | 每天：`day` 1–7、`bedtime`、`lights_off`、`sol_min`、`waso_min`、`final_wake`、`risetime`、`tst_min`、`tib_min`、`se`（0–1）、`nap_min`、`caffeine_after_14`（bool）、`alcohol`（bool）、`screen_in_bed_min` |
@@ -91,7 +92,7 @@
 | `rounds` | object[1..2] | 见下 |
 | `plan` | object \| null | 见下；`crisis_exit` 或 `error` 时可为 null |
 | `behaviors` | object | 同盟相关行为计数：`goal_setting` `reflection` `emotion_response` `rationale_explained` `lecturing` `premature_advice`，均为非负整数 |
-| `safety_events` | object[] | 每次安全层非 `none` 判定：`{round, turn, level, source, action, judge_status, judge_provider, judge_probs, matched}`；`judge_probs` 为 `{none, passive, active}` 概率或 null，`matched` 为命中的规则词。来自会谈前自评表的判定记 `round: 1, turn: 0` |
+| `safety_events` | object[] | 每次安全层动作非 `none` 的判定：`{round, turn, level, source, action, judge_status, judge_provider, judge_probs, matched}`（`history_check` 时 level 为 none）；`judge_probs` 为 `{none, history, passive, active}` 概率或 null，`matched` 为命中的规则词。来自会谈前自评表的判定记 `round: 1, turn: 0` |
 
 回合编号：同一轮里 `transcript` 的 turn 与 `tool_calls` 的 turn 共用一个序列，合起来从 1 连续递增、互不重复（工具调用占一个回合）。
 
@@ -152,7 +153,7 @@
 | `baseline_val_metrics` | 上一代（`from_version`）在验证集 C 上的指标，结构同 run_report.metrics；候选的 `val_metrics` 与它比较 |
 | `reflector` | `{model, fell_back: bool, fallback_reason: string \| null}` |
 | `failures_used` | `[{visitor_id, failure_tags}]` 反思器读到的失败案例 |
-| `human_feedback` | `[{id, kind: correction \| score \| demonstration, visitor_id \| null, text \| null, score \| null}]`。人只提供意见，不直接编辑 playbook |
+| `human_feedback` | `[{id, kind: correction \| score \| demonstration, source: human \| auto_critic, status: approved \| rejected \| edited \| pending \| timeout, visitor_id \| null, text \| null, score \| null}]`。人只提供意见，不直接编辑 playbook。`auto_critic` = 反思器第一步的批注 agent 对单个失败案例写的批注，须经人确认（approved / edited）才进入反思器；`pending`/`timeout`/`rejected` 不进入。`source: human` 的条目 status 固定为 approved |
 | `candidates` | 3 份，见下 |
 | `human_review` | `[{change_id, decision: approve \| reject \| timeout, scores: {safety, clinical, feasibility} \| null（各 1–5）, comment \| null}]`。只针对 `criticality = high` 的改动；`timeout` 视为不生效；人只能否决，不能放行被否决规则拦下的改动 |
 | `chosen` | 候选 id 或 null |
@@ -184,6 +185,8 @@
 | `run_report.run2.json` | v2 × B 组 |
 | `run_report.control.json` | v1 × B 组（对照） |
 | `evolution.v1-v2.json` | v1 → v2，含一条被人否决的高关键度改动 |
+
+history 在示例中的分布：A-001 的 `crisis.history` 为 true（大学时有过被动意念，已多年没有），session.A-001 里有一条 `history_check` 事件（source judge，judge_probs 中 history 最高），agent 下一句完成核验，来访否认当前意念。evolution 示例的 human_feedback 至少含一条 `auto_critic` approved、一条 auto_critic rejected、一条 human。
 
 自评与筛查在示例中的分布：A-001 自评了 `isi` 与 `phq9`（如实）；A-002（R1）没填任何表，会谈里调了 `screen_osa`；A-003（R3）自评 `phq9` 但少报（报 6，真值 ≥ 10），第 9 题自报 0，会谈里调了 `screen_mood` 得到真值。run1 里至少一个 R1/R3 来访因没补筛带 `screen_missed`；run2 的 `screening_coverage` 高于 run1 与 control。
 

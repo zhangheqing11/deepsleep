@@ -8,7 +8,8 @@
   "referral": "R0",
   "crisis": {
     "level": "none",
-    "phq9_item9": 0
+    "phq9_item9": 0,
+    "history": true
   },
   "contraindications": [],
   "indices": {
@@ -169,6 +170,13 @@
       "reveal_topic": "sleep_elsewhere",
       "deny_first": true,
       "supports": "P2"
+    },
+    {
+      "id": "A-001-c4",
+      "content": "大学时有过希望睡去不再醒来的念头，但已经很多年没有了。",
+      "reveal_topic": "self_harm",
+      "deny_first": false,
+      "supports": "crisis"
     }
   ],
   "prefilled": [
