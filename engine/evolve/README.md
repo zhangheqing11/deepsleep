@@ -16,7 +16,7 @@
 | 验证集评估 | S2 + S3 | `async def evaluator(playbook_text: str, *, label: str) -> dict`，返回 C 组上的 `run_report.metrics`；CLI 用 `--evaluator module:func` 指定 |
 | 失败案例 | S2 计分 | 读 `run_report.per_visitor[].failure_tags` 与 `session_ref`（相对 run_report 所在目录） |
 | 人类审核 | 前端（之后接） | 读 `var/evolve/<id>/review_request.json`，写 `review_response.json`：`{"decisions":[{change_id, decision: "reject"|"approve", scores|null, comment|null}]}`。只有 high 改动会出现；approve 不会放行被硬规则拦下的改动 |
-| 分类器 trace | S3 | `<out>/trace/<id>.json` 中 `path_probs: [{round, turn, probs: {P1..P5}}]`（也接受 `classifier`/`weights` 等写法，或 transcript 每条的 `path_probs`）。读出逐回合正确路径权重、熵、关键线索出现回合 |
+| 分类器 trace | S3 | `<out>/trace/<id>.json` 的 `path_probs`（S3 5597333 结构）：每个动作一条 `{round, turn, final: false, weights, attitude, uncertainty, margin, status, ...}`，每轮一条 `final: true`（无 turn）。status 非 ok 的是均匀兜底权重，剔除并计数。读出逐回合正确路径权重、熵、轮末权重、抗拒次数、关键线索出现回合 |
 | 富评估结果（可选） | S2 + S3 | evaluator 可返回 `{metrics, per_visitor, sessions, traces, visitors}`，看板就能拿到 C 组上 baseline 与各候选的分维度指标差和分类器曲线 |
 | C1 批注 | 之后的 PR | 经人确认（approved / edited）的 `auto_critic` 条目直接放进 `human_feedback` 传入，反思器自动只读可用条目 |
 

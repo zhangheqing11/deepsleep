@@ -97,3 +97,39 @@ def test_subagent_map_covers_sections():
     from engine.evolve.config import SECTIONS
     assert set(dims.SUBAGENT_BY_SECTION) == set(SECTIONS)
     assert dims.SUBAGENT_BY_SECTION["plan_rules"] == dims.SUBAGENT_BY_SECTION["referral_rules"] == "plan_adjustment"
+
+
+def s3_record(rnd, turn, p_true, *, final=False, status="ok", attitude="cooperative"):
+    """Shape written by engine-session 5597333 (engine/session.py)."""
+    weights = probs(p_true) if status == "ok" else dict.fromkeys(ev.PATHS, 0.2)
+    rec = {"round": rnd, "final": final, "weights": weights, "attitude": attitude,
+           "uncertainty": 0.5, "margin": 0.1, "status": status, "provider": "mock", "latency_ms": 3.0}
+    if not final:
+        rec["turn"] = turn
+    return rec
+
+
+def test_s3_trace_shape():
+    visitor_turns = [(r["round"], t["turn"]) for r in SESSION["rounds"] for t in r["transcript"] if t["speaker"] == "visitor"]
+    (r1a, t1a), (r1b, t1b), (r1c, t1c) = visitor_turns[:3]
+    trace = {"path_probs": [
+        s3_record(r1a, t1a, 0.2),
+        s3_record(r1b, t1b, 0.0, status="timeout"),              # uniform fallback → excluded
+        s3_record(r1c, t1c, 0.6, attitude="resistant"),
+        s3_record(1, None, 0.65, final=True),                     # round-end record, no turn
+    ]}
+    item = ev.visitor_evidence("A-001", MAIN, SESSION, trace, VISITOR)
+    assert [p["p_true"] for p in item["curve"]] == [0.2, 0.6]
+    assert item["finals"][1]["p_true"] == pytest.approx(0.65) and item["finals"][1]["correct"]
+    assert item["classifier_failures"] == 1 and item["resistant_steps"] == 1
+    summary = ev.aggregate([item])
+    assert summary["r1_end_p_true"] == pytest.approx(0.65)        # final record preferred
+    assert summary["classifier_failures"] == 1 and summary["resistant_step_rate"] == pytest.approx(0.5)
+    line = ev.describe(item)
+    assert "第 1 轮 0.65" in line and "来访抗拒 1 次" in line and "已剔除" in line
+
+
+def test_failed_final_record_is_ignored():
+    trace = {"path_probs": [s3_record(1, None, 0.9, final=True, status="error")]}
+    item = ev.visitor_evidence("A-001", MAIN, SESSION, trace, VISITOR)
+    assert item["finals"] == {} and item["curve"] == [] and item["classifier_failures"] == 1

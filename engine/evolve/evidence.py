@@ -5,9 +5,14 @@ key clues earlier, so the weight on the true path rises sooner and entropy falls
 This module turns traces into those curves (plus first/second differences of the mean
 curve, the basis for later "derivative" analyses).
 
-Trace format is not a contract yet (v0.1.1 will add it). Accepted shapes, first match wins:
-  trace["path_probs" | "classifier" | "path_classifier"] = [{round, turn, probs|path_probs|weights: {P1..P5}}]
-  session.rounds[].transcript[].path_probs = {P1..P5}
+Trace format is not a contract yet (v0.1.1 will add it). S3 (engine-session 5597333) writes
+``trace["path_probs"]``: one record per adopted agent action
+``{round, turn, final: false, weights{P1..P5}, attitude, uncertainty, margin, status, provider, latency_ms}``
+(``turn`` = last classified visitor utterance) plus one ``{round, final: true, ...}`` per round (the
+source of ``path_pred``; no ``turn``). Records with ``status`` other than ``ok`` carry uniform fallback
+weights and are excluded from curves (counted instead). Also accepted, for robustness:
+``classifier``/``path_classifier`` keys, ``probs``/``path_probs`` instead of ``weights``, and
+``session.rounds[].transcript[].path_probs``.
 """
 from __future__ import annotations
 
@@ -29,26 +34,56 @@ def _normalize(probs) -> dict | None:
     return {p: v / total for p, v in values.items()}
 
 
-def classifier_series(session: dict | None, trace: dict | None) -> list[dict]:
-    """[{round, turn, probs}] in conversation order."""
-    out = []
+def _records(trace: dict | None) -> list[dict]:
     for key in _SERIES_KEYS:
         entries = (trace or {}).get(key)
         if isinstance(entries, list) and entries:
-            for e in entries:
-                if not isinstance(e, dict):
-                    continue
-                raw = next((e[k] for k in _PROB_KEYS if isinstance(e.get(k), dict)), e)
-                probs = _normalize(raw)
-                if probs and "round" in e and "turn" in e:
-                    out.append({"round": int(e["round"]), "turn": int(e["turn"]), "probs": probs})
-            if out:
-                return sorted(out, key=lambda x: (x["round"], x["turn"]))
+            return [e for e in entries if isinstance(e, dict)]
+    return []
+
+
+def _point(e: dict) -> dict | None:
+    if e.get("status", "ok") != "ok" or "round" not in e:
+        return None
+    raw = next((e[k] for k in _PROB_KEYS if isinstance(e.get(k), dict)), e)
+    probs = _normalize(raw)
+    if not probs:
+        return None
+    return {"round": int(e["round"]), "turn": int(e["turn"]) if "turn" in e else None, "probs": probs,
+            "attitude": e.get("attitude")}
+
+
+def classifier_failures(trace: dict | None) -> int:
+    return sum(1 for e in _records(trace) if e.get("status", "ok") != "ok")
+
+
+def round_finals(trace: dict | None) -> dict[int, dict]:
+    """{round: point} from ``final: true`` records (ok status only)."""
+    out = {}
+    for e in _records(trace):
+        if e.get("final") is True:
+            point = _point(e)
+            if point:
+                out[point["round"]] = point
+    return out
+
+
+def classifier_series(session: dict | None, trace: dict | None) -> list[dict]:
+    """Per-action [{round, turn, probs, attitude}] in conversation order (final records excluded)."""
+    out = []
+    for e in _records(trace):
+        if e.get("final") is True or "turn" not in e:
+            continue
+        point = _point(e)
+        if point:
+            out.append(point)
+    if out or _records(trace):
+        return sorted(out, key=lambda x: (x["round"], x["turn"]))
     for rnd in (session or {}).get("rounds", []):
         for t in rnd.get("transcript", []):
             probs = _normalize(t.get("path_probs"))
             if probs:
-                out.append({"round": rnd["round"], "turn": t["turn"], "probs": probs})
+                out.append({"round": rnd["round"], "turn": t["turn"], "probs": probs, "attitude": t.get("attitude")})
     return out
 
 
@@ -77,7 +112,12 @@ def visitor_evidence(visitor_id: str, main_path: str, session: dict | None, trac
         probs = point["probs"]
         curve.append({"round": point["round"], "turn": point["turn"], "agent_turn": index(point["round"], point["turn"]),
                       "p_true": round(probs[main_path], 4), "entropy": round(entropy_bits(probs), 4),
-                      "correct": max(probs, key=probs.get) == main_path})
+                      "correct": max(probs, key=probs.get) == main_path, "attitude": point["attitude"]})
+    finals = {}
+    for rnd, point in round_finals(trace).items():
+        probs = point["probs"]
+        finals[rnd] = {"p_true": round(probs[main_path], 4), "entropy": round(entropy_bits(probs), 4),
+                       "correct": max(probs, key=probs.get) == main_path}
     key_ids = {c["id"] for c in (visitor or {}).get("clues", []) if c.get("supports") == main_path}
     key_clue = None
     for rnd in (session or {}).get("rounds", []):
@@ -85,7 +125,9 @@ def visitor_evidence(visitor_id: str, main_path: str, session: dict | None, trac
             if key_clue is None and key_ids & set(t.get("revealed_clue_ids") or []):
                 key_clue = {"round": rnd["round"], "turn": t["turn"], "agent_turn": index(rnd["round"], t["turn"])}
     first_correct = next(({k: p[k] for k in ("round", "turn", "agent_turn")} for p in curve if p["correct"]), None)
-    return {"visitor_id": visitor_id, "main_path": main_path, "curve": curve,
+    return {"visitor_id": visitor_id, "main_path": main_path, "curve": curve, "finals": finals,
+            "classifier_failures": classifier_failures(trace),
+            "resistant_steps": sum(1 for p in curve if p["attitude"] == "resistant"),
             "key_clue": key_clue, "key_clue_known": bool(key_ids), "first_correct": first_correct}
 
 
@@ -114,17 +156,26 @@ def aggregate(items: list[dict]) -> dict:
     known = [i for i in items if i["key_clue_known"]]
 
     def round_end(rnd):
-        ends = [[p for p in i["curve"] if p["round"] == rnd][-1]["p_true"] for i in items
-                if any(p["round"] == rnd for p in i["curve"])]
+        """Prefer the round's final record; fall back to the last per-action point."""
+        ends = []
+        for i in items:
+            if rnd in i["finals"]:
+                ends.append(i["finals"][rnd]["p_true"])
+            elif any(p["round"] == rnd for p in i["curve"]):
+                ends.append([p for p in i["curve"] if p["round"] == rnd][-1]["p_true"])
         return _avg(ends)
+
+    n_steps = sum(len(i["curve"]) for i in items)
 
     return {
         "n_visitors": len(items),
-        "n_with_path_probs": sum(1 for i in items if i["curve"]),
+        "n_with_path_probs": sum(1 for i in items if i["curve"] or i["finals"]),
         "by_step": by_step,
         "d1_p_true": d1_p, "d2_p_true": _diff(d1_p),
         "d1_entropy": _diff(h_curve),
         "r1_end_p_true": round_end(1), "r2_end_p_true": round_end(2),
+        "classifier_failures": sum(i["classifier_failures"] for i in items),
+        "resistant_step_rate": round(sum(i["resistant_steps"] for i in items) / n_steps, 4) if n_steps else None,
         "key_clue_rate": round(sum(1 for i in known if i["key_clue"]) / len(known), 4) if known else None,
         "mean_key_clue_agent_turn": _avg(i["key_clue"]["agent_turn"] for i in known if i["key_clue"]),
         "mean_first_correct_agent_turn": _avg(i["first_correct"]["agent_turn"] for i in items if i["first_correct"]),
@@ -146,6 +197,12 @@ def describe(item: dict) -> str:
         parts.append(f"正确路径权重 {p}；熵 {h} bits")
     else:
         parts.append("无分类器权重记录")
+    if item["finals"]:
+        parts.append("每轮末正确路径权重 " + "、".join(f"第 {r} 轮 {f['p_true']:.2f}" for r, f in sorted(item["finals"].items())))
+    if item["resistant_steps"]:
+        parts.append(f"来访抗拒 {item['resistant_steps']} 次")
+    if item["classifier_failures"]:
+        parts.append(f"分类器失败 {item['classifier_failures']} 次（已剔除）")
     if item["key_clue_known"]:
         parts.append(f"关键线索第 {item['key_clue']['agent_turn']} 个 agent 回合出现" if item["key_clue"] else "关键线索始终未问出")
     if item["curve"]:
