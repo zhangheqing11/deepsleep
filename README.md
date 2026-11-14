@@ -6,6 +6,8 @@ BoHack 2026 · 日新主题赛道「打造会自我进化的智能」
 
 - 完整方案：[docs/PLAN.md](docs/PLAN.md)
 - 上下文同步与分工（AI 和人都先读）：[AGENTS.md](AGENTS.md)
+- Windows 评委一键演示：[docs/DEMO_WINDOWS.md](docs/DEMO_WINDOWS.md)
+- 双击入口：仓库根目录的 `demo.bat`（默认 Mock 彩排）。
 
 ## 协作
 
