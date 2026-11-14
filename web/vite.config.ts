@@ -8,6 +8,8 @@ export default defineConfig(({ mode }) => {
   const proxyTarget = env.VITE_DEV_PROXY_TARGET || 'http://127.0.0.1:8000';
 
   return {
+    // 相对路径：部署到任意子路径都能用（路由用的是 hash，不受影响）
+    base: './',
     plugins: [react()],
     server: {
       port: 5173,
