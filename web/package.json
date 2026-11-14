@@ -11,6 +11,7 @@
     "test:sw": "node --test tests/sw.test.mjs",
     "test:board": "node --test tests/board.test.mjs",
     "test:app": "node --test tests/app.test.mjs",
+    "test:auth": "node --test tests/auth.test.mjs",
     "build": "tsc --noEmit -p tsconfig.json && vite build",
     "preview": "vite preview",
     "preview:lan": "vite preview --host",
