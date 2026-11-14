@@ -83,13 +83,19 @@ def submit(config: dict, evolution_id: str, change_id: str, decision: str,
     return target
 
 
-async def collect(config: dict, evolution_id: str, items: list[dict], timeout_s: float | None = None) -> list[dict]:
-    """Wait until every item has a decision or the window closes; missing ones become timeout."""
+async def collect(config: dict, evolution_id: str, items: list[dict], timeout_s: float | None = None,
+                  on_open=None) -> list[dict]:
+    """Wait until every item has a decision or the window closes; missing ones become timeout.
+
+    ``on_open(deadline_epoch)`` is called once the request file is written (dashboard countdown).
+    """
     if not items:
         return []
     timeout_s = config["review"]["timeout_s"] if timeout_s is None else timeout_s
     deadline = time.time() + timeout_s
     write_request(config, evolution_id, items, deadline)
+    if on_open is not None:
+        on_open(deadline)
     allowed = {item["change_id"] for item in items}
     decisions = _read_decisions(config, evolution_id, allowed)
     while len(decisions) < len(allowed) and time.time() < deadline:

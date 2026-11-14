@@ -28,6 +28,21 @@ safety 只是红线（进指标卡，不选案例、不能作为改动目标）�
 契约 `changes` 没有字段放子智能体和维度，所以和指标卡、分类器证据（逐回合正确路径权重 / 熵、其一阶二阶差分、关键线索回合、首次判对回合）
 一起写进 `var/evolve/<id>/insights.json`，`evolve(..., return_insights=True)` 也能直接拿到。
 
+## 实时状态（给看板）
+
+`pipeline.evolve(write=True)` 在 `var/evolve/<id>/status.json` 里持续更新进度（原子写，读到的永远是完整文件）。
+它只是进度遥测，不是契约，最终结果仍以 `evolution.json` 为准；写入失败不影响学习。字段见 `status.py` 文档串：
+
+| 字段 | 取值 |
+|---|---|
+| `phase` | `reflecting` → `validating` → `committing` → `done`；异常为 `failed`（带 `error`，异常仍会抛出） |
+| `reflector` | `{state: running\|done, model, fell_back}` |
+| `validation` | `baseline`: `pending\|running\|done\|error\|skipped`；`candidates`: `{c1..c3: pending\|running\|done\|error\|blocked\|empty}`（blocked = 硬规则拦下未验证，empty = 无可用改动） |
+| `review` | `{state: not_needed\|waiting\|done, deadline: ISO, pending_changes}`，`deadline` 即 120 秒窗口截止时间，供倒计时 |
+| `outcome` / `chosen` / `to_version` | 提交后写入；`phase=done` 时 `evolution.json` 已落盘 |
+
+验证与人工审核是并行的，所以分开成两个字段，不合并成一个"阶段"。读取：`engine.evolve.status.read_status(dir)`。
+
 ## CLI
 
 ```bash
