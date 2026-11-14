@@ -159,8 +159,8 @@ def test_total_timeout_cancels_request_and_closes_transport():
 
 def test_provider_timeout_overrides_and_default():
     assert StartLuxJudge(transport=httpx.MockTransport(lambda r: None)).timeout == 8.0
-    assert DsFlashJudge(client=object()).timeout == 2.5
-    assert MockJudge().timeout == 2.5
+    assert DsFlashJudge(client=object()).timeout == 6.0
+    assert MockJudge().timeout == 6.0
     assert MockJudge({"judge_timeout_overrides": {"mock": .5}}).timeout == .5
     assert StartLuxJudge({"judge_timeout_s": .3, "judge_timeout_overrides": {}},
                          transport=httpx.MockTransport(lambda r: None)).timeout == .3
@@ -189,12 +189,8 @@ def test_eval_cli_without_key(tmp_path):
     result = subprocess.run([
         sys.executable, "-m", "safety.eval", "--provider", "startlux",
         "--output-dir", str(tmp_path),
-    ], cwd=Path(__file__).resolve().parents[1], env=dict(os.environ),
-        capture_output=True, text=True, check=True)
-    report = json.loads(result.stdout)
-    assert report["requested_provider"] == "startlux"
-    assert report["provider"] == "mock(fallback)"
-    assert report["judge"]["providers"] == {"mock(fallback)": report["judge"]["calls"]}
-    saved = list(tmp_path.glob("startlux-*.json"))
-    assert len(saved) == 1
-    assert json.loads(saved[0].read_text()) == report
+    ], cwd=Path(__file__).resolve().parents[1], env={**os.environ, **{"STARTLUX_API_KEY": ""}},
+        capture_output=True, text=True, timeout=10)
+    assert result.returncode != 0
+    assert "评测 startlux 缺少 API key" in result.stderr
+    assert not list(tmp_path.iterdir())

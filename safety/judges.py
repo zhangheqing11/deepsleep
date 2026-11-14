@@ -1,6 +1,6 @@
 """Bounded async judge adapters. No requests are made during construction."""
 import asyncio
-from dataclasses import dataclass
+from dataclasses import dataclass, replace
 import json
 import math
 import os
@@ -22,6 +22,7 @@ class JudgeResult:
     status: str
     provider: str
     latency_ms: float
+    attempts: tuple["JudgeResult", ...] = ()
 
 
 class Judge(Protocol):
@@ -37,6 +38,42 @@ def validate_probs(probs, tolerance: float) -> dict[str, float]:
     if abs(math.fsum(probs.values()) - 1.0) > tolerance:
         raise ValueError("Probabilities must sum to 1")
     return {level: float(probs[level]) for level in LEVELS}
+
+
+class ChainJudge:
+    """Sequential failover with invocation-local records, safe for shared use."""
+    provider = "chain"
+
+    def __init__(self, primary: Judge, fallbacks):
+        self.primary = primary
+        self.fallbacks = tuple(fallbacks)
+        self.judges = (primary, *self.fallbacks)
+        # Built-in adapters expose their effective timeout (including overrides).
+        self.timeout = sum(getattr(judge, "timeout", 6.0 if i == 0 else 3.0)
+                           for i, judge in enumerate(self.judges))
+
+    async def classify(self, text: str) -> JudgeResult:
+        attempts = []
+        for i, judge in enumerate(self.judges):
+            start = perf_counter()
+            provider = getattr(judge, "provider", type(judge).__name__)
+            try:
+                result = await asyncio.wait_for(
+                    judge.classify(text), getattr(judge, "timeout", 6.0 if i == 0 else 3.0),
+                )
+                if result.status == "ok":
+                    validate_probs(result.probs, getattr(judge, "config", {}).get(
+                        "probability_sum_tolerance", 0.000001))
+                elif result.status not in ("timeout", "error"):
+                    raise ValueError("Unexpected judge status")
+            except TimeoutError:
+                result = JudgeResult(None, "timeout", provider, (perf_counter() - start) * 1000)
+            except Exception:
+                result = JudgeResult(None, "error", provider, (perf_counter() - start) * 1000)
+            attempts.append(result)
+            if result.status == "ok":
+                break
+        return replace(result, attempts=tuple(attempts))
 
 
 class _BoundedJudge:
@@ -290,7 +327,7 @@ class GeminiDecisionJudge(_BoundedJudge):
                 return await self._request(async_client, text)
 
 
-def make_judge(config=None) -> Judge:
+def _make_single_judge(config, *, allow_fallback=True) -> Judge:
     config = load_config(config)
     provider = config["judge_provider"]
     if provider == "mock":
@@ -301,12 +338,44 @@ def make_judge(config=None) -> Judge:
         "startlux": ("STARTLUX_API_KEY",),
     }[provider]
     if not any(os.getenv(key, "").strip() for key in keys):
+        if not allow_fallback:
+            raise ValueError(f"评测 {provider} 缺少 API key：请设置 {' 或 '.join(keys)}；未降级 mock。")
         return MockJudge(config, provider="mock(fallback)")
-    if provider == "ds_flash":
-        return DsFlashJudge(config)
-    if provider == "startlux":
-        return StartLuxJudge(config)
     try:
+        if provider == "ds_flash":
+            # Its adapter imports lazily at request time; check availability now
+            # so an unavailable fallback is skipped before building the chain.
+            from openai import AsyncOpenAI  # noqa: F401
+            return DsFlashJudge(config)
+        if provider == "startlux":
+            return StartLuxJudge(config)
         return GeminiDecisionJudge(config) if provider == "gemini_decision" else JevJudge(config)
     except ImportError:
+        if not allow_fallback:
+            raise ValueError(f"评测 {provider} 缺少所需 SDK，请安装可选依赖；未降级 mock。") from None
         return MockJudge(config, provider="mock(fallback)")
+
+
+def make_judge(config=None, *, allow_fallback=True, chain=None) -> Judge:
+    """Engine uses the configured chain; strict evaluation defaults to one provider.
+
+    Explicit chain evaluation is strict about missing credentials/SDKs as well.
+    """
+    config = load_config(config)
+    primary = _make_single_judge(config, allow_fallback=allow_fallback)
+    use_chain = allow_fallback if chain is None else chain
+    if not use_chain or primary.provider.startswith("mock"):
+        return primary
+    fallbacks = []
+    for provider in config["judge_fallbacks"]:
+        fallback_config = {**config, "judge_provider": provider,
+                           "judge_timeout_s": config["judge_fallback_timeout_s"],
+                           "judge_timeout_overrides": {}}
+        try:
+            fallback = _make_single_judge(fallback_config, allow_fallback=False)
+        except (ValueError, ImportError):
+            if not allow_fallback:
+                raise
+            continue
+        fallbacks.append(fallback)
+    return ChainJudge(primary, fallbacks) if fallbacks else primary

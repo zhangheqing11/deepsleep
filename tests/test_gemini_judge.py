@@ -175,15 +175,11 @@ def test_gemini_eval_cli_without_key(tmp_path):
     result = subprocess.run([
         sys.executable, "-m", "safety.eval", "--provider", "gemini_decision",
         "--output-dir", str(tmp_path),
-    ], cwd=Path(__file__).resolve().parents[1], env=dict(os.environ),
-        capture_output=True, text=True, check=True)
-    report = json.loads(result.stdout)
-    assert report["requested_provider"] == "gemini_decision"
-    assert report["provider"] == "mock(fallback)"
-    assert report["judge"]["providers"] == {"mock(fallback)": report["judge"]["calls"]}
-    saved = list(tmp_path.glob("gemini_decision-*.json"))
-    assert len(saved) == 1
-    assert json.loads(saved[0].read_text()) == report
+    ], cwd=Path(__file__).resolve().parents[1], env={**os.environ, **{"GEMINI_API_KEY": "", "GOOGLE_API_KEY": ""}},
+        capture_output=True, text=True, timeout=10)
+    assert result.returncode != 0
+    assert "评测 gemini_decision 缺少 API key" in result.stderr
+    assert not list(tmp_path.iterdir())
 
 
 @pytest.mark.parametrize("include_history", [True, False])

@@ -93,7 +93,8 @@ def test_missing_optional_sdk(monkeypatch):
 
 def test_environment_provider_override(monkeypatch):
     monkeypatch.setenv("JUDGE_PROVIDER", "mock")
-    assert make_judge({"judge_provider": "ds_flash"}).provider == "mock"
+    assert make_judge().provider == "mock"
+    assert make_judge({"judge_provider": "ds_flash"}).provider == "mock(fallback)"
 
 
 def test_mock_is_deterministic_and_bounded(monkeypatch):

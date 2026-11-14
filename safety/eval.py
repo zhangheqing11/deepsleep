@@ -7,7 +7,7 @@ import json
 import math
 from pathlib import Path
 
-from .config import load_config
+from .config import load_config, load_repo_env
 from .judges import LEVELS, MockJudge, make_judge
 from .layer import SafetyLayer, SessionSafetyState
 from .rules import Rules
@@ -49,15 +49,21 @@ def _percentile(values, percentile):
     return ordered[low] + (ordered[high] - ordered[low]) * (position - low)
 
 
-async def evaluate(rows, provider="rules", config=None) -> dict:
-    if provider not in ("rules", "mock", "ds_flash", "jev", "gemini_decision", "startlux"):
+async def evaluate(rows, provider=None, config=None, *, timeout=None) -> dict:
+    if provider is not None and provider not in ("rules", "mock", "ds_flash", "jev", "gemini_decision", "startlux", "chain"):
         raise ValueError("Unknown evaluation provider")
-    config = load_config(config)
+    config = load_config(config, provider="mock" if provider == "rules" else None if provider == "chain" else provider)
+    provider = provider if provider is not None else config["judge_provider"]
+    if timeout is not None:
+        config = load_config({**config, "judge_timeout_s": timeout, "judge_timeout_overrides": {}})
     rules = Rules(config["lexicon_path"])
     layer = None
     if provider != "rules":
         # Explicit offline modes cannot be turned into paid calls by the environment.
-        judge = MockJudge(config) if provider == "mock" else make_judge({**config, "judge_provider": provider})
+        if provider == "chain":
+            judge = make_judge(config, allow_fallback=False, chain=True)
+        else:
+            judge = MockJudge(config) if provider == "mock" else make_judge({**config, "judge_provider": provider}, allow_fallback=False)
         layer = SafetyLayer(config, judge=judge)
     matrix = [[0 for _ in LEVELS] for _ in LEVELS]
     predictions, results, missed = [], [], []
@@ -117,20 +123,28 @@ async def evaluate(rows, provider="rules", config=None) -> dict:
 
 def main(argv=None):
     parser = argparse.ArgumentParser(description="冻结安全层评测；占位集结果不代表正式安全性能。")
-    parser.add_argument("--provider", choices=("rules", "mock", "ds_flash", "jev", "gemini_decision", "startlux"), required=True)
+    parser.add_argument("--provider", choices=("rules", "mock", "ds_flash", "jev", "gemini_decision", "startlux", "chain"))
     parser.add_argument("--testset", type=Path)
     parser.add_argument("--config", type=Path)
     parser.add_argument("--output-dir", type=Path)
+    parser.add_argument("--timeout", type=float, help="本次评测判断器超时秒数（覆盖冻结默认值）")
     args = parser.parse_args(argv)
-    config = load_config(args.config)
+    try:
+        load_repo_env()
+    except (OSError, ValueError):
+        parser.error("仓库根 .env 读取失败，请检查文件权限和格式。")
+    config = load_config(args.config, provider="mock" if args.provider == "rules" else None if args.provider == "chain" else args.provider)
     testset = args.testset or Path(config["testset_path"])
     rows = load_testset(testset)
-    report = asyncio.run(evaluate(rows, args.provider, config))
+    try:
+        report = asyncio.run(evaluate(rows, args.provider, config, timeout=args.timeout))
+    except ValueError as exc:
+        parser.error(str(exc))
     report["testset"] = str(testset.resolve())
     output_dir = args.output_dir or Path(config["eval_output_dir"])
     output_dir.mkdir(parents=True, exist_ok=True)
     timestamp = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%S%fZ")
-    output = output_dir / f"{args.provider}-{timestamp}.json"
+    output = output_dir / f"{report['provider']}-{timestamp}.json"
     report["report_path"] = str(output.resolve())
     serialized = json.dumps(report, ensure_ascii=False, indent=2, allow_nan=False)
     output.write_text(serialized + "\n", encoding="utf-8")

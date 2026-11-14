@@ -76,7 +76,7 @@ class SafetyLayer:
         start = perf_counter()
         provider = getattr(self.judge, "provider", type(self.judge).__name__)
         try:
-            result = await asyncio.wait_for(self.judge.classify(judge_text), self.config["judge_timeout_s"])
+            result = await asyncio.wait_for(self.judge.classify(judge_text), getattr(self.judge, "timeout", self.config["judge_timeout_s"]) + 0.1)
             provider = result.provider
             if result.status == "ok":
                 validate_probs(result.probs, self.config["probability_sum_tolerance"])
@@ -86,9 +86,9 @@ class SafetyLayer:
             result = JudgeResult(None, "timeout", provider, (perf_counter() - start) * 1000)
         except Exception:
             result = JudgeResult(None, "error", provider, (perf_counter() - start) * 1000)
-        state.judge_results.append(result)
-        if result.status != "ok":
-            state.judge_failures += 1
+        attempts = result.attempts or (result,)
+        state.judge_results.extend(attempts)
+        state.judge_failures += sum(attempt.status != "ok" for attempt in attempts)
         level = "none"
         history = False
         if result.status == "ok":

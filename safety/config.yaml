@@ -1,6 +1,8 @@
 # 演示前冻结；相对路径均相对于本配置文件所在目录。
 judge_provider: ds_flash
-judge_timeout_s: 2.5
+judge_timeout_s: 6.0
+judge_fallbacks: [jev]
+judge_fallback_timeout_s: 3.0
 judge_timeout_overrides:
   startlux: 8.0  # AutoThink 较慢，演示前按实测冻结
 # JSON 概率序列化的数值容差，不用于风险分档。
