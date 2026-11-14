@@ -10,6 +10,7 @@ import os
 import re
 from typing import Protocol, runtime_checkable
 
+from .network import retry_connection
 from .telemetry import CURRENT_CALL, annotate_response
 
 
@@ -33,6 +34,7 @@ class DsFlashClient:
 
     def __init__(self, settings: dict, *, client=None, limiter: asyncio.Semaphore | None = None):
         self.settings = settings
+        self.network_stats = {"attempts": 0, "retries": 0}
         self.model = os.getenv("DS_MODEL", "").strip()
         base_url = os.getenv("DS_BASE_URL", "").strip()
         api_key = os.getenv("DS_API_KEY", "").strip()
@@ -60,11 +62,14 @@ class DsFlashClient:
             row["thinking"] = mode or "provider_default"
         if self.settings.get("response_format") == "json_object":
             kwargs["response_format"] = {"type": "json_object"}
-        async with self._limit:
-            if row is not None:
-                row["request_started"] = True
-            response = await asyncio.wait_for(self.client.chat.completions.create(**kwargs),
+        async def request():
+            async with self._limit:
+                if row is not None:
+                    row["request_started"] = True
+                return await asyncio.wait_for(self.client.chat.completions.create(**kwargs),
                                               self.settings["timeout_s"])
+        response = await retry_connection(request, self.settings.get("network_retry", {}),
+                                          stats=self.network_stats)
         annotate_response(response)
         if getattr(response.choices[0], "finish_reason", None) == "length":
             raise TruncatedOutput("completion reached max_tokens")
