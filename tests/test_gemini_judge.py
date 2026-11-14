@@ -114,8 +114,9 @@ def test_gemini_http_errors(code):
 
 def test_gemini_missing_key():
     judge = make_judge({"judge_provider": "gemini_decision"})
-    assert isinstance(judge, MockJudge)
-    assert asyncio.run(judge.classify("模拟发言")).provider == "mock(fallback)"
+    assert not isinstance(judge, MockJudge)
+    result = asyncio.run(judge.classify("模拟发言"))
+    assert (result.provider, result.status, result.probs) == ("gemini_decision", "error", None)
 
 
 def test_gemini_missing_sdk(monkeypatch):
@@ -124,7 +125,7 @@ def test_gemini_missing_sdk(monkeypatch):
     monkeypatch.setitem(sys.modules, "google", SimpleNamespace())
     with pytest.raises(ImportError, match="requirements-optional.txt"):
         GeminiDecisionJudge()
-    assert make_judge({"judge_provider": "gemini_decision"}).provider == "mock(fallback)"
+    assert asyncio.run(make_judge({"judge_provider": "gemini_decision"}).classify("普通发言")).status == "error"
 
 
 @pytest.mark.parametrize("key", ["GEMINI_API_KEY", "GOOGLE_API_KEY"])
@@ -177,9 +178,14 @@ def test_gemini_eval_cli_without_key(tmp_path):
         "--output-dir", str(tmp_path),
     ], cwd=Path(__file__).resolve().parents[1], env={**os.environ, **{"GEMINI_API_KEY": "", "GOOGLE_API_KEY": ""}},
         capture_output=True, text=True, timeout=10)
-    assert result.returncode != 0
+    assert result.returncode == 0
     assert "评测 gemini_decision 缺少 API key" in result.stderr
-    assert not list(tmp_path.iterdir())
+    report = json.loads(result.stdout)
+    assert report["provider"] == "gemini_decision"
+    assert report["judge"]["statuses"] == {"error": 46}
+    assert report["warnings"]
+    assert report["evaluation_columns"]["真实判断器"]["status"] == "未测"
+    assert len(list(tmp_path.iterdir())) == 1
 
 
 @pytest.mark.parametrize("include_history", [True, False])

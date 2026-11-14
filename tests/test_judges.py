@@ -79,8 +79,9 @@ def test_invalid_probabilities_become_error(bad):
 @pytest.mark.parametrize("provider", ["ds_flash", "jev"])
 def test_missing_keys_fall_back(provider):
     judge = make_judge({"judge_provider": provider})
-    assert isinstance(judge, MockJudge)
-    assert asyncio.run(judge.classify("普通发言")).provider == "mock(fallback)"
+    assert not isinstance(judge, MockJudge)
+    result = asyncio.run(judge.classify("普通发言"))
+    assert (result.provider, result.status, result.probs) == (provider, "error", None)
 
 
 def test_missing_optional_sdk(monkeypatch):
@@ -88,13 +89,13 @@ def test_missing_optional_sdk(monkeypatch):
     monkeypatch.setenv("TYPESAFE_API_KEY", "offline-test-key")
     with pytest.raises(ImportError, match="requirements-optional.txt"):
         JevJudge()
-    assert make_judge({"judge_provider": "jev"}).provider == "mock(fallback)"
+    assert asyncio.run(make_judge({"judge_provider": "jev"}).classify("普通发言")).status == "error"
 
 
 def test_environment_provider_override(monkeypatch):
     monkeypatch.setenv("JUDGE_PROVIDER", "mock")
     assert make_judge().provider == "mock"
-    assert make_judge({"judge_provider": "ds_flash"}).provider == "mock(fallback)"
+    assert asyncio.run(make_judge({"judge_provider": "ds_flash"}).classify("普通发言")).status == "error"
 
 
 def test_mock_is_deterministic_and_bounded(monkeypatch):

@@ -21,7 +21,7 @@
 | A2 | 判断器对比：ds flash、Jev、Gemini Decision 1、StartLux-Decision（原点星辉） | ds flash 用 JSON 结构化输出，**够用就优先选它**（国内服务，不依赖 VPN）。Jev 和 Gemini 走心理学同学的美国 VPN，要看延迟能否满足要求。StartLux 的 AutoThink 较慢，超时单独设为 8 秒，按实测冻结；它的权重只能非商用。对比工具是 `python -m safety.eval --provider rules|ds_flash|jev|gemini_decision|startlux` | `zhq/domain-safety` | 测试集定稿（A3）；`.env` 里有 `DS_*`、`TYPESAFE_API_KEY`、`GEMINI_API_KEY`、`STARTLUX_API_KEY` |
 | A3 | 用审定后的草稿替换占位数据 | 把 `ds-clinical` 里的词表、测试集换进 `safety/lexicon.yaml` 和 `safety/testset.jsonl`；判断器 prompt 按审定口径同步修改 | `zhq/domain-safety` | 心理学同学审完 `docs/review-queue.md` |
 | A4 | 冻结阈值 `tau_flag` / `tau_active` 和判断器选择 | 根据 A2 的结果，由心理学同学拍板召回与误报的取舍，演示前冻结 | `zhq/domain-safety` | A2 |
-| A5 | 判断器要对所有发言运行，不能只在命中模糊词时调用 | 草稿手算显示，只靠规则会漏掉 7/24 条阳性：语序变体、不含死亡词的计划、"傻事"这类指代 | 已是现有规格，保持 | — |
+| A5 | 除命中明确规则外的所有发言都交给判断器，不能只在命中模糊词时调用 | 草稿手算显示，只靠规则会漏掉 7/24 条阳性：语序变体、不含死亡词的计划、"傻事"这类指代 | 已是现有规格，保持 | — |
 | A6 | 不得拿测试集反复调 prompt | 调过 prompt 后，测试集就失去独立性。最终评估要另写一份留出集，最好由另一个人写 | `zhq/domain-safety` | — |
 
 ## B. 用户可见文案（统一流程：Sonnet 子代理起草 → 统筹会话验收 → 心理学同学审定）

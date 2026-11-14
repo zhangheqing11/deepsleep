@@ -112,17 +112,25 @@ def test_explicit_real_provider_requires_key_and_engine_keeps_fallback(provider,
     monkeypatch.setenv("JUDGE_PROVIDER", "mock")
     monkeypatch.setenv(key, "")
     monkeypatch.setenv("GOOGLE_API_KEY", "")
-    with pytest.raises(ValueError, match=f"评测 {provider} 缺少 API key"):
-        asyncio.run(evaluate([], provider))
-    assert make_judge({"judge_provider": provider}).provider == "mock(fallback)"
+    report = asyncio.run(evaluate([], provider))
+    assert report["provider"] == provider
+    assert report["warnings"]
+    assert report["evaluation_columns"]["真实判断器"]["status"] == "未测"
+    unavailable = asyncio.run(make_judge({"judge_provider": provider}).classify("普通发言"))
+    assert (unavailable.provider, unavailable.status, unavailable.probs) == (provider, "error", None)
     result = subprocess.run(
         [sys.executable, "-m", "safety.eval", "--provider", provider,
          "--output-dir", str(tmp_path)], cwd=ROOT, env=os.environ.copy(),
         capture_output=True, text=True,
     )
-    assert result.returncode != 0
+    assert result.returncode == 0
     assert f"评测 {provider} 缺少 API key" in result.stderr
-    assert not list(tmp_path.iterdir())
+    report = json.loads(result.stdout)
+    assert report["provider"] == provider
+    assert report["judge"]["statuses"] == {"error": 46}
+    assert report["warnings"]
+    assert report["evaluation_columns"]["真实判断器"]["status"] == "未测"
+    assert len(list(tmp_path.iterdir())) == 1
 
 
 def test_provider_precedence(monkeypatch):

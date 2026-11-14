@@ -2,6 +2,7 @@
 import asyncio
 from dataclasses import dataclass, replace
 import json
+import logging
 import math
 import os
 import re
@@ -23,6 +24,7 @@ class JudgeResult:
     provider: str
     latency_ms: float
     attempts: tuple["JudgeResult", ...] = ()
+    warning: str = ""
 
 
 class Judge(Protocol):
@@ -111,6 +113,9 @@ class MockJudge(_BoundedJudge):
     def __init__(self, config=None, *, provider="mock"):
         super().__init__(config)
         self.provider = provider
+
+    async def classify(self, text):
+        return replace(await super().classify(text), warning="mock，不代表识别能力")
 
     async def _predict(self, text):
         level = "none"
@@ -327,6 +332,18 @@ class GeminiDecisionJudge(_BoundedJudge):
                 return await self._request(async_client, text)
 
 
+class UnavailableJudge:
+    """A configuration failure is an error result, never a keyword classifier."""
+
+    def __init__(self, provider, reason):
+        self.provider = provider
+        self.warning = f"安全警告：判断器 {provider} 不可用（{reason}）；按判断器失败处理，未启用 mock。"
+        logging.getLogger(__name__).warning(self.warning)
+
+    async def classify(self, text):
+        return JudgeResult(None, "error", self.provider, 0., warning=self.warning)
+
+
 def _make_single_judge(config, *, allow_fallback=True) -> Judge:
     config = load_config(config)
     provider = config["judge_provider"]
@@ -340,7 +357,7 @@ def _make_single_judge(config, *, allow_fallback=True) -> Judge:
     if not any(os.getenv(key, "").strip() for key in keys):
         if not allow_fallback:
             raise ValueError(f"评测 {provider} 缺少 API key：请设置 {' 或 '.join(keys)}；未降级 mock。")
-        return MockJudge(config, provider="mock(fallback)")
+        return UnavailableJudge(provider, "缺少 API key")
     try:
         if provider == "ds_flash":
             # Its adapter imports lazily at request time; check availability now
@@ -350,16 +367,17 @@ def _make_single_judge(config, *, allow_fallback=True) -> Judge:
         if provider == "startlux":
             return StartLuxJudge(config)
         return GeminiDecisionJudge(config) if provider == "gemini_decision" else JevJudge(config)
-    except ImportError:
+    except (ImportError, ValueError) as exc:
         if not allow_fallback:
-            raise ValueError(f"评测 {provider} 缺少所需 SDK，请安装可选依赖；未降级 mock。") from None
-        return MockJudge(config, provider="mock(fallback)")
+            raise ValueError(f"评测 {provider} 缺少所需 SDK 或模型配置；未降级 mock。") from None
+        return UnavailableJudge(provider, "缺少所需 SDK" if isinstance(exc, ImportError) else "缺少模型配置")
 
 
 def make_judge(config=None, *, allow_fallback=True, chain=None) -> Judge:
-    """Engine uses the configured chain; strict evaluation defaults to one provider.
+    """Build the configured chain; unavailable primaries return error by default.
 
-    Explicit chain evaluation is strict about missing credentials/SDKs as well.
+    allow_fallback=False keeps a strict constructor for configuration diagnostics;
+    evaluation catches configuration failures and reports them without using mock.
     """
     config = load_config(config)
     primary = _make_single_judge(config, allow_fallback=allow_fallback)
@@ -376,6 +394,7 @@ def make_judge(config=None, *, allow_fallback=True, chain=None) -> Judge:
         except (ValueError, ImportError):
             if not allow_fallback:
                 raise
+            logging.getLogger(__name__).warning("安全警告：兜底判断器 %s 缺少配置或 SDK，跳过；未启用 mock。", provider)
             continue
         fallbacks.append(fallback)
     return ChainJudge(primary, fallbacks) if fallbacks else primary

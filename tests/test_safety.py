@@ -111,11 +111,11 @@ def test_item9_and_monotonic_state():
     assert layer.assess_phq9_item9(0, 1, 0, state) is None
     event = layer.assess_phq9_item9(1, 1, 0, state)
     assert (event.level, event.source, event.action) == ("passive", "scale_item9", "safety_check")
-    assert layer.assess_phq9_item9(2, 1, 0, state).action == "none"
+    assert layer.assess_phq9_item9(2, 1, 0, state).action == "safety_check"
     assert assess(layer, "我现在想自杀", state).action == "crisis_protocol"
     judge.result = JudgeResult({"none": 0., "history": 0., "passive": 1., "active": 0.}, "ok", "stub", .1)
     assert assess(layer, "我希望睡过去不再醒来", state).action == "none"
-    assert layer.assess_phq9_item9(1, 2, 0, state).action == "none"
+    assert layer.assess_phq9_item9(1, 2, 0, state).action == "crisis_protocol"
     assert state.highest_level == "active"
     assert judge.calls == 1
     assert layer.assess_phq9_item9(1, 1, 0, SessionSafetyState()).action == "safety_check"
@@ -140,11 +140,11 @@ def test_event_matches_contract(kind):
         text = "我现在想自杀" if kind == "explicit" else "最近早醒" if kind in ("judge", "history") else "撑不下去了"
         event = assess(layer, text, state)
     if kind == "duplicate":
-        # The local no-action result must be filtered before session serialization.
-        assert event.action == "none"
+        # Positive scale events must remain serializable even after a prior check.
+        assert event.action == "safety_check"
+        invalid = {**event.to_dict(), "action": "none"}
         with pytest.raises(ValidationError):
-            validator.validate(event.to_dict())
-        return
+            validator.validate(invalid)
     validator.validate(json.loads(json.dumps(event.to_dict())))
     assert event.to_dict() == asdict(event)
 
@@ -153,7 +153,7 @@ def test_config_paths_and_expanded_files(tmp_path, monkeypatch):
     config = load_config()
     lexicon = {"explicit": [{"id": f"e{i}", "pattern": f"^样例{i}$", "level": "active", "example": f"样例{i}"} for i in range(120)], "ambiguous": [], "exclude": []}
     (tmp_path / "lexicon.yaml").write_text(yaml.safe_dump(lexicon, allow_unicode=True))
-    (tmp_path / "scripts.yaml").write_text(yaml.safe_dump({"history_check": "核验", "history_verify_patterns": ["自定义核验"], "safety_check": "确认安全", "crisis_protocol": "联系：{hotlines}", "hotlines": [{"name": "测试", "number": "占位", "hours": "待核验", "verified": False}]}))
+    (tmp_path / "scripts.yaml").write_text(yaml.safe_dump({"history_check": "核验", "history_verify_patterns": {"risk": "自定义核验", "question": "[？?]", "time": "现在", "avoidance": "不用问"}, "safety_check": "确认安全", "crisis_protocol": "联系：{hotlines}", "hotlines": [{"name": "测试", "number": "占位", "hours": "待核验", "verified": False}]}))
     config.update(lexicon_path="lexicon.yaml", scripts_path="scripts.yaml", tau_flag=.7, tau_active=.9)
     path = tmp_path / "config.yaml"
     path.write_text(yaml.safe_dump(config))
@@ -167,7 +167,7 @@ def test_config_paths_and_expanded_files(tmp_path, monkeypatch):
     assert "测试" in layer.script_for("crisis_protocol")
     assert "{hotlines}" not in layer.script_for("crisis_protocol")
     assert layer.script_for("none") == ""
-    assert layer.check_verification("自定义核验")
+    assert layer.check_verification("现在，自定义核验？")
     assert not layer.check_verification("现在你还有这种念头吗？")
 
 

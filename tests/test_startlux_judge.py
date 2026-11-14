@@ -175,7 +175,7 @@ def test_invalid_timeout_overrides_are_rejected(overrides):
 
 
 def test_factory_requires_key_and_accepts_env_provider(monkeypatch):
-    assert make_judge({"judge_provider": "startlux"}).provider == "mock(fallback)"
+    assert asyncio.run(make_judge({"judge_provider": "startlux"}).classify("普通发言")).status == "error"
     with pytest.raises(ValueError, match="STARTLUX_API_KEY"):
         StartLuxJudge()
     monkeypatch.setenv("STARTLUX_API_KEY", "offline-key")
@@ -191,6 +191,11 @@ def test_eval_cli_without_key(tmp_path):
         "--output-dir", str(tmp_path),
     ], cwd=Path(__file__).resolve().parents[1], env={**os.environ, **{"STARTLUX_API_KEY": ""}},
         capture_output=True, text=True, timeout=10)
-    assert result.returncode != 0
+    assert result.returncode == 0
     assert "评测 startlux 缺少 API key" in result.stderr
-    assert not list(tmp_path.iterdir())
+    report = json.loads(result.stdout)
+    assert report["provider"] == "startlux"
+    assert report["judge"]["statuses"] == {"error": 46}
+    assert report["warnings"]
+    assert report["evaluation_columns"]["真实判断器"]["status"] == "未测"
+    assert len(list(tmp_path.iterdir())) == 1

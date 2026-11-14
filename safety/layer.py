@@ -1,6 +1,7 @@
 """Per-visitor safety state and contract-shaped events; engine owns crisis_exit."""
 import asyncio
-from dataclasses import asdict, dataclass, field
+from dataclasses import asdict, dataclass, field, replace
+import logging
 import re
 from time import perf_counter
 
@@ -15,6 +16,7 @@ from .rules import LEVEL_RANK, Rules
 class SessionSafetyState:
     highest_level: str = "none"
     safety_check_inserted: bool = False
+    safety_check_spoken: bool = False
     judge_failures: int = 0
     judge_results: list[JudgeResult] = field(default_factory=list)
     pending_history_check: bool = False
@@ -44,7 +46,10 @@ class SafetyLayer:
         self.judge = judge if judge is not None else make_judge(self.config)
         with open(self.config["scripts_path"], encoding="utf-8") as stream:
             self.scripts = yaml.safe_load(stream)
-        self.history_verify_patterns = [re.compile(pattern) for pattern in self.scripts["history_verify_patterns"]]
+        self.history_verify_patterns = {
+            name: re.compile(pattern)
+            for name, pattern in self.scripts["history_verify_patterns"].items()
+        }
 
     @staticmethod
     def _check_position(round, turn):
@@ -89,6 +94,11 @@ class SafetyLayer:
         attempts = result.attempts or (result,)
         state.judge_results.extend(attempts)
         state.judge_failures += sum(attempt.status != "ok" for attempt in attempts)
+        if result.status != "ok":
+            logging.getLogger(__name__).warning(
+                "安全警告：判断器 %s status=%s；模糊规则按 passive，无规则命中不升级。",
+                result.provider, result.status,
+            )
         level = "none"
         history = False
         if result.status == "ok":
@@ -121,11 +131,29 @@ class SafetyLayer:
             raise ValueError("PHQ-9 item 9 must be an integer from 0 to 3")
         if value <= self.config["phq9_item9_threshold"]:
             return None
-        return self._event("passive", "scale_item9", round, turn, state, matched="PHQ-9 item 9 > 0")
+        # Positive scale evidence must survive serialization even after a text check.
+        level = "active" if state.highest_level == "active" else "passive"
+        event = self._event(level, "scale_item9", round, turn, state, matched="PHQ-9 item 9 > 0")
+        if level == "passive":
+            event = replace(event, action="safety_check")
+        return event
 
     def check_verification(self, agent_text: str) -> bool:
         """Check the next agent reply; the engine clears the per-session pending flag."""
-        return any(pattern.search(agent_text) for pattern in self.history_verify_patterns)
+        patterns = self.history_verify_patterns
+        for sentence in re.findall(r"[^。！？!?；;\n]+[。！？!?；;\n]", agent_text):
+            if not sentence.endswith(("？", "?")):
+                continue
+            has_time = False
+            # Keep the question mark on its own clause; only time carries forward.
+            for clause in re.split(r"[，,：:]", sentence):
+                has_time = has_time or bool(patterns["time"].search(clause))
+                if (has_time
+                        and patterns["risk"].search(clause)
+                        and patterns["question"].search(clause)
+                        and not patterns["avoidance"].search(clause)):
+                    return True
+        return False
 
     def script_for(self, action: str) -> str:
         if action == "none":
@@ -137,3 +165,11 @@ class SafetyLayer:
             f"{entry['name']}：{entry['number']}" for entry in self.scripts["hotlines"]
         )
         return self.scripts[action].replace("{hotlines}", hotlines)
+
+    def script_for_event(self, event: SafetyEvent, state: SessionSafetyState) -> str:
+        """Render once for safety_check; never remove an event from the audit trail."""
+        if event.action == "safety_check":
+            if state.safety_check_spoken:
+                return ""
+            state.safety_check_spoken = True
+        return self.script_for(event.action)

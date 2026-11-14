@@ -4,6 +4,7 @@ import asyncio
 from collections import Counter
 from datetime import datetime, timezone
 import json
+import logging
 import math
 from pathlib import Path
 
@@ -58,12 +59,20 @@ async def evaluate(rows, provider=None, config=None, *, timeout=None) -> dict:
         config = load_config({**config, "judge_timeout_s": timeout, "judge_timeout_overrides": {}})
     rules = Rules(config["lexicon_path"])
     layer = None
+    warnings = []
     if provider != "rules":
         # Explicit offline modes cannot be turned into paid calls by the environment.
-        if provider == "chain":
-            judge = make_judge(config, allow_fallback=False, chain=True)
-        else:
-            judge = MockJudge(config) if provider == "mock" else make_judge({**config, "judge_provider": provider}, allow_fallback=False)
+        try:
+            if provider == "chain":
+                judge = make_judge(config, allow_fallback=False, chain=True)
+            else:
+                judge = MockJudge(config) if provider == "mock" else make_judge({**config, "judge_provider": provider}, allow_fallback=False)
+        except ValueError as exc:
+            warning = f"安全警告：{exc} 按判断器失败记录；配置不全，本次不构成完整真实判断器验证。"
+            warnings.append(warning)
+            logging.getLogger(__name__).warning(warning)
+            # Single-provider evaluation stays single; chain retains usable adapters.
+            judge = make_judge(config, allow_fallback=True, chain=provider == "chain")
         layer = SafetyLayer(config, judge=judge)
     matrix = [[0 for _ in LEVELS] for _ in LEVELS]
     predictions, results, missed = [], [], []
@@ -94,7 +103,12 @@ async def evaluate(rows, provider=None, config=None, *, timeout=None) -> dict:
     risk_actual = sum(sum(matrix[i]) for i in risk_indices)
     risk_predicted = sum(matrix[i][j] for i in range(len(LEVELS)) for j in risk_indices)
     latencies = [result.latency_ms for result in results]
-    return {
+    warnings.extend(result.warning for result in results if result.warning)
+    if provider == "mock":
+        warnings.append("mock，不代表识别能力")
+    if any(result.status != "ok" for result in results):
+        warnings.append("安全警告：判断器存在 timeout/error；失败兜底结果不可当作识别能力。")
+    report = {
         "provider": "rules" if layer is None else layer.judge.provider,
         "requested_provider": provider,
         "created_at": datetime.now(timezone.utc).isoformat(),
@@ -118,11 +132,28 @@ async def evaluate(rows, provider=None, config=None, *, timeout=None) -> dict:
             "p95_ms": _percentile(latencies, .95),
         },
         "predictions": predictions,
+        "warnings": list(dict.fromkeys(warnings)),
     }
+    def metrics(item):
+        return {key: item[key] for key in ("n", "risk_recall", "risk_precision", "missed")}
+
+    # Always show all three categories; do not run a mock or a remote implicitly.
+    rules_report = report if provider == "rules" else await evaluate(rows, "rules", config)
+    real_ok = any(result.status == "ok" and result.provider in
+                  ("ds_flash", "jev", "gemini_decision", "startlux") for result in results)
+    report["evaluation_columns"] = {
+        "rules-only": {"status": "已测", "note": "规则单独指标，不构成 0 漏报验证", **metrics(rules_report)},
+        "mock": {"status": "已测" if provider == "mock" else "未测",
+                 "note": "mock，不代表识别能力", **(metrics(report) if provider == "mock" else {})},
+        "真实判断器": {"status": "已测（含失败，见警告）" if real_ok and warnings else "已测" if real_ok else "未测",
+                     "note": "规则 + 真实判断器联合指标；没有成功的真实判断结果时标为未测",
+                     **(metrics(report) if real_ok else {})},
+    }
+    return report
 
 
 def main(argv=None):
-    parser = argparse.ArgumentParser(description="冻结安全层评测；占位集结果不代表正式安全性能。")
+    parser = argparse.ArgumentParser(description="冻结安全层评测；排错集与 mock 结果不代表正式安全性能。")
     parser.add_argument("--provider", choices=("rules", "mock", "ds_flash", "jev", "gemini_decision", "startlux", "chain"))
     parser.add_argument("--testset", type=Path)
     parser.add_argument("--config", type=Path)

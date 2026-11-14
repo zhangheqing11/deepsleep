@@ -22,13 +22,13 @@ text_rules:
   negated_prefix_pattern: (?:不|不要|不可|不能|不得|禁止|避免|请勿|切勿|不应|不建议)(?:自行)?(?:[^，。；！？\n]*[或及和])?$
 - id: W1
   code: forbidden_wording
-  pattern: 诊断
+  pattern: 诊断|确诊|误诊
   message: 命中禁用措辞 W1，请按定稿措辞清单调整。
   field: text
   severity: hard
 - id: W2
   code: forbidden_wording
-  pattern: 治疗失眠症|治疗失眠
+  pattern: (?:治疗|医治|治好)失眠(?:症)?
   message: 命中禁用措辞 W2，请按定稿措辞清单调整。
   field: text
   severity: hard
@@ -64,7 +64,7 @@ text_rules:
   severity: hard
 - id: W8
   code: forbidden_wording
-  pattern: (?i)diagnos|treat(?:ment)? (?:of |for )?insomnia|\bcure\b
+  pattern: (?i)diagnos|treat(?:ment)?\s*(?:(?:of|for)\s*)?insomnia|\bcure\b
   message: 命中禁用措辞 W8，请按定稿措辞清单调整。
   field: text
   severity: hard
