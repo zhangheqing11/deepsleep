@@ -12,7 +12,7 @@ interface Props {
   submitting: boolean;
   error: ApiError | null;
   pending: PendingCreate | null;
-  onStart: (split: 'A' | 'B') => void;
+  onStart: (split: 'A' | 'B', playbookVersion?: string) => void;
   onRetry: () => void;
   onDiscard: () => void;
 }
@@ -20,6 +20,7 @@ interface Props {
 export function RunLauncher(props: Props) {
   const { adapter, busy, disabledReason, submitting, error, pending, onStart, onRetry, onDiscard } = props;
   const [split, setSplit] = useState<'A' | 'B'>('A');
+  const [version, setVersion] = useState('');
   const [scenario, setScenario] = useState<MockScenario>(() => getMockScenario());
   const unconfirmed = pending && !submitting && error?.isTransient;
   const disabled = busy || submitting || Boolean(disabledReason) || Boolean(unconfirmed);
@@ -40,6 +41,25 @@ export function RunLauncher(props: Props) {
         ))}
       </fieldset>
       <p className="small muted">C 组仅用于学习门禁，不在此提供。</p>
+
+      <div className="field">
+        <label htmlFor="playbook-version">playbook 版本（可选）</label>
+        <input
+          id="playbook-version"
+          type="text"
+          inputMode="text"
+          autoComplete="off"
+          spellCheck={false}
+          placeholder="留空 = 后端默认版本"
+          value={version}
+          disabled={busy || submitting}
+          onChange={(e) => setVersion(e.target.value)}
+        />
+        <p className="small muted">
+          实际使用的版本以后端返回为准。后端提供版本列表接口前，这里先手动填写。
+          {adapter === 'mock' && ' 模拟数据可用组合：A/v1（运行 1）、B/v1（对照）、B/v2（运行 2）。'}
+        </p>
+      </div>
 
       {adapter === 'mock' && (
         <div className="field">
@@ -65,7 +85,7 @@ export function RunLauncher(props: Props) {
       )}
 
       <div className="actions">
-        <button type="button" className="btn btn-primary" disabled={disabled} onClick={() => onStart(split)}>
+        <button type="button" className="btn btn-primary" disabled={disabled} onClick={() => onStart(split, version.trim() || undefined)}>
           {submitting ? '提交中…' : busy ? '运行进行中' : '开始运行'}
         </button>
         {disabledReason && !busy && <span className="small muted">{disabledReason}</span>}

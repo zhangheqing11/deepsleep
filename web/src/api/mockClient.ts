@@ -1,11 +1,15 @@
 // ⚠ 前端本地模拟适配器（模拟数据）。
 // - 不访问后端；运行进度按时间推算，状态存 localStorage，所以刷新后能继续“查询”。
 // - 报告和会谈内容直接取自 contracts/examples 的正式示例（只读），只改写 run_id / session_id。
+// - 分组与版本的对应关系和后端 Mock 保持一致（崔秀净 11/14 说明）：
+//     {split:A} → 运行 1（A/v1）；{split:B} → 对照（B/v1）；{split:B, playbook_version:v2} → 运行 2（B/v2）
+//   不指定版本时固定 v1；其他组合返回 422（后端对此的行为待确认）。
 // - 进度、错误结构等仍按接口草案模拟，不代表后端最终实现。
 // - 页面必须标注“模拟数据”。真实后端失败时不得切换到这里。
 
 import run1Example from '../../../contracts/examples/run_report.run1.json';
 import run2Example from '../../../contracts/examples/run_report.run2.json';
+import controlExample from '../../../contracts/examples/run_report.control.json';
 import sessionA001 from '../../../contracts/examples/session.A-001.json';
 import sessionA002 from '../../../contracts/examples/session.A-002.json';
 import sessionA003 from '../../../contracts/examples/session.A-003.json';
@@ -43,10 +47,14 @@ const PER_VISITOR_MS = 700;
 const REPORT_DELAY_MS = 6000;
 const FAIL_AT_INDEX = 4; // 第 5 个来访
 
+type ExampleKey = 'run1' | 'control' | 'run2';
+
 interface MockRun {
   run_id: string;
   split: 'A' | 'B';
   playbook_version: string;
+  /** 对应的契约示例报告；旧版本存的数据没有此字段，按分组和版本推断 */
+  example?: ExampleKey;
   created_at_ms: number;
   scenario: MockScenario;
   total: number;
@@ -58,8 +66,27 @@ const sessionExamples: Record<string, Session> = {
   'A-003': sessionA003 as unknown as Session,
 };
 
-function reportExample(split: 'A' | 'B'): RunReport {
-  return (split === 'A' ? run1Example : run2Example) as unknown as RunReport;
+/** 与后端 Mock 一致：不指定版本时固定为 v1 */
+const DEFAULT_VERSION = 'v1';
+
+const REPORT_EXAMPLES: { key: ExampleKey; split: 'A' | 'B'; version: string; report: RunReport }[] = [
+  { key: 'run1', split: 'A', version: 'v1', report: run1Example as unknown as RunReport },
+  { key: 'control', split: 'B', version: 'v1', report: controlExample as unknown as RunReport },
+  { key: 'run2', split: 'B', version: 'v2', report: run2Example as unknown as RunReport },
+];
+
+const AVAILABLE_COMBOS = REPORT_EXAMPLES.map((e) => `${e.split}/${e.version}`).join('、');
+
+function findExample(split: string, version: string) {
+  return REPORT_EXAMPLES.find((e) => e.split === split && e.version === version);
+}
+
+function reportFor(run: MockRun): RunReport {
+  const entry =
+    REPORT_EXAMPLES.find((e) => e.key === run.example) ??
+    findExample(run.split, run.playbook_version) ??
+    REPORT_EXAMPLES[0];
+  return entry.report;
 }
 
 export function getMockScenario(): MockScenario {
@@ -198,17 +225,26 @@ export const mockClient: ApiClient = {
       return { run_id: run.run_id, status: computeStatus(run).status, execution_mode: 'mock' };
     }
 
-    const example = reportExample(body.split);
+    const version = body.playbook_version?.trim() || DEFAULT_VERSION;
+    const example = findExample(body.split, version);
+    if (!example) {
+      throw httpError(
+        422,
+        'VALIDATION_ERROR',
+        `模拟数据里没有 ${body.split} 组 ${version} 的示例报告（可用：${AVAILABLE_COMBOS}）`,
+      );
+    }
     const runs = loadRuns();
     const seq = Object.keys(runs).length + 1;
     const run: MockRun = {
       run_id: `run-mock-${String(seq).padStart(3, '0')}`,
       split: body.split,
-      // 版本取示例报告里的实际值，不在前端写死
-      playbook_version: body.playbook_version ?? example.playbook_version,
+      // 版本取示例报告里的实际值
+      playbook_version: example.report.playbook_version,
+      example: example.key,
       created_at_ms: Date.now(),
       scenario: getMockScenario(),
-      total: example.n_visitors,
+      total: example.report.n_visitors,
     };
     runs[run.run_id] = run;
     saveRuns(runs);
@@ -245,10 +281,9 @@ export const mockClient: ApiClient = {
     if (run.scenario === 'report_delay' && Date.now() < finishedAt(run) + REPORT_DELAY_MS) {
       throw httpError(409, 'REPORT_NOT_READY', '报告尚未生成');
     }
-    const report = clone(reportExample(run.split));
+    // 只改写 run_id；label、role、版本等保持示例原值，与后端 Mock 一致
+    const report = clone(reportFor(run));
     report.run_id = run.run_id;
-    report.playbook_version = run.playbook_version;
-    report.label = `模拟示例报告（${run.split} 组）`;
     return report;
   },
 
@@ -256,7 +291,7 @@ export const mockClient: ApiClient = {
     await latency(signal);
     const run = findRun(runId);
     const status = computeStatus(run);
-    const rows = reportExample(run.split).per_visitor;
+    const rows = reportFor(run).per_visitor;
     const items: SessionListItem[] = rows.map((row, i) => {
       let taskStatus: SessionListItem['status'];
       if (status.status === 'failed') {
@@ -282,7 +317,7 @@ export const mockClient: ApiClient = {
     await latency(signal);
     const run = findRun(runId);
     const example = sessionExamples[visitorId];
-    const rowIndex = reportExample(run.split).per_visitor.findIndex((r) => r.visitor_id === visitorId);
+    const rowIndex = reportFor(run).per_visitor.findIndex((r) => r.visitor_id === visitorId);
     if (!example || rowIndex < 0) {
       throw httpError(404, 'SESSION_NOT_FOUND', '未找到该会谈记录（契约示例里只有 A-001 至 A-003）');
     }

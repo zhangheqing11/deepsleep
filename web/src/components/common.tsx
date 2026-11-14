@@ -69,6 +69,9 @@ export function ErrorNotice({
   return (
     <Notice tone={tone} title={title ?? describeError(error)} action={action}>
       {title && <div>{describeError(error)}</div>}
+      {error.kind === 'http' && error.message && error.message !== describeError(error) && (
+        <div className="small">{error.message}</div>
+      )}
       {error.details && error.details.length > 0 && (
         <ul className="plain-list">
           {error.details.map((d, i) => (

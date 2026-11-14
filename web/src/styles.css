@@ -296,6 +296,7 @@ p {
 .btn:focus-visible,
 .segmented label:focus-within,
 select:focus-visible,
+input[type='text']:focus-visible,
 .session-item:focus-visible,
 .table-wrap:focus-visible {
   outline: 2px solid var(--accent);
@@ -382,7 +383,8 @@ select:focus-visible,
   font-size: 0.84rem;
   color: var(--muted);
 }
-select {
+select,
+input[type='text'] {
   font: inherit;
   min-height: 40px;
   padding: 0 10px;

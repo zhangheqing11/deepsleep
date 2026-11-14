@@ -63,7 +63,9 @@ function Home({ healthOk, healthChecked }: { healthOk: boolean; healthChecked: b
           submitting={create.submitting}
           error={create.error}
           pending={create.pending}
-          onStart={(split) => create.start({ split })}
+          onStart={(split, playbookVersion) =>
+            create.start(playbookVersion ? { split, playbook_version: playbookVersion } : { split })
+          }
           onRetry={create.retry}
           onDiscard={create.discard}
         />
