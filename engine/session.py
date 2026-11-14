@@ -1,16 +1,22 @@
-"""Two-round consultation loop producing a contract `session` object.
+"""Two-round consultation loop (TheraMind §3 dual loop, domain-specialised) -> contract `session`.
 
-Flow per round (round 1 opens with the visitor, round 2 with the agent):
-  agent action (say | tool | end_round), at most round_turn_cap[round] actions (C4)
-  every visitor utterance -> SafetyLayer.assess_text
-    passive  -> insert safety_check script, visitor answers (answer is assessed too)
-    active   -> insert crisis_protocol script, status crisis_exit, stop
-    history  -> next agent message carries a 【安全层指令】; check_verification on that
-                message; if not verified insert the history_check script; clear pending.
-                Still pending at the end of a round -> insert the script before closing it.
-  screen_mood with phq9_items[8] > 0 and prefilled PHQ-9 item 9 > 0 -> assess_phq9_item9
-After round 2: plan task -> domain.vetoes (one rewrite, then frozen remediation)
--> closing message to the visitor, whose reply is assessed as well.
+Loop 1, every agent action (four sub-agents, each with its own prompt and harness):
+  PathClassifier (frozen)  -> {weights P1..P5, attitude, uncertainty}  on the accumulated dialogue
+  strategy                 -> say | tool | end_round + strategy (playbook: questioning_strategy, path_discrimination)
+  response                 -> text + acts                           (playbook: communication_style)
+  (pipeline.merge_strategy_response = true runs strategy + response as one call)
+  memory update            -> once per round: summary for round 2 + referral (playbook: referral_rules)
+Round end: final classification -> path_pred (argmax) / path_confidence; plan (round 1 provisional, round 2 final;
+  playbook: plan_rules, referral_rules) -> vetoes -> closing message -> visitor reply.
+Loop 2, start of round 2: f_eval = PlanOutcomeModel on the round-1 plan (4-week simulation),
+  f_select = maintain | adjust (playbook: plan_rules, referral_rules); both feed round-2 strategy and plan.
+
+Safety (unchanged rules, see safety/SPEC.md): every visitor utterance -> SafetyLayer.assess_text;
+  passive -> safety_check script; active -> crisis_protocol + crisis_exit; history -> instruction injected into
+  the next agent message (strategy + response), check_verification, fixed fallback, pending cleared;
+  PHQ-9 item 9 from prefilled scales (turn 0) and screen_mood results.
+While the crisis judge runs, the whole loop-1 pipeline for the next action runs speculatively on a snapshot;
+  any safety event discards it.
 """
 import asyncio
 from dataclasses import dataclass, field
@@ -21,13 +27,13 @@ from domain.vetoes import check_plan, check_text
 from safety.layer import SafetyLayer, SessionSafetyState
 from safety.rules import LEVEL_RANK
 
-from .interfaces import ScreeningProvider, VisitorReply, VisitorSim
+from .classifier import PATHS, PathClassifier, PathState
+from .interfaces import PlanOutcomeModel, ScreeningProvider, VisitorReply, VisitorSim
 from .llm import AgentLLM, LLMError
-from .playbook import Playbook, render_for_agent
+from .playbook import Playbook
 from .topics import TOPIC_PATTERNS, tag_topics
 
 SCHEMA_VERSION = "0.1.0"
-PATHS = ("P1", "P2", "P3", "P4", "P5")
 REFERRALS = ("R0", "R1", "R2", "R3")
 TOOLS = ("screen_mood", "screen_osa")
 COMPONENTS = ("sleep_hygiene", "fixed_risetime", "stimulus_control", "sleep_restriction", "cognitive_restructuring",
@@ -35,8 +41,19 @@ COMPONENTS = ("sleep_hygiene", "fixed_risetime", "stimulus_control", "sleep_rest
 CONTRAINDICATIONS = ("bipolar", "epilepsy", "untreated_osa", "pregnancy", "high_fall_risk", "drowsy_driving_job",
                      "parasomnia")
 BEHAVIORS = ("goal_setting", "reflection", "emotion_response", "rationale_explained", "lecturing", "premature_advice")
+STRATEGY_TYPES = ("explore", "discriminate", "supportive", "revisit", "verify_safety", "psychoeducation", "screen",
+                  "end")
 CARD_TYPES = ("entertainment_control", "smart_home", "reminder")
 SPEAKER_LABEL = {"agent": "你", "visitor": "来访", "safety": "【安全层】"}
+# Which playbook sections each sub-agent reads (the evolution surface per sub-agent).
+SECTIONS_FOR = {
+    "strategy": ("questioning_strategy", "path_discrimination"),
+    "response": ("communication_style",),
+    "turn": ("questioning_strategy", "path_discrimination", "communication_style"),
+    "memory": ("referral_rules",),
+    "plan": ("plan_rules", "referral_rules"),
+    "select": ("plan_rules", "referral_rules"),
+}
 # Agent-facing only (never shown to the visitor); example sentence from BACKLOG A1.
 HISTORY_INSTRUCTION = ("【安全层指令】来访刚刚谈到过去曾有过、现已结束的风险念头或行为。你的下一句话必须核验来访现在"
                        "（近一个月到此刻）是否仍有这种念头，例如“我想确认一下，现在你已经没有这种念头了吗？”。")
@@ -49,12 +66,14 @@ class EngineError(RuntimeError):
 @dataclass
 class EngineDeps:
     llm: AgentLLM
+    classifier: PathClassifier
     sim: VisitorSim
     screening: ScreeningProvider
+    outcome: PlanOutcomeModel
     safety: SafetyLayer
     playbook: Playbook
     config: dict
-    system_prompt: str
+    prompts: dict[str, str]
 
 
 @dataclass
@@ -63,7 +82,20 @@ class _Round:
     transcript: list = field(default_factory=list)
     topics: list = field(default_factory=list)
     level: str = "none"
-    assessed: dict | None = None
+    path_state: PathState | None = None
+    referral: str | None = None
+
+
+@dataclass(frozen=True)
+class _Snapshot:
+    """Everything a loop-1 step reads, frozen before the safety layer can change session state."""
+    round: int
+    left: int
+    entries: tuple
+    pending_history: bool
+    deferred: tuple
+    asked: tuple
+    last_target: str | None
 
 
 class SessionRunner:
@@ -73,16 +105,28 @@ class SessionRunner:
         self.run_id = run_id
         self.safety_state = SessionSafetyState()
         self.rounds: list[_Round] = []
-        self.entries: list[dict] = []      # flat transcript with round numbers, for prompts / sim
+        self.entries: list[dict] = []
         self.tool_calls: list[dict] = []
         self.safety_events: list[dict] = []
         self.behaviors = dict.fromkeys(BEHAVIORS, 0)
         self.turn = 0
         self.crisis = False
-        self.plan = None
+        self.plans: dict[int, dict] = {}
+        self.memory: dict[int, dict] = {}
+        self.outcome: dict | None = None
+        self.selection: dict | None = None
+        self.deferred: list[str] = []
+        self.last_target: str | None = None
         self.sim_memory: dict = {}
-        self.trace = {"visitor_id": visitor["id"], "llm_calls": [], "history_checks": [], "vetoes": [],
-                      "speculation": {"used": 0, "discarded": 0}, "ignored_events": []}
+        self._cls_cache: tuple[int, PathState] | None = None
+        self.trace = {"visitor_id": visitor["id"], "pipeline": self._pipeline_name(),
+                      "classifier": getattr(deps.classifier, "provider", type(deps.classifier).__name__),
+                      "llm_calls": [], "path_probs": [], "strategies": [], "history_checks": [], "vetoes": [],
+                      "plans": {}, "memory": {}, "round1_outcome": None, "selection": None,
+                      "speculation": {"used": 0, "discarded": 0, "discarded_calls": 0}, "ignored_events": []}
+
+    def _pipeline_name(self) -> str:
+        return "merged" if self.deps.config["pipeline"]["merge_strategy_response"] else "split"
 
     # ------------------------------------------------------------------ public
 
@@ -96,15 +140,11 @@ class SessionRunner:
                     break
             if self.crisis:
                 status = "crisis_exit"
-            else:
-                await self._make_plan()
-                await self._close()
-                if self.crisis:
-                    status = "crisis_exit"
         except Exception as exc:  # contract records the failure instead of crashing the run
             status, error = "error", f"{type(exc).__name__}: {exc}"
         self.trace["duration_s"] = round(time.perf_counter() - started, 3)
         self.trace["judge_failures"] = self.safety_state.judge_failures
+        self.trace["latency_ms"] = self._latency_summary()
         return self._session(status, error), self.trace
 
     # ------------------------------------------------------------------ rounds
@@ -116,54 +156,160 @@ class SessionRunner:
     async def _run_round(self, number: int) -> None:
         self.rounds.append(_Round(number))
         self.turn = 0
+        self.deferred, self.last_target = [], None
         if number == 1:
             await self._visitor_speaks(speculate=False)
-            if self.crisis:
-                return await self._assess_round()
             for scale in self.visitor["prefilled"]:
-                if scale["scale"] == "phq9":
+                if scale["scale"] == "phq9" and not self.crisis:
                     event = self.deps.safety.assess_phq9_item9(scale["items"][8], 1, 0, self.safety_state)
                     await self._handle_event(event)
-                    if self.crisis:
-                        return await self._assess_round()
+        else:
+            await self._evaluate_and_select()
         cap = self.deps.config["round_turn_cap"][number]
-        actions = 0
-        prefetched = None
+        actions, prefetched = 0, None
         while actions < cap and not self.crisis:
-            left = cap - actions
             if prefetched is not None:
-                result = await prefetched
-                prefetched = None
+                step, prefetched = await prefetched, None
+                self.trace["speculation"]["used"] += 1
             else:
-                result = await self._ask_turn(left)
-            if result["action"] == "end_round":
+                step = await self._agent_step(self._snapshot(cap - actions))
+            self._commit_step(step)
+            if step["action"] == "end_round":
                 break
             actions += 1
-            if result["action"] == "tool":
-                await self._run_tool(result["tool"])
+            if step["action"] == "tool":
+                await self._run_tool(step["tool"])
                 continue
-            result = await self._vet_agent_text(result, left)
-            prefetched = await self._agent_says(result, speculate_left=cap - actions)
+            prefetched = await self._agent_says(step, next_left=cap - actions)
         if prefetched is not None:
             prefetched.cancel()
         if not self.crisis:
             await self._flush_history_check()
-        await self._assess_round()
+        await self._close_round()
 
-    async def _agent_says(self, result: dict, *, speculate_left: int):
-        text = result["text"]
-        for act in result.get("acts") or []:
-            if act in self.behaviors:
-                self.behaviors[act] += 1
-        self._add("agent", text)
+    async def _close_round(self) -> None:
+        rnd = self.current
+        rnd.path_state = await self._classify_current()
+        self.trace["path_probs"].append({"round": rnd.number, "final": True, **rnd.path_state.to_dict()})
+        memory = await self._ask("memory", self._messages("memory", self._snapshot(0)), self._state("memory"),
+                                 _valid_memory)
+        self.memory[rnd.number] = memory
+        self.trace["memory"][str(rnd.number)] = memory
+        rnd.referral = memory["referral"]
+        if self.crisis:
+            return
+        await self._make_plan(rnd.number)
+        self._add("agent", self.plans[rnd.number]["closing_message"])
+        await self._visitor_speaks(speculate=False, record_topics=False)  # a statement, not a question
+        if not self.crisis:
+            await self._flush_history_check()
+
+    async def _evaluate_and_select(self) -> None:
+        """Loop 2: f_eval (4-week simulation of the round-1 plan) then f_select (maintain | adjust)."""
+        plan = self.plans.get(1)
+        if plan is None:
+            return
+        context = {"session": self._session("completed", None)}
+        outcome = self.deps.outcome.simulate(self.visitor, plan["plan"], context)
+        _valid_outcome(outcome)
+        self.outcome = outcome
+        self.trace["round1_outcome"] = outcome
+        self.sim_memory["round1_outcome"] = outcome
+        self.selection = await self._ask("select", self._messages("select", self._snapshot(0)), self._state("select"),
+                                         _valid_select)
+        self.trace["selection"] = self.selection
+
+    # ------------------------------------------------------------------ loop 1
+
+    def _snapshot(self, left: int) -> _Snapshot:
+        return _Snapshot(self.current.number, left, tuple(dict(e) for e in self.entries),
+                         self.safety_state.pending_history_check, tuple(self.deferred),
+                         tuple(t for r in self.rounds if r.number == self.current.number for t in r.topics),
+                         self.last_target)
+
+    async def _agent_step(self, snap: _Snapshot) -> dict:
+        """Classifier -> strategy -> response (or merged). Nothing is committed here (may be speculative)."""
+        calls: list = []
+        cls = await self._classify(snap.entries)
+        if self.deps.config["pipeline"]["merge_strategy_response"]:
+            result = await self._ask("turn", self._messages("turn", snap, cls), self._state("turn", snap, cls),
+                                     _valid_turn, log=calls)
+            strategy = result["strategy"]
+        else:
+            result = await self._ask("strategy", self._messages("strategy", snap, cls),
+                                     self._state("strategy", snap, cls), _valid_strategy, log=calls)
+            strategy = result["strategy"]
+            if result["action"] == "say":
+                response = await self._ask("response", self._messages("response", snap, cls, strategy=strategy),
+                                           self._state("response", snap, cls, strategy=strategy), _valid_response,
+                                           log=calls)
+                result = {**result, **response}
+        return {**result, "strategy": strategy, "classification": cls, "calls": calls, "snapshot": snap}
+
+    def _commit_step(self, step: dict) -> None:
+        snap, cls = step["snapshot"], step["classification"]
+        last_turn = next((e["turn"] for e in reversed(snap.entries) if e["speaker"] == "visitor"
+                          and e["round"] == snap.round), 0)
+        self.trace["path_probs"].append({"round": snap.round, "turn": last_turn, "final": False, **cls.to_dict()})
+        self.trace["llm_calls"].extend(step["calls"])
+        strategy = step["strategy"]
+        self.trace["strategies"].append({"round": snap.round, "action": step["action"], **strategy})
+        if strategy.get("revisit_later") and strategy["revisit_later"] not in self.deferred:
+            self.deferred.append(strategy["revisit_later"])
+        if strategy.get("type") == "revisit" and strategy.get("target_topic") in self.deferred:
+            self.deferred.remove(strategy["target_topic"])
+        if strategy.get("target_topic"):
+            self.last_target = strategy["target_topic"]
+
+    async def _classify(self, entries) -> PathState:
+        key = len(entries)
+        if self._cls_cache and self._cls_cache[0] == key:
+            return self._cls_cache[1]
+        state = await self.deps.classifier.classify([dict(e) for e in entries])
+        self._cls_cache = (key, state)
+        return state
+
+    async def _classify_current(self) -> PathState:
+        state = await self._classify(tuple(self.entries))
+        self.trace["llm_calls"].append({"agent": "classifier", "task": "classify", "ok": state.status == "ok",
+                                        "status": state.status, "ms": state.latency_ms})
+        return state
+
+    async def _agent_says(self, step: dict, *, next_left: int):
+        step = await self._vet_text(step)
+        for act in step.get("acts") or []:
+            self.behaviors[act] += 1
+        self._add("agent", step["text"])
         if self.safety_state.pending_history_check:
-            verified = self.deps.safety.check_verification(text)
+            verified = self.deps.safety.check_verification(step["text"])
             self.trace["history_checks"].append({"round": self.current.number, "turn": self.turn,
                                                   "verified_by_agent": verified})
             if not verified:
                 self._add("safety", self.deps.safety.script_for("history_check"))
             self.safety_state.pending_history_check = False
-        return await self._visitor_speaks(speculate=speculate_left > 0, speculate_left=speculate_left)
+        return await self._visitor_speaks(speculate=next_left > 0, next_left=next_left)
+
+    async def _vet_text(self, step: dict) -> dict:
+        """Forbidden wording in an agent message: rewrite (response or merged call) with feedback, then keep and log."""
+        attempts = self.deps.config["veto_rewrite_attempts"]
+        for attempt in range(attempts + 1):
+            hard = [v for v in check_text(step["text"], config=self.deps.safety.config) if v.severity == "hard"]
+            if not hard:
+                return step
+            self.trace["vetoes"].append({"stage": "turn", "round": self.current.number, "attempt": attempt,
+                                         "violations": [v.__dict__ for v in hard]})
+            if attempt == attempts:
+                return step
+            feedback = "；".join(dict.fromkeys(v.message for v in hard))
+            snap, cls = step["snapshot"], step["classification"]
+            task = "turn" if self.deps.config["pipeline"]["merge_strategy_response"] else "response"
+            validate = _valid_turn if task == "turn" else _valid_response
+            retry = await self._ask(task, self._messages(task, snap, cls, strategy=step["strategy"], feedback=feedback),
+                                    self._state(task, snap, cls, strategy=step["strategy"]), validate)
+            if task == "turn" and retry["action"] != "say":
+                return step
+            step = {**step, "text": retry["text"], "acts": retry.get("acts", [])}
+        return step
 
     async def _flush_history_check(self) -> None:
         """History event not yet followed up in this round: the fixed script covers it."""
@@ -177,12 +323,8 @@ class SessionRunner:
         if not self.crisis:
             await self._flush_history_check()
 
-    async def _visitor_speaks(self, *, speculate: bool, speculate_left: int = 0, record_topics: bool = True):
-        """Visitor answers; the agent's next turn may be requested while the judge runs.
-
-        Speculation is discarded whenever the safety layer returns any event, so the
-        agent never acts on a transcript that the safety layer is about to change.
-        """
+    async def _visitor_speaks(self, *, speculate: bool, next_left: int = 0, record_topics: bool = True):
+        """Visitor answers; the next loop-1 step may run while the crisis judge works (discarded on any event)."""
         reply = await self.deps.sim.reply(self.visitor, self.current.number, [dict(e) for e in self.entries],
                                           self.sim_memory)
         self._check_reply(reply)
@@ -193,11 +335,7 @@ class SessionRunner:
             if topic not in self.current.topics:
                 self.current.topics.append(topic)
         self._add("visitor", reply.text, reply.revealed_clue_ids)
-        spec = None
-        if speculate:
-            # Prompt is fixed now, before the safety layer can touch session state.
-            messages, state = self._messages("turn", left=speculate_left), self._state("turn", left=speculate_left)
-            spec = asyncio.ensure_future(self._ask("turn", messages, state, _valid_turn))
+        spec = asyncio.ensure_future(self._agent_step(self._snapshot(next_left))) if speculate else None
         assess = asyncio.ensure_future(self.deps.safety.assess_text(reply.text, self.current.number, self.turn,
                                                                     self.safety_state))
         try:
@@ -207,16 +345,19 @@ class SessionRunner:
                 spec.cancel()
             raise
         if spec is not None and event is not None:
-            spec.cancel()
-            self.trace["speculation"]["discarded"] += 1
+            self._discard(spec)
             spec = None
-        elif spec is not None:
-            self.trace["speculation"]["used"] += 1
         await self._handle_event(event)
-        if self.crisis and spec is not None:
-            spec.cancel()
+        if spec is not None and self.crisis:
+            self._discard(spec)
             spec = None
         return spec
+
+    def _discard(self, task: asyncio.Future) -> None:
+        self.trace["speculation"]["discarded"] += 1
+        if task.done() and not task.cancelled() and task.exception() is None:
+            self.trace["speculation"]["discarded_calls"] += len(task.result()["calls"]) + 1
+        task.cancel()
 
     async def _handle_event(self, event) -> None:
         if event is None:
@@ -224,7 +365,7 @@ class SessionRunner:
         rnd = self.current
         rnd.level = max((rnd.level, event.level), key=LEVEL_RANK.__getitem__)
         if event.action == "none":
-            # Contract forbids action "none" in safety_events; keep it in the trace.
+            # Contract forbids action "none" in safety_events; keep it in the trace (reported conflict).
             self.trace["ignored_events"].append(event.to_dict())
             return
         self.safety_events.append(event.to_dict())
@@ -234,13 +375,11 @@ class SessionRunner:
         elif event.action == "safety_check":
             self._add("safety", self.deps.safety.script_for("safety_check"))
             await self._visitor_speaks(speculate=False)
-        # history_check: SafetyLayer set pending_history_check; the next agent message handles it.
 
     async def _run_tool(self, tool: str) -> None:
         result = self.deps.screening.screen(self.visitor, tool)
         self.turn += 1
-        call = {"round": self.current.number, "turn": self.turn, "tool": tool, "result": result}
-        self.tool_calls.append(call)
+        self.tool_calls.append({"round": self.current.number, "turn": self.turn, "tool": tool, "result": result})
         self.entries.append({"round": self.current.number, "turn": self.turn, "speaker": "tool", "tool": tool,
                              "result": result, "text": "", "revealed_clue_ids": []})
         if tool == "screen_mood":
@@ -248,22 +387,19 @@ class SessionRunner:
                                                        self.safety_state)
             await self._handle_event(event)
 
-    async def _assess_round(self) -> None:
-        result = await self._ask("assess", self._messages("assess"), self._state("assess"), _valid_assess)
-        self.current.assessed = result
-
     # ------------------------------------------------------------------ plan
 
-    async def _make_plan(self) -> None:
+    async def _make_plan(self, number: int) -> None:
         attempts = self.deps.config["veto_rewrite_attempts"]
-        feedback = None
+        feedback, hard = None, []
+        snap = self._snapshot(0)
         for attempt in range(attempts + 1):
-            result = await self._ask("plan", self._messages("plan", feedback=feedback), self._state("plan"),
+            result = await self._ask("plan", self._messages("plan", snap, feedback=feedback), self._state("plan"),
                                      _valid_plan)
             plan, extras = self._plan_from(result)
             violations = self._plan_violations(plan, extras)
             hard = [v for v in violations if v.severity == "hard"]
-            self.trace["vetoes"].append({"stage": "plan", "attempt": attempt,
+            self.trace["vetoes"].append({"stage": "plan", "round": number, "attempt": attempt,
                                          "violations": [v.__dict__ for v in violations]})
             if not hard:
                 break
@@ -271,9 +407,10 @@ class SessionRunner:
         if hard:
             plan = self._remediate(plan, hard)
             remaining = [v for v in self._plan_violations(plan, extras) if v.severity == "hard"]
-            self.trace["vetoes"].append({"stage": "plan_remediated", "violations": [v.__dict__ for v in remaining]})
-        self.plan = plan
-        self._closing_text = extras["closing_message"]
+            self.trace["vetoes"].append({"stage": "plan_remediated", "round": number,
+                                         "violations": [v.__dict__ for v in remaining]})
+        self.plans[number] = {"plan": plan, "closing_message": extras["closing_message"]}
+        self.trace["plans"][str(number)] = self.plans[number]
         if plan["rationale_given"]:
             self.behaviors["rationale_explained"] += 1
 
@@ -294,11 +431,10 @@ class SessionRunner:
         return plan, extras
 
     def _plan_violations(self, plan: dict, extras: dict):
-        highest = self.safety_state.highest_level
-        violations = check_plan(plan, extras["contraindications"], age=extras["age"], crisis_level=highest,
-                                config=self.deps.safety.config)
-        texts = [extras["closing_message"], plan["referral_advice"] or ""]
-        texts += [c["title"] + c["body"] for c in plan["cards"]]
+        violations = check_plan(plan, extras["contraindications"], age=extras["age"],
+                                crisis_level=self.safety_state.highest_level, config=self.deps.safety.config)
+        texts = [extras["closing_message"], plan["referral_advice"] or ""] + [c["title"] + c["body"]
+                                                                              for c in plan["cards"]]
         for text in texts:
             violations += check_text(text, config=self.deps.safety.config)
         return violations
@@ -317,37 +453,88 @@ class SessionRunner:
             plan["bedtime"] = _minus_minutes(plan["risetime"], floor)
         return plan
 
-    async def _close(self) -> None:
-        self._add("agent", self._closing_text)
-        await self._visitor_speaks(speculate=False, record_topics=False)  # a statement, not a question
-        if not self.crisis:
-            await self._flush_history_check()
+    # ------------------------------------------------------------------ prompts
 
-    # ------------------------------------------------------------------ agent calls
+    def _messages(self, task: str, snap: _Snapshot, cls: PathState | None = None, *, strategy: dict | None = None,
+                  feedback: str | None = None) -> list[dict]:
+        prompts = self.deps.prompts
+        if task == "turn":
+            body = (prompts["strategy"] + "\n\n" + prompts["response"] + "\n\n# 输出格式（以此为准）\n"
+                    + prompts["turn_merged"])
+        else:
+            body = prompts[task]
+        playbook = "\n\n".join(f"## {name}\n{self.deps.playbook.sections[name]}" for name in SECTIONS_FOR[task])
+        system = (f"{prompts['boundaries'].strip()}\n\n{body.strip()}\n\n# Playbook（{self.deps.playbook.version}，"
+                  f"仅本模块相关章节）\n{playbook}")
+        lines = [f"任务：{task}", f"当前：第 {snap.round} 轮。"]
+        if task in ("strategy", "turn"):
+            lines.append(f"本轮你还剩 {snap.left} 次动作（发言或调用筛查工具各占一次）。")
+        scales = self.visitor["prefilled"]
+        lines.append("来访会谈前自评：" + ("；".join(f"{s['scale']} 自报 {s['reported_score']} 分"
+                                                   + (f"（逐题 {s['items']}）" if s["items"] else "")
+                                                   for s in scales) if scales else "未填写"))
+        if snap.round == 2 and 1 in self.memory:
+            lines.append("第 1 轮记忆：" + json.dumps({k: self.memory[1][k] for k in ("summary", "facts",
+                                                                                   "open_questions")},
+                                                    ensure_ascii=False))
+        if snap.round == 2 and self.outcome is not None:
+            lines.append("第 1 轮处方：" + json.dumps(self.plans[1]["plan"], ensure_ascii=False))
+            lines.append("第 1 轮处方 4 周模拟结果：" + json.dumps(
+                {k: self.outcome[k] for k in ("isi_week", "isi_change", "adherence")}, ensure_ascii=False))
+        if self.selection is not None and task != "select":
+            lines.append("第 2 轮方案决定：" + json.dumps(self.selection, ensure_ascii=False))
+        lines.append("会谈记录：")
+        for entry in snap.entries:
+            if entry["speaker"] == "tool":
+                lines.append(f"[第{entry['round']}轮] 你调用了 {entry['tool']}，结果：{json.dumps(entry['result'])}")
+            else:
+                lines.append(f"[第{entry['round']}轮] {SPEAKER_LABEL[entry['speaker']]}：{entry['text']}")
+        if not snap.entries:
+            lines.append("（尚无）")
+        if cls is not None and task in ("strategy", "turn"):
+            lines.append("路径分类器：" + json.dumps({"weights": {p: round(w, 3) for p, w in cls.weights.items()},
+                                                    "attitude": cls.attitude, "uncertainty": cls.uncertainty},
+                                                   ensure_ascii=False))
+            lines.append("待稍后追问的话题：" + ("、".join(snap.deferred) if snap.deferred else "无"))
+        if strategy is not None and task == "response":
+            lines.append("本步策略：" + json.dumps(strategy, ensure_ascii=False))
+        if task == "memory":
+            lines.append(f"本轮已问到的话题：{'、'.join(snap.asked) or '无'}")
+        if task == "plan":
+            rnd = self.current
+            lines.append(f"路径分类器最终权重：{json.dumps(rnd.path_state.weights if rnd.path_state else {})}；"
+                         f"本轮转介判断：{rnd.referral}")
+            lines.append("第 1 轮会谈已结束，请给出先试行的处方。" if snap.round == 1 else "会谈已结束，请给出最终处方。")
+        if task in ("strategy", "response", "turn") and snap.pending_history:
+            lines.append(HISTORY_INSTRUCTION)
+        if feedback:
+            lines.append(f"上一版输出未通过固定规则检查：{feedback}。请修改后重新输出。")
+        return [{"role": "system", "content": system}, {"role": "user", "content": "\n".join(lines)}]
 
-    async def _ask_turn(self, left: int) -> dict:
-        return await self._ask("turn", self._messages("turn", left=left), self._state("turn", left=left),
-                               _valid_turn)
+    def _state(self, task: str, snap: _Snapshot | None = None, cls: PathState | None = None, *,
+               strategy: dict | None = None) -> dict:
+        """Structured twin of the prompt for the offline mock policy."""
+        snap = snap or self._snapshot(0)
+        rnd = self.current
+        return {
+            "task": task, "round": snap.round, "turns_left": snap.left,
+            "history_check_required": snap.pending_history,
+            "transcript": [e for e in snap.entries if e["speaker"] != "tool"],
+            "agent_texts": [e["text"] for e in snap.entries if e["speaker"] == "agent"],
+            "tool_calls": [dict(c) for c in self.tool_calls],
+            "context_scales": self.visitor["prefilled"],
+            "classification": cls.to_dict() if cls else None,
+            "asked_topics": list(snap.asked), "deferred_topics": list(snap.deferred), "last_target": snap.last_target,
+            "strategy": strategy,
+            "path_top": rnd.path_state.top if rnd.path_state else "P1",
+            "referral": rnd.referral or "R0",
+            "round1_outcome": self.outcome,
+        }
 
-    async def _vet_agent_text(self, result: dict, left: int) -> dict:
-        """Forbidden wording in an agent message: one rewrite with feedback, then keep and log."""
-        for attempt in range(self.deps.config["veto_rewrite_attempts"] + 1):
-            hard = [v for v in check_text(result["text"], config=self.deps.safety.config) if v.severity == "hard"]
-            if not hard:
-                return result
-            self.trace["vetoes"].append({"stage": "turn", "round": self.current.number, "attempt": attempt,
-                                         "violations": [v.__dict__ for v in hard]})
-            if attempt == self.deps.config["veto_rewrite_attempts"]:
-                return result
-            feedback = "；".join(dict.fromkeys(v.message for v in hard)) + "。请换一种说法，只能输出 say。"
-            retry = await self._ask("turn", self._messages("turn", left=left, feedback=feedback),
-                                    self._state("turn", left=left), _valid_turn)
-            if retry["action"] != "say":
-                return result
-            result = retry
-        return result
+    # ------------------------------------------------------------------ LLM calls
 
-    async def _ask(self, task: str, messages: list[dict], state: dict, validate) -> dict:
+    async def _ask(self, task: str, messages: list[dict], state: dict, validate, *, log: list | None = None) -> dict:
+        log = self.trace["llm_calls"] if log is None else log
         retries = self.deps.config["agent_llm"]["max_retries"]
         last = None
         for attempt in range(retries + 1):
@@ -359,52 +546,29 @@ class SessionRunner:
                 raise
             except Exception as exc:
                 last = exc
-                self.trace["llm_calls"].append({"task": task, "attempt": attempt, "ok": False,
-                                                "error": f"{type(exc).__name__}: {exc}",
-                                                "ms": round((time.perf_counter() - started) * 1000)})
+                log.append({"agent": task, "task": task, "attempt": attempt, "ok": False,
+                            "error": f"{type(exc).__name__}: {exc}",
+                            "ms": round((time.perf_counter() - started) * 1000, 1)})
                 continue
-            self.trace["llm_calls"].append({"task": task, "attempt": attempt, "ok": True, "output": result,
-                                            "ms": round((time.perf_counter() - started) * 1000)})
+            log.append({"agent": task, "task": task, "attempt": attempt, "ok": True, "output": result,
+                        "ms": round((time.perf_counter() - started) * 1000, 1)})
             return result
         raise EngineError(f"agent {task} failed after {retries + 1} attempts: {last}")
 
-    def _messages(self, task: str, *, left: int = 0, feedback: str | None = None) -> list[dict]:
-        system = (self.deps.system_prompt.strip() + f"\n\n# Playbook（{self.deps.playbook.version}）\n"
-                  + render_for_agent(self.deps.playbook))
-        lines = [f"任务：{task}", f"当前：第 {self.current.number} 轮。"]
-        if task == "turn":
-            lines.append(f"本轮你还剩 {left} 次动作（发言或调用筛查工具各占一次）。")
-        scales = self.visitor["prefilled"]
-        lines.append("来访会谈前自评：" + ("；".join(f"{s['scale']} 自报 {s['reported_score']} 分"
-                                                   + (f"（逐题 {s['items']}）" if s["items"] else "")
-                                                   for s in scales) if scales else "未填写"))
-        lines.append("会谈记录：")
-        for entry in self.entries:
-            if entry["speaker"] == "tool":
-                lines.append(f"[第{entry['round']}轮] 你调用了 {entry['tool']}，结果：{json.dumps(entry['result'])}")
-            else:
-                lines.append(f"[第{entry['round']}轮] {SPEAKER_LABEL[entry['speaker']]}：{entry['text']}")
-        if not self.entries:
-            lines.append("（尚无）")
-        if task == "turn" and self.safety_state.pending_history_check:
-            lines.append(HISTORY_INSTRUCTION)
-        if task == "plan":
-            lines.append("会谈已结束，请给出处方。")
-        if feedback:
-            lines.append(f"上一版输出未通过固定规则检查：{feedback}。请修改后重新输出。")
-        return [{"role": "system", "content": system}, {"role": "user", "content": "\n".join(lines)}]
-
-    def _state(self, task: str, *, left: int = 0) -> dict:
-        last = next((r.assessed for r in reversed(self.rounds) if r.assessed), None) or {}
-        return {
-            "task": task, "round": self.current.number, "turns_left": left,
-            "history_check_required": self.safety_state.pending_history_check,
-            "transcript": [dict(e) for e in self.entries if e["speaker"] != "tool"],
-            "agent_texts": [e["text"] for e in self.entries if e["speaker"] == "agent"],
-            "tool_calls": [dict(c) for c in self.tool_calls],
-            "context_scales": self.visitor["prefilled"],
-            "last_path": last.get("path", "P1"), "last_referral": last.get("referral", "R0"),
-        }
+    def _latency_summary(self) -> dict:
+        samples: dict[str, list] = {}
+        for call in self.trace["llm_calls"]:
+            samples.setdefault(call["agent"], []).append(call["ms"])
+        for row in self.trace["path_probs"]:
+            if not row["final"]:
+                samples.setdefault("classifier", []).append(row["latency_ms"])
+        summary = {}
+        for agent, values in samples.items():
+            ordered = sorted(values)
+            summary[agent] = {"n": len(values), "total": round(sum(values), 1),
+                              "mean": round(sum(values) / len(values), 1),
+                              "p95": ordered[min(len(ordered) - 1, int(0.95 * len(ordered)))]}
+        return summary
 
     # ------------------------------------------------------------------ helpers
 
@@ -437,14 +601,17 @@ class SessionRunner:
     def _session(self, status: str, error: str | None) -> dict:
         rounds = []
         for rnd in self.rounds or [_Round(1)]:
-            assessed = rnd.assessed
-            if assessed is None:
-                # Only reachable on status=error: placeholders keep the record schema-valid
-                # (contract has no nullable path_pred); consumers must treat error sessions as failures.
-                assessed = {"path": "P1", "confidence": None, "referral": "R0"}
-            rounds.append({"round": rnd.number, "transcript": rnd.transcript, "asked_topics": rnd.topics,
-                           "path_pred": assessed["path"], "path_confidence": assessed["confidence"],
-                           "referral_pred": assessed["referral"], "crisis_level": rnd.level})
+            state, referral = rnd.path_state, rnd.referral
+            if state is None:
+                # Only reachable on status=error (or the mid-session snapshot given to f_eval): placeholders keep
+                # the record schema-valid (contract has no nullable path_pred); error sessions count as failures.
+                path, confidence = "P1", None
+            else:
+                path, confidence = state.top, round(state.weights[state.top], 4)
+            rounds.append({"round": rnd.number, "transcript": list(rnd.transcript), "asked_topics": list(rnd.topics),
+                           "path_pred": path, "path_confidence": confidence,
+                           "referral_pred": referral or "R0", "crisis_level": rnd.level})
+        final = self.plans.get(2)
         return {
             "schema_version": SCHEMA_VERSION,
             "session_id": f"{self.run_id}/{self.visitor['id']}",
@@ -455,42 +622,83 @@ class SessionRunner:
             "status": status,
             "error": error,
             "rounds": rounds,
-            "plan": self.plan if status == "completed" else None,
-            "behaviors": self.behaviors,
-            "safety_events": self.safety_events,
+            "plan": final["plan"] if status == "completed" and final else None,
+            "behaviors": dict(self.behaviors),
+            "safety_events": list(self.safety_events),
             "context_scales": self.visitor["prefilled"],
-            "tool_calls": self.tool_calls,
+            "tool_calls": list(self.tool_calls),
         }
 
 
 # ---------------------------------------------------------------------- validators
 
-def _valid_turn(data: dict) -> None:
+def _valid_strategy_obj(data: dict) -> None:
+    strategy = data.get("strategy")
+    if not isinstance(strategy, dict):
+        raise LLMError("strategy object required")
+    if strategy.get("type") not in STRATEGY_TYPES:
+        raise LLMError(f"unknown strategy type {strategy.get('type')}")
+    for key in ("target_topic", "revisit_later"):
+        if strategy.get(key) not in (None, *TOPIC_PATTERNS):
+            strategy[key] = None
+    contrast = strategy.get("contrast") or []
+    strategy["contrast"] = [p for p in contrast if p in PATHS] if isinstance(contrast, list) else []
+    strategy.setdefault("intent", "")
+
+
+def _valid_strategy(data: dict) -> None:
     action = data.get("action")
-    if action == "say":
-        if not isinstance(data.get("text"), str) or not data["text"].strip():
-            raise LLMError("say requires non-empty text")
-        acts = data.get("acts") or []
-        if not isinstance(acts, list):
-            raise LLMError("acts must be a list")
-        data["acts"] = [a for a in acts if a in BEHAVIORS]
-    elif action == "tool":
+    if action == "tool":
         if data.get("tool") not in TOOLS:
             raise LLMError(f"unknown tool {data.get('tool')}")
-    elif action != "end_round":
+    elif action not in ("say", "end_round"):
         raise LLMError(f"unknown action {action}")
+    _valid_strategy_obj(data)
 
 
-def _valid_assess(data: dict) -> None:
-    if data.get("path") not in PATHS or data.get("referral") not in REFERRALS:
-        raise LLMError("assess requires path P1-P5 and referral R0-R3")
-    confidence = data.get("confidence")
-    if confidence is not None:
-        if isinstance(confidence, bool) or not isinstance(confidence, (int, float)) or not 0 <= confidence <= 1:
-            raise LLMError("confidence must be within 0..1")
-        data["confidence"] = float(confidence)
-    else:
-        data["confidence"] = None
+def _valid_response(data: dict) -> None:
+    if not isinstance(data.get("text"), str) or not data["text"].strip():
+        raise LLMError("response requires non-empty text")
+    acts = data.get("acts") or []
+    if not isinstance(acts, list):
+        raise LLMError("acts must be a list")
+    data["acts"] = [a for a in acts if a in BEHAVIORS]
+
+
+def _valid_turn(data: dict) -> None:
+    _valid_strategy(data)
+    if data["action"] == "say":
+        _valid_response(data)
+
+
+def _valid_memory(data: dict) -> None:
+    if data.get("referral") not in REFERRALS:
+        raise LLMError("memory requires referral R0-R3")
+    if not isinstance(data.get("summary"), str):
+        raise LLMError("memory requires summary")
+    for key in ("facts", "open_questions"):
+        value = data.get(key) or []
+        data[key] = [str(v) for v in value] if isinstance(value, list) else []
+    data.setdefault("referral_reason", "")
+
+
+def _valid_select(data: dict) -> None:
+    if data.get("decision") not in ("maintain", "adjust"):
+        raise LLMError("select decision must be maintain or adjust")
+    data.setdefault("rationale", "")
+    data.setdefault("focus", "")
+
+
+def _valid_outcome(data: dict) -> None:
+    weeks = data.get("isi_week")
+    if not isinstance(weeks, list) or len(weeks) != 5 or any(
+            isinstance(w, bool) or not isinstance(w, (int, float)) for w in weeks):
+        raise EngineError("outcome model must return isi_week with 5 numbers")
+    adherence = data.get("adherence")
+    if isinstance(adherence, bool) or not isinstance(adherence, (int, float)) or not 0 <= adherence <= 1:
+        raise EngineError("outcome model adherence must be within 0..1")
+    if not isinstance(data.get("isi_change"), (int, float)) or not isinstance(data.get("responder"), bool):
+        raise EngineError("outcome model must return isi_change and responder")
 
 
 def _valid_plan(data: dict) -> None:

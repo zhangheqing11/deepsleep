@@ -16,24 +16,32 @@ import time
 
 from safety.layer import SafetyLayer
 
+from .classifier import make_classifier
 from .config import ROOT, load_config, load_dotenv
 from .llm import make_agent_llm
 from .playbook import load_playbook
 from .session import EngineDeps, SessionRunner
-from .stubs import IndexScreening, MockVisitorSim
+from .stubs import IndexScreening, MockVisitorSim, StubOutcomeModel
+
+PROMPTS = ("boundaries", "strategy", "response", "turn_merged", "memory", "plan", "select")
 
 
-def build_deps(*, config=None, llm=None, sim=None, screening=None, safety=None, playbook=None,
-               playbook_version="v0") -> EngineDeps:
+def build_deps(*, config=None, llm=None, classifier=None, sim=None, screening=None, outcome=None, safety=None,
+               playbook=None, playbook_version="v0") -> EngineDeps:
     config = load_config(config)
+    # One limiter for every ds flash request the engine itself makes (agent sub-agents + path classifier).
+    limiter = asyncio.Semaphore(config["agent_llm"]["max_inflight"])
+    prompts_dir = Path(config["prompts_dir"])
     return EngineDeps(
-        llm=llm or make_agent_llm(config["agent_llm"]),
+        llm=llm or make_agent_llm(config["agent_llm"], limiter=limiter),
+        classifier=classifier or make_classifier(config["path_classifier"], limiter=limiter),
         sim=sim or MockVisitorSim(),
         screening=screening or IndexScreening(),
+        outcome=outcome or StubOutcomeModel(),
         safety=safety or SafetyLayer(),
         playbook=playbook or load_playbook(config["playbook_path"], playbook_version),
         config=config,
-        system_prompt=Path(config["system_prompt_path"]).read_text(encoding="utf-8"),
+        prompts={name: (prompts_dir / f"{name}.md").read_text(encoding="utf-8") for name in PROMPTS},
     )
 
 
@@ -75,13 +83,20 @@ def main(argv=None) -> int:
     parser.add_argument("--playbook-version", default="v0")
     parser.add_argument("--sim", help="module:factory returning a VisitorSim (default: engine.stubs mock)")
     parser.add_argument("--screening", help="module:factory returning a ScreeningProvider")
-    parser.add_argument("--mock", action="store_true", help="force the mock agent LLM")
+    parser.add_argument("--outcome", help="module:factory returning a PlanOutcomeModel (4-week model)")
+    parser.add_argument("--mock", action="store_true", help="force the mock agent LLM and mock path classifier")
+    parser.add_argument("--merged", action="store_true", help="merge strategy + response into one call")
     args = parser.parse_args(argv)
     load_dotenv()
-    overrides = {"agent_llm": {"provider": "mock"}} if args.mock else None
+    overrides = {}
+    if args.mock:
+        overrides.update(agent_llm={"provider": "mock"}, path_classifier={"provider": "mock"})
+    if args.merged:
+        overrides["pipeline"] = {"merge_strategy_response": True}
     playbook = load_playbook(args.playbook, args.playbook_version) if args.playbook else None
     deps = build_deps(config=overrides, sim=_factory(args.sim) if args.sim else None,
                       screening=_factory(args.screening) if args.screening else None,
+                      outcome=_factory(args.outcome) if args.outcome else None,
                       playbook=playbook, playbook_version=args.playbook_version)
     visitors = load_visitors(args.visitors)
     started = time.perf_counter()
@@ -98,7 +113,8 @@ def main(argv=None) -> int:
     for session, _ in results:
         statuses[session["status"]] = statuses.get(session["status"], 0) + 1
     print(f"{len(results)} sessions in {time.perf_counter() - started:.1f}s -> {out}  {statuses}  "
-          f"agent={deps.llm.model_name} judge={getattr(deps.safety.judge, 'provider', '?')}")
+          f"agent={deps.llm.model_name} classifier={deps.classifier.provider} "
+          f"judge={getattr(deps.safety.judge, 'provider', '?')}")
     return int(any(s["status"] == "error" for s, _ in results))
 
 

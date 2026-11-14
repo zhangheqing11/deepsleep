@@ -89,3 +89,22 @@ def _since_last_visitor(transcript: list[dict]) -> list[dict]:
             break
         tail.append(entry)
     return list(reversed(tail))
+
+
+# Placeholder only: S2 replaces this with the frozen 4-week state model (sim/params.yaml, cited parameters).
+_CANONICAL = {"P1": {"sleep_hygiene", "fixed_risetime"}, "P2": {"stimulus_control", "sleep_restriction"},
+              "P3": {"cognitive_restructuring", "worry_time", "relaxation"}, "P4": {"light_timing", "schedule_shift"},
+              "P5": {"digital_curfew"}}
+
+
+class StubOutcomeModel:
+    """Crude placeholder: a plan targeting the true main path lowers ISI more, scaled by adherence."""
+
+    def simulate(self, visitor: dict, plan: dict, context: dict) -> dict:
+        adherence = float(visitor["persona"]["adherence_tendency"])
+        on_target = bool(set(plan["components"]) & _CANONICAL[visitor["main_path"]])
+        drop = (9.0 if on_target else 2.0) * adherence
+        baseline = visitor["indices"]["isi"]
+        weeks = [round(max(0.0, baseline - drop * week / 4), 1) for week in range(5)]
+        return {"isi_week": weeks, "isi_change": round(weeks[-1] - baseline, 1), "adherence": adherence,
+                "responder": baseline - weeks[-1] > 7, "placeholder": True}

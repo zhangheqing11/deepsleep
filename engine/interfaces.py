@@ -13,6 +13,14 @@ VisitorSim.reply(visitor, round, transcript, memory) -> VisitorReply
 ScreeningProvider.screen(visitor, tool) -> dict  (pure code, no LLM; BACKLOG D2)
   screen_mood -> {"phq9", "phq9_items"[9], "gad7"};  screen_osa -> {"stop_bang"}
   Values must equal visitor.indices and phq9_items[8] == visitor.crisis.phq9_item9.
+
+PlanOutcomeModel.simulate(visitor, plan, context) -> dict  (loop 2 f_eval; S2's frozen 4-week state model)
+  plan    : the round-1 plan (contract plan shape)
+  context : {"session": partial session-like dict so far (rounds, tool_calls, behaviors, safety_events)}
+  returns : {"isi_week": [5 numbers, weeks 0-4], "isi_change": number, "adherence": 0-1, "responder": bool}
+            extra keys are passed through to the trace. The agent sees isi_week / isi_change / adherence;
+            the engine also stores the dict in the simulator's memory as memory["round1_outcome"] so the
+            simulated visitor can talk about how the 4 weeks went.
 """
 from dataclasses import dataclass, field
 from typing import Protocol, runtime_checkable
@@ -37,3 +45,8 @@ class VisitorSim(Protocol):
 @runtime_checkable
 class ScreeningProvider(Protocol):
     def screen(self, visitor: dict, tool: str) -> dict: ...
+
+
+@runtime_checkable
+class PlanOutcomeModel(Protocol):
+    def simulate(self, visitor: dict, plan: dict, context: dict) -> dict: ...

@@ -8,7 +8,7 @@ import yaml
 
 ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_CONFIG = Path(__file__).with_name("config.yaml")
-PATH_KEYS = ("playbook_path", "system_prompt_path")
+PATH_KEYS = ("playbook_path", "prompts_dir")
 
 
 def load_dotenv(path: Path | str = ROOT / ".env") -> None:
@@ -46,6 +46,10 @@ def load_config(config=None) -> dict:
     if set(caps) != {1, 2} or any(v < 1 for v in caps.values()):
         raise ValueError("round_turn_cap must define positive caps for rounds 1 and 2")
     values["round_turn_cap"] = caps
+    if values["path_classifier"]["provider"] not in ("ds_flash", "jev", "mock"):
+        raise ValueError("path_classifier.provider must be ds_flash, jev or mock")
+    if not isinstance(values["pipeline"]["merge_strategy_response"], bool):
+        raise ValueError("pipeline.merge_strategy_response must be boolean")
     if values["agent_llm"]["provider"] not in ("ds_flash", "mock"):
         raise ValueError("agent_llm.provider must be ds_flash or mock")
     for key in PATH_KEYS:
