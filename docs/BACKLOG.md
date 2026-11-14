@@ -9,7 +9,7 @@
 
 | 分支 | 内容 | 状态 |
 |---|---|---|
-| （待开）v0.1.1 契约修复分支 | 契约 v0.1.0 已合入 main（[PR #1](https://github.com/zhangheqing11/deepsleep/pull/1)，2026-11-14，前端组与数据科学同学已线下 approve）。校验器漏检、示例补全和字段调整（F07/F08/F16）按 [`docs/reviews/pr1-contracts-fixes.md`](reviews/pr1-contracts-fixes.md) 修，作为 `[contract]` 后续 PR | Codex 已在本地修复中，验收后开 PR |
+| （待开）v0.1.1 契约修复分支 | 契约 v0.1.0 已合入 main（[PR #1](https://github.com/zhangheqing11/deepsleep/pull/1)，2026-11-14，前端组与数据科学同学已线下 approve）。校验器漏检、示例补全和字段调整（F07/F08/F16）按 [`docs/reviews/pr1-contracts-fixes.md`](reviews/pr1-contracts-fixes.md) 修，作为 `[contract]` 后续 PR | 修复已做完并复验，本地分支未 push，待 G1–G4 定案（见 G 节） |
 | `zhq/domain-safety` | 安全层：规则 + 四选一判断器（ds flash / Jev / Gemini Decision / StartLux / Mock）、history_check、定稿词表与 48 条测试集、已审定话术、对比工具、处方硬否决（330 分钟 / 18 岁 / 硬软分级） | [PR #6](https://github.com/zhangheqing11/deepsleep/pull/6) 已开（11/14），等 review。剩 A2/A4：真实 API 对比与阈值冻结 |
 | `zhq/domain-clinical-v0` | 临床内容定稿（线索表、处方否决、转介判据、测试集与词表说明、审核清单与**审核结论 `docs/review-decisions.md`**） | [PR #7](https://github.com/zhangheqing11/deepsleep/pull/7) 已开（11/14），等 review |
 
@@ -96,6 +96,22 @@
 
 另：该分支一并新增了 34 个占位示例（13 个 visitor、21 个 session），用来让 `run_report.session_ref` 全部指向存在的文件；这些是合成占位，不是临床内容。
 
+## I. 评审遗留清单（2026-11-14 批次 2：PR #6–#10）
+
+验收会话审完 #6、#7、#8、#9、#10：#8、#10、#7 已合并；#6、#9 待修；#12（design 原型）未审。**修之前先读对应清单**，每份清单有问题、证据、要求和验收标准。
+
+| PR | 状态 | 清单 | 要点 |
+|---|---|---|---|
+| [#6](https://github.com/zhangheqing11/deepsleep/pull/6) 危机安全层 | **待修后再合** | [`pr6-safety-fixes.md`](reviews/pr6-safety-fixes.md) | P0 四项：缺 key 静默降级到 Mock、量表事件与契约矛盾、history 核验正则误判、StartLux 超时被截断。⚠️ S3、S7 需要心理学同学确认口径 |
+| [#9](https://github.com/zhangheqing11/deepsleep/pull/9) 资源清单 | **待修后再合** | [`pr9-resources-fixes.md`](reviews/pr9-resources-fixes.md) | 移到 `docs/`、§8.2 与已合并契约冲突、Hill 表被误用、十余处事实更正 |
+| [#7](https://github.com/zhangheqing11/deepsleep/pull/7) 临床内容 | 已合并 | [`pr7-pr10-followups.md`](reviews/pr7-pr10-followups.md) A 节 | 文档承诺的硬否决规则 V3–V6、V9、F2–F6 等在 #6 里没有实现，需 `zhq/domain-vetoes-v2` |
+| [#10](https://github.com/zhangheqing11/deepsleep/pull/10) 后端 Mock | 已合并 | 同上 B 节 | `mocks/fixtures.py:17` 写死 `schema_version == "0.1.0"`，契约升版本的 PR 必须同步改（G1） |
+| [#8](https://github.com/zhangheqing11/deepsleep/pull/8) 并行计划 | 已合并 | — | — |
+
+另外登记两项：
+- **S3 engine-session 会话的验收项**：`history_check` 自动补话术、`speaker=safety`、来访回答再过安全层的**端到端测试**（#6 只有接口约定，没有端到端证据）。
+- **`zhq/domain-vetoes-v2`**：实现 #7 描述的未落地硬否决规则，先定 V3–V6 的输入接口（询问记录、OSA 筛查结果、最终 R1 预测）。
+
 ## H. 仓库与流程
 
 - 私有免费仓库开不了分支保护，main 只能靠大家自觉不直接 push。
@@ -107,4 +123,7 @@
 |---|---|---|
 | 2026-11-14 | 共享待办 BACKLOG | [PR #2](https://github.com/zhangheqing11/deepsleep/pull/2) |
 | 2026-11-14 | 契约 v0.1.0（schema + 示例 + 校验器） | [PR #1](https://github.com/zhangheqing11/deepsleep/pull/1) |
+| 2026-11-14 | 并行开发计划 | [PR #8](https://github.com/zhangheqing11/deepsleep/pull/8) |
+| 2026-11-14 | 后端 Mock 联调接口 | [PR #10](https://github.com/zhangheqing11/deepsleep/pull/10) |
+| 2026-11-14 | 临床内容定稿 | [PR #7](https://github.com/zhangheqing11/deepsleep/pull/7) |
 | 2026-11-14 | 前后端分工更新（崔秀净后端、王译旋前端并行） | [PR #3](https://github.com/zhangheqing11/deepsleep/pull/3) |
