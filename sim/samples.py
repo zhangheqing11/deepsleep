@@ -288,7 +288,7 @@ SPECS: list[dict] = [
         'clues': [
             clue('bed_wakefulness', 'P2', '早早就上床躺着等睡意，一躺就是两三个小时。'),
             clue('sleep_elsewhere', 'P2', '下午在沙发上看电视，看着看着就睡着了。', deny_first=True),
-            clue('leg_discomfort', 'R2', '腿里有种说不出的难受，酸酸麻麻的，非得动一动才舒服。'),
+            clue('leg_discomfort', 'R2', '腿里有种说不出的难受，酸酸麻麻的，非得动一动才舒服。晚上躺下更明显，起来走走就缓解。'),
             clue('leg_discomfort', 'R2', '下床走一走就好些，躺回去又来了。'),
             clue('leg_discomfort', 'R2', '坐长途车或者晚上看电视坐久了也会这样，白天倒还好。'),
         ],

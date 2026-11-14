@@ -1,4 +1,5 @@
-# 4 周状态模型参数 —— ⚠️ 全部是占位值（harness 组为跑通端到端随手定的），没有文献出处。
+# 4 周状态模型参数 —— ⚠️ 效果、权重与依从等数值仍为占位，不是临床疗效估计。
+# path_components 已按第二批 A8 与 domain/plan_veto_rules.md §0.1 对齐；卧床下限来自 PV-1。
 # 数据科学同学接手后按 AGENTS.md §9 替换：每个参数注明出处，赛前冻结。
 # 改这里不改接口：sim/state_model.py 的 simulate(visitor, session) 签名与返回结构保持不变。
 version: "0.0-placeholder"
@@ -9,12 +10,19 @@ week_curve: [0.0, 0.3, 0.55, 0.8, 1.0]
 # 处方完全对路 × 完全依从时，4 周 ISI 最大降幅（分）。占位。
 effect_max: 16
 
-# 每条路径的"对路"处方组件：处方里出现任意一个就算命中该路径。占位，口径应与 domain/ 处方规则对齐。
+# 路径与组件表：与 domain/plan_veto_rules.md §0.1 逐项一致（第二批 A8）。
+# 逐项依据和文献链接见该节及 research/1114/7-insomnia-paths.md；不代表匹配疗效已获验证。
+# 处方出现任意一个组件即算命中，是最小模型的占位算法；不豁免处方硬否决。
 path_components:
+  # P1 作息/睡眠卫生线索 → 习惯环境与固定起床；7 号报告第五、六节。
   P1: [sleep_hygiene, fixed_risetime]
+  # P2 床上清醒/长卧床 → 刺激控制与睡眠驱力；第 1、2 节禁忌和 330 分钟下限仍适用。
   P2: [stimulus_control, sleep_restriction]
+  # P3 信念/担忧/紧张 → 认知重构、担忧时间、放松；worry_time 为工程映射，无独立匹配效应证据。
   P3: [cognitive_restructuring, worry_time, relaxation]
+  # P4 节律/班次错位 → 光照时点和作息调整；7 号报告第二节，不规定统一剂量。
   P4: [light_timing, schedule_shift]
+  # P5 数字娱乐行为场景 → 数字宵禁；7 号报告第四节，不自动计入全部 P1–P4 组件。
   P5: [digital_curfew]
 
 # 路径匹配度 = base + (1 - base) * (w_main * 命中主路径 + w_secondary * 命中次路径)

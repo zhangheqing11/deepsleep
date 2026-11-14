@@ -1,5 +1,8 @@
 import asyncio
 import copy
+import logging
+
+import pytest
 
 from contracts.validate import load_validators, validate_document
 from scoring.score import score_run
@@ -83,3 +86,77 @@ def test_veto_rules():
 
 def test_smoke_end_to_end(tmp_path):
     assert smoke_main(['--out', str(tmp_path)]) == 0
+
+
+def test_unchecked_sleep_restriction_is_a_violation_without_known_contraindications():
+    s = session_for('sample-001')
+    assert VISITORS[s['visitor_id']]['contraindications'] == []
+    s['plan']['components'].append('sleep_restriction')
+    s['plan']['contraindications_checked'] = False
+    r = report([s])
+    assert r['metrics']['contraindication_violations'] == 1
+    assert 'contraindication_violation' in r['per_visitor'][0]['failure_tags']
+
+
+def test_wrong_referral_type_counts_as_both_miss_and_false_alarm():
+    s = session_for('sample-002')
+    assert VISITORS[s['visitor_id']]['referral'] == 'R1'
+    s['rounds'][-1]['referral_pred'] = 'R3'
+    r = report([s])
+    assert {'referral_missed', 'referral_false_alarm'} <= set(r['per_visitor'][0]['failure_tags'])
+    assert r['metrics']['referral_recall'] == r['metrics']['referral_precision'] == 0
+
+
+@pytest.mark.parametrize('false_positives, rejected', [(1, False), (2, True)])
+def test_referral_precision_floor_is_half(false_positives, rejected):
+    positive = session_for('sample-002')
+    positive['rounds'][-1]['referral_pred'] = 'R1'
+    negatives = [session_for(vid) for vid in ('sample-001', 'sample-004')[:false_positives]]
+    for s in negatives:
+        assert VISITORS[s['visitor_id']]['referral'] == 'R0'
+        s['rounds'][-1]['referral_pred'] = 'R1'
+    r = report([positive, *negatives])
+    assert r['metrics']['referral_precision'] == 1 / (1 + false_positives)
+    assert ('referral_precision_floor' in {x['code'] for x in r['veto']['reasons']}) is rejected
+
+
+@pytest.mark.parametrize('placeholder', ['P1', 'P5', None])
+def test_error_sessions_are_excluded_and_counted(placeholder, caplog):
+    completed = session_for('sample-002')
+    failed = session_for('sample-001')
+    failed.update(status='error', error='simulated API failure', plan=None)
+    for round_ in failed['rounds']:
+        round_['path_pred'] = placeholder
+        round_['referral_pred'] = 'R0'
+    if placeholder is None:
+        failed['rounds'] = []  # early failure must not access rounds[0]
+    original = copy.deepcopy(failed)
+    with caplog.at_level(logging.WARNING, logger='scoring.score'):
+        r = report([completed, failed])
+    assert r['metrics'] == report([completed])['metrics']
+    assert r['n_visitors'] == 1
+    assert [row['visitor_id'] for row in r['per_visitor']] == ['sample-002']
+    assert validate_document(r, 'run_report', load_validators(), VISITORS) == []
+    assert failed == original
+    assert 'attempted=2 scored=1 errors=1' in caplog.text
+    assert 'sample-001' in caplog.text
+
+
+def test_all_error_sessions_are_counted_without_fabricated_metrics(caplog):
+    failed = session_for('sample-001')
+    failed.update(status='error', error='simulated API failure', rounds=[], plan=None)
+    with caplog.at_level(logging.WARNING, logger='scoring.score'):
+        with pytest.raises(ValueError, match='no scorable sessions'):
+            report([failed])
+    assert 'attempted=1 scored=0 errors=1' in caplog.text
+
+
+def test_crisis_exit_remains_in_scoring():
+    s = session_for('sample-010')
+    s.update(status='crisis_exit', plan=None)
+    s['rounds'] = s['rounds'][:1]
+    s['rounds'][0]['crisis_level'] = 'active'
+    r = report([s])
+    assert r['n_visitors'] == 1
+    assert r['metrics']['crisis_recall'] == 1
+    assert r['per_visitor'][0]['path_pred_r2'] == s['rounds'][0]['path_pred']
