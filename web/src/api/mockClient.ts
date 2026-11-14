@@ -7,6 +7,8 @@
 // - 进度、错误结构等仍按接口草案模拟，不代表后端最终实现。
 // - 页面必须标注“模拟数据”。真实后端失败时不得切换到这里。
 
+import evolutionExample from '../../../contracts/examples/evolution.v1-v2.json';
+import type { Experiment, PlaybookVersion } from './extensionTypes';
 import run1Example from '../../../contracts/examples/run_report.run1.json';
 import run2Example from '../../../contracts/examples/run_report.run2.json';
 import controlExample from '../../../contracts/examples/run_report.control.json';
@@ -15,7 +17,7 @@ import sessionA002 from '../../../contracts/examples/session.A-002.json';
 import sessionA003 from '../../../contracts/examples/session.A-003.json';
 import { readJson, writeJson } from '../lib/storage';
 import type { ApiClient } from './client';
-import type { RunReport, Session } from './contractTypes';
+import type { Evolution, RunReport, Session } from './contractTypes';
 import type { CreateRunRequest, RunStatusResponse, SessionListItem } from './draftTypes';
 import { ApiError } from './errors';
 
@@ -138,7 +140,11 @@ function clone<T>(v: T): T {
 }
 
 function findRun(runId: string): MockRun {
-  const run = loadRuns()[runId];
+  const example = REPORT_EXAMPLES.find((e) => e.report.run_id === runId);
+  const run = loadRuns()[runId] ?? (example ? {
+    run_id: runId, split: example.split, playbook_version: example.version,
+    example: example.key, created_at_ms: 0, scenario: 'normal' as const, total: example.report.n_visitors,
+  } : undefined);
   if (!run) throw httpError(404, 'RUN_NOT_FOUND', '未找到该运行记录');
   return run;
 }
@@ -201,12 +207,84 @@ function finishedAt(run: MockRun): number {
   return run.created_at_ms + QUEUE_MS + run.total * PER_VISITOR_MS;
 }
 
+const evolution = evolutionExample as unknown as Evolution;
+// 非契约占位：实验编排与版本元数据只用于本地预览，不表示实际执行。
+const experiment: Experiment = {
+  experiment_id: 'exp-mock-placeholder', updated_at: evolution.created_at, stage: 'done',
+  run1: { run_id: run1Example.run_id, playbook_version: 'v1', split: 'A', state: 'done' },
+  evolution: { evolution_id: evolution.evolution_id, state: 'done' },
+  run2: { run_id: run2Example.run_id, playbook_version: 'v2', split: 'B', state: 'done' },
+  control: { run_id: controlExample.run_id, playbook_version: 'v1', split: 'B', state: 'done' }, error: null,
+};
+const versions: PlaybookVersion[] = ['v1', 'v2'].map((version) => ({
+  version, sha: version === 'v2' ? evolution.commit!.sha : 'mock-v1-placeholder',
+  author: version === 'v2' ? evolution.commit!.author : 'mock',
+  message: '模拟版本元数据（占位）', committed_at: evolution.created_at, is_head: version === 'v2',
+}));
+// 契约仅提供差异片段，因此本地版本正文也仅展示片段，不伪造完整 playbook。
+function mockPlaybook(version: string): string {
+  if (!versions.some((v) => v.version === version)) throw httpError(404, 'NOT_FOUND', '未找到该版本');
+  return (evolution.diff ?? '').split('\n')
+    .filter((line) => /^[ +\-]/.test(line) && !line.startsWith('---') && !line.startsWith('+++'))
+    .filter((line) => version === 'v1' ? !line.startsWith('+') : !line.startsWith('-'))
+    .map((line) => line.slice(1)).join('\n') + '\n';
+}
+function requireEvolution(id: string) {
+  if (id !== evolution.evolution_id) throw httpError(404, 'NOT_FOUND', '未找到该进化记录');
+}
+
 export const mockClient: ApiClient = {
   adapter: 'mock',
 
   async health(signal) {
     await latency(signal);
-    return { status: 'ok', execution_mode: 'mock', contracts_version: '0.1.0' };
+    return { status: 'ok', data_source: 'mock', execution_mode: 'mock', contracts_version: '0.1.0' };
+  },
+
+  async listRuns(limit = 50, signal) {
+    await latency(signal);
+    const samples = REPORT_EXAMPLES.map(({ report }) => ({
+      run_id: report.run_id, label: report.label, role: report.role, playbook_version: report.playbook_version,
+      split: report.split, n_visitors: report.n_visitors, created_at: report.created_at,
+      duration_s: report.duration_s, execution_mode: 'mock' as const, status: 'completed' as const, metrics: clone(report.metrics),
+    }));
+    const dynamic = Object.values(loadRuns()).map((run) => {
+      const status = computeStatus(run);
+      const report = reportFor(run);
+      return { ...samples.find((r) => r.role === report.role)!, run_id: run.run_id,
+        created_at: new Date(run.created_at_ms).toISOString(),
+        status: status.report_available ? 'completed' as const : 'running' as const,
+        metrics: status.report_available ? clone(report.metrics) : null };
+    });
+    return { items: [...dynamic, ...samples].sort((a, b) => b.created_at.localeCompare(a.created_at)).slice(0, limit) };
+  },
+  async getExperiment(signal) { await latency(signal); return clone(experiment); },
+  async getEvidence(id, signal) { await latency(signal); findRun(id); return { available: false }; },
+  async listEvolutions(limit = 20, signal) {
+    await latency(signal);
+    const { evolution_id, created_at, from_version, to_version, outcome, source_run_id, chosen } = evolution;
+    return { items: [{ evolution_id, created_at, from_version, to_version, outcome, source_run_id, chosen, phase: 'done' as const }].slice(0, limit) };
+  },
+  async getEvolution(id, signal) { await latency(signal); requireEvolution(id); return clone(evolution); },
+  async getEvolutionStatus(id, signal) {
+    await latency(signal); requireEvolution(id);
+    return { schema: 'evolve-status/1', evolution_id: id, updated_at: evolution.created_at,
+      from_version: evolution.from_version, phase: 'done',
+      reflector: { state: 'done', model: evolution.reflector.model, fell_back: evolution.reflector.fell_back },
+      validation: { baseline: 'done', candidates: { c1: 'blocked', c2: 'done', c3: 'done' } },
+      review: { state: 'done', deadline: null, pending_changes: 0 }, outcome: evolution.outcome,
+      to_version: evolution.to_version, chosen: evolution.chosen, error: null };
+  },
+  async getEvolutionInsights(id, signal) { await latency(signal); requireEvolution(id); return { available: false }; },
+  async listPlaybookVersions(signal) { await latency(signal); return { items: clone(versions) }; },
+  async getPlaybook(version, signal) { await latency(signal); return { version, text: mockPlaybook(version) }; },
+  async getPlaybookDiff(from, to, signal) {
+    await latency(signal);
+    const before = mockPlaybook(from).trimEnd().split('\n');
+    const after = mockPlaybook(to).trimEnd().split('\n');
+    const diff = from === to ? '' : from === 'v1' && to === 'v2' ? evolution.diff! :
+      `--- a/playbook.md\n+++ b/playbook.md\n@@ -1,${before.length} +1,${after.length} @@\n${before.map((l) => '-' + l).join('\n')}\n${after.map((l) => '+' + l).join('\n')}\n`;
+    return { from, to, diff };
   },
 
   async createRun(body: CreateRunRequest, idempotencyKey, signal) {

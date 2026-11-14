@@ -103,6 +103,16 @@ export function withRequestLog(client: ApiClient): ApiClient {
   return {
     adapter: client.adapter,
     health: (signal) => track('GET /health', '', () => client.health(signal)),
+    listRuns: (limit, signal) => track('GET /runs', String(limit ?? 50), () => client.listRuns(limit, signal)),
+    getExperiment: (signal) => track('GET /demo/experiment', '', () => client.getExperiment(signal)),
+    getEvidence: (id, signal) => track('GET /runs/{id}/evidence', id, () => client.getEvidence(id, signal)),
+    listEvolutions: (limit, signal) => track('GET /evolutions', String(limit ?? 20), () => client.listEvolutions(limit, signal)),
+    getEvolution: (id, signal) => track('GET /evolutions/{id}', id, () => client.getEvolution(id, signal)),
+    getEvolutionStatus: (id, signal) => track('GET /evolutions/{id}/status', id, () => client.getEvolutionStatus(id, signal)),
+    getEvolutionInsights: (id, signal) => track('GET /evolutions/{id}/insights', id, () => client.getEvolutionInsights(id, signal)),
+    listPlaybookVersions: (signal) => track('GET /playbook/versions', '', () => client.listPlaybookVersions(signal)),
+    getPlaybook: (version, signal) => track('GET /playbook/{version}', version, () => client.getPlaybook(version, signal)),
+    getPlaybookDiff: (from, to, signal) => track('GET /playbook/diff', `${from} → ${to}`, () => client.getPlaybookDiff(from, to, signal)),
     createRun: (body, key, signal, mockScenario) =>
       track(
         'POST /runs',

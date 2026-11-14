@@ -1,6 +1,6 @@
 import { API_BASE_URL } from '../config';
 import type { ApiClient } from './client';
-import type { RunReport, Session } from './contractTypes';
+import type { Evolution, RunReport, Session } from './contractTypes';
 import type {
   CreateRunResponse,
   ErrorEnvelope,
@@ -11,6 +11,8 @@ import type {
 } from './draftTypes';
 import { ApiError } from './errors';
 import { claimResponseMeta } from './requestLog';
+
+import type { RunListItem, ExperimentResponse, RunEvidence, EvolutionListItem, EvolutionStatus, EvolutionInsights, PlaybookVersion, Playbook, PlaybookDiff } from './extensionTypes';
 
 interface RequestOptions {
   body?: unknown;
@@ -104,6 +106,16 @@ const enc = encodeURIComponent;
 export const httpClient: ApiClient = {
   adapter: 'http',
   health: (signal) => request<HealthResponse>('GET', '/health', { signal }),
+  listRuns: (limit = 50, signal) => request<ListResponse<RunListItem>>('GET', `/runs?limit=${limit}`, { signal }),
+  getExperiment: (signal) => request<ExperimentResponse>('GET', '/demo/experiment', { signal }),
+  getEvidence: (id, signal) => request<RunEvidence>('GET', `/runs/${enc(id)}/evidence`, { signal }),
+  listEvolutions: (limit = 20, signal) => request<ListResponse<EvolutionListItem>>('GET', `/evolutions?limit=${limit}`, { signal }),
+  getEvolution: (id, signal) => request<Evolution>('GET', `/evolutions/${enc(id)}`, { signal }),
+  getEvolutionStatus: (id, signal) => request<EvolutionStatus>('GET', `/evolutions/${enc(id)}/status`, { signal }),
+  getEvolutionInsights: (id, signal) => request<EvolutionInsights>('GET', `/evolutions/${enc(id)}/insights`, { signal }),
+  listPlaybookVersions: (signal) => request<ListResponse<PlaybookVersion>>('GET', '/playbook/versions', { signal }),
+  getPlaybook: (version, signal) => request<Playbook>('GET', `/playbook/${enc(version)}`, { signal }),
+  getPlaybookDiff: (from, to, signal) => request<PlaybookDiff>('GET', `/playbook/diff?from=${enc(from)}&to=${enc(to)}`, { signal }),
   createRun: (body, idempotencyKey, signal, mockScenario) =>
     request<CreateRunResponse>('POST', '/runs', {
       body,

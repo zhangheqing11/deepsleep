@@ -51,7 +51,7 @@ export const currentRunStore = {
   clear: () => removeKey('local', CURRENT_RUN_KEY),
 };
 
-// ---------- 最近运行：本机创建过的运行（后端提供 GET /runs 前的过渡方案） ----------
+// ---------- 最近运行：服务端列表的本机后备缓存 ----------
 
 const RUN_HISTORY_KEY = 'deepsleep.runHistory.v1';
 const RUN_HISTORY_MAX = 20;
@@ -70,6 +70,11 @@ export const runHistoryStore = {
   list(adapter: string): RunHistoryEntry[] {
     const all = readJson<RunHistoryEntry[]>('local', RUN_HISTORY_KEY) ?? [];
     return all.filter((e) => e.adapter === adapter);
+  },
+  cache(adapter: string, entries: RunHistoryEntry[]): void {
+    const others = (readJson<RunHistoryEntry[]>('local', RUN_HISTORY_KEY) ?? []).filter((e) => e.adapter !== adapter);
+    const recent = [...entries].sort((a, b) => Date.parse(b.created_at) - Date.parse(a.created_at)).slice(0, RUN_HISTORY_MAX);
+    writeJson('local', RUN_HISTORY_KEY, [...recent, ...others].slice(0, RUN_HISTORY_MAX));
   },
   upsert(entry: Pick<RunHistoryEntry, 'run_id' | 'adapter'> & Partial<RunHistoryEntry>): void {
     const all = readJson<RunHistoryEntry[]>('local', RUN_HISTORY_KEY) ?? [];

@@ -52,9 +52,9 @@ export function RunProgress({
     );
   }
 
-  const total = run?.progress.total ?? 0;
+  const total = run?.progress.total ?? null;
   const done = run ? run.progress.completed + run.progress.failed : 0;
-  const ratio = total > 0 ? Math.min(1, done / total) : 0;
+  const ratio = total !== null && total > 0 ? Math.min(1, done / total) : 0;
 
   return (
     <section className="section">
@@ -79,18 +79,18 @@ export function RunProgress({
                 <span className="small danger-text">{run.progress.failed} 个来访执行失败</span>
               )}
             </span>
-            <span className="small muted tabular">{total === 0 ? '等待准备' : `${done} / ${total} 个来访`}</span>
+            <span className="small muted tabular">{total === null ? `已处理 ${done} 个来访 · 总人数未知` : total === 0 ? '等待准备' : `${done} / ${total} 个来访`}</span>
           </div>
           <div
             className={`track track-${run.status}`}
             role="progressbar"
             aria-valuemin={0}
-            aria-valuemax={total}
-            aria-valuenow={done}
+            aria-valuemax={total ?? undefined}
+            aria-valuenow={total === null ? undefined : done}
             aria-label="运行进度"
           >
             <div className="track-fill" style={{ width: `${ratio * 100}%` }} />
-            {run.progress.failed > 0 && total > 0 && (
+            {run.progress.failed > 0 && total !== null && total > 0 && (
               <div
                 className="track-fail"
                 style={{

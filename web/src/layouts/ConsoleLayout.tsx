@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react';
 import type { HealthResponse } from '../api/draftTypes';
+import { DataSourceBanner } from '../components/DataSourceBanner';
 import { HealthBar } from '../components/HealthBar';
 import type { AdapterKind } from '../config';
 import { HREF, type ConsoleRoute } from '../hooks/useHashRoute';
@@ -60,6 +61,7 @@ export function ConsoleLayout({
         })}
       </nav>
       <main className="console-sheet">
+        <DataSourceBanner adapter={adapter} mode={health.status === 'ok' ? health.data.execution_mode : null} unavailable={health.status === 'error'} />
         {children}
         <p className="sheet-foot small muted">
           所有来访均为模拟数据。页面展示的是干预路径与生活方式建议，不能替代专业医疗意见；如有需要，请建议就医。

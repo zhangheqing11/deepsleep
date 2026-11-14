@@ -1,5 +1,8 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { api } from '../../api';
+import type { Experiment } from '../../api/extensionTypes';
+import { useReadPoller } from '../../hooks/useReadPoller';
+import { ExperimentCard } from '../../components/console/ExperimentCard';
 import type { ExecutionMode, RunStatusResponse } from '../../api/draftTypes';
 import { ErrorNotice, Notice, Spinner } from '../../components/common';
 import { RecentRuns } from '../../components/console/RecentRuns';
@@ -45,6 +48,10 @@ export function RunsPage({
   healthMode: ExecutionMode | null;
 }) {
   const { runId, run, terminal, busy, poller, report, sessions, sessionVisitors, create, history } = state;
+  const [comparison, setComparison] = useState<Experiment | null>(null);
+  const experiment = useReadPoller('experiment', (signal) => api.getExperiment(signal), (data) => 'stage' in data && (data.stage === 'done' || data.stage === 'failed'));
+  const stage = experiment.data && 'stage' in experiment.data ? experiment.data.stage : null;
+  useEffect(() => { state.historyResource.reload(); }, [stage, state.historyResource.reload]);
   const [tab, setTab] = useState<'report' | 'compare'>('report');
   const disabledReason =
     api.adapter === 'http' && healthChecked && !healthOk ? '后端不可用，暂不能发起运行' : null;
@@ -67,7 +74,9 @@ export function RunsPage({
         onDiscard={create.discard}
       />
 
-      {history.length >= 2 && (
+      <ExperimentCard poller={experiment} mock={api.adapter === 'mock' || healthMode === 'mock'} onCompare={(value) => { setComparison(value); setTab('compare'); }} />
+
+      {(history.length >= 2 || comparison) && (
         <div className="tabs" role="tablist" aria-label="报告视图">
           <button
             type="button"
@@ -90,8 +99,8 @@ export function RunsPage({
         </div>
       )}
 
-      {tab === 'compare' && history.length >= 2 ? (
-        <RunCompare history={history} sourceNote={sourceLabel(run?.execution_mode ?? healthMode)} />
+      {tab === 'compare' ? (
+        <RunCompare experiment={comparison} history={history} sourceNote={sourceLabel(run?.execution_mode ?? healthMode)} />
       ) : !runId ? (
         <p className="empty">
           还没有选中的运行。选择来访分组后点击“开始运行”{history.length > 0 ? '，或从下面的最近运行里选择' : ''}。
@@ -104,7 +113,14 @@ export function RunsPage({
         </>
       )}
 
+      <div className="row">
+        <button type="button" className="btn btn-sm" onClick={state.historyResource.reload}>刷新运行列表</button>
+        {state.historyResource.status === 'loading' && <Spinner label="正在读取运行列表…" />}
+      </div>
+      {state.historyResource.status === 'error' && <ErrorNotice error={state.historyResource.error} tone="warn" title="运行列表读取失败，显示本机后备记录" />}
+      {state.historyResource.status === 'ok' && history.length === 0 && <p className="muted">暂无运行记录。</p>}
       <RecentRuns
+        fromServer={state.historyFromServer}
         history={history}
         currentRunId={runId}
         disabled={busy}

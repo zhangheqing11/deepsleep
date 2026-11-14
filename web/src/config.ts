@@ -8,7 +8,7 @@ const env = import.meta.env;
 export const API_BASE_URL: string = (env.VITE_API_BASE_URL?.trim() || '/api/v1').replace(/\/+$/, '');
 
 /** mock = 前端本地模拟适配器；http = 请求后端 */
-export const API_ADAPTER: AdapterKind = env.VITE_API_ADAPTER === 'http' ? 'http' : 'mock';
+export const API_ADAPTER: AdapterKind = env.VITE_API_ADAPTER === 'mock' ? 'mock' : 'http';
 
 /** 运行状态轮询间隔（接口草案：约 1 秒） */
 export const POLL_INTERVAL_MS = 1000;

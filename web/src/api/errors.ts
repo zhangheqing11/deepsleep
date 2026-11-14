@@ -34,7 +34,7 @@ export class ApiError extends Error {
 
   /** 5xx 或网络问题：值得退避重试 */
   get isTransient(): boolean {
-    return this.kind === 'network' || (this.kind === 'http' && (this.status ?? 0) >= 500);
+    return this.code !== 'RUNS_VIA_CLI' && (this.kind === 'network' || (this.kind === 'http' && (this.status ?? 0) >= 500));
   }
 }
 

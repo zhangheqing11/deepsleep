@@ -1,5 +1,6 @@
 import { useEffect, useState, type ReactNode } from 'react';
 import { api } from '../../api';
+import type { Experiment } from '../../api/extensionTypes';
 import type { Metrics, RunReport } from '../../api/contractTypes';
 import { useResource, type ResourceState } from '../../hooks/useResource';
 import { pct, pointDelta, signed } from '../../lib/format';
@@ -39,11 +40,15 @@ function winner(a: number | null, b: number | null, better: Better): 'left' | 'r
 }
 
 function useReportFor(runId: string) {
-  return useResource<RunReport>(runId ? `compare:${runId}` : null, (signal) => api.getReport(runId, signal));
+  const state = useResource<RunReport>(runId ? `compare:${runId}` : null, (signal) => api.getReport(runId, signal));
+  // 切换选择时，旧报告不能短暂冒充新列的结果。
+  return state.status === 'ok' && state.data.run_id !== runId
+    ? { status: 'loading' as const, reload: state.reload }
+    : state;
 }
 
 function ColumnHead({ state }: { state: ResourceState<RunReport> }) {
-  if (state.status !== 'ok') return <span className="muted">—</span>;
+  if (state.status !== 'ok') return <span className="muted">暂无</span>;
   const r = state.data;
   return (
     <span className="compare-head">
@@ -55,113 +60,69 @@ function ColumnHead({ state }: { state: ResourceState<RunReport> }) {
   );
 }
 
-/** sourceNote：数据来源说明（如“模拟数据（后端 Mock…）”），与运行页副标题一致 */
-export function RunCompare({ history, sourceNote }: { history: RunHistoryEntry[]; sourceNote: string }) {
+/** 实验按运行 1 / 对照 / 运行 2 排列；差值只比较相邻的对照与运行 2。 */
+export function RunCompare({ history, sourceNote, experiment }: {
+  history: RunHistoryEntry[]; sourceNote: string; experiment?: Experiment | null;
+}) {
   const candidates = history.filter((h) => h.status !== 'not_found');
-  const [left, setLeft] = useState('');
-  const [right, setRight] = useState('');
-
-  // 默认选最近的两次运行（历史按时间倒序，较早的放左边）
+  const [first, setFirst] = useState('');
+  const [control, setControl] = useState('');
+  const [second, setSecond] = useState('');
   useEffect(() => {
-    if (!left && !right && candidates.length >= 2) {
-      setLeft(candidates[1].run_id);
-      setRight(candidates[0].run_id);
+    if (experiment) {
+      setFirst(experiment.run1?.run_id ?? '');
+      setControl(experiment.control?.run_id ?? '');
+      setSecond(experiment.run2?.run_id ?? '');
     }
-  }, [candidates.length]); // eslint-disable-line react-hooks/exhaustive-deps
-
-  const a = useReportFor(left);
-  const b = useReportFor(right);
-
-  const select = (value: string, onChange: (v: string) => void, id: string, title: string) => (
-    <div className="field">
-      <label htmlFor={id}>{title}</label>
-      <select id={id} value={value} onChange={(e) => onChange(e.target.value)}>
-        <option value="">选择运行…</option>
-        {candidates.map((h) => (
-          <option key={h.run_id} value={h.run_id}>
-            {h.run_id}
-            {h.split ? ` · ${h.split} 组` : ''}
-            {h.playbook_version ? ` · ${h.playbook_version}` : ''}
-          </option>
-        ))}
-      </select>
+  }, [experiment]);
+  const a = useReportFor(first);
+  const b = useReportFor(control);
+  const c = useReportFor(second);
+  const columns = [a, b, c];
+  const titles = ['运行 1', '对照', '运行 2'];
+  const both = b.status === 'ok' && c.status === 'ok';
+  const sameSplit = both && b.data.split === c.data.split;
+  const sameRun = both && b.data.run_id === c.data.run_id;
+  return <Card title="运行对比" aside={<Badge>三方对比</Badge>}>
+    <div className="compare-pickers">
+      {([first, control, second]).map((value, i) => <div className="field" key={titles[i]}>
+        <label htmlFor={`compare-${i}`}>{titles[i]}</label>
+        <select id={`compare-${i}`} value={value} onChange={(e) => [setFirst, setControl, setSecond][i](e.target.value)}>
+          <option value="">选择运行…</option>
+          {value && !candidates.some((h) => h.run_id === value) && <option value={value}>{value}</option>}
+          {candidates.map((h) => <option key={h.run_id} value={h.run_id}>{h.run_id} · {h.split} 组 · {h.playbook_version}</option>)}
+        </select>
+      </div>)}
     </div>
-  );
+    {columns.map((state, i) => state.status === 'error' ? <ErrorNotice key={i} error={state.error} title={`${titles[i]}的报告读取失败`} action={<button type="button" className="btn btn-sm" onClick={state.reload}>重新读取</button>} /> : null)}
+    {columns.some((state) => state.status === 'loading') && <Spinner label="正在读取报告…" />}
+    {both && !sameSplit && <Notice tone="warn" title="两次运行的来访分组不同">对照与运行 2 的来访分组不同，差值不能直接说明学习效果。</Notice>}
+    {sameRun && <Notice tone="warn" title="对照与运行 2 选择了同一次运行" />}
+    {both && sameSplit && !sameRun && <Notice tone="info" title={`同一组来访（${b.data.split} 组）上的版本对比：${b.data.playbook_version} 与 ${c.data.playbook_version}`} />}
+    {columns.some((s) => s.status === 'ok' && !s.data.veto.passed) && <Notice tone="danger" title="有运行未通过否决规则检查，请先查看该运行报告中的否决原因" />}
+    <div className="table-wrap" tabIndex={0} aria-label="指标对比">
+      <table className="table compare-table">
+        <thead><tr><th>指标</th>{columns.map((state, i) => <th key={titles[i]}>{titles[i]}<ColumnHead state={state} /></th>)}<th>差值（运行 2 − 对照）</th></tr></thead>
+        <tbody>
+          {ROWS.map((row) => {
+            const values = columns.map((state) => state.status === 'ok' ? row.get(state.data.metrics) : null);
+            const better = sameSplit && !sameRun ? winner(values[1], values[2], row.better) : null;
+            const delta = metricDifference(values[2], values[1]);
+            return <tr key={row.title} className={row.primary ? 'primary-row' : ''}>
+              <td>{row.title}</td>
+              {values.map((value, i) => <td key={i} className={(i === 1 && better === 'left') || (i === 2 && better === 'right') ? 'better' : ''}>{value === null ? '暂无' : row.fmt(value)}</td>)}
+              <td>{delta === null ? '暂无' : row.fmt === pct || row.fmt === pointDelta ? pointDelta(delta) : `${signed(delta)} ${row.fmt === count ? '例' : '分'}`}</td>
+            </tr>;
+          })}
+          <tr><td>否决规则检查</td>{columns.map((s, i) => <td key={i}>{s.status === 'ok' ? s.data.veto.passed ? '通过' : '未通过' : '暂无'}</td>)}<td>—</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p className="small muted">数据来源：{sourceNote}。差值为运行 2 减对照；比例用百分点、ISI 用分、计数用例。任一指标缺失时显示“暂无”。运行 1 与 B 组的数值仅并排展示。</p>
+    {sourceNote.startsWith('模拟数据') && <p className="small muted">模拟数据是固定示例，数值高低不代表真实学习效果。</p>}
+  </Card>;
+}
 
-  const both = a.status === 'ok' && b.status === 'ok';
-  const sameSplit = both && a.data.split === b.data.split;
-
-  return (
-    <Card title="运行对比" aside={<Badge>并排展示</Badge>}>
-      {candidates.length < 2 ? (
-        <p className="muted">至少需要两次运行才能对比。可以先跑“A 组”“B 组”与“B 组 + v2”。</p>
-      ) : (
-        <>
-          <div className="compare-pickers">
-            {select(left, setLeft, 'compare-left', '左侧运行')}
-            {select(right, setRight, 'compare-right', '右侧运行')}
-          </div>
-
-          {[a, b].map((s, i) =>
-            s.status === 'error' ? (
-              <ErrorNotice key={i} error={s.error} title={`${i === 0 ? '左侧' : '右侧'}运行的报告读取失败`} />
-            ) : null,
-          )}
-          {(a.status === 'loading' || b.status === 'loading') && <Spinner label="正在读取报告…" />}
-
-          {both && !sameSplit && (
-            <Notice tone="warn" title="两次运行的来访分组不同">
-              不同分组的来访不一样，指标高低不能直接说明版本好坏。同一组来访上的新旧版本对比（例如 B 组 v1 与 v2）更有解释力。
-            </Notice>
-          )}
-          {both && sameSplit && a.data.playbook_version !== b.data.playbook_version && (
-            <Notice tone="info" title={`同一组来访（${a.data.split} 组）上的版本对比：${a.data.playbook_version} 与 ${b.data.playbook_version}`} />
-          )}
-          {both && (a.data.veto.passed === false || b.data.veto.passed === false) && (
-            <Notice tone="danger" title="有运行未通过否决规则检查，请先查看该运行报告中的否决原因" />
-          )}
-
-          {both && (
-            <div className="table-wrap" tabIndex={0} aria-label="指标对比">
-              <table className="table compare-table">
-                <thead>
-                  <tr>
-                    <th>指标</th>
-                    <th>
-                      <ColumnHead state={a} />
-                    </th>
-                    <th>
-                      <ColumnHead state={b} />
-                    </th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {ROWS.map((row) => {
-                    const va = row.get(a.data.metrics);
-                    const vb = row.get(b.data.metrics);
-                    const w = winner(va, vb, row.better);
-                    return (
-                      <tr key={row.title} className={row.primary ? 'primary-row' : ''}>
-                        <td>{row.title}</td>
-                        <td className={w === 'left' ? 'better' : ''}>{row.fmt(va)}</td>
-                        <td className={w === 'right' ? 'better' : ''}>{row.fmt(vb)}</td>
-                      </tr>
-                    );
-                  })}
-                  <tr>
-                    <td>否决规则检查</td>
-                    <td>{a.data.veto.passed ? '通过' : '未通过'}</td>
-                    <td>{b.data.veto.passed ? '通过' : '未通过'}</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          )}
-          <p className="small muted">
-            数据来源：{sourceNote}。模拟数据是固定示例，数值高低不代表真实学习效果。数值均来自两份运行报告，前端只并排展示并标出较好的一侧（危机漏报、违反禁忌、平均 ISI 变化以低为好），不计算差值；是否由前端计算差值待团队确认。
-          </p>
-        </>
-      )}
-    </Card>
-  );
+export function metricDifference(value: number | null | undefined, baseline: number | null | undefined): number | null {
+  return value == null || baseline == null ? null : value - baseline;
 }
