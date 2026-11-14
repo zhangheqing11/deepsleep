@@ -1,0 +1,1 @@
+"""Frozen domain hard vetoes."""

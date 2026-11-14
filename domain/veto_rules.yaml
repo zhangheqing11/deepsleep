@@ -1,0 +1,83 @@
+# 已定（11/14）；固定规则，soft 只记录，不进入 hard_rule_violations。卧床下限见 safety/config.yaml。
+contraindications:
+- bipolar
+- epilepsy
+- untreated_osa
+- pregnancy
+- high_fall_risk
+- drowsy_driving_job
+- parasomnia
+plan_messages:
+  contraindication: 存在睡眠限制禁忌，不可建议 sleep_restriction。
+  min_tib: 卧床时间低于冻结下限（默认 330 分钟）。
+  unchecked: 建议睡眠限制前必须检查禁忌。
+  age: 未满 18 岁不可建议 sleep_restriction。
+  passive: passive 危机来访使用 sleep_restriction，记录软警告。
+text_rules:
+- id: medication-advice
+  code: forbidden_wording
+  pattern: (?:建议|可以|应该|需要|试试|请|自行)?(?:服用|口服|吃|使用)(?:[^，。；！？\n]*)(?:药|褪黑素)|(?:建议|可以|应该|需要|自行)(?:用药|加药|减药)|(?:自行)?(?:停药|换药)|(?:增加|加大|减少|减小|调整|加倍)(?:[^，。；！？\n]*)(?:药量|剂量|药物|安眠药)|(?:安眠药|助眠药|褪黑素)(?:[^，。；！？\n]*)(?:加量|减量|加倍)
+  message: 出现用药或调药建议，应转为建议咨询医生。
+  field: text
+  negated_prefix_pattern: (?:不|不要|不可|不能|不得|禁止|避免|请勿|切勿|不应|不建议)(?:自行)?(?:[^，。；！？\n]*[或及和])?$
+- id: W1
+  code: forbidden_wording
+  pattern: 诊断|确诊|误诊
+  message: 命中禁用措辞 W1，请按定稿措辞清单调整。
+  field: text
+  severity: hard
+- id: W2
+  code: forbidden_wording
+  pattern: (?:治疗|医治|治好)失眠症|治疗失眠
+  message: 命中禁用措辞 W2，请按定稿措辞清单调整。
+  field: text
+  severity: hard
+- id: W3
+  code: forbidden_wording
+  pattern: (?:你|您)(?:有|得了|患有|患上|是|属于)[^，。！？]{0,4}(?:失眠症|失眠障碍|抑郁症|焦虑症|抑郁障碍|焦虑障碍|睡眠呼吸暂停|OSA|不宁腿|RLS|双相)
+  message: 命中禁用措辞 W3，请按定稿措辞清单调整。
+  field: text
+  severity: hard
+- id: W4
+  code: forbidden_wording
+  pattern: 你这(?:是|就是)[^，。！？]{0,4}(?:抑郁|焦虑|失眠症|呼吸暂停|不宁腿)
+  message: 命中禁用措辞 W4，请按定稿措辞清单调整。
+  field: text
+  severity: hard
+- id: W5
+  code: forbidden_wording
+  pattern: (?:你|您)(?:是|属于)?[^，。！？]{0,3}(?:患者|病人)
+  message: 命中禁用措辞 W5，请按定稿措辞清单调整。
+  field: text
+  severity: hard
+- id: W6
+  code: forbidden_wording
+  pattern: 治愈|根治|痊愈|药到病除|包治|彻底治好
+  message: 命中禁用措辞 W6，请按定稿措辞清单调整。
+  field: text
+  severity: hard
+- id: W7
+  code: forbidden_wording
+  pattern: 开处方|开药|药方|处方给你|给你开
+  message: 命中禁用措辞 W7，请按定稿措辞清单调整。
+  field: text
+  severity: hard
+- id: W8
+  code: forbidden_wording
+  pattern: (?i)diagnos|treat(?:ment)? (?:of |for )?insomnia|\bcure\b
+  message: 命中禁用措辞 W8，请按定稿措辞清单调整。
+  field: text
+  severity: hard
+- id: W9
+  code: forbidden_wording
+  pattern: 治疗
+  message: 命中禁用措辞 W9，请按定稿措辞清单调整。
+  field: text
+  severity: soft
+- id: W10
+  code: forbidden_wording
+  pattern: 失眠症
+  message: 命中禁用措辞 W10，请按定稿措辞清单调整。
+  field: text
+  severity: soft
+min_age: 18

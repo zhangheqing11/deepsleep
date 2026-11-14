@@ -1,0 +1,23 @@
+# 演示前冻结；相对路径均相对于本配置文件所在目录。
+judge_provider: ds_flash
+judge_timeout_s: 6.0
+judge_fallbacks: [jev]
+judge_fallback_timeout_s: 3.0
+judge_timeout_overrides:
+  startlux: 8.0  # AutoThink 较慢，演示前按实测冻结
+# JSON 概率序列化的数值容差，不用于风险分档。
+probability_sum_tolerance: 0.000001
+tau_flag: 0.2
+tau_active: 0.5
+phq9_item9_threshold: 0
+min_tib_minutes: 330
+lexicon_path: lexicon.yaml
+scripts_path: scripts.yaml
+judge_prompt_path: prompts/judge_zh.md
+testset_path: testset.jsonl
+eval_output_dir: ../var/safety-eval
+veto_rules_path: ../domain/veto_rules.yaml
+# 仅供离线 smoke，非心理学判定词表。
+mock_keywords:
+  active: [自杀, 自伤, 结束生命]
+  passive: [不再醒来, 不想活, 撑不下去]
