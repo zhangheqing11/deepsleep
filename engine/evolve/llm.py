@@ -129,7 +129,8 @@ class OpenAICompatClient:
     provider = "deepseek"
     effort = None
 
-    def __init__(self, model: str | None = None, *, timeout_s: float, max_tokens: int = 8000):
+    def __init__(self, model: str | None = None, *, timeout_s: float, max_tokens: int = 8000,
+                 effort: str | None = None, json_mode: bool = False):
         from openai import AsyncOpenAI
 
         self.model = model or os.environ.get("DS_MODEL") or ""
@@ -137,6 +138,9 @@ class OpenAICompatClient:
             raise LLMError("未配置 DS_MODEL，无法降级到 ds flash")
         self.max_tokens = max_tokens
         self.timeout_s = timeout_s
+        # effort: None = provider default; low/high/max = thinking enabled at that effort (primary reflector use).
+        self.effort = effort
+        self.json_mode = json_mode
         self.last_response_metadata: dict = {}
         if not os.environ.get("DS_API_KEY"):
             raise LLMError("未配置 DS_API_KEY，无法降级到 ds flash")
@@ -146,9 +150,14 @@ class OpenAICompatClient:
 
     async def complete(self, system: str, user: str) -> str:
         self.last_response_metadata = {}
+        extra = {}
+        if self.effort:
+            extra.update(reasoning_effort=self.effort, extra_body={"thinking": {"type": "enabled"}})
+        if self.json_mode:
+            extra["response_format"] = {"type": "json_object"}
         response = await self._client.chat.completions.create(
             model=self.model, temperature=0, max_tokens=self.max_tokens,
-            messages=[{"role": "system", "content": system}, {"role": "user", "content": user}],
+            messages=[{"role": "system", "content": system}, {"role": "user", "content": user}], **extra,
         )
         details = getattr(getattr(response, "usage", None), "completion_tokens_details", None)
         self.last_response_metadata = {"model": response.model,
@@ -168,14 +177,22 @@ def default_clients(config: dict) -> tuple[LLMClient | None, LLMClient | None, s
     try:
         settings = primary_settings(config)
         provider = settings.pop("provider")
-        factory = {"openai": OpenAIClient, "anthropic": AnthropicClient}.get(provider)
-        if factory is None:
-            raise LLMError("不支持的 REFLECTOR_PROVIDER（仅支持 openai / anthropic）")
-        primary = factory(**settings, max_tokens=rc["max_tokens"])
+        if provider == "deepseek":
+            # Same small model as the session agent, with thinking enabled: REFLECTOR_MODEL (an OpenAI /
+            # Anthropic id) does not apply here, the model comes from DS_MODEL.
+            primary = OpenAICompatClient(os.environ.get(rc["fallback_model_env"]), timeout_s=settings["timeout_s"],
+                                         max_tokens=rc["max_tokens"], effort=rc.get("deepseek_effort", "high"),
+                                         json_mode=True)
+        else:
+            factory = {"openai": OpenAIClient, "anthropic": AnthropicClient}.get(provider)
+            if factory is None:
+                raise LLMError("不支持的 REFLECTOR_PROVIDER（仅支持 openai / anthropic / deepseek）")
+            primary = factory(**settings, max_tokens=rc["max_tokens"])
     except Exception as exc:  # noqa: BLE001 - any init failure means "use fallback"
         error = f"主反思器初始化失败: {error_reason(exc)}"
     try:
-        fallback = OpenAICompatClient(os.environ.get(rc["fallback_model_env"]), timeout_s=rc["fallback_timeout_s"])
+        fallback = OpenAICompatClient(os.environ.get(rc["fallback_model_env"]), timeout_s=rc["fallback_timeout_s"],
+                                      max_tokens=rc.get("fallback_max_tokens", 8000))
     except Exception:  # noqa: BLE001
         fallback = None
     return primary, fallback, error

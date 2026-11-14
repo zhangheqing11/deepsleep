@@ -18,6 +18,12 @@ from .config import resolve
 _TAG = re.compile(r"^v(\d+)$")
 
 
+def _clear_readonly(func, path, _exc_info):
+    """Windows: git object files are read-only, so rmtree needs to clear the flag and retry."""
+    os.chmod(path, 0o700)
+    func(path)
+
+
 class PlaybookRepo:
     def __init__(self, config: dict, path: str | Path | None = None):
         self.config = config["repo"]
@@ -69,7 +75,7 @@ class PlaybookRepo:
         if self.path.name != Path(self.config["path"]).name or (self.path.exists() and not ours):
             raise RuntimeError(f"拒绝删除非 playbook 版本库路径: {self.path}")
         if self.path.exists():
-            shutil.rmtree(self.path)
+            shutil.rmtree(self.path, onerror=_clear_readonly)
         return self.init(initial_text)
 
     # Compatibility alias for unmerged callers; resets to initial v1.

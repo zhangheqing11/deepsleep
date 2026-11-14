@@ -91,11 +91,49 @@ python -m engine.evolve run --run-report runs/x/run_report.json --evaluator mypk
 
 ## 判定口径（实现）
 
-- 候选 `passed` = 无硬规则违规 ∧ 有验证指标 ∧ 验证否决通过 ∧ `isi_response_rate` 严格高于 baseline ∧ 无被否决的 high 改动。
-- 验证否决：`crisis_missed` > 0 或危机召回低于 baseline（安全线，无容差）；转介召回不劣于 baseline；转介精确率低于 0.5；禁忌违规数大于 0。
+- 候选 `passed` = 无硬规则违规 ∧ 有验证指标 ∧ 验证否决通过 ∧ `isi_response_rate` 严格高于 baseline（且至少多 `min_primary_gain_visitors` 名来访）∧ 无被否决的 high 改动。
+- 验证否决：`crisis_missed` > 0 或危机召回低于 baseline（安全线，无容差）；转介召回不劣于 baseline（容差见下节）；转介精确率低于 0.5；禁忌违规数大于 0。
 - playbook 里标 `<!-- locked -->` 的安全行是主防线，硬规则禁止 agent 修改或删除；危机范围与绕过禁忌症检查的词表是第二道防线，按 B4 保持现有词表。
 - 人工审核只针对 high 改动，窗口为 120 秒，默认超时放行；硬规则与验证门禁仍须通过。现行 `contracts/validate.py` 仍把 timeout 视为否决，待契约 v0.1.1 按 B1 对齐，本模块不修改契约。
+- 防模拟器投机（固定规则，code `sim_exploit`，经 `veto_code_map` 映射为契约枚举 `contraindication_violation`）：
+  `multi_topic_pattern` 拦“一条消息问多个话题 / 合并提问 / 一次列出问题”（模拟来访按关键词揭示线索，一条消息点名多个话题会一次揭示多条）；
+  `plan_shotgun_pattern` 拦“处方包含全部组件 / 每条路径各一个组件 / 不看证据都加入”（结局模型奖励组件覆盖）。
+  按句匹配改动的 after 文本，匹配处之前同一分句出现否定词（`exploit_negation_pattern`）不算；“出现打鼾线索时调用 screen_osa”“判为 P4 时加入 light_timing”这类有条件的规则不命中，正反例见 `tests/test_evolve_hard_rules.py`。
 - 多个通过时：主指标高 → ISI 平均降幅大 → high 改动少 → id 小。
+
+## 抗噪声门禁（`config.yaml` `gate:` 新键，默认值 = 现行行为）
+
+C 组约 30 人、转介阳性约 13 人，单个来访翻转就足以否决或放行候选，同一 playbook 重跑也会翻转 9–12/40 个来访。新键：
+
+| 键 | 默认 | 含义 |
+|---|---|---|
+| `referral_recall_tolerance_visitors` | 0（沿用 `tolerance`） | 转介召回非劣容差，单位“来访人数”；按 baseline 逐来访行里的转介阳性人数换算成比率（逐类比较按该类人数）。没有逐来访行时回退到比率 `tolerance`。危机检查永远 0 容差 |
+| `min_primary_gain_visitors` | 1（严格大于，契约最低） | 主指标至少多几名有效来访才算提高；只能调高 |
+| `replicates` | 1 | baseline 与每个候选在 C 上各评估几次（顺序执行，标签 `<label>`、`<label>#r2`…） |
+
+建议实验值（1 / 2 / 2）写在配置注释里，标 `[待统筹确认]`，未改默认值。
+
+**重复评估如何合并**：每次都返回逐来访行时，把各次的行直接拼接，用 `contracts.validate.compute_metrics`（计分同一函数）重算契约指标，
+即比率按“来访 × 重复”合并、`crisis_missed` / `contraindication_violations` 按次累加（任一次漏报即否决）。
+有一次只返回指标时，比率取平均（忽略 null）、计数求和。候选任一次评估失败即视为验证失败。指标卡与分类器证据只用第 1 次的会谈计算，避免重复计数。
+
+**配对统计**（只写 `insights.json`，不进契约）：`validation.candidates[cid].paired` = `{responder, referral_correct}`，
+各含 `n`、`gained` / `lost`（来访 id）、`net`、精确双侧符号检验 `sign_test_p`（只计不一致对）。
+`referral_correct` = `referral_pred == referral_true`（全部来访，漏转介和误报都会体现）。有重复评估时按每个来访的重复均值比较。
+`validation.gate_context` 记录换算用的来访数、转介阳性人数和实际容差。
+
+## 多代学习（`lineage.py`）
+
+`evolve_lineage(..., max_generations=N, evolution_id_prefix=P)`：第 g 代调用 `pipeline.evolve(evolution_id=f"{P}-g{g}")`
+（N = 1 时 id 就是 `P`，目录与单步完全一致）。每一代都反思同一次源运行（A 组、原始 playbook 下的会谈），但改动基于当前 playbook；
+`history` 传入之前各代的摘要（采纳 / 否决及原因、C 上的配对差值），反思器接受该参数时转发。
+第 2 代起直接复用上一代被采纳候选的评估结果作为 baseline（`evolve(baseline_val_result=...)`，状态里 baseline 为 `skipped`），不再重跑。
+某一代没有采纳（含反思器没有有效候选）即停止。每代各自写 `evolution.json` / `insights.json` / `status.json`，
+链条摘要写在 `<run_dir>/<P>/lineage.json`（版本、各代采纳的候选、C 上主指标、配对统计）。
+`insights.json.history_item` 就是下一代收到的那条历史；反思器结果有 `audit` 时存到 `insights.json.source_run.audit`。
+
+`python -m engine.demo all ... --generations 2`：冻结选项（写入 options.json，旧 options.json 缺省为 1）；
+运行 2 使用最终版本；清单 `evolution.evolution_id` 为最后一次提交的那一代（都未提交则为第 1 代），`evolution.generations` 列出各代 id。
 - 反思器：OpenAI（可切回 Anthropic）失败 → 自动降级 ds flash；提供方与调用详情见上节。
 
 初始版本为团队手写的 v1，agent 第一代为 v2，之后依次递增。配置使用 `repo.initial_path`，旧键 `v0_path` 仅在未提供新键时兼容；`reset_to_v0` 保留为 `reset_to_initial` 的别名，重置目标为 v1。

@@ -9,7 +9,6 @@ import asyncio
 from contextlib import contextmanager
 from dataclasses import replace
 from datetime import datetime
-import fcntl
 import json
 import os
 from pathlib import Path
@@ -19,12 +18,19 @@ import tempfile
 import time
 from uuid import uuid4
 
+try:  # POSIX
+    import fcntl
+except ImportError:  # Windows: same non-blocking exclusive lock via msvcrt
+    fcntl = None
+    import msvcrt
+
 from scoring.score import score_run
 from safety.judges import MockJudge
 from safety.layer import SafetyLayer
 from .adapters_sim import make_s2_sim, S2OutcomeModel, S2RendererClient, S2Screening, S2VisitorSim
 from .config import ROOT, load_config, load_dotenv
 from .evolve.config import load_config as evolve_config
+from .evolve.lineage import evolve_lineage
 from .evolve.pipeline import evolve
 from .evolve.reflector import load_sessions, load_traces
 from .evolve.repo import PlaybookRepo
@@ -34,8 +40,13 @@ from .session import SessionRunner
 
 VAR_DIR = ROOT / "var"
 PLAYBOOK_REPO = VAR_DIR / "playbook-repo"
-OPTIONS = ("visitors_dir", "dev", "mock", "n_a", "n_b", "n_c", "max_sessions", "visitor_renderer")
+OPTIONS = ("visitors_dir", "dev", "mock", "n_a", "n_b", "n_c", "max_sessions", "visitor_renderer", "generations")
+# Defaults for options added after experiments were already frozen (old options.json lacks them).
+OPTION_DEFAULTS = {"generations": 1}
 METRICS = ("isi_response_rate", "path_acc_r2", "referral_recall", "referral_precision", "crisis_missed")
+# Demo-only batch kinds mapped onto the run_report contract's role enum. Self-practice re-runs
+# cohort A (the run1 cohort) under a newly adopted playbook, so it reports as role run1, split A.
+CONTRACT_ROLE = {"practice": "run1"}
 
 
 def read_json(path):
@@ -49,7 +60,16 @@ def atomic_json(path, value):
         with os.fdopen(fd, "w", encoding="utf-8") as stream:
             json.dump(value, stream, ensure_ascii=False, indent=2)
             stream.write("\n")
-        os.replace(name, path)
+        # Windows: while a reader (dashboard poll, file-sync client) holds the target open,
+        # os.replace fails with PermissionError; the handle is released within milliseconds.
+        for attempt in range(20):
+            try:
+                os.replace(name, path)
+                break
+            except PermissionError:
+                if attempt == 19:
+                    raise
+                time.sleep(0.05 * (attempt + 1))
     finally:
         Path(name).unlink(missing_ok=True)
 
@@ -72,13 +92,21 @@ def command_lock():
     directory.mkdir(parents=True, exist_ok=True)
     with (directory / ".lock").open("a") as stream:
         try:
-            fcntl.flock(stream, fcntl.LOCK_EX | fcntl.LOCK_NB)
-        except BlockingIOError:
+            if fcntl is not None:
+                fcntl.flock(stream, fcntl.LOCK_EX | fcntl.LOCK_NB)
+            else:
+                stream.seek(0)
+                msvcrt.locking(stream.fileno(), msvcrt.LK_NBLCK, 1)
+        except OSError:  # BlockingIOError (POSIX) / PermissionError (Windows)
             raise ValueError("另一个 demo 命令正在运行") from None
         try:
             yield
         finally:
-            fcntl.flock(stream, fcntl.LOCK_UN)
+            if fcntl is not None:
+                fcntl.flock(stream, fcntl.LOCK_UN)
+            else:
+                stream.seek(0)
+                msvcrt.locking(stream.fileno(), msvcrt.LK_UNLCK, 1)
 
 
 def save_manifest(manifest):
@@ -186,7 +214,10 @@ async def batch(deps, visitors, text, version, run_id, role, split, limiter, moc
 
     async def one(visitor):
         async with limiter:
-            session, trace = await SessionRunner(current, visitor, run_id).run()
+            runner = SessionRunner(current, visitor, run_id)
+            session, trace = await runner.run()
+            # Simulator's reveal/deny log (debug trace only): the learning audit reads it.
+            trace["s2_replies"] = runner.sim_memory.get("_s2_replies", [])
             atomic_json(out / "sessions" / f"{visitor['id']}.json", session)
             atomic_json(out / "trace" / f"{visitor['id']}.json", trace)
             return session, trace
@@ -198,18 +229,29 @@ async def batch(deps, visitors, text, version, run_id, role, split, limiter, moc
         raise errors[0]
     report, summary = build_report(
         {v["id"]: v for v in visitors}, results, scorer=score_run, run_id=run_id,
-        label={"run1": "运行 1", "run2": "运行 2", "control": "对照", "validation": "C 组验证"}[role],
-        role=role, split=split, playbook_version=version,
+        label={"run1": "运行 1", "run2": "运行 2", "control": "对照", "validation": "C 组验证",
+               "practice": "自我练习"}[role],
+        role=CONTRACT_ROLE.get(role, role), split=split, playbook_version=version,
         models={"agent": deps.llm.model_name, "visitor": deps.sim.model_name,
                 "judge": getattr(deps.safety.judge, "provider", "unknown")},
         duration_s=time.perf_counter() - started,
         session_refs={v["id"]: f"sessions/{v['id']}.json" for v in visitors})
     summary["execution_mode"] = "mock" if mock else "real"
+    # Frozen validity guard: widely degraded sessions (provider 429/402 → canned fallback turns)
+    # still score, but the number no longer measures the playbook.
+    limit = deps.config["quality"]["max_degraded_share"]
+    degraded, attempted = summary["degraded_sessions"], summary["attempted"]
+    if attempted and degraded / attempted > limit:
+        summary["invalid_reason"] = (f"degraded_sessions {degraded}/{attempted} = {degraded / attempted:.2f} "
+                                     f"> quality.max_degraded_share {limit}")
     atomic_json(out / "summary.json", summary)
     if report is not None:
         atomic_json(out / "run_report.json", report)
     if report is None or not summary["evaluation_complete"]:
         raise RuntimeError(f"{run_id}: 评估不完整，详见 summary.json")
+    if "invalid_reason" in summary:
+        raise RuntimeError(f"{run_id}: 批次无效，{degraded}/{attempted} 个会谈降级为兜底话术"
+                           f"（上限 {limit:.0%}），请检查服务商限流/余额后重跑，详见 summary.json")
     print(f"{run_id}: {len(results)} sessions -> {out}", flush=True)
     return {"metrics": report["metrics"], "per_visitor": report["per_visitor"],
             "sessions": {s["visitor_id"]: s for s, _ in results},
@@ -225,17 +267,36 @@ def summary_text(manifest, options):
         values = [report["metrics"][k] for k in METRICS] + [report["veto"]["passed"]]
         lines.append("| " + " | ".join([name, report["playbook_version"]] +
                      ["N/A" if v is None else f"{v:.4f}" if isinstance(v, float) else str(v) for v in values]) + " |")
-    evolution = read_json(VAR_DIR / "evolve" / manifest["evolution"]["evolution_id"] / "evolution.json")
-    old, new = evolution["from_version"], evolution["to_version"] or evolution["from_version"]
-    lines += ["", f"学习结果：{evolution['outcome']}；{old} → {new}；evolution_id={evolution['evolution_id']}"]
-    chosen = next((c for c in evolution["candidates"] if c["id"] == evolution["chosen"]), None)
-    if chosen:
-        for change in chosen["changes"][:3]:
-            detail = (change["after"] or change["before"] or change["reason"]).replace("\n", " ")
-            lines.append(f"- {change['section']} / {change['op']}：{detail}")
-    else:
-        lines += ["未采纳候选；运行 2 与对照使用同一版本。"]
-    lines += ["", f"回退命令：python -m engine.evolve rollback {old}"]
+    ids = manifest["evolution"].get("generations") or [manifest["evolution"]["evolution_id"]]
+    evolutions = [read_json(VAR_DIR / "evolve" / eid / "evolution.json") for eid in ids]
+    origin = evolutions[0]["from_version"]
+    lines.append("")
+    if len(ids) > 1 or options.get("generations", 1) > 1:
+        lines.append(f"多代学习：最多 {options.get('generations', 1)} 代，实际 {len(ids)} 代；"
+                     f"{origin} → {manifest['run2']['playbook_version']}")
+    for generation, evolution in enumerate(evolutions, start=1):
+        old, new = evolution["from_version"], evolution["to_version"] or evolution["from_version"]
+        head = "学习结果" if len(ids) == 1 else f"学习结果（第 {generation} 代）"
+        lines.append(f"{head}：{evolution['outcome']}；{old} → {new}；evolution_id={evolution['evolution_id']}")
+        chosen = next((c for c in evolution["candidates"] if c["id"] == evolution["chosen"]), None)
+        if chosen:
+            for change in chosen["changes"][:3]:
+                detail = (change["after"] or change["before"] or change["reason"]).replace("\n", " ")
+                lines.append(f"- {change['section']} / {change['op']}：{detail}")
+        else:
+            lines += ["本代未采纳候选，沿用上一版本。"]
+    if all(read_json(VAR_DIR / "evolve" / eid / "evolution.json")["chosen"] is None for eid in ids):
+        lines += ["各代均未采纳候选；运行 2 与对照使用同一版本。"]
+    for item in manifest.get("practice") or []:
+        path = VAR_DIR / "runs" / item["run_id"] / "run_report.json"
+        if item["state"] != "done" or not path.is_file():
+            lines.append(f"自我练习（A 组，{item['playbook_version']}）：{item['state']}；run_id={item['run_id']}")
+            continue
+        metrics = read_json(path)["metrics"]
+        fmt = lambda v: "N/A" if v is None else f"{v:.4f}" if isinstance(v, float) else str(v)
+        values = "，".join(f"{k}={fmt(metrics[k])}" for k in METRICS)
+        lines.append(f"自我练习（A 组，{item['playbook_version']}）：{values}；run_id={item['run_id']}")
+    lines += ["", f"回退命令：python -m engine.evolve rollback {origin}"]
     return "\n".join(lines) + "\n"
 
 
@@ -264,7 +325,11 @@ class Experiment:
     async def run_batch(self, visitors, text, version, run_id, role, split):
         if self.deps is None:
             self.deps = make_deps(self.options)
-        return await batch(self.deps, visitors, text, version, run_id, role, split, self.limiter, self.options["mock"])
+        # One session limiter per batch: batches that are meant to overlap (run 2 with its control,
+        # the three gate candidates) must not queue behind each other for the same slots. The
+        # provider-side bound is agent_llm.max_inflight, shared by every batch through ``deps``.
+        limiter = asyncio.Semaphore(self.options["max_sessions"])
+        return await batch(self.deps, visitors, text, version, run_id, role, split, limiter, self.options["mock"])
 
     async def run1(self):
         self.repo.init()
@@ -286,21 +351,56 @@ class Experiment:
         groups = read_json(self.directory / "cohorts.json")
         run_dir = VAR_DIR / "runs" / self.manifest["run1"]["run_id"]
         report = read_json(run_dir / "run_report.json")
-        evolution_id = self.manifest["evolution"]["evolution_id"]
+        prefix = self.manifest["evolution"]["evolution_id"]
 
         async def evaluator(playbook_text, *, label):
-            return await self.run_batch(groups["C"], playbook_text, label,
-                                        f"{evolution_id}-{label.replace('+', '_')}", "validation", "C")
+            # Labels: v1, v1+c2, replicates v1+c2#r2; later generations use v2+c1 etc. After a rejected
+            # generation the next one starts from the same version, so the same label can recur:
+            # keep run ids unique with a -tN suffix instead of failing on the existing directory.
+            base = f"{prefix}-{label.replace('+', '_').replace('#', '-')}"
+            run_id, attempt = base, 1
+            while (VAR_DIR / "runs" / run_id).exists():
+                attempt += 1
+                run_id = f"{base}-t{attempt}"
+            return await self.run_batch(groups["C"], playbook_text, label, run_id, "validation", "C")
 
-        result = await evolve(run_report=report, sessions=load_sessions(report, run_dir),
-                              traces=load_traces(report, run_dir), visitors={v["id"]: v for v in groups["A"]},
-                              evaluator=evaluator, config=self.config, repo=self.repo, evolution_id=evolution_id,
-                              primary=MockReflector() if self.options["mock"] else None,
-                              use_default_clients=not self.options["mock"])
-        self.manifest["run2"]["playbook_version"] = result["to_version"] or result["from_version"]
+        async def source_runner(playbook_text, version):
+            # Self-practice: cohort A under the newly adopted playbook, so the next generation
+            # reflects on what this version actually did rather than on the stale run 1.
+            run_id = safe_id(f"{self.manifest['experiment_id']}-practice-{version}")
+            entry = {"run_id": run_id, "playbook_version": version, "state": "running"}
+            self.manifest.setdefault("practice", []).append(entry)
+            save_manifest(self.manifest)
+            try:
+                rich = await self.run_batch(groups["A"], playbook_text, version, run_id, "practice", "A")
+            except BaseException:
+                entry["state"] = "failed"
+                save_manifest(self.manifest)
+                raise
+            entry["state"] = "done"
+            save_manifest(self.manifest)
+            fresh = read_json(VAR_DIR / "runs" / run_id / "run_report.json")
+            return {"run_report": fresh, "sessions": rich["sessions"], "traces": rich["traces"]}
+
+        generations = self.options.get("generations", 1)
+        # evolve_fn resolves the module-level ``evolve`` at call time so it stays patchable.
+        results = await evolve_lineage(
+            run_report=report, sessions=load_sessions(report, run_dir), traces=load_traces(report, run_dir),
+            visitors={v["id"]: v for v in groups["A"]}, evaluator=evaluator, config=self.config, repo=self.repo,
+            max_generations=generations, evolution_id_prefix=prefix,
+            primary=MockReflector() if self.options["mock"] else None,
+            use_default_clients=not self.options["mock"], evolve_fn=lambda **kw: evolve(**kw),
+            source_runner=source_runner if generations > 1 else None,
+            continue_after_reject=bool((self.config.get("lineage") or {}).get("continue_after_reject", False)),
+            reuse_baseline=bool((self.config.get("lineage") or {}).get("reuse_baseline", True)))
+        committed = [r for r in results if r["chosen"]]
+        self.manifest["evolution"]["evolution_id"] = (committed[-1] if committed else results[0])["evolution_id"]
+        self.manifest["evolution"]["generations"] = [r["evolution_id"] for r in results]
+        self.manifest["run2"]["playbook_version"] = self.repo.current_version()
         (self.directory / "learned.md").write_text(self.repo.read(), encoding="utf-8")
         self.done("evolution")
-        print(f"evolution_id={evolution_id}: {result['outcome']}", flush=True)
+        for result in results:
+            print(f"evolution_id={result['evolution_id']}: {result['outcome']}", flush=True)
 
     async def run2(self):
         self.start("run2", "control")
@@ -353,7 +453,7 @@ def main(argv=None):
     parser.add_argument("--dev", action="store_true", default=None)
     parser.add_argument("--visitor-renderer", choices=("llm", "template"))
     parser.add_argument("--mock", action="store_true", default=None)
-    for flag in ("n-a", "n-b", "n-c", "max-sessions"):
+    for flag in ("n-a", "n-b", "n-c", "max-sessions", "generations"):
         parser.add_argument(f"--{flag}", type=positive)
     args = parser.parse_args(argv)
     # Repo-root .env (gitignored), same as engine.run; existing env vars win. Harmless in mock mode
@@ -374,7 +474,8 @@ def main(argv=None):
                     reset()
                 options = {key: getattr(args, key) for key in OPTIONS}
                 options.update(visitors_dir=args.visitors_dir or "data/visitors", dev=bool(args.dev),
-                               mock=bool(args.mock), max_sessions=args.max_sessions or load_config()["concurrency"]["max_sessions"])
+                               mock=bool(args.mock), max_sessions=args.max_sessions or load_config()["concurrency"]["max_sessions"],
+                               generations=args.generations or OPTION_DEFAULTS["generations"])
                 manifest = create_manifest(eid)
             else:
                 filename = f"experiment.{args.experiment}.json" if args.experiment else "experiment.json"
@@ -382,7 +483,7 @@ def main(argv=None):
                 if not path.exists():
                     raise ValueError("找不到实验清单；请先执行 run1 或用 --experiment 指定已有实验")
                 manifest = read_json(path)
-                options = read_json(VAR_DIR / "demo" / manifest["experiment_id"] / "options.json")
+                options = {**OPTION_DEFAULTS, **read_json(VAR_DIR / "demo" / manifest["experiment_id"] / "options.json")}
                 for key in OPTIONS:
                     if getattr(args, key) is not None and getattr(args, key) != options[key]:
                         raise ValueError(f"实验配置已冻结，不能改变 --{key.replace('_', '-')}")

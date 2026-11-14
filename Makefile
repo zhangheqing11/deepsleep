@@ -33,7 +33,8 @@ engine-mock: venv
 
 # 路演目标复用已有 Python，不创建 venv 或安装依赖。
 DEMO_PYTHON ?= $(firstword $(wildcard .venv/bin/python ../deepsleep/.venv/bin/python))
-DEMO_ARGS ?=
+# 11/15 冻结：三代学习（每代自我练习）+ 模板渲染来访；留出验证即在此配置下完成（docs/handoff-evolve.md）。
+DEMO_ARGS ?= --generations 3 --visitor-renderer template
 .PHONY: demo-reset demo-run1 demo-run2 demo-all demo-mock
 demo-reset:
 	$(DEMO_PYTHON) -m engine.demo reset

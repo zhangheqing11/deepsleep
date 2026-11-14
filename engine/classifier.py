@@ -17,6 +17,7 @@ import time
 from typing import Protocol, runtime_checkable
 
 from .llm import parse_json_object, TruncatedOutput
+from .network import retry_connection
 from .telemetry import CURRENT_CALL, annotate_response
 
 PATHS = ("P1", "P2", "P3", "P4", "P5")
@@ -173,10 +174,16 @@ class DsFlashPathClassifier(_Bounded):
         row = CURRENT_CALL.get()
         if row is not None:
             row["request_started"] = True
-        response = await self.client.chat.completions.create(
-            model=self.model, temperature=self.temperature, response_format={"type": "json_object"},
-            **({"extra_body": {"thinking": {"type": self.thinking}}} if self.thinking else {}),
-            messages=[{"role": "system", "content": self.prompt}, {"role": "user", "content": text or "（尚无对话）"}])
+
+        async def request():
+            return await self.client.chat.completions.create(
+                model=self.model, temperature=self.temperature, response_format={"type": "json_object"},
+                **({"extra_body": {"thinking": {"type": self.thinking}}} if self.thinking else {}),
+                messages=[{"role": "system", "content": self.prompt},
+                          {"role": "user", "content": text or "（尚无对话）"}])
+        # Provider rate limiting (429) only: short jittered retries inside the classifier's own timeout.
+        response = await retry_connection(request, {"max_retries": 0, "rate_limit_retries": 3,
+                                                    "rate_limit_backoff_s": 0.5, "rate_limit_max_backoff_s": 2.0})
         annotate_response(response)
         if getattr(response.choices[0], "finish_reason", None) == "length":
             raise TruncatedOutput("classifier completion truncated")
