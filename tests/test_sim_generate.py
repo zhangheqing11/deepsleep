@@ -166,7 +166,9 @@ def test_committed_files_and_manifest_match_generator():
     expected = {f'{v["split"]}/{v["id"]}.json': v for v in VISITORS}
     expected['MANIFEST.json'] = manifest(DEFAULT_SEED, VISITORS)
     root = ROOT / 'data/visitors'
-    actual = {str(p.relative_to(root)): json.loads(p.read_text()) for p in root.rglob('*.json')}
+    # Only this generator's outputs; data/visitors/interim/ belongs to sim/gen_interim.py.
+    ours = [root / 'MANIFEST.json', *(p for split in ('A', 'B', 'C', 'offline') for p in (root / split).glob('*.json'))]
+    actual = {str(p.relative_to(root)): json.loads(p.read_text()) for p in ours}
     assert actual == expected
 
 
