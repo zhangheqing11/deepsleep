@@ -1,0 +1,215 @@
+{
+  "schema_version": "0.1.0",
+  "id": "A-006",
+  "split": "A",
+  "seed": 291308480,
+  "main_path": "P2",
+  "secondary_path": "P3",
+  "referral": "R2",
+  "crisis": {
+    "level": "none",
+    "phq9_item9": 0,
+    "history": false
+  },
+  "contraindications": [],
+  "indices": {
+    "isi": 19,
+    "phq9": 5,
+    "gad7": 8,
+    "stop_bang": 1,
+    "meq": null,
+    "dbas16": null,
+    "psas": null,
+    "screen_min_before_sleep": 0
+  },
+  "diary": [
+    {
+      "day": 1,
+      "bedtime": "21:35",
+      "lights_off": "21:45",
+      "sol_min": 112,
+      "waso_min": 87,
+      "final_wake": "06:40",
+      "risetime": "07:30",
+      "tst_min": 336,
+      "tib_min": 595,
+      "se": 0.5647,
+      "nap_min": 0,
+      "caffeine_after_14": false,
+      "alcohol": false,
+      "screen_in_bed_min": 0
+    },
+    {
+      "day": 2,
+      "bedtime": "21:25",
+      "lights_off": "21:35",
+      "sol_min": 115,
+      "waso_min": 80,
+      "final_wake": "06:40",
+      "risetime": "07:30",
+      "tst_min": 350,
+      "tib_min": 605,
+      "se": 0.5785,
+      "nap_min": 0,
+      "caffeine_after_14": false,
+      "alcohol": false,
+      "screen_in_bed_min": 0
+    },
+    {
+      "day": 3,
+      "bedtime": "21:30",
+      "lights_off": "21:40",
+      "sol_min": 115,
+      "waso_min": 90,
+      "final_wake": "06:40",
+      "risetime": "07:30",
+      "tst_min": 335,
+      "tib_min": 600,
+      "se": 0.5583,
+      "nap_min": 0,
+      "caffeine_after_14": false,
+      "alcohol": false,
+      "screen_in_bed_min": 0
+    },
+    {
+      "day": 4,
+      "bedtime": "21:35",
+      "lights_off": "21:45",
+      "sol_min": 105,
+      "waso_min": 84,
+      "final_wake": "06:40",
+      "risetime": "07:30",
+      "tst_min": 346,
+      "tib_min": 595,
+      "se": 0.5815,
+      "nap_min": 0,
+      "caffeine_after_14": false,
+      "alcohol": false,
+      "screen_in_bed_min": 0
+    },
+    {
+      "day": 5,
+      "bedtime": "21:25",
+      "lights_off": "21:35",
+      "sol_min": 111,
+      "waso_min": 88,
+      "final_wake": "06:40",
+      "risetime": "07:30",
+      "tst_min": 346,
+      "tib_min": 605,
+      "se": 0.5719,
+      "nap_min": 0,
+      "caffeine_after_14": false,
+      "alcohol": false,
+      "screen_in_bed_min": 0
+    },
+    {
+      "day": 6,
+      "bedtime": "21:30",
+      "lights_off": "21:40",
+      "sol_min": 109,
+      "waso_min": 90,
+      "final_wake": "06:40",
+      "risetime": "07:30",
+      "tst_min": 341,
+      "tib_min": 600,
+      "se": 0.5683,
+      "nap_min": 0,
+      "caffeine_after_14": false,
+      "alcohol": false,
+      "screen_in_bed_min": 0
+    },
+    {
+      "day": 7,
+      "bedtime": "21:25",
+      "lights_off": "21:35",
+      "sol_min": 111,
+      "waso_min": 80,
+      "final_wake": "06:40",
+      "risetime": "07:30",
+      "tst_min": 354,
+      "tib_min": 605,
+      "se": 0.5851,
+      "nap_min": 0,
+      "caffeine_after_14": false,
+      "alcohol": false,
+      "screen_in_bed_min": 0
+    }
+  ],
+  "persona": {
+    "age": 59,
+    "gender": "male",
+    "occupation": "职员",
+    "expressiveness": "brief",
+    "defensiveness": "mid",
+    "emotionality": "low",
+    "adherence_tendency": 0.65,
+    "constraints": []
+  },
+  "opening_complaint": "最近睡得不太稳，白天总是没精神，不知道该从哪儿调。",
+  "clues": [
+    {
+      "id": "A-006::domain/path_clues.md#P2-c1",
+      "content": "一躺到床上就越来越精神，翻来覆去一两个小时",
+      "reveal_topic": "bed_wakefulness",
+      "supports": "P2",
+      "deny_first": false
+    },
+    {
+      "id": "A-006::domain/path_clues.md#P2-c2",
+      "content": "在沙发上看电视，看着看着就睡着了，一进卧室又清醒了",
+      "reveal_topic": "sleep_elsewhere",
+      "supports": "P2",
+      "deny_first": true
+    },
+    {
+      "id": "A-006::domain/path_clues.md#P2-c3",
+      "content": "睡不着我也不起来，就硬躺着，一晚上在床上待十个小时，实际睡不到六个小时",
+      "reveal_topic": "bed_wakefulness",
+      "supports": "P2",
+      "deny_first": false
+    },
+    {
+      "id": "A-006::domain/path_clues.md#P3-c5",
+      "content": "我会盯着手环的睡眠分数，分数低就更焦虑",
+      "reveal_topic": "fear_of_sleeplessness",
+      "supports": "P3",
+      "deny_first": false
+    },
+    {
+      "id": "A-006::domain/referral_cues.md#R2-c1",
+      "content": "一躺下腿里就像有虫子在爬，特别想动",
+      "reveal_topic": "leg_discomfort",
+      "supports": "R2",
+      "deny_first": true
+    },
+    {
+      "id": "A-006::domain/referral_cues.md#R2-c2",
+      "content": "起来走几步就好了，一躺回去又来",
+      "reveal_topic": "leg_discomfort",
+      "supports": "R2",
+      "deny_first": false
+    },
+    {
+      "id": "A-006::domain/referral_cues.md#R2-c3",
+      "content": "白天几乎没感觉，一到晚上特别明显",
+      "reveal_topic": "leg_discomfort",
+      "supports": "R2",
+      "deny_first": false
+    },
+    {
+      "id": "A-006::domain/referral_cues.md#R2-c5",
+      "content": "因为腿，我睡前得在屋里来回走，或者反复换姿势、蹬被子",
+      "reveal_topic": "bed_wakefulness",
+      "supports": "R2",
+      "deny_first": false
+    }
+  ],
+  "prefilled": [
+    {
+      "scale": "isi",
+      "reported_score": 14,
+      "items": null
+    }
+  ]
+}

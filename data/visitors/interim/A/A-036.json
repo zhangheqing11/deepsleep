@@ -1,0 +1,228 @@
+{
+  "schema_version": "0.1.0",
+  "id": "A-036",
+  "split": "A",
+  "seed": 1178597703,
+  "main_path": "P3",
+  "secondary_path": "P2",
+  "referral": "R3",
+  "crisis": {
+    "level": "passive",
+    "phq9_item9": 1,
+    "history": false
+  },
+  "contraindications": [],
+  "indices": {
+    "isi": 14,
+    "phq9": 12,
+    "gad7": 11,
+    "stop_bang": 0,
+    "meq": null,
+    "dbas16": null,
+    "psas": null,
+    "screen_min_before_sleep": 0
+  },
+  "diary": [
+    {
+      "day": 1,
+      "bedtime": "23:35",
+      "lights_off": "23:45",
+      "sol_min": 56,
+      "waso_min": 19,
+      "final_wake": "07:20",
+      "risetime": "07:30",
+      "tst_min": 380,
+      "tib_min": 475,
+      "se": 0.8,
+      "nap_min": 0,
+      "caffeine_after_14": false,
+      "alcohol": false,
+      "screen_in_bed_min": 0
+    },
+    {
+      "day": 2,
+      "bedtime": "23:25",
+      "lights_off": "23:35",
+      "sol_min": 57,
+      "waso_min": 18,
+      "final_wake": "07:20",
+      "risetime": "07:30",
+      "tst_min": 390,
+      "tib_min": 485,
+      "se": 0.8041,
+      "nap_min": 0,
+      "caffeine_after_14": false,
+      "alcohol": false,
+      "screen_in_bed_min": 0
+    },
+    {
+      "day": 3,
+      "bedtime": "23:35",
+      "lights_off": "23:45",
+      "sol_min": 56,
+      "waso_min": 17,
+      "final_wake": "07:20",
+      "risetime": "07:30",
+      "tst_min": 382,
+      "tib_min": 475,
+      "se": 0.8042,
+      "nap_min": 0,
+      "caffeine_after_14": false,
+      "alcohol": false,
+      "screen_in_bed_min": 0
+    },
+    {
+      "day": 4,
+      "bedtime": "23:30",
+      "lights_off": "23:40",
+      "sol_min": 64,
+      "waso_min": 17,
+      "final_wake": "07:20",
+      "risetime": "07:30",
+      "tst_min": 379,
+      "tib_min": 480,
+      "se": 0.7896,
+      "nap_min": 0,
+      "caffeine_after_14": false,
+      "alcohol": false,
+      "screen_in_bed_min": 0
+    },
+    {
+      "day": 5,
+      "bedtime": "23:35",
+      "lights_off": "23:45",
+      "sol_min": 58,
+      "waso_min": 18,
+      "final_wake": "07:20",
+      "risetime": "07:30",
+      "tst_min": 379,
+      "tib_min": 475,
+      "se": 0.7979,
+      "nap_min": 0,
+      "caffeine_after_14": false,
+      "alcohol": false,
+      "screen_in_bed_min": 0
+    },
+    {
+      "day": 6,
+      "bedtime": "23:25",
+      "lights_off": "23:35",
+      "sol_min": 60,
+      "waso_min": 23,
+      "final_wake": "07:20",
+      "risetime": "07:30",
+      "tst_min": 382,
+      "tib_min": 485,
+      "se": 0.7876,
+      "nap_min": 0,
+      "caffeine_after_14": false,
+      "alcohol": false,
+      "screen_in_bed_min": 0
+    },
+    {
+      "day": 7,
+      "bedtime": "23:35",
+      "lights_off": "23:45",
+      "sol_min": 64,
+      "waso_min": 19,
+      "final_wake": "07:20",
+      "risetime": "07:30",
+      "tst_min": 372,
+      "tib_min": 475,
+      "se": 0.7832,
+      "nap_min": 0,
+      "caffeine_after_14": false,
+      "alcohol": false,
+      "screen_in_bed_min": 0
+    }
+  ],
+  "persona": {
+    "age": 36,
+    "gender": "male",
+    "occupation": "职员",
+    "expressiveness": "brief",
+    "defensiveness": "mid",
+    "emotionality": "mid",
+    "adherence_tendency": 0.65,
+    "constraints": []
+  },
+  "opening_complaint": "这阵子睡得很不好，每天早上都很难受，白天也没劲。",
+  "clues": [
+    {
+      "id": "A-036::domain/path_clues.md#P3-c1",
+      "content": "一躺下脑子就开始转，复盘今天的事，盘算明天的安排",
+      "reveal_topic": "worry_rumination",
+      "supports": "P3",
+      "deny_first": false
+    },
+    {
+      "id": "A-036::domain/path_clues.md#P3-c2",
+      "content": "越告诉自己要睡就越睡不着，还老看时间算还能睡几个小时",
+      "reveal_topic": "fear_of_sleeplessness",
+      "supports": "P3",
+      "deny_first": false
+    },
+    {
+      "id": "A-036::domain/path_clues.md#P3-c3",
+      "content": "我总觉得再这么睡不好，身体肯定要垮，明天一定会搞砸",
+      "reveal_topic": "fear_of_sleeplessness",
+      "supports": "P3",
+      "deny_first": true
+    },
+    {
+      "id": "A-036::domain/path_clues.md#P2-c2",
+      "content": "在沙发上看电视，看着看着就睡着了，一进卧室又清醒了",
+      "reveal_topic": "sleep_elsewhere",
+      "supports": "P2",
+      "deny_first": true
+    },
+    {
+      "id": "A-036::domain/referral_cues.md#R3-c2",
+      "content": "情绪一直很低，常常没来由地想哭",
+      "reveal_topic": "mood",
+      "supports": "R3",
+      "deny_first": true
+    },
+    {
+      "id": "A-036::domain/referral_cues.md#R3-c4",
+      "content": "整个人绷得很紧，坐立不安，容易发火",
+      "reveal_topic": "anxiety",
+      "supports": "R3",
+      "deny_first": false
+    },
+    {
+      "id": "A-036::sim/visitors/sample-003.json#review-C7:sample-003-c6",
+      "content": "有时候会想，要是一觉睡过去不再醒来也挺好的。",
+      "reveal_topic": "self_harm",
+      "supports": "crisis",
+      "deny_first": true
+    }
+  ],
+  "prefilled": [
+    {
+      "scale": "isi",
+      "reported_score": 10,
+      "items": null
+    },
+    {
+      "scale": "phq9",
+      "reported_score": 8,
+      "items": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        0
+      ]
+    },
+    {
+      "scale": "gad7",
+      "reported_score": 6,
+      "items": null
+    }
+  ]
+}

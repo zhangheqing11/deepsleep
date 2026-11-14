@@ -1,0 +1,190 @@
+{
+  "schema_version": "0.1.0",
+  "id": "C-012",
+  "split": "C",
+  "seed": 2132511157,
+  "main_path": "P2",
+  "secondary_path": null,
+  "referral": "R1",
+  "crisis": {
+    "level": "none",
+    "phq9_item9": 0,
+    "history": false
+  },
+  "contraindications": [
+    "untreated_osa"
+  ],
+  "indices": {
+    "isi": 22,
+    "phq9": 5,
+    "gad7": 4,
+    "stop_bang": 3,
+    "meq": null,
+    "dbas16": null,
+    "psas": null,
+    "screen_min_before_sleep": 0
+  },
+  "diary": [
+    {
+      "day": 1,
+      "bedtime": "21:35",
+      "lights_off": "21:45",
+      "sol_min": 111,
+      "waso_min": 89,
+      "final_wake": "06:40",
+      "risetime": "07:30",
+      "tst_min": 335,
+      "tib_min": 595,
+      "se": 0.563,
+      "nap_min": 0,
+      "caffeine_after_14": false,
+      "alcohol": false,
+      "screen_in_bed_min": 0
+    },
+    {
+      "day": 2,
+      "bedtime": "21:30",
+      "lights_off": "21:40",
+      "sol_min": 112,
+      "waso_min": 81,
+      "final_wake": "06:40",
+      "risetime": "07:30",
+      "tst_min": 347,
+      "tib_min": 600,
+      "se": 0.5783,
+      "nap_min": 0,
+      "caffeine_after_14": false,
+      "alcohol": false,
+      "screen_in_bed_min": 0
+    },
+    {
+      "day": 3,
+      "bedtime": "21:30",
+      "lights_off": "21:40",
+      "sol_min": 110,
+      "waso_min": 80,
+      "final_wake": "06:40",
+      "risetime": "07:30",
+      "tst_min": 350,
+      "tib_min": 600,
+      "se": 0.5833,
+      "nap_min": 0,
+      "caffeine_after_14": false,
+      "alcohol": false,
+      "screen_in_bed_min": 0
+    },
+    {
+      "day": 4,
+      "bedtime": "21:35",
+      "lights_off": "21:45",
+      "sol_min": 115,
+      "waso_min": 83,
+      "final_wake": "06:40",
+      "risetime": "07:30",
+      "tst_min": 337,
+      "tib_min": 595,
+      "se": 0.5664,
+      "nap_min": 0,
+      "caffeine_after_14": false,
+      "alcohol": false,
+      "screen_in_bed_min": 0
+    },
+    {
+      "day": 5,
+      "bedtime": "21:35",
+      "lights_off": "21:45",
+      "sol_min": 115,
+      "waso_min": 86,
+      "final_wake": "06:40",
+      "risetime": "07:30",
+      "tst_min": 334,
+      "tib_min": 595,
+      "se": 0.5613,
+      "nap_min": 0,
+      "caffeine_after_14": false,
+      "alcohol": false,
+      "screen_in_bed_min": 0
+    },
+    {
+      "day": 6,
+      "bedtime": "21:25",
+      "lights_off": "21:35",
+      "sol_min": 109,
+      "waso_min": 85,
+      "final_wake": "06:40",
+      "risetime": "07:30",
+      "tst_min": 351,
+      "tib_min": 605,
+      "se": 0.5802,
+      "nap_min": 0,
+      "caffeine_after_14": false,
+      "alcohol": false,
+      "screen_in_bed_min": 0
+    },
+    {
+      "day": 7,
+      "bedtime": "21:25",
+      "lights_off": "21:35",
+      "sol_min": 115,
+      "waso_min": 81,
+      "final_wake": "06:40",
+      "risetime": "07:30",
+      "tst_min": 349,
+      "tib_min": 605,
+      "se": 0.5769,
+      "nap_min": 0,
+      "caffeine_after_14": false,
+      "alcohol": false,
+      "screen_in_bed_min": 0
+    }
+  ],
+  "persona": {
+    "age": 59,
+    "gender": "male",
+    "occupation": "职员",
+    "expressiveness": "brief",
+    "defensiveness": "low",
+    "emotionality": "low",
+    "adherence_tendency": 0.75,
+    "constraints": []
+  },
+  "opening_complaint": "这阵子睡得很不好，每天早上都很难受，白天也没劲。",
+  "clues": [
+    {
+      "id": "C-012::domain/path_clues.md#P2-c1",
+      "content": "一躺到床上就越来越精神，翻来覆去一两个小时",
+      "reveal_topic": "bed_wakefulness",
+      "supports": "P2",
+      "deny_first": false
+    },
+    {
+      "id": "C-012::domain/path_clues.md#P2-c2",
+      "content": "在沙发上看电视，看着看着就睡着了，一进卧室又清醒了",
+      "reveal_topic": "sleep_elsewhere",
+      "supports": "P2",
+      "deny_first": false
+    },
+    {
+      "id": "C-012::domain/path_clues.md#P2-c3",
+      "content": "睡不着我也不起来，就硬躺着，一晚上在床上待十个小时，实际睡不到六个小时",
+      "reveal_topic": "bed_wakefulness",
+      "supports": "P2",
+      "deny_first": false
+    },
+    {
+      "id": "C-012::domain/referral_cues.md#R1-c2",
+      "content": "半夜经常憋醒、呛醒，醒来嘴特别干",
+      "reveal_topic": "snoring_breathing",
+      "supports": "R1",
+      "deny_first": false
+    },
+    {
+      "id": "C-012::domain/referral_cues.md#R1-c3",
+      "content": "早上起来经常头疼，感觉没睡够",
+      "reveal_topic": "snoring_breathing",
+      "supports": "R1",
+      "deny_first": false
+    }
+  ],
+  "prefilled": []
+}

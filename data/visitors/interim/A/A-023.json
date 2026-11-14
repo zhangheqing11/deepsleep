@@ -1,0 +1,221 @@
+{
+  "schema_version": "0.1.0",
+  "id": "A-023",
+  "split": "A",
+  "seed": 1425118418,
+  "main_path": "P5",
+  "secondary_path": null,
+  "referral": "R3",
+  "crisis": {
+    "level": "none",
+    "phq9_item9": 0,
+    "history": true
+  },
+  "contraindications": [],
+  "indices": {
+    "isi": 21,
+    "phq9": 10,
+    "gad7": 15,
+    "stop_bang": 2,
+    "meq": null,
+    "dbas16": null,
+    "psas": null,
+    "screen_min_before_sleep": 85
+  },
+  "diary": [
+    {
+      "day": 1,
+      "bedtime": "00:25",
+      "lights_off": "01:50",
+      "sol_min": 5,
+      "waso_min": 15,
+      "final_wake": "07:20",
+      "risetime": "07:30",
+      "tst_min": 310,
+      "tib_min": 425,
+      "se": 0.7294,
+      "nap_min": 0,
+      "caffeine_after_14": false,
+      "alcohol": false,
+      "screen_in_bed_min": 85
+    },
+    {
+      "day": 2,
+      "bedtime": "00:25",
+      "lights_off": "01:50",
+      "sol_min": 6,
+      "waso_min": 21,
+      "final_wake": "07:20",
+      "risetime": "07:30",
+      "tst_min": 303,
+      "tib_min": 425,
+      "se": 0.7129,
+      "nap_min": 0,
+      "caffeine_after_14": false,
+      "alcohol": false,
+      "screen_in_bed_min": 85
+    },
+    {
+      "day": 3,
+      "bedtime": "00:30",
+      "lights_off": "01:55",
+      "sol_min": 9,
+      "waso_min": 18,
+      "final_wake": "07:20",
+      "risetime": "07:30",
+      "tst_min": 298,
+      "tib_min": 420,
+      "se": 0.7095,
+      "nap_min": 0,
+      "caffeine_after_14": false,
+      "alcohol": false,
+      "screen_in_bed_min": 85
+    },
+    {
+      "day": 4,
+      "bedtime": "00:35",
+      "lights_off": "02:00",
+      "sol_min": 5,
+      "waso_min": 21,
+      "final_wake": "07:20",
+      "risetime": "07:30",
+      "tst_min": 294,
+      "tib_min": 415,
+      "se": 0.7084,
+      "nap_min": 0,
+      "caffeine_after_14": false,
+      "alcohol": false,
+      "screen_in_bed_min": 85
+    },
+    {
+      "day": 5,
+      "bedtime": "00:30",
+      "lights_off": "01:55",
+      "sol_min": 6,
+      "waso_min": 18,
+      "final_wake": "07:20",
+      "risetime": "07:30",
+      "tst_min": 301,
+      "tib_min": 420,
+      "se": 0.7167,
+      "nap_min": 0,
+      "caffeine_after_14": false,
+      "alcohol": false,
+      "screen_in_bed_min": 85
+    },
+    {
+      "day": 6,
+      "bedtime": "00:35",
+      "lights_off": "02:00",
+      "sol_min": 6,
+      "waso_min": 25,
+      "final_wake": "07:20",
+      "risetime": "07:30",
+      "tst_min": 289,
+      "tib_min": 415,
+      "se": 0.6964,
+      "nap_min": 0,
+      "caffeine_after_14": false,
+      "alcohol": false,
+      "screen_in_bed_min": 85
+    },
+    {
+      "day": 7,
+      "bedtime": "00:25",
+      "lights_off": "01:50",
+      "sol_min": 5,
+      "waso_min": 20,
+      "final_wake": "07:20",
+      "risetime": "07:30",
+      "tst_min": 305,
+      "tib_min": 425,
+      "se": 0.7176,
+      "nap_min": 0,
+      "caffeine_after_14": false,
+      "alcohol": false,
+      "screen_in_bed_min": 85
+    }
+  ],
+  "persona": {
+    "age": 49,
+    "gender": "other",
+    "occupation": "职员",
+    "expressiveness": "verbose",
+    "defensiveness": "low",
+    "emotionality": "low",
+    "adherence_tendency": 0.55,
+    "constraints": []
+  },
+  "opening_complaint": "这阵子睡得很不好，每天早上都很难受，白天也没劲。",
+  "clues": [
+    {
+      "id": "A-023::domain/path_clues.md#P5-c1",
+      "content": "上床以后刷短视频，一刷就是一两个小时",
+      "reveal_topic": "screen_in_bed",
+      "supports": "P5",
+      "deny_first": false
+    },
+    {
+      "id": "A-023::domain/path_clues.md#P5-c4",
+      "content": "说好十一点睡，刷着刷着就两点了，总想再看一个",
+      "reveal_topic": "revenge_bedtime",
+      "supports": "P5",
+      "deny_first": false
+    },
+    {
+      "id": "A-023::domain/path_clues.md#P5-c3",
+      "content": "不带手机的时候，比如出差忘带或者断网，我睡得挺快",
+      "reveal_topic": "screen_in_bed",
+      "supports": "P5",
+      "deny_first": false
+    },
+    {
+      "id": "A-023::domain/referral_cues.md#R3-c2",
+      "content": "情绪一直很低，常常没来由地想哭",
+      "reveal_topic": "mood",
+      "supports": "R3",
+      "deny_first": false
+    },
+    {
+      "id": "A-023::domain/referral_cues.md#R3-c3",
+      "content": "白天也一直在担心，控制不住地想最坏的结果",
+      "reveal_topic": "anxiety",
+      "supports": "R3",
+      "deny_first": false
+    },
+    {
+      "id": "A-023::sim/visitors/sample-014.json#review-C7:sample-014-c3",
+      "content": "三年前有一次吃了很多药住过院，现在一直在复查，状态挺稳定的。",
+      "reveal_topic": "self_harm",
+      "supports": "crisis",
+      "deny_first": false
+    }
+  ],
+  "prefilled": [
+    {
+      "scale": "isi",
+      "reported_score": 21,
+      "items": null
+    },
+    {
+      "scale": "phq9",
+      "reported_score": 10,
+      "items": [
+        2,
+        2,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        0
+      ]
+    },
+    {
+      "scale": "gad7",
+      "reported_score": 15,
+      "items": null
+    }
+  ]
+}

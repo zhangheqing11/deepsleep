@@ -1,0 +1,188 @@
+{
+  "schema_version": "0.1.0",
+  "id": "A-018",
+  "split": "A",
+  "seed": 1505697392,
+  "main_path": "P5",
+  "secondary_path": "P3",
+  "referral": "R0",
+  "crisis": {
+    "level": "none",
+    "phq9_item9": 0,
+    "history": false
+  },
+  "contraindications": [],
+  "indices": {
+    "isi": 15,
+    "phq9": 4,
+    "gad7": 7,
+    "stop_bang": 1,
+    "meq": null,
+    "dbas16": null,
+    "psas": null,
+    "screen_min_before_sleep": 100
+  },
+  "diary": [
+    {
+      "day": 1,
+      "bedtime": "23:00",
+      "lights_off": "00:40",
+      "sol_min": 30,
+      "waso_min": 21,
+      "final_wake": "07:20",
+      "risetime": "07:30",
+      "tst_min": 349,
+      "tib_min": 510,
+      "se": 0.6843,
+      "nap_min": 0,
+      "caffeine_after_14": false,
+      "alcohol": false,
+      "screen_in_bed_min": 100
+    },
+    {
+      "day": 2,
+      "bedtime": "22:55",
+      "lights_off": "00:35",
+      "sol_min": 30,
+      "waso_min": 20,
+      "final_wake": "07:20",
+      "risetime": "07:30",
+      "tst_min": 355,
+      "tib_min": 515,
+      "se": 0.6893,
+      "nap_min": 0,
+      "caffeine_after_14": false,
+      "alcohol": false,
+      "screen_in_bed_min": 100
+    },
+    {
+      "day": 3,
+      "bedtime": "23:00",
+      "lights_off": "00:40",
+      "sol_min": 29,
+      "waso_min": 22,
+      "final_wake": "07:20",
+      "risetime": "07:30",
+      "tst_min": 349,
+      "tib_min": 510,
+      "se": 0.6843,
+      "nap_min": 0,
+      "caffeine_after_14": false,
+      "alcohol": false,
+      "screen_in_bed_min": 100
+    },
+    {
+      "day": 4,
+      "bedtime": "23:00",
+      "lights_off": "00:40",
+      "sol_min": 29,
+      "waso_min": 18,
+      "final_wake": "07:20",
+      "risetime": "07:30",
+      "tst_min": 353,
+      "tib_min": 510,
+      "se": 0.6922,
+      "nap_min": 0,
+      "caffeine_after_14": false,
+      "alcohol": false,
+      "screen_in_bed_min": 100
+    },
+    {
+      "day": 5,
+      "bedtime": "23:00",
+      "lights_off": "00:40",
+      "sol_min": 22,
+      "waso_min": 23,
+      "final_wake": "07:20",
+      "risetime": "07:30",
+      "tst_min": 355,
+      "tib_min": 510,
+      "se": 0.6961,
+      "nap_min": 0,
+      "caffeine_after_14": false,
+      "alcohol": false,
+      "screen_in_bed_min": 100
+    },
+    {
+      "day": 6,
+      "bedtime": "23:05",
+      "lights_off": "00:45",
+      "sol_min": 27,
+      "waso_min": 15,
+      "final_wake": "07:20",
+      "risetime": "07:30",
+      "tst_min": 353,
+      "tib_min": 505,
+      "se": 0.699,
+      "nap_min": 0,
+      "caffeine_after_14": false,
+      "alcohol": false,
+      "screen_in_bed_min": 100
+    },
+    {
+      "day": 7,
+      "bedtime": "22:55",
+      "lights_off": "00:35",
+      "sol_min": 27,
+      "waso_min": 18,
+      "final_wake": "07:20",
+      "risetime": "07:30",
+      "tst_min": 360,
+      "tib_min": 515,
+      "se": 0.699,
+      "nap_min": 0,
+      "caffeine_after_14": false,
+      "alcohol": false,
+      "screen_in_bed_min": 100
+    }
+  ],
+  "persona": {
+    "age": 49,
+    "gender": "male",
+    "occupation": "职员",
+    "expressiveness": "brief",
+    "defensiveness": "low",
+    "emotionality": "low",
+    "adherence_tendency": 0.65,
+    "constraints": []
+  },
+  "opening_complaint": "我最近睡眠有点问题，晚上睡不好，白天状态也受影响。",
+  "clues": [
+    {
+      "id": "A-018::domain/path_clues.md#P5-c1",
+      "content": "上床以后刷短视频，一刷就是一两个小时",
+      "reveal_topic": "screen_in_bed",
+      "supports": "P5",
+      "deny_first": false
+    },
+    {
+      "id": "A-018::domain/path_clues.md#P5-c5",
+      "content": "晚上打游戏排位、追剧停不下来，一局接一局",
+      "reveal_topic": "screen_in_bed",
+      "supports": "P5",
+      "deny_first": false
+    },
+    {
+      "id": "A-018::domain/path_clues.md#P5-c2",
+      "content": "白天被工作占满了，只有夜里这点时间是自己的，舍不得睡",
+      "reveal_topic": "revenge_bedtime",
+      "supports": "P5",
+      "deny_first": false
+    },
+    {
+      "id": "A-018::domain/path_clues.md#P3-c3",
+      "content": "我总觉得再这么睡不好，身体肯定要垮，明天一定会搞砸",
+      "reveal_topic": "fear_of_sleeplessness",
+      "supports": "P3",
+      "deny_first": false
+    },
+    {
+      "id": "A-018::domain/referral_cues.md#RC-7:3.3",
+      "content": "搬家让我有点紧张，事情过去后就缓解。",
+      "reveal_topic": "anxiety",
+      "supports": "R0",
+      "deny_first": false
+    }
+  ],
+  "prefilled": []
+}

@@ -1,0 +1,188 @@
+{
+  "schema_version": "0.1.0",
+  "id": "A-001",
+  "split": "A",
+  "seed": 130959455,
+  "main_path": "P3",
+  "secondary_path": "P2",
+  "referral": "R0",
+  "crisis": {
+    "level": "none",
+    "phq9_item9": 0,
+    "history": false
+  },
+  "contraindications": [],
+  "indices": {
+    "isi": 22,
+    "phq9": 3,
+    "gad7": 6,
+    "stop_bang": 0,
+    "meq": null,
+    "dbas16": null,
+    "psas": null,
+    "screen_min_before_sleep": 0
+  },
+  "diary": [
+    {
+      "day": 1,
+      "bedtime": "23:35",
+      "lights_off": "23:45",
+      "sol_min": 59,
+      "waso_min": 22,
+      "final_wake": "07:20",
+      "risetime": "07:30",
+      "tst_min": 374,
+      "tib_min": 475,
+      "se": 0.7874,
+      "nap_min": 0,
+      "caffeine_after_14": false,
+      "alcohol": false,
+      "screen_in_bed_min": 0
+    },
+    {
+      "day": 2,
+      "bedtime": "23:35",
+      "lights_off": "23:45",
+      "sol_min": 57,
+      "waso_min": 23,
+      "final_wake": "07:20",
+      "risetime": "07:30",
+      "tst_min": 375,
+      "tib_min": 475,
+      "se": 0.7895,
+      "nap_min": 0,
+      "caffeine_after_14": false,
+      "alcohol": false,
+      "screen_in_bed_min": 0
+    },
+    {
+      "day": 3,
+      "bedtime": "23:25",
+      "lights_off": "23:35",
+      "sol_min": 58,
+      "waso_min": 25,
+      "final_wake": "07:20",
+      "risetime": "07:30",
+      "tst_min": 382,
+      "tib_min": 485,
+      "se": 0.7876,
+      "nap_min": 0,
+      "caffeine_after_14": false,
+      "alcohol": false,
+      "screen_in_bed_min": 0
+    },
+    {
+      "day": 4,
+      "bedtime": "23:25",
+      "lights_off": "23:35",
+      "sol_min": 59,
+      "waso_min": 19,
+      "final_wake": "07:20",
+      "risetime": "07:30",
+      "tst_min": 387,
+      "tib_min": 485,
+      "se": 0.7979,
+      "nap_min": 0,
+      "caffeine_after_14": false,
+      "alcohol": false,
+      "screen_in_bed_min": 0
+    },
+    {
+      "day": 5,
+      "bedtime": "23:35",
+      "lights_off": "23:45",
+      "sol_min": 62,
+      "waso_min": 23,
+      "final_wake": "07:20",
+      "risetime": "07:30",
+      "tst_min": 370,
+      "tib_min": 475,
+      "se": 0.7789,
+      "nap_min": 0,
+      "caffeine_after_14": false,
+      "alcohol": false,
+      "screen_in_bed_min": 0
+    },
+    {
+      "day": 6,
+      "bedtime": "23:30",
+      "lights_off": "23:40",
+      "sol_min": 63,
+      "waso_min": 20,
+      "final_wake": "07:20",
+      "risetime": "07:30",
+      "tst_min": 377,
+      "tib_min": 480,
+      "se": 0.7854,
+      "nap_min": 0,
+      "caffeine_after_14": false,
+      "alcohol": false,
+      "screen_in_bed_min": 0
+    },
+    {
+      "day": 7,
+      "bedtime": "23:25",
+      "lights_off": "23:35",
+      "sol_min": 60,
+      "waso_min": 17,
+      "final_wake": "07:20",
+      "risetime": "07:30",
+      "tst_min": 388,
+      "tib_min": 485,
+      "se": 0.8,
+      "nap_min": 0,
+      "caffeine_after_14": false,
+      "alcohol": false,
+      "screen_in_bed_min": 0
+    }
+  ],
+  "persona": {
+    "age": 44,
+    "gender": "female",
+    "occupation": "职员",
+    "expressiveness": "verbose",
+    "defensiveness": "mid",
+    "emotionality": "mid",
+    "adherence_tendency": 0.75,
+    "constraints": []
+  },
+  "opening_complaint": "晚上老是睡得很晚，睡眠时间不够，想调整一下。",
+  "clues": [
+    {
+      "id": "A-001::domain/path_clues.md#P3-c1",
+      "content": "一躺下脑子就开始转，复盘今天的事，盘算明天的安排",
+      "reveal_topic": "worry_rumination",
+      "supports": "P3",
+      "deny_first": false
+    },
+    {
+      "id": "A-001::domain/path_clues.md#P3-c3",
+      "content": "我总觉得再这么睡不好，身体肯定要垮，明天一定会搞砸",
+      "reveal_topic": "fear_of_sleeplessness",
+      "supports": "P3",
+      "deny_first": true
+    },
+    {
+      "id": "A-001::domain/path_clues.md#P3-c4",
+      "content": "白天其实还行，就是快到睡觉的点就莫名紧张，心跳也快",
+      "reveal_topic": "anxiety",
+      "supports": "P3",
+      "deny_first": true
+    },
+    {
+      "id": "A-001::domain/path_clues.md#P2-c2",
+      "content": "在沙发上看电视，看着看着就睡着了，一进卧室又清醒了",
+      "reveal_topic": "sleep_elsewhere",
+      "supports": "P2",
+      "deny_first": true
+    },
+    {
+      "id": "A-001::domain/referral_cues.md#RC-7:2.4",
+      "content": "运动后腿酸，白天久站腿胀。",
+      "reveal_topic": "leg_discomfort",
+      "supports": "R0",
+      "deny_first": false
+    }
+  ],
+  "prefilled": []
+}

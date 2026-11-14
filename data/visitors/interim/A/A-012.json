@@ -1,0 +1,194 @@
+{
+  "schema_version": "0.1.0",
+  "id": "A-012",
+  "split": "A",
+  "seed": 1358251454,
+  "main_path": "P2",
+  "secondary_path": "P3",
+  "referral": "R0",
+  "crisis": {
+    "level": "none",
+    "phq9_item9": 0,
+    "history": false
+  },
+  "contraindications": [],
+  "indices": {
+    "isi": 19,
+    "phq9": 3,
+    "gad7": 8,
+    "stop_bang": 0,
+    "meq": null,
+    "dbas16": null,
+    "psas": null,
+    "screen_min_before_sleep": 20
+  },
+  "diary": [
+    {
+      "day": 1,
+      "bedtime": "23:30",
+      "lights_off": "23:50",
+      "sol_min": 79,
+      "waso_min": 19,
+      "final_wake": "07:20",
+      "risetime": "07:30",
+      "tst_min": 352,
+      "tib_min": 480,
+      "se": 0.7333,
+      "nap_min": 0,
+      "caffeine_after_14": false,
+      "alcohol": false,
+      "screen_in_bed_min": 20
+    },
+    {
+      "day": 2,
+      "bedtime": "23:35",
+      "lights_off": "23:55",
+      "sol_min": 74,
+      "waso_min": 23,
+      "final_wake": "07:20",
+      "risetime": "07:30",
+      "tst_min": 348,
+      "tib_min": 475,
+      "se": 0.7326,
+      "nap_min": 0,
+      "caffeine_after_14": false,
+      "alcohol": false,
+      "screen_in_bed_min": 20
+    },
+    {
+      "day": 3,
+      "bedtime": "23:25",
+      "lights_off": "23:45",
+      "sol_min": 76,
+      "waso_min": 22,
+      "final_wake": "07:20",
+      "risetime": "07:30",
+      "tst_min": 357,
+      "tib_min": 485,
+      "se": 0.7361,
+      "nap_min": 0,
+      "caffeine_after_14": false,
+      "alcohol": false,
+      "screen_in_bed_min": 20
+    },
+    {
+      "day": 4,
+      "bedtime": "23:25",
+      "lights_off": "23:45",
+      "sol_min": 74,
+      "waso_min": 20,
+      "final_wake": "07:20",
+      "risetime": "07:30",
+      "tst_min": 361,
+      "tib_min": 485,
+      "se": 0.7443,
+      "nap_min": 0,
+      "caffeine_after_14": false,
+      "alcohol": false,
+      "screen_in_bed_min": 20
+    },
+    {
+      "day": 5,
+      "bedtime": "23:25",
+      "lights_off": "23:45",
+      "sol_min": 80,
+      "waso_min": 18,
+      "final_wake": "07:20",
+      "risetime": "07:30",
+      "tst_min": 357,
+      "tib_min": 485,
+      "se": 0.7361,
+      "nap_min": 0,
+      "caffeine_after_14": false,
+      "alcohol": false,
+      "screen_in_bed_min": 20
+    },
+    {
+      "day": 6,
+      "bedtime": "23:35",
+      "lights_off": "23:55",
+      "sol_min": 75,
+      "waso_min": 15,
+      "final_wake": "07:20",
+      "risetime": "07:30",
+      "tst_min": 355,
+      "tib_min": 475,
+      "se": 0.7474,
+      "nap_min": 0,
+      "caffeine_after_14": false,
+      "alcohol": false,
+      "screen_in_bed_min": 20
+    },
+    {
+      "day": 7,
+      "bedtime": "23:25",
+      "lights_off": "23:45",
+      "sol_min": 75,
+      "waso_min": 21,
+      "final_wake": "07:20",
+      "risetime": "07:30",
+      "tst_min": 359,
+      "tib_min": 485,
+      "se": 0.7402,
+      "nap_min": 0,
+      "caffeine_after_14": false,
+      "alcohol": false,
+      "screen_in_bed_min": 20
+    }
+  ],
+  "persona": {
+    "age": 35,
+    "gender": "female",
+    "occupation": "职员",
+    "expressiveness": "brief",
+    "defensiveness": "high",
+    "emotionality": "high",
+    "adherence_tendency": 0.75,
+    "constraints": []
+  },
+  "opening_complaint": "这阵子睡得很不好，每天早上都很难受，白天也没劲。",
+  "clues": [
+    {
+      "id": "A-012::domain/path_clues.md#P2-c1",
+      "content": "一躺到床上就越来越精神，翻来覆去一两个小时",
+      "reveal_topic": "bed_wakefulness",
+      "supports": "P2",
+      "deny_first": false
+    },
+    {
+      "id": "A-012::domain/path_clues.md#P2-c5",
+      "content": "我在床上吃东西、回消息、办公，床基本是我的小工作台",
+      "reveal_topic": "bed_wakefulness",
+      "supports": "P2",
+      "deny_first": true
+    },
+    {
+      "id": "A-012::domain/path_clues.md#P2-c2",
+      "content": "在沙发上看电视，看着看着就睡着了，一进卧室又清醒了",
+      "reveal_topic": "sleep_elsewhere",
+      "supports": "P2",
+      "deny_first": true
+    },
+    {
+      "id": "A-012::domain/path_clues.md#P3-c2",
+      "content": "越告诉自己要睡就越睡不着，还老看时间算还能睡几个小时",
+      "reveal_topic": "fear_of_sleeplessness",
+      "supports": "P3",
+      "deny_first": false
+    },
+    {
+      "id": "A-012::domain/referral_cues.md#RC-7:1.3",
+      "content": "我只在感冒、鼻塞的时候偶尔打鼾，没有憋醒，也没有白天嗜睡。",
+      "reveal_topic": "snoring_breathing",
+      "supports": "R0",
+      "deny_first": false
+    }
+  ],
+  "prefilled": [
+    {
+      "scale": "isi",
+      "reported_score": 17,
+      "items": null
+    }
+  ]
+}

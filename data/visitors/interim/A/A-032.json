@@ -1,0 +1,215 @@
+{
+  "schema_version": "0.1.0",
+  "id": "A-032",
+  "split": "A",
+  "seed": 34397406,
+  "main_path": "P4",
+  "secondary_path": null,
+  "referral": "R2",
+  "crisis": {
+    "level": "none",
+    "phq9_item9": 0,
+    "history": false
+  },
+  "contraindications": [],
+  "indices": {
+    "isi": 15,
+    "phq9": 8,
+    "gad7": 4,
+    "stop_bang": 2,
+    "meq": null,
+    "dbas16": null,
+    "psas": null,
+    "screen_min_before_sleep": 0
+  },
+  "diary": [
+    {
+      "day": 1,
+      "bedtime": "01:35",
+      "lights_off": "01:45",
+      "sol_min": 56,
+      "waso_min": 17,
+      "final_wake": "07:50",
+      "risetime": "08:00",
+      "tst_min": 292,
+      "tib_min": 385,
+      "se": 0.7584,
+      "nap_min": 0,
+      "caffeine_after_14": false,
+      "alcohol": false,
+      "screen_in_bed_min": 0
+    },
+    {
+      "day": 2,
+      "bedtime": "01:35",
+      "lights_off": "01:45",
+      "sol_min": 57,
+      "waso_min": 23,
+      "final_wake": "07:50",
+      "risetime": "08:00",
+      "tst_min": 285,
+      "tib_min": 385,
+      "se": 0.7403,
+      "nap_min": 0,
+      "caffeine_after_14": false,
+      "alcohol": false,
+      "screen_in_bed_min": 0
+    },
+    {
+      "day": 3,
+      "bedtime": "01:35",
+      "lights_off": "01:45",
+      "sol_min": 60,
+      "waso_min": 23,
+      "final_wake": "07:50",
+      "risetime": "08:00",
+      "tst_min": 282,
+      "tib_min": 385,
+      "se": 0.7325,
+      "nap_min": 0,
+      "caffeine_after_14": false,
+      "alcohol": false,
+      "screen_in_bed_min": 0
+    },
+    {
+      "day": 4,
+      "bedtime": "01:25",
+      "lights_off": "01:35",
+      "sol_min": 59,
+      "waso_min": 16,
+      "final_wake": "07:50",
+      "risetime": "08:00",
+      "tst_min": 300,
+      "tib_min": 395,
+      "se": 0.7595,
+      "nap_min": 0,
+      "caffeine_after_14": false,
+      "alcohol": false,
+      "screen_in_bed_min": 0
+    },
+    {
+      "day": 5,
+      "bedtime": "01:25",
+      "lights_off": "01:35",
+      "sol_min": 60,
+      "waso_min": 22,
+      "final_wake": "07:50",
+      "risetime": "08:00",
+      "tst_min": 293,
+      "tib_min": 395,
+      "se": 0.7418,
+      "nap_min": 0,
+      "caffeine_after_14": false,
+      "alcohol": false,
+      "screen_in_bed_min": 0
+    },
+    {
+      "day": 6,
+      "bedtime": "03:00",
+      "lights_off": "03:00",
+      "sol_min": 5,
+      "waso_min": 20,
+      "final_wake": "10:50",
+      "risetime": "11:00",
+      "tst_min": 445,
+      "tib_min": 480,
+      "se": 0.9271,
+      "nap_min": 0,
+      "caffeine_after_14": false,
+      "alcohol": false,
+      "screen_in_bed_min": 0
+    },
+    {
+      "day": 7,
+      "bedtime": "03:00",
+      "lights_off": "03:00",
+      "sol_min": 5,
+      "waso_min": 20,
+      "final_wake": "10:50",
+      "risetime": "11:00",
+      "tst_min": 445,
+      "tib_min": 480,
+      "se": 0.9271,
+      "nap_min": 0,
+      "caffeine_after_14": false,
+      "alcohol": false,
+      "screen_in_bed_min": 0
+    }
+  ],
+  "persona": {
+    "age": 37,
+    "gender": "other",
+    "occupation": "职员",
+    "expressiveness": "brief",
+    "defensiveness": "high",
+    "emotionality": "low",
+    "adherence_tendency": 0.75,
+    "constraints": []
+  },
+  "opening_complaint": "这阵子睡得很不好，每天早上都很难受，白天也没劲。",
+  "clues": [
+    {
+      "id": "A-032::domain/path_clues.md#P4-c1",
+      "content": "不管几点上床，都要到两三点才困；放假让我随便睡，我也是三点睡、十一点起，睡得挺好",
+      "reveal_topic": "chronotype",
+      "supports": "P4",
+      "deny_first": false
+    },
+    {
+      "id": "A-032::domain/path_clues.md#P4-c4",
+      "content": "从学生时代起就是夜猫子，让我早睡就是躺着熬",
+      "reveal_topic": "chronotype",
+      "supports": "P4",
+      "deny_first": false
+    },
+    {
+      "id": "A-032::domain/path_clues.md#P4-c2",
+      "content": "早上闹钟响三四遍还起不来，上午脑子不清醒，越到晚上越精神",
+      "reveal_topic": "chronotype",
+      "supports": "P4",
+      "deny_first": false
+    },
+    {
+      "id": "A-032::domain/referral_cues.md#R2-c1",
+      "content": "一躺下腿里就像有虫子在爬，特别想动",
+      "reveal_topic": "leg_discomfort",
+      "supports": "R2",
+      "deny_first": true
+    },
+    {
+      "id": "A-032::domain/referral_cues.md#R2-c2",
+      "content": "起来走几步就好了，一躺回去又来",
+      "reveal_topic": "leg_discomfort",
+      "supports": "R2",
+      "deny_first": false
+    },
+    {
+      "id": "A-032::domain/referral_cues.md#R2-c3",
+      "content": "白天几乎没感觉，一到晚上特别明显",
+      "reveal_topic": "leg_discomfort",
+      "supports": "R2",
+      "deny_first": false
+    },
+    {
+      "id": "A-032::domain/referral_cues.md#R2-c5",
+      "content": "因为腿，我睡前得在屋里来回走，或者反复换姿势、蹬被子",
+      "reveal_topic": "bed_wakefulness",
+      "supports": "R2",
+      "deny_first": false
+    },
+    {
+      "id": "A-032::domain/referral_cues.md#R2-c4",
+      "content": "看电影、坐长途车的时候晚上也会这样",
+      "reveal_topic": "leg_discomfort",
+      "supports": "R2",
+      "deny_first": false
+    }
+  ],
+  "prefilled": [
+    {
+      "scale": "isi",
+      "reported_score": 11,
+      "items": null
+    }
+  ]
+}

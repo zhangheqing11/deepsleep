@@ -1,0 +1,209 @@
+{
+  "schema_version": "0.1.0",
+  "id": "A-022",
+  "split": "A",
+  "seed": 609921910,
+  "main_path": "P1",
+  "secondary_path": null,
+  "referral": "R2",
+  "crisis": {
+    "level": "none",
+    "phq9_item9": 0,
+    "history": true
+  },
+  "contraindications": [],
+  "indices": {
+    "isi": 17,
+    "phq9": 7,
+    "gad7": 9,
+    "stop_bang": 2,
+    "meq": null,
+    "dbas16": null,
+    "psas": null,
+    "screen_min_before_sleep": 0
+  },
+  "diary": [
+    {
+      "day": 1,
+      "bedtime": "23:25",
+      "lights_off": "23:35",
+      "sol_min": 35,
+      "waso_min": 21,
+      "final_wake": "05:50",
+      "risetime": "06:00",
+      "tst_min": 319,
+      "tib_min": 395,
+      "se": 0.8076,
+      "nap_min": 0,
+      "caffeine_after_14": true,
+      "alcohol": false,
+      "screen_in_bed_min": 0
+    },
+    {
+      "day": 2,
+      "bedtime": "23:35",
+      "lights_off": "23:45",
+      "sol_min": 32,
+      "waso_min": 20,
+      "final_wake": "08:50",
+      "risetime": "09:00",
+      "tst_min": 493,
+      "tib_min": 565,
+      "se": 0.8726,
+      "nap_min": 0,
+      "caffeine_after_14": true,
+      "alcohol": false,
+      "screen_in_bed_min": 0
+    },
+    {
+      "day": 3,
+      "bedtime": "23:25",
+      "lights_off": "23:35",
+      "sol_min": 33,
+      "waso_min": 17,
+      "final_wake": "05:50",
+      "risetime": "06:00",
+      "tst_min": 325,
+      "tib_min": 395,
+      "se": 0.8228,
+      "nap_min": 0,
+      "caffeine_after_14": true,
+      "alcohol": false,
+      "screen_in_bed_min": 0
+    },
+    {
+      "day": 4,
+      "bedtime": "23:30",
+      "lights_off": "23:40",
+      "sol_min": 36,
+      "waso_min": 15,
+      "final_wake": "08:50",
+      "risetime": "09:00",
+      "tst_min": 499,
+      "tib_min": 570,
+      "se": 0.8754,
+      "nap_min": 0,
+      "caffeine_after_14": true,
+      "alcohol": false,
+      "screen_in_bed_min": 0
+    },
+    {
+      "day": 5,
+      "bedtime": "23:35",
+      "lights_off": "23:45",
+      "sol_min": 33,
+      "waso_min": 22,
+      "final_wake": "05:50",
+      "risetime": "06:00",
+      "tst_min": 310,
+      "tib_min": 385,
+      "se": 0.8052,
+      "nap_min": 0,
+      "caffeine_after_14": true,
+      "alcohol": false,
+      "screen_in_bed_min": 0
+    },
+    {
+      "day": 6,
+      "bedtime": "23:30",
+      "lights_off": "23:40",
+      "sol_min": 35,
+      "waso_min": 16,
+      "final_wake": "08:50",
+      "risetime": "09:00",
+      "tst_min": 499,
+      "tib_min": 570,
+      "se": 0.8754,
+      "nap_min": 0,
+      "caffeine_after_14": true,
+      "alcohol": false,
+      "screen_in_bed_min": 0
+    },
+    {
+      "day": 7,
+      "bedtime": "23:30",
+      "lights_off": "23:40",
+      "sol_min": 31,
+      "waso_min": 24,
+      "final_wake": "05:50",
+      "risetime": "06:00",
+      "tst_min": 315,
+      "tib_min": 390,
+      "se": 0.8077,
+      "nap_min": 0,
+      "caffeine_after_14": true,
+      "alcohol": false,
+      "screen_in_bed_min": 0
+    }
+  ],
+  "persona": {
+    "age": 54,
+    "gender": "female",
+    "occupation": "职员",
+    "expressiveness": "brief",
+    "defensiveness": "mid",
+    "emotionality": "mid",
+    "adherence_tendency": 0.55,
+    "constraints": []
+  },
+  "opening_complaint": "这阵子睡得很不好，每天早上都很难受，白天也没劲。",
+  "clues": [
+    {
+      "id": "A-022::domain/path_clues.md#P1-c2",
+      "content": "起床时间看心情，早的时候六点，晚的时候九点多",
+      "reveal_topic": "schedule_regularity",
+      "supports": "P1",
+      "deny_first": false
+    },
+    {
+      "id": "A-022::domain/path_clues.md#P1-c3",
+      "content": "下午三四点还得来杯咖啡续命，有时候晚饭后也喝",
+      "reveal_topic": "caffeine_alcohol",
+      "supports": "P1",
+      "deny_first": false
+    },
+    {
+      "id": "A-022::domain/path_clues.md#P1-c6",
+      "content": "团队在海外，晚上十一点以后才有会，开完会人特别精神",
+      "reveal_topic": "life_constraints",
+      "supports": "P1",
+      "deny_first": false
+    },
+    {
+      "id": "A-022::domain/referral_cues.md#R2-c1",
+      "content": "一躺下腿里就像有虫子在爬，特别想动",
+      "reveal_topic": "leg_discomfort",
+      "supports": "R2",
+      "deny_first": true
+    },
+    {
+      "id": "A-022::domain/referral_cues.md#R2-c2",
+      "content": "起来走几步就好了，一躺回去又来",
+      "reveal_topic": "leg_discomfort",
+      "supports": "R2",
+      "deny_first": false
+    },
+    {
+      "id": "A-022::domain/referral_cues.md#R2-c3",
+      "content": "白天几乎没感觉，一到晚上特别明显",
+      "reveal_topic": "leg_discomfort",
+      "supports": "R2",
+      "deny_first": false
+    },
+    {
+      "id": "A-022::domain/referral_cues.md#R2-c5",
+      "content": "因为腿，我睡前得在屋里来回走，或者反复换姿势、蹬被子",
+      "reveal_topic": "bed_wakefulness",
+      "supports": "R2",
+      "deny_first": false
+    },
+    {
+      "id": "A-022::sim/visitors/sample-014.json#review-C7:sample-014-c3",
+      "content": "三年前有一次吃了很多药住过院，现在一直在复查，状态挺稳定的。",
+      "reveal_topic": "self_harm",
+      "supports": "crisis",
+      "deny_first": false
+    }
+  ],
+  "prefilled": []
+}

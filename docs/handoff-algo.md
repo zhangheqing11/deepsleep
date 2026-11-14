@@ -104,3 +104,93 @@ score_run(visitors_by_id, sessions, *, run_id, label, role, split, playbook_vers
 | 8 / A8 | 组件表已与 `domain/plan_veto_rules.md` §0.1 逐项对齐，明确每条路径的组件及依据；数值与“任一命中”算法仍为占位。 |
 
 第二批补充：A7 error 排除与计数已按第 4、5 节落实；C1–C4 的行为场景、维持路径口径、长期依赖助眠药及其他背景因素已写入 `domain/`。B6、E0 按审核结论的例外处理，本分支不改会谈引擎或安全层。
+
+## 7. 临时扩充集（2026-11-14，今晚进化实测）
+
+这是固定 seed 的临时规则集，共 **72 人（A 40 + C 32）**，用于扩大今晚运行组与门禁组。不是正式 150+ A/B/C/offline，也未生成 B。生成器为 `sim/gen_interim.py`，保留 visitor v0.1.0 接口，无新增依赖，不读取 `.env`，不调用 LLM/API。
+
+### 生成与读取
+
+在仓库根目录运行：
+
+```bash
+/Users/zhangheqing/bohack/ds-safety/.venv/bin/python -m sim.gen_interim --seed 20261114
+# 可选：--out /tmp/interim-preview（同 seed、同版本源码及线索表，输出相同）
+```
+
+输出：`data/visitors/interim/A/A-001.json` 至 `A-040.json`，以及
+`data/visitors/interim/C/C-001.json` 至 `C-032.json`。写入前整批调用
+`contracts.validate.validate_document`（包含 schema 与非 schema 不变量）。
+重新生成覆盖这 72 个文件，不清理其他文件；换 seed 建议使用新目录，避免混批。
+
+使用现有目录读取器，不递归读取父目录：
+
+```python
+from pathlib import Path
+from engine.run import load_visitors
+
+learning = load_visitors([Path('data/visitors/interim/A')])
+validation = load_visitors([Path('data/visitors/interim/C')])
+```
+
+A 用于运行与失败案例学习；C 仅供候选门禁，不能把 C 的失败案例交给反思器。
+数据科学同学接手时只需将这两个输入目录换成正式集目录；仍使用相同 JSON 字段、
+`split=A/C` 与 `A-NNN/C-NNN` ID，模拟来访、筛查和计分接口不用调整。
+换数据批次时使用新的 run_id/输出目录，避免相同 ID 混入旧报告。
+
+**现有驱动限制（本任务未改）：** `engine.run` 的目录读取器可读本集，但 CLI 的
+`--scorer` 分支目前将报告参数写死为 `role="validation", split="sample"`。
+今晚实测驱动应向 `score_run` / `build_report` 传入本组实际 split 和运行角色；
+不能直接把该 CLI 默认生成的 sample 报告当成 A/C 报告。S4 的 `--visitors`
+参数读取的是运行组卡片（失败归因），C 应由 evaluator 单独读取。
+
+### 默认 seed 分布（人数）
+
+| 项目 | A（40） | C（32） |
+|---|---:|---:|
+| P1 / P2 / P3 / P4 / P5 | 8 / 8 / 8 / 8 / 8 | 7 / 7 / 6 / 6 / 6 |
+| 带次路径 | 12（30.0%） | 10（31.3%） |
+| R0 | 24（60.0%） | 19（59.4%） |
+| R1 / R2 / R3 | 6 / 5 / 5 | 5 / 4 / 4 |
+| 预填自评 | 16（40.0%） | 13（40.6%） |
+| defensiveness low / mid / high | 16 / 16 / 8 | 13 / 13 / 6 |
+| passive / active / history | 3 / 2 / 3 | 2 / 1 / 2 |
+| none（不含 history） | 32 | 27 |
+| 至少一个睡眠限制禁忌 | 6 | 5 |
+
+`history` 用 `crisis.level="none", history=true, phq9_item9=0` 表示，表中单独计数。
+禁忌为 R1 对应的 `untreated_osa`；带 R1-c4 的驾驶职业另有
+`drowsy_driving_job`（沿用第二批 C8）。不借本次扩充引入新的临床禁忌。
+R2 都具备静息/想动、活动缓解、夜间加重的典型线索；R1/R3 隐藏指数互斥。
+每组确保 R1、R3 各至少一名防御型预填低报者，低自评不改变隐藏真值。
+
+### 出处与组合规则
+
+- 常规线索直接读取 `domain/path_clues.md` 与 `domain/referral_cues.md` 的编号行。
+  卡内 ID 如 `A-001::domain/path_clues.md#P3-c1`，`::` 之后是出处。
+- R0 每人带一条近似线索，出处为 `domain/referral_cues.md#RC-7:1.3`（偶尔打鼾）、
+  `#RC-7:2.4`（活动后腿酸）或 `#RC-7:3.3`（短期压力）；仅作第一人称与标点改写。
+  节号引用原表未编号的条目，RC-7 提供允许使用这些负例的审定依据。
+- 危机/history 原文不改，引用 `sim/visitors/sample-NNN.json#review-C7:sample-NNN-cN`，
+  审定依据是 `docs/review-decisions.md` 第二批 C7；history 另遵守 TS-8/9/10。
+- 主路径 3 条（P4 为 2–3 条），次路径 1 条靠后，只用 PC-4 表内主次组合。
+  PC-2 限定 mid/high 才设 `deny_first`；P4 不否认。
+  排除“换地方仍一样”与“换地方好睡”、“没手机睡得快”与晚型等冲突组合。
+- A/C 所有卡的**无序出处集合**均不同，去重不依赖 ID、seed、人格或标点；
+  也排除可与 S2 形成相同出处集合的旧卡。整卡线索文本集合与 18 个 sample 不重复。
+  **单条线索、危机原文和模糊开场会共享**，不声称逐句独立。
+
+### 局限与验证
+
+配额是工程设计，不是人群发生率。A/C 共享小规模模板，C 只能支持今晚的工程门禁，
+不能当成独立临床留出集。扩大人数不保证重跑波动消失，也没有测得任何真实进化增益。
+本批 P4 只覆盖节律偏晚，不覆盖倒班；未覆盖全部禁忌、所有边界分数或正式人群属性。
+日记采用 S2 展开算法并按入选线索约束起床时间、屏幕时长、P2 长卧床与 P4 放假作息；
+ISI、隐藏筛查分数、人格及依从倾向仍为规则占位，MEQ/DBAS/PSAS 留 null。
+四周效果模型沿用原有占位实现，不作疗效证据。
+
+验收测试为 `tests/test_gen_interim.py`：固定 seed 重现、五个 seed 的分布、
+全量契约与转介互斥、出处/deny_first/主次顺序、去重、磁盘文件一致性、
+明确时间线索与日记一致性。全库离线验收用指定 Python 执行
+`-m pytest -q --ignore=api`。`make contracts` 目标只验证原契约示例，
+新增 72 张卡另外由生成器和测试逐张校验。

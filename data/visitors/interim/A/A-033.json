@@ -1,0 +1,194 @@
+{
+  "schema_version": "0.1.0",
+  "id": "A-033",
+  "split": "A",
+  "seed": 2141757553,
+  "main_path": "P2",
+  "secondary_path": "P3",
+  "referral": "R0",
+  "crisis": {
+    "level": "none",
+    "phq9_item9": 0,
+    "history": false
+  },
+  "contraindications": [],
+  "indices": {
+    "isi": 22,
+    "phq9": 8,
+    "gad7": 5,
+    "stop_bang": 1,
+    "meq": null,
+    "dbas16": null,
+    "psas": null,
+    "screen_min_before_sleep": 0
+  },
+  "diary": [
+    {
+      "day": 1,
+      "bedtime": "23:25",
+      "lights_off": "23:35",
+      "sol_min": 77,
+      "waso_min": 16,
+      "final_wake": "07:20",
+      "risetime": "07:30",
+      "tst_min": 372,
+      "tib_min": 485,
+      "se": 0.767,
+      "nap_min": 0,
+      "caffeine_after_14": false,
+      "alcohol": false,
+      "screen_in_bed_min": 0
+    },
+    {
+      "day": 2,
+      "bedtime": "23:30",
+      "lights_off": "23:40",
+      "sol_min": 71,
+      "waso_min": 17,
+      "final_wake": "07:20",
+      "risetime": "07:30",
+      "tst_min": 372,
+      "tib_min": 480,
+      "se": 0.775,
+      "nap_min": 0,
+      "caffeine_after_14": false,
+      "alcohol": false,
+      "screen_in_bed_min": 0
+    },
+    {
+      "day": 3,
+      "bedtime": "23:25",
+      "lights_off": "23:35",
+      "sol_min": 80,
+      "waso_min": 18,
+      "final_wake": "07:20",
+      "risetime": "07:30",
+      "tst_min": 367,
+      "tib_min": 485,
+      "se": 0.7567,
+      "nap_min": 0,
+      "caffeine_after_14": false,
+      "alcohol": false,
+      "screen_in_bed_min": 0
+    },
+    {
+      "day": 4,
+      "bedtime": "23:30",
+      "lights_off": "23:40",
+      "sol_min": 77,
+      "waso_min": 17,
+      "final_wake": "07:20",
+      "risetime": "07:30",
+      "tst_min": 366,
+      "tib_min": 480,
+      "se": 0.7625,
+      "nap_min": 0,
+      "caffeine_after_14": false,
+      "alcohol": false,
+      "screen_in_bed_min": 0
+    },
+    {
+      "day": 5,
+      "bedtime": "23:30",
+      "lights_off": "23:40",
+      "sol_min": 70,
+      "waso_min": 21,
+      "final_wake": "07:20",
+      "risetime": "07:30",
+      "tst_min": 369,
+      "tib_min": 480,
+      "se": 0.7688,
+      "nap_min": 0,
+      "caffeine_after_14": false,
+      "alcohol": false,
+      "screen_in_bed_min": 0
+    },
+    {
+      "day": 6,
+      "bedtime": "23:35",
+      "lights_off": "23:45",
+      "sol_min": 77,
+      "waso_min": 21,
+      "final_wake": "07:20",
+      "risetime": "07:30",
+      "tst_min": 357,
+      "tib_min": 475,
+      "se": 0.7516,
+      "nap_min": 0,
+      "caffeine_after_14": false,
+      "alcohol": false,
+      "screen_in_bed_min": 0
+    },
+    {
+      "day": 7,
+      "bedtime": "23:30",
+      "lights_off": "23:40",
+      "sol_min": 73,
+      "waso_min": 20,
+      "final_wake": "07:20",
+      "risetime": "07:30",
+      "tst_min": 367,
+      "tib_min": 480,
+      "se": 0.7646,
+      "nap_min": 0,
+      "caffeine_after_14": false,
+      "alcohol": false,
+      "screen_in_bed_min": 0
+    }
+  ],
+  "persona": {
+    "age": 30,
+    "gender": "other",
+    "occupation": "职员",
+    "expressiveness": "brief",
+    "defensiveness": "mid",
+    "emotionality": "low",
+    "adherence_tendency": 0.55,
+    "constraints": []
+  },
+  "opening_complaint": "我最近睡眠有点问题，晚上睡不好，白天状态也受影响。",
+  "clues": [
+    {
+      "id": "A-033::domain/path_clues.md#P2-c1",
+      "content": "一躺到床上就越来越精神，翻来覆去一两个小时",
+      "reveal_topic": "bed_wakefulness",
+      "supports": "P2",
+      "deny_first": false
+    },
+    {
+      "id": "A-033::domain/path_clues.md#P2-c4",
+      "content": "出差住酒店反而睡得挺好，一回家又不行",
+      "reveal_topic": "sleep_elsewhere",
+      "supports": "P2",
+      "deny_first": false
+    },
+    {
+      "id": "A-033::domain/path_clues.md#P2-c2",
+      "content": "在沙发上看电视，看着看着就睡着了，一进卧室又清醒了",
+      "reveal_topic": "sleep_elsewhere",
+      "supports": "P2",
+      "deny_first": true
+    },
+    {
+      "id": "A-033::domain/path_clues.md#P3-c3",
+      "content": "我总觉得再这么睡不好，身体肯定要垮，明天一定会搞砸",
+      "reveal_topic": "fear_of_sleeplessness",
+      "supports": "P3",
+      "deny_first": true
+    },
+    {
+      "id": "A-033::domain/referral_cues.md#RC-7:3.3",
+      "content": "搬家让我有点紧张，事情过去后就缓解。",
+      "reveal_topic": "anxiety",
+      "supports": "R0",
+      "deny_first": false
+    }
+  ],
+  "prefilled": [
+    {
+      "scale": "isi",
+      "reported_score": 19,
+      "items": null
+    }
+  ]
+}
