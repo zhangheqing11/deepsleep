@@ -62,6 +62,53 @@ class AuthTests(unittest.TestCase):
             "INVALID_TOKEN",
         )
 
+    def test_register_signs_in_and_account_can_log_in_again(self):
+        created = self.client.post(
+            "/api/v1/auth/register", json={"username": "xiaowang", "password": "pass-123", "display_name": "小王"})
+        self.assertEqual(created.status_code, 201)
+        body = created.json()
+        self.assertEqual(body["user"], {"id": "xiaowang", "display_name": "小王", "role": "user"})
+        me = self.client.get("/api/v1/auth/me", headers={"Authorization": f"Bearer {body['access_token']}"})
+        self.assertEqual(me.json()["user"]["id"], "xiaowang")
+        again = self.client.post("/api/v1/auth/login", json={"username": "XiaoWang", "password": "pass-123"})
+        self.assertEqual(again.status_code, 200)
+        self.assertEqual(again.json()["user"]["display_name"], "小王")
+        wrong = self.client.post("/api/v1/auth/login", json={"username": "xiaowang", "password": "pass-124"})
+        self.assertEqual(wrong.json()["error"]["code"], "INVALID_CREDENTIALS")
+        # 配置的演示账号照常可用
+        self.assertEqual(
+            self.client.post("/api/v1/auth/login", json={"username": "demo", "password": "demo-pass"}).status_code, 200)
+
+    def test_register_rejects_taken_names_and_bad_input(self):
+        first = self.client.post("/api/v1/auth/register", json={"username": "visitor1", "password": "pass-123"})
+        self.assertEqual(first.status_code, 201)
+        self.assertEqual(first.json()["user"]["display_name"], "visitor1")
+        for name in ("visitor1", "VISITOR1", "demo"):
+            taken = self.client.post("/api/v1/auth/register", json={"username": name, "password": "pass-123"})
+            self.assertEqual(taken.status_code, 409)
+            self.assertEqual(taken.json()["error"]["code"], "USERNAME_TAKEN")
+        for bad in ({"username": "ab", "password": "pass-123"}, {"username": "has space", "password": "pass-123"},
+                    {"username": "okname", "password": "12345"}, {"username": "okname", "password": "pass-123", "role": "operator"}):
+            self.assertEqual(self.client.post("/api/v1/auth/register", json=bad).status_code, 422)
+
+    def test_register_stores_no_plain_password_and_is_capped(self):
+        self.client.post("/api/v1/auth/register", json={"username": "keeper", "password": "pass-123"})
+        auth = self.client.app.state.auth
+        account = auth._accounts["keeper"]
+        self.assertNotIn(b"pass-123", account.digest + account.salt)
+        self.assertEqual(len(account.salt), 16)
+        with patch("api.auth.MAX_REGISTERED_ACCOUNTS", 1):
+            full = self.client.post("/api/v1/auth/register", json={"username": "onemore", "password": "pass-123"})
+        self.assertEqual(full.status_code, 503)
+        self.assertEqual(full.json()["error"]["code"], "REGISTRATION_FULL")
+
+    def test_register_is_unavailable_when_auth_is_off(self):
+        settings = Settings(data_source="mock", mock_step_delay_s=0.01, mock_report_delay_s=0.1)
+        with TestClient(create_app(settings)) as client:
+            response = client.post("/api/v1/auth/register", json={"username": "nobody", "password": "pass-123"})
+        self.assertEqual(response.status_code, 503)
+        self.assertEqual(response.json()["error"]["code"], "AUTH_DISABLED")
+
     def test_expired_token_is_rejected(self):
         with patch("api.auth.time.time", return_value=1000):
             login = self.client.post("/api/v1/auth/login", json={"username": "demo", "password": "demo-pass"})
