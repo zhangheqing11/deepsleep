@@ -21,6 +21,7 @@ import {
 } from '../../lib/board';
 import { pct, pointDelta, seconds, signed } from '../../lib/format';
 import { DuoChart, GateChart, LineChart, type DuoRow, type LineSeries } from './charts';
+import { LiveGenerationCurve, OfflineGenerationCurve } from '../GenerationCurve';
 import { CHANGE_OP_LABEL, FAILURE_TAG_LABEL, SECTION_LABEL, STEP_STATE_LABEL, VETO_CODE_LABEL, label } from '../../lib/labels';
 
 const NOT_YET = '尚未生成';
@@ -553,6 +554,19 @@ function RollbackPanel({ data }: { data: BoardData }) {
   );
 }
 
+// ---------- 逐代曲线：主对比之后，第二屏的开头 ----------
+
+function CurvePanel({ data }: { data: BoardData }) {
+  return (
+    <Panel className="bd-curve" title="逐代曲线" aside="同一条进化链，每进化一代多一个版本；B 组从不参与学习">
+      <div className="bd-curve-body">
+        <LiveGenerationCurve curve={data.curve ?? null} title="现场：这条进化链在留出集 B 组的逐代成绩" />
+        <OfflineGenerationCurve />
+      </div>
+    </Panel>
+  );
+}
+
 // ---------- 第二屏：证据 ----------
 
 function TrajectoryPanel({ data }: { data: BoardData }) {
@@ -666,6 +680,7 @@ export function EvolutionBoard({ data, loading = false }: { data: BoardData; loa
           <RollbackPanel data={data} />
         </div>
       </div>
+      <CurvePanel data={data} />
       <div className="bd-proof">
         <TrajectoryPanel data={data} />
         <EvidencePanel data={data} />

@@ -516,6 +516,64 @@ def test_progress_split_commands_extend_one_file(sandbox):
     assert p["batches"][0] == first["batches"][0] and len(p["generations"]) == 1
 
 
+def lineage_file():
+    return demo.read_json(demo.VAR_DIR / "demo/lineage.json")
+
+
+def test_lineage_reset_continue_and_new_chain(sandbox, monkeypatch):
+    calls, batches = [], []
+    committed_evolve(monkeypatch, calls)
+    record_batches(monkeypatch, batches)
+    assert demo.main(["all", *MOCK, "--reset", "--experiment", "lin1"]) == 0
+    first = lineage_file()
+    assert set(first) == {"lineage_id", "reset_at"} and first["lineage_id"].startswith("lin-") and first["reset_at"]
+    p1 = progress("lin1")
+    assert (p1["lineage_id"], p1["from_version"]) == (first["lineage_id"], "v1")
+    assert manifest()["run2"]["playbook_version"] == "v2"
+    # Continue without reset: the second experiment starts where the first one ended (v2).
+    batches.clear()
+    assert demo.main(["all", *MOCK, "--experiment", "lin2"]) == 0
+    assert lineage_file() == first
+    p2 = progress("lin2")
+    assert (p2["lineage_id"], p2["from_version"]) == (first["lineage_id"], "v2")
+    m = manifest()
+    assert (m["run1"]["playbook_version"], m["control"]["playbook_version"], m["run2"]["playbook_version"]) \
+        == ("v2", "v2", "v3")
+    assert set(m) == {"experiment_id", "updated_at", "stage", "run1", "evolution", "run2", "control", "error"}
+    assert [g["from_version"] for g in p2["generations"]] == ["v2"] and p2["generations"][0]["to_version"] == "v3"
+    assert calls[-1]["run_report"]["run_id"] == "lin2-run1" and calls[-1]["repo"].current_version() == "v3"
+    roles = {args[5]: (args[3], args[6]) for args in batches if args[5] != "validation"}
+    assert roles == {"run1": ("v2", "A"), "run2": ("v3", "B"), "control": ("v2", "B")}
+    original = (demo.VAR_DIR / "demo/lin2/original.md").read_text(encoding="utf-8")
+    learned1 = (demo.VAR_DIR / "demo/lin1/learned.md").read_text(encoding="utf-8")
+    assert original == learned1                                           # run 1 used v2's text
+    control_text = next(args[2] for args in batches if args[5] == "control")
+    assert control_text == original
+    assert_reports(m)
+    # Another reset starts a new chain; the old experiments keep their lineage id.
+    assert demo.main(["all", *MOCK, "--reset", "--experiment", "lin3"]) == 0
+    assert lineage_file()["lineage_id"] != first["lineage_id"]
+    p3 = progress("lin3")
+    assert (p3["lineage_id"], p3["from_version"]) == (lineage_file()["lineage_id"], "v1")
+    assert progress("lin1")["lineage_id"] == first["lineage_id"]
+
+
+def test_lineage_created_when_missing_and_kept_by_split_commands(sandbox):
+    assert not (demo.VAR_DIR / "demo/lineage.json").exists()
+    assert demo.main(["run1", *MOCK, "--experiment", "nolin"]) == 0     # no repo, no lineage file yet
+    created = lineage_file()["lineage_id"]
+    first = progress("nolin")
+    assert (first["lineage_id"], first["from_version"]) == (created, "v1")
+    demo.new_lineage()                                                  # a reset elsewhere must not re-tag it
+    assert demo.main(["learn", "--experiment", "nolin"]) == 0
+    assert demo.main(["run2", "--experiment", "nolin"]) == 0
+    p = progress("nolin")
+    assert (p["lineage_id"], p["from_version"]) == (created, "v1")
+    demo.atomic_json(demo.VAR_DIR / "demo/lineage.json", {"broken": True})
+    assert demo.main(["run1", *MOCK, "--experiment", "badlin"]) == 0    # unreadable file → new chain
+    assert progress("badlin")["lineage_id"] == lineage_file()["lineage_id"] not in (created, None)
+
+
 def inject_degraded(monkeypatch, n):
     original = demo.build_report
 

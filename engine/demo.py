@@ -100,12 +100,30 @@ def save_manifest(manifest):
     atomic_json(directory / "experiment.json", manifest)
 
 
+def new_lineage():
+    """Start a new evolution chain (``var/demo/lineage.json``); experiments started later join it."""
+    lineage = {"lineage_id": f"lin-{datetime.now():%Y%m%d-%H%M%S}-{uuid4().hex[:8]}",
+               "reset_at": datetime.now().astimezone().isoformat(timespec="milliseconds")}
+    atomic_json(VAR_DIR / "demo/lineage.json", lineage)
+    return lineage["lineage_id"]
+
+
+def current_lineage():
+    """The chain id new experiments join; a missing or unreadable file starts a new chain."""
+    try:
+        value = read_json(VAR_DIR / "demo/lineage.json").get("lineage_id")
+        return safe_id(value)
+    except (OSError, ValueError, AttributeError):
+        return new_lineage()
+
+
 def reset():
     repo = PlaybookRepo(config_for_repo())
     repo.reset_to_initial()
     # Removing the pointer clears the active experiment; archived files stay intact.
     (VAR_DIR / "demo/experiment.json").unlink(missing_ok=True)
-    print(f"已重置到 {repo.current_version()}；实验历史保留", flush=True)
+    lineage_id = new_lineage()
+    print(f"已重置到 {repo.current_version()}；实验历史保留；新进化链 {lineage_id}", flush=True)
 
 
 def create_manifest(experiment_id):
@@ -301,7 +319,7 @@ class Progress:
     Telemetry only: a failing write never breaks the experiment.
     """
 
-    def __init__(self, directory, experiment_id, options, commands):
+    def __init__(self, directory, experiment_id, options, commands, from_version=None):
         self.path = directory / "progress.json"
         existing = None
         if self.path.is_file():  # split commands (run1 → learn → run2) extend one file
@@ -310,14 +328,22 @@ class Progress:
             except (OSError, ValueError):
                 existing = None
         if not isinstance(existing, dict) or existing.get("experiment_id") != experiment_id:
+            # lineage_id / from_version are recorded once, when the experiment starts; later split
+            # commands keep them. The chain id comes from var/demo/lineage.json (written by reset).
             existing = {"schema": PROGRESS_SCHEMA, "experiment_id": experiment_id, "started_at": now_iso(),
                         "updated_at": None, "commands": [], "generations_planned": options.get("generations", 1),
-                        "mock": bool(options.get("mock")), "batches": [], "generations": []}
+                        "mock": bool(options.get("mock")), "lineage_id": current_lineage(),
+                        "from_version": from_version, "batches": [], "generations": []}
         self.data = existing
         self.data["commands"] = list(dict.fromkeys([*self.data.get("commands", []), *commands]))
         self.open_generation = None
         self.last_generation = max((g["index"] for g in self.data["generations"]), default=None)
         self.save()
+
+    def record_from_version(self, version):
+        if self.data.get("from_version") is None and "lineage_id" in self.data:
+            self.data["from_version"] = version
+            self.save()
 
     def save(self):
         self.data["updated_at"] = now_iso()
@@ -421,6 +447,8 @@ class Experiment:
         self.repo.init()
         version, text = self.repo.current_version(), self.repo.read()
         self.manifest["run1"]["playbook_version"] = self.manifest["control"]["playbook_version"] = version
+        if self.progress is not None:  # repo created just now (no repo before the experiment → v1)
+            self.progress.record_from_version(version)
         self.start("run1")
         groups = cohorts(self.options)
         atomic_json(self.directory / "cohorts.json", groups)
@@ -524,7 +552,12 @@ class Experiment:
         print(text, flush=True)
 
     async def execute(self, commands):
-        self.progress = Progress(self.directory, self.manifest["experiment_id"], self.options, commands)
+        try:
+            from_version = self.repo.current_version() if self.repo.exists() else None
+        except OSError:
+            from_version = None
+        self.progress = Progress(self.directory, self.manifest["experiment_id"], self.options, commands,
+                                 from_version=from_version)
         try:
             try:
                 for command in commands:

@@ -6,7 +6,7 @@ in the repo root; ``GET /demo/pipeline`` reads only files under ``var/`` (see PI
 
 from __future__ import annotations
 
-from datetime import datetime
+from datetime import datetime, timezone
 import os
 from pathlib import Path
 import re
@@ -21,7 +21,7 @@ from pydantic import BaseModel, ConfigDict, Field
 
 from api.auth import current_user
 from api.errors import APIError
-from api.file_store import ID_PATTERN, VISITOR_PATTERN, FileStore
+from api.file_store import ID_PATTERN, VERSION_PATTERN, VISITOR_PATTERN, FileStore
 from api.run_models import ErrorResponse
 from engine.file_lock import file_lock
 
@@ -31,12 +31,18 @@ LOG_TAIL_LINES = 20
 # Fixed on the server (competition rule: nothing may be tuned live). ``step_s`` are default
 # step durations used for ETAs until the same experiment has measured a step of that kind.
 PRESETS = {
-    "live": {"label": "现场模式", "generations": 1, "effort": "low",
+    "live": {"label": "现场模式", "generations": 1, "effort": "low", "reset": True,
              "description": "运行 1 → 学习 1 代 → 运行 2 与对照",
              "step_s": {"run": 60, "generation": 240, "practice": 60, "final": 100}},
-    "full": {"label": "完整模式", "generations": 3, "effort": "high",
+    "full": {"label": "完整模式", "generations": 3, "effort": "high", "reset": True,
              "description": "运行 1 → 学习 3 代（含自我练习）→ 运行 2 与对照",
              "step_s": {"run": 60, "generation": 400, "practice": 60, "final": 100}},
+    # Continue the chain from the repo's current version. Effort is fixed in code by that version:
+    # low at v1 (or no repo), else high (low matched high on generation 1 but never passed the gate
+    # afterwards; high adopted generations 2 and 3 on both chains).
+    "next": {"label": "再进化一代", "generations": 1, "effort": None, "reset": False,
+             "description": "从当前版本继续：运行（当前版本）→ 学习 1 代 → 新版本与当前版本在 B 组对比",
+             "step_s": {"run": 60, "generation": 320, "practice": 60, "final": 100}},
 }
 MOCK_STEP_S = {"run": 5, "generation": 15, "practice": 5, "final": 5}
 SECRET_NAME = re.compile(r"KEY|TOKEN|SECRET|PASSWORD|PASSWD|CREDENTIAL|SHA256", re.IGNORECASE)
@@ -80,6 +86,74 @@ def _valid_id(value) -> bool:
     return isinstance(value, str) and bool(re.fullmatch(ID_PATTERN, value)) and value not in {".", ".."}
 
 
+def _version_key(version) -> tuple:
+    match = re.fullmatch(r"v(\d+)", version) if isinstance(version, str) else None
+    return (0, int(match[1]), "") if match else (1, 0, str(version))
+
+
+def preset_effort(preset_key: str, current_version: str | None) -> str:
+    effort = PRESETS[preset_key]["effort"]
+    if effort is None:  # "next": by the version the chain continues from
+        effort = "low" if current_version in (None, "v1") else "high"
+    return effort
+
+
+# --------------------------------------------------------------------------------------------
+# Evolution chain (lineage) helpers — read-only, through the FileStore's safe path helpers
+# --------------------------------------------------------------------------------------------
+
+def _store_json(store: FileStore | None, *parts) -> dict | None:
+    if store is None:
+        return None
+    try:
+        return store._json(*parts, optional=True)
+    except (APIError, OSError, ValueError, TypeError):
+        return None
+
+
+def repo_version(store: FileStore | None) -> str | None:
+    """The playbook repo's current version (``var/playbook-repo/VERSION``), ``None`` without a repo."""
+    if store is None:
+        return None
+    try:
+        if not store._path("var/playbook-repo/.git").is_dir():
+            return None
+        version = store._path("var/playbook-repo/VERSION").read_text(encoding="utf-8").strip()
+    except (APIError, OSError, ValueError):
+        return None
+    return version if re.fullmatch(VERSION_PATTERN, version) else None
+
+
+def current_lineage_id(store: FileStore | None) -> str | None:
+    lineage_id = (_store_json(store, "var/demo/lineage.json") or {}).get("lineage_id")
+    return lineage_id if _valid_id(lineage_id) else None
+
+
+def _progress_mode(progress: dict) -> str:
+    return "mock" if progress.get("mock") else "real"
+
+
+def lineage_experiments(store: FileStore | None, lineage_id: str | None) -> list[dict]:
+    """Progress documents of every experiment in the chain, oldest first. Unreadable or foreign
+    files (wrong experiment id, other chain) are skipped."""
+    if store is None or not _valid_id(lineage_id):
+        return []
+    try:
+        names = store._directories("demo")
+    except (APIError, OSError):
+        return []
+    found = []
+    for name in names:
+        progress = _store_json(store, "var/demo", name, "progress.json")
+        if not isinstance(progress, dict) or progress.get("experiment_id") != name \
+                or progress.get("lineage_id") != lineage_id:
+            continue
+        found.append(progress)
+    far_future = datetime.max.replace(tzinfo=timezone.utc)
+    found.sort(key=lambda p: (_parse(p.get("started_at")) or far_future, p["experiment_id"]))
+    return found
+
+
 # --------------------------------------------------------------------------------------------
 # Launcher
 # --------------------------------------------------------------------------------------------
@@ -87,9 +161,10 @@ def _valid_id(value) -> bool:
 class Launcher:
     """Owns at most one ``engine.demo`` child process started by this service process."""
 
-    def __init__(self, enabled: bool, data_root: Path):
+    def __init__(self, enabled: bool, data_root: Path, store: FileStore | None = None):
         self.enabled = enabled
         self.root = Path(data_root).resolve()
+        self.store = store  # read-only access to var/ (playbook repo version, current chain)
         self.log_path = self.root / "var/demo/launcher.log"
         self.lock_path = self.root / "var/demo/.lock"
         self._lock = threading.Lock()
@@ -150,6 +225,11 @@ class Launcher:
             return None
         return self.ended.get(experiment_id)
 
+    def lineage_mode(self) -> str | None:
+        """Mode (real/mock) of the experiments in the current chain (latest wins); ``None`` if empty."""
+        experiments = lineage_experiments(self.store, current_lineage_id(self.store))
+        return _progress_mode(experiments[-1]) if experiments else None
+
     def view(self) -> dict:
         state = self.state()
         return {
@@ -161,10 +241,12 @@ class Launcher:
             "started_at": self.started_at,
             "exit_code": self.exit_code(),
             "stopped": self.stopped,
-            "presets": [{"key": key, "label": p["label"], "generations": p["generations"],
+            "presets": [{"key": key, "label": p["label"], "generations": p["generations"], "reset": p["reset"],
                          "description": p["description"], "expected_s": preset_expected_s(p)}
                         for key, p in PRESETS.items()],
             "log_tail": self.log_lines(),
+            "current_version": repo_version(self.store),
+            "lineage_mode": self.lineage_mode(),
         }
 
     # -- actions -------------------------------------------------------------------------
@@ -186,15 +268,22 @@ class Launcher:
         with self._lock:
             if self.state() == "running" or self._lock_busy():
                 raise APIError(409, "ALREADY_RUNNING", "已有 demo 命令在运行。")
+            if not preset["reset"]:
+                chain_mode = self.lineage_mode()
+                if chain_mode is not None and chain_mode != ("mock" if mock else "real"):
+                    raise APIError(409, "LINEAGE_MODE_MISMATCH",
+                                   f"当前进化链是{'演练（mock）' if chain_mode == 'mock' else '真实'}数据，"
+                                   "不能接着跑另一种模式；请先从 v1 重新开始。")
             previous = self.experiment_id()
             if previous:  # remember before the new child truncates the log
                 self.ended[previous] = self.exit_message()
-            command = [sys.executable, "-m", "engine.demo", "all", "--reset",
+            command = [sys.executable, "-m", "engine.demo", "all", *(["--reset"] if preset["reset"] else []),
                        "--generations", str(preset["generations"]), "--visitor-renderer", "template"]
             if mock:
                 command.append("--mock")
             env = dict(os.environ)
-            env.update(REFLECTOR_REASONING_EFFORT=preset["effort"], PYTHONUNBUFFERED="1",
+            effort = preset_effort(preset_key, repo_version(self.store))
+            env.update(REFLECTOR_REASONING_EFFORT=effort, PYTHONUNBUFFERED="1",
                        PYTHONUTF8="1", PYTHONIOENCODING="utf-8")
             if os.name == "nt":
                 group = {"creationflags": subprocess.CREATE_NEW_PROCESS_GROUP
@@ -492,7 +581,14 @@ class PipelineView:
 
         manifest_state = lambda key: {"pending": "pending", "running": "running", "done": "done",
                                       "failed": "failed"}.get((manifest.get(key) or {}).get("state"), "pending")
-        run_step("run1", "run", "运行 1", "用初始 playbook（v1）跑 A 组来访",
+        origin = (manifest.get("run1") or {}).get("playbook_version") or (
+            progress.get("from_version") if detailed else None)
+        origin = origin if isinstance(origin, str) and re.fullmatch(VERSION_PATTERN, origin) else None
+        if origin == "v1":
+            run1_detail = "用初始 playbook（v1）跑 A 组来访"
+        else:
+            run1_detail = f"用当前 playbook（{origin}）跑 A 组来访" if origin else "用当前 playbook 跑 A 组来访"
+        run_step("run1", "run", "运行 1", run1_detail,
                  [b for b in batches if b["role"] == "run1"], manifest_state("run1"))
         previous = None
         for index in range(1, planned + 1):
@@ -526,7 +622,7 @@ class PipelineView:
         pair = [manifest_state("run2"), manifest_state("control")]
         final_fallback = "pending" if pair == ["pending", "pending"] else (
             "running" if "pending" in pair else self._aggregate(pair))
-        run_step("final", "final", "运行 2 与对照", "学习后的版本与 v1 并行跑 B 组来访",
+        run_step("final", "final", "运行 2 与对照", f"学习后的版本与 {origin or '起点版本'} 并行跑 B 组来访",
                  [b for b in batches if b["role"] in ("run2", "control")], final_fallback)
 
         if terminal:
@@ -564,7 +660,76 @@ class PipelineView:
             "elapsed_s": elapsed, "eta_s": eta, "generations_planned": planned,
             "playbook": {"from_version": from_version, "current_version": current},
             "steps": steps, "result": self._result(manifest), "launcher": launcher.view(),
+            "curve": self._curve(progress if detailed else None, "mock" if mock else "real"),
         }
+
+    # -- evolution curve on the held-out cohort B -------------------------------------------------
+    def _learned(self, evolution_id, version) -> str | None:
+        evolution = self._json("var/evolve", evolution_id, "evolution.json") if _valid_id(evolution_id) else None
+        if not evolution or (evolution.get("to_version") not in (None, version)):
+            return None
+        chosen = evolution.get("chosen")
+        candidate = next((c for c in evolution.get("candidates") or []
+                          if isinstance(c, dict) and chosen is not None and c.get("id") == chosen), None)
+        summary = (candidate or {}).get("summary")
+        return summary if isinstance(summary, str) and summary.strip() else None
+
+    def _curve(self, progress: dict | None, mode: str) -> dict:
+        lineage_id = (progress or {}).get("lineage_id")
+        curve = {"lineage_id": lineage_id if _valid_id(lineage_id) else None, "mode": mode, "cohort": "B",
+                 "experiments": 0, "points": [], "rejected": []}
+        if curve["lineage_id"] is None:
+            return curve
+        experiments = [p for p in lineage_experiments(self.store, lineage_id) if _progress_mode(p) == mode]
+        curve["experiments"] = len(experiments)
+        runs: dict[str, list[dict]] = {}
+        produced: dict[str, str] = {}   # version -> evolution_id of the generation that committed it
+        for exp in experiments:
+            eid = exp["experiment_id"]
+            for g in exp.get("generations") or []:
+                if not isinstance(g, dict):
+                    continue
+                if g.get("outcome") == "committed" and isinstance(g.get("to_version"), str):
+                    produced.setdefault(g["to_version"], g.get("evolution_id"))
+                elif g.get("outcome") == "kept_previous":
+                    curve["rejected"].append({"experiment_id": eid, "evolution_id": g.get("evolution_id"),
+                                              "from_version": g.get("from_version"),
+                                              "finished_at": g.get("finished_at")})
+            batches = [b for b in exp.get("batches") or [] if isinstance(b, dict)]
+            for role in ("control", "run2"):
+                own = [b for b in batches if b.get("role") == role]
+                if not own:
+                    continue
+                entry = own[-1]
+                if entry.get("state") == "failed":
+                    continue
+                report = self._report(entry.get("run_id"))
+                if report is None or report.get("split", "B") != "B":
+                    continue
+                metrics = report.get("metrics") or {}
+                version = report.get("playbook_version") or entry.get("version")
+                if not isinstance(version, str):
+                    continue
+                runs.setdefault(version, []).append({
+                    "run_id": entry.get("run_id"), "role": role, "experiment_id": eid,
+                    "isi_response_rate": metrics.get("isi_response_rate"), "n": report.get("n_visitors"),
+                    "_recall": metrics.get("referral_recall"), "_precision": metrics.get("referral_precision")})
+        previous = None
+        for version in sorted(runs, key=_version_key):
+            items = runs[version]
+            mean = _mean(r["isi_response_rate"] for r in items)
+            delta = (round((mean - previous) * 100, 2)
+                     if isinstance(mean, (int, float)) and isinstance(previous, (int, float)) else None)
+            evolution_id = produced.get(version)  # None for the chain's starting version
+            curve["points"].append({
+                "version": version, "mean": mean, "n_runs": len(items), "delta_pp": delta,
+                "referral_recall": _mean(r["_recall"] for r in items),
+                "referral_precision": _mean(r["_precision"] for r in items),
+                "learned": self._learned(evolution_id, version) if evolution_id else None,
+                "evolution_id": evolution_id,
+                "runs": [{k: v for k, v in r.items() if not k.startswith("_")} for r in items]})
+            previous = mean
+        return curve
 
     @staticmethod
     def _estimate(steps: list[dict], defaults: dict, now: datetime) -> None:
