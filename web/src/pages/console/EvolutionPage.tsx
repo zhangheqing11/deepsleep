@@ -362,7 +362,7 @@ function PlaybookVersions({ refreshKey }: { refreshKey: string }) {
     {list.status === 'loading' && <Spinner label="正在读取版本…" />}
     {list.status === 'ok' && items.length === 0 && <p className="muted">暂无版本记录。</p>}
     <ol className="plain-list" aria-label="版本历史">
-      {items.map((v) => <li key={v.version}><strong>{v.version}</strong> {v.is_head && <Badge tone="ok">当前版本</Badge>} · <span className="mono">{v.sha.slice(0, 12)}</span> · {v.author} · {dateTime(v.committed_at)}<p className="small">{v.message}</p></li>)}
+      {items.map((v) => <li key={v.version}><strong>{v.version}</strong> {v.is_head && <Badge tone="ok">当前版本</Badge>} · <span className="mono">{v.sha ? v.sha.slice(0, 12) : '—'}</span> · {v.author} · {dateTime(v.committed_at)}<p className="small">{v.message}</p></li>)}
     </ol>
     {items.length > 0 && <>
       <div className="compare-pickers">
