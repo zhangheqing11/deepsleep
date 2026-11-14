@@ -155,11 +155,13 @@ deepsleep/
 
 ## 10. 当前状态与待办
 
+> **已有共识但还没开发的事项、各进行中分支的状态，统一记在 [`docs/BACKLOG.md`](docs/BACKLOG.md)。开工前先读它。** 形成新共识就写进去。
+
 | 状态 | 事项 |
 |---|---|
 | ✅ | 方案定稿（`docs/PLAN.md`），设计决定锁定（第 3 节） |
-| ⬜ | 建 GitHub 仓库、保护 main、放入本文件和 PR 模板 |
-| ⬜ | `contracts/` 初版 + 示例 JSON（harness 组，最先合并） |
+| ✅ | 建 GitHub 仓库、放入本文件和 PR 模板（11/13）；私有免费仓库开不了分支保护，main 靠自觉 |
+| 🔄 | `contracts/` 初版 + 示例 JSON：[PR #1](https://github.com/zhangheqing11/deepsleep/pull/1) 等 approve（11/14） |
 | ⬜ | 10 个手写样例来访 + 最小计分，端到端跑通 v1（不学习） |
 | ⬜ | 前端：看板静态版（对着示例 JSON） |
 | ⬜ | `docs/handoff-algo.md`（11/14 下午数据科学同学接手前） |
