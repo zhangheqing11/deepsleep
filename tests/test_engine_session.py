@@ -544,7 +544,7 @@ def test_mock_end_to_end_on_contract_examples(merged):
 
 # ------------------------------------------------------------------ playbook and config
 
-def test_playbook_v0_sections_match_contract():
+def test_playbook_v1_sections_match_contract():
     playbook = load_playbook(load_config()["playbook_path"])
     assert list(playbook.sections) == list(SECTIONS)
     assert "screen_mood" in playbook.sections["questioning_strategy"]

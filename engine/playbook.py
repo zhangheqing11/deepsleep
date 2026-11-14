@@ -28,7 +28,7 @@ def parse_sections(text: str) -> dict[str, str]:
     return sections
 
 
-def load_playbook(path: Path | str, version: str = "v0") -> Playbook:
+def load_playbook(path: Path | str, version: str = "v1") -> Playbook:
     text = Path(path).read_text(encoding="utf-8")
     return Playbook(version, text, parse_sections(text))
 

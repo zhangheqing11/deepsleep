@@ -1,9 +1,9 @@
 import pytest
 
 from engine.evolve.hard_rules import check_candidate, durations_in_minutes, veto_from_violations
-from evolve_support import FIXTURE_V0, make_config
+from evolve_support import FIXTURE_INITIAL, make_config
 
-V0 = FIXTURE_V0.read_text(encoding="utf-8")
+V0 = FIXTURE_INITIAL.read_text(encoding="utf-8")
 
 
 def ch(after, section="plan_rules", op="add", before=None, cid="c1-x-1"):

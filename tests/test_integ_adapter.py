@@ -72,7 +72,7 @@ def test_screening_and_ten_sessions_obey_contracts():
             for tool in ("screen_mood", "screen_osa"):
                 assert S2Screening().screen(visitor, tool) == run_tool(tool, visitor)
         sessions = await asyncio.gather(*(run_session(v, SimVisitor(v), run_id="test-integ",
-                                                       playbook_version="v0") for v in visitors))
+                                                       playbook_version="v1") for v in visitors))
         for session in sessions:
             assert session["status"] != "error"
             assert validate_document(session, "session", validators, {v["id"]: v for v in visitors}) == []

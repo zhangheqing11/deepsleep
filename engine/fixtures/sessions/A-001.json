@@ -3,7 +3,7 @@
   "session_id": "fixture-mock/A-001",
   "run_id": "fixture-mock",
   "visitor_id": "A-001",
-  "playbook_version": "v0",
+  "playbook_version": "v1",
   "models": {
     "agent": "mock-agent",
     "visitor": "mock-visitor"

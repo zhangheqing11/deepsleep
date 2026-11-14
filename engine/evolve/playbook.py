@@ -101,7 +101,7 @@ class Playbook:
 
 
 def _bullet_like(lines: list[str], text: str) -> str:
-    """Match the section's list style (S3's v0 uses "- " bullets)."""
+    """Match the section's list style (S3's v1 uses "- " bullets)."""
     rules = [line for line in lines if line.strip()]
     if rules and all(line.lstrip().startswith("- ") for line in rules) and not text.startswith("- "):
         return "- " + text

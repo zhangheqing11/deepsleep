@@ -83,7 +83,7 @@ def test_baseline_state_when_it_has_to_be_evaluated(tmp_path):
     directory = tmp_path / "var" / "evolve" / "evo-st"
     spy = SpyEvaluator(directory, SCORES)
     run(tmp_path, [GOOD, WORSE, []], evaluator=spy, baseline_val_metrics=None)
-    during_baseline = dict(spy.seen)["v0"]
+    during_baseline = dict(spy.seen)["v1"]
     assert during_baseline["validation"]["baseline"] == "running"
     assert read_status(directory)["validation"]["baseline"] == "done"
 

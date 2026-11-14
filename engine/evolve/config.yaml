@@ -68,7 +68,7 @@ review:
 
 repo:
   path: var/playbook-repo
-  v0_path: engine/playbook_v0.md
+  initial_path: engine/playbook_v1.md
   file_name: playbook.md
   agent_name: deepsleep-agent
   agent_email: agent@deepsleep.local

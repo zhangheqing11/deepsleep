@@ -12,7 +12,7 @@
 
 | 接口 | 谁实现 | 约定 |
 |---|---|---|
-| playbook 格式 | S3 写 `engine/playbook_v0.md` | 每个契约章节一个 `## <playbook_section>` 标题（标题后可跟中文名）；章节内每个非空行是一条规则；行尾带 `<!-- locked -->` 的安全行 agent 不能改或删，是防止进化破坏安全规则的主防线 |
+| playbook 格式 | S3 写 `engine/playbook_v1.md` | 每个契约章节一个 `## <playbook_section>` 标题（标题后可跟中文名）；章节内每个非空行是一条规则；行尾带 `<!-- locked -->` 的安全行 agent 不能改或删，是防止进化破坏安全规则的主防线 |
 | 当前 playbook | S3 会谈循环读取 | `PlaybookRepo(load_config()).read()` / `.current_version()`（`var/playbook-repo/playbook.md` + `VERSION`） |
 | 验证集评估 | S2 + S3 | `async def evaluator(playbook_text: str, *, label: str) -> dict`，返回 C 组上的 `run_report.metrics`；CLI 用 `--evaluator module:func` 指定 |
 | 失败案例 | S2 计分 | 读 `run_report.per_visitor[].failure_tags` 与 `session_ref`（相对 run_report 所在目录） |
@@ -46,7 +46,7 @@ safety 只是红线（进指标卡，不选案例、不能作为改动目标）�
 ## CLI
 
 ```bash
-python -m engine.evolve reset          # 一键重置 var/playbook-repo 到 v0
+python -m engine.evolve reset          # 一键重置 var/playbook-repo 到 v1
 python -m engine.evolve status
 python -m engine.evolve rollback v1    # 新提交回到 v1，保留历史
 python -m engine.evolve review-list <evolution_id>
@@ -62,3 +62,5 @@ python -m engine.evolve run --run-report runs/x/run_report.json --evaluator mypk
 - 人工审核只针对 high 改动，窗口为 120 秒，默认超时放行；硬规则与验证门禁仍须通过。现行 `contracts/validate.py` 仍把 timeout 视为否决，待契约 v0.1.1 按 B1 对齐，本模块不修改契约。
 - 多个通过时：主指标高 → ISI 平均降幅大 → high 改动少 → id 小。
 - 反思器：Opus 5.5 超时 / 报错 / refusal / 输出不可用 → 自动降级 ds flash，`reflector.fell_back` 与原因写进 JSON；都失败则 3 份空候选，保留上一代。
+
+初始版本为团队手写的 v1，agent 第一代为 v2，之后依次递增。配置使用 `repo.initial_path`，旧键 `v0_path` 仅在未提供新键时兼容；`reset_to_v0` 保留为 `reset_to_initial` 的别名，重置目标为 v1。

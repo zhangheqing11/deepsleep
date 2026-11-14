@@ -181,10 +181,10 @@ deepsleep/
 
 agent 每一代 playbook 的提交**不进团队仓库的历史**，否则会和大家的 PR 搅在一起。
 
-- 初始版本 `engine/playbook_v0.md` 入团队仓库
+- 初始版本 `engine/playbook_v1.md` 入团队仓库
 - 运行时由引擎在 `var/playbook-repo/` 初始化一个独立的本地 git 库，每代一次提交（作者标为 agent）
 - `var/` 写进 `.gitignore`；看板读这个库展示版本树和 diff
-- 演示前把干净的 v0 状态打包，保证现场可重置
+- 演示前把干净的 v1 状态打包，保证现场可重置
 
 ---
 

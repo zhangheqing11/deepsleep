@@ -275,7 +275,7 @@ async def trial(args):
     sessions = [s for s, _ in results]
     by_id = {v["id"]: v for v in visitors}
     report, accounting = build_report(by_id, results, scorer=score_run, run_id=args.run_id, label="本地联调",
-                       role="validation", split="sample", playbook_version="v0",
+                       role="validation", split="sample", playbook_version="v1",
                        models=manifest["models"], duration_s=wall_s,
                        session_refs={v["id"]: f'sessions/{v["id"]}.json' for v in visitors})
     mark_budget_incomplete(report, accounting, meter.budget_blocked)

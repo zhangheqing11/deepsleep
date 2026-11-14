@@ -17,12 +17,12 @@ VISITORS = {v['id']: v for v in build_all()}
 
 def session_for(vid):
     return asyncio.run(run_session(VISITORS[vid], SimVisitor(VISITORS[vid]),
-                                   run_id='t-1', playbook_version='v0'))
+                                   run_id='t-1', playbook_version='v1'))
 
 
 def report(sessions, **kw):
     return score_run(VISITORS, sessions, run_id='t-1', label='测试', role='validation', split='sample',
-                     playbook_version='v0', models={'agent': 'a', 'visitor': 'v', 'judge': 'j'},
+                     playbook_version='v1', models={'agent': 'a', 'visitor': 'v', 'judge': 'j'},
                      duration_s=1.0, **kw)
 
 
