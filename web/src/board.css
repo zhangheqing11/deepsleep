@@ -171,10 +171,11 @@
 
 /* ---------- 阶段轨道：一个容器，四格 ---------- */
 .bd-track {
+  --rule: var(--panel-edge);
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
-  background: var(--surface);
-  border: 1px solid var(--border);
+  background: var(--panel-plain);
+  border: 1px solid var(--panel-edge);
   border-radius: var(--radius-lg);
 }
 .bd-stage {
@@ -223,7 +224,7 @@
   height: 4px;
   margin-top: 0.45em;
   border-radius: 2px;
-  background: var(--surface-2);
+  background: var(--panel-edge);
   overflow: hidden;
 }
 .bd-progress > span {
@@ -262,13 +263,23 @@
   grid-area: safety;
 }
 .bd-panel {
+  --rule: var(--panel-edge);
   display: flex;
   flex-direction: column;
   min-width: 0;
   padding: 1.1em 1.3em 1em;
-  background: var(--surface);
-  border: 1px solid var(--border);
+  background: var(--panel-plain);
+  border: 1px solid var(--panel-edge);
   border-radius: var(--radius-lg);
+}
+.bd-lead {
+  background: var(--panel-lead);
+}
+.bd-learned {
+  background: var(--panel-learned);
+}
+.bd-safety {
+  background: var(--panel-safety);
 }
 .bd-panel-head {
   display: flex;
@@ -529,6 +540,7 @@
   color: var(--muted);
 }
 .bd-safety-alert {
+  background: var(--danger-soft);
   border-color: var(--danger);
 }
 .bd-safety-alert .bd-safety-value {
@@ -712,7 +724,7 @@
   top: 0.15em;
   width: 1.1em;
   text-align: center;
-  background: var(--surface);
+  background: var(--panel-plain);
   color: var(--muted);
 }
 .bd-version-name {
@@ -751,7 +763,7 @@
   margin: 0;
   border-radius: var(--radius);
   padding: 0.6em 0.9em;
-  background: var(--surface-2);
+  background: var(--panel-lead);
   overflow-x: auto;
 }
 .bd-command code {
