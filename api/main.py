@@ -2,6 +2,7 @@
 
 import logging
 from contextlib import asynccontextmanager
+from pathlib import Path
 from typing import Literal
 from uuid import uuid4
 
@@ -9,20 +10,26 @@ from fastapi import FastAPI, Request
 from fastapi.exceptions import RequestValidationError
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
+from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
 from starlette.exceptions import HTTPException
 
 from api.config import Settings
 from api.errors import APIError
+from api.file_store import FileStore
+from api.mock_read_store import MockReadStore
+from api.read_routes import router as read_router, files_router
 from api.routes import router
 from api.run_service import MockRunService
 
 logger = logging.getLogger(__name__)
+WEB_DIST = Path(__file__).resolve().parents[1] / "web/dist"
 
 
 class HealthResponse(BaseModel):
     status: Literal["ok"] = "ok"
-    execution_mode: Literal["mock"] = "mock"
+    data_source: Literal["files", "mock"]
+    execution_mode: Literal["real", "mock"]
 
 
 def error_response(request: Request, status: int, code: str, message: str) -> JSONResponse:
@@ -40,25 +47,29 @@ def error_response(request: Request, status: int, code: str, message: str) -> JS
 
 def create_app(settings: Settings | None = None) -> FastAPI:
     settings = settings if settings is not None else Settings.from_env()
-    runs = MockRunService(settings)
+    runs = MockRunService(settings) if settings.data_source == "mock" else None
+    read_store = MockReadStore() if runs is not None else FileStore(settings.data_root)
 
     @asynccontextmanager
     async def lifespan(application: FastAPI):
         try:
             yield
         finally:
-            await runs.close()
+            if runs is not None:
+                await runs.close()
 
     application = FastAPI(
         title="deepsleep 后端 API",
-        description="Mock 联调：运行任务、进度、契约示例报告及已有会谈。不调用真实模型。",
+        description="只读引擎产物，或显式选择 Mock 联调；HTTP 服务不调用真实模型。",
         version="0.1.0",
         debug=False,
         lifespan=lifespan,
     )
     application.state.settings = settings
     application.state.runs = runs
-    application.include_router(router)
+    application.state.read_store = read_store
+    application.include_router(read_router)
+    application.include_router(router if runs is not None else files_router)
 
     @application.middleware("http")
     async def request_context(request: Request, call_next):
@@ -100,7 +111,11 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     @application.get("/api/v1/health", tags=["服务状态"])
     async def health() -> HealthResponse:
         """仅表示 HTTP 服务可响应，不代表引擎、模型或评分已就绪。"""
-        return HealthResponse(execution_mode=settings.execution_mode)
+        return HealthResponse(data_source=settings.data_source, execution_mode=settings.execution_mode)
+
+    if settings.serve_web and WEB_DIST.is_dir():
+        # Mount last so API/docs routes keep priority. Hash routes need no fallback.
+        application.mount("/", StaticFiles(directory=WEB_DIST, html=True), name="web")
 
     # CORS 在请求上下文外层，使应用错误响应同样带跨域头。
     application.add_middleware(

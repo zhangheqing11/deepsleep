@@ -21,7 +21,7 @@ class RunAccepted(BaseModel):
 
 
 class Progress(BaseModel):
-    total: int
+    total: int | None
     completed: int
     failed: int
 
@@ -34,9 +34,9 @@ class RunError(BaseModel):
 class RunState(BaseModel):
     run_id: str
     status: RunStatus
-    execution_mode: Literal["mock"] = "mock"
-    split: Literal["A", "B"]
-    playbook_version: str
+    execution_mode: Literal["real", "mock"] = "mock"
+    split: Literal["A", "B", "C", "offline", "sample"] | None
+    playbook_version: str | None
     progress: Progress
     elapsed_ms: int
     report_available: bool

@@ -27,7 +27,7 @@ class RunAPITests(unittest.TestCase):
             cls.visitors[visitor["id"]] = visitor
 
     def setUp(self):
-        self.app = create_app(Settings(mock_step_delay_s=0.03, mock_report_delay_s=0.3))
+        self.app = create_app(Settings(data_source="mock", mock_step_delay_s=0.03, mock_report_delay_s=0.3))
         self.client = self.enterContext(TestClient(self.app))
 
     def create(self, body=None, key=None, scenario="normal"):
@@ -242,7 +242,7 @@ class RunAPITests(unittest.TestCase):
         self.assert_error(self.client.get(f"/api/v1/runs/{b_id}/sessions/B-001"), 404, "SESSION_NOT_FOUND")
 
     def test_shutdown_cancels_pending_tasks(self):
-        app = create_app(Settings(mock_step_delay_s=0.5))
+        app = create_app(Settings(data_source="mock", mock_step_delay_s=0.5))
         with TestClient(app) as client:
             response = client.post("/api/v1/runs", json={"split": "A"}, headers={"Idempotency-Key": str(uuid4())})
             run_id = response.json()["run_id"]

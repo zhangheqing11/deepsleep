@@ -1,9 +1,28 @@
-# deepsleep 后端：第一轮 Mock 联调
+# deepsleep 后端：只读产物与 Mock 联调
+
+默认 `API_DATA_SOURCE=files`：读取引擎已经写入磁盘的运行、会谈、进化、playbook 和实验清单，不从 HTTP 启动真实运行。
+完整字段、文件布局、错误码和示例见 [READ_API.md](READ_API.md)。`API_DATA_SOURCE=mock` 保留内存任务、幂等与模拟进度，并提供只读示例。
+
+## 路演：files 模式 + 局域网
+
+从仓库根目录运行（使用已安装依赖的 Python）：
+
+```bash
+API_DATA_SOURCE=files python -m uvicorn api.main:app --host 0.0.0.0 --port 8000
+```
+
+单进程，不加 `--reload` 或多个 workers。放行系统防火墙的 TCP 8000 端口；同一局域网的设备通过 `http://<服务电脑的局域网 IP>:8000` 访问。
+API 默认读取本仓库的 `var/`。若 CLI 在主 checkout 运行，设置 `API_DATA_ROOT=/绝对路径/deepsleep` 指向产物所在仓库根，避免读错 worktree。
+`API_SERVE_WEB=1` 且本代码仓库的 `web/dist` 存在时，同一端口的 `/` 托管前端；使用 hash 路由，不做路径回退，不加 `X-Frame-Options`。
+健康检查返回 `{"status":"ok","data_source":"files","execution_mode":"real"}`；这里 `real` 表示读取实际产物，单次运行仍按报告的 `models.agent` 标记真实或 mock。
+真实运行由操作员执行 `make demo-run1 / make demo-run2`，HTTP `POST /api/v1/runs` 返回 501 `RUNS_VIA_CLI`。
+
+## Mock 联调（原流程）
 
 本阶段提供健康检查、Mock 运行创建、进度、契约报告及已有会谈查询。
 接口与前端确认的 v0 约定对齐，业务报告和会谈直接读取 contracts/examples/ 的 v0.1.0 示例。
 不调用 LLM，不需要 API key，不产生模型费用。execution_mode=mock 表示开发联调，不能作为真实评测或改善证据。
-完整接口约定、版本映射、测试场景和手工验收见 [MOCK_API.md](MOCK_API.md)。学习与真实引擎尚未接入。
+完整 Mock 接口约定、版本映射、测试场景和手工验收见 [MOCK_API.md](MOCK_API.md)。
 
 ## 安装和启动（PowerShell）
 
@@ -12,6 +31,7 @@
 ~~~powershell
 python -m venv .venv
 & './.venv/Scripts/python.exe' -m pip install -r api/requirements-dev.txt
+$env:API_DATA_SOURCE = "mock"
 & './.venv/Scripts/python.exe' -m uvicorn api.main:app --host 127.0.0.1 --port 8000
 ~~~
 
@@ -30,6 +50,7 @@ python -m venv .venv
 ~~~json
 {
   "status": "ok",
+  "data_source": "mock",
   "execution_mode": "mock"
 }
 ~~~
@@ -42,7 +63,10 @@ python -m venv .venv
 
 | 变量 | 默认值 | 说明 |
 |---|---|---|
-| API_EXECUTION_MODE | mock | 当前只支持 mock；设置 real 或其他值会启动失败，避免误报真实模块已接入 |
+| API_DATA_SOURCE | files | files 读取产物；mock 用于旧内存任务与契约示例 |
+| API_DATA_ROOT | 仓库根 | files 产物所在根目录，下面应有 var/ |
+| API_SERVE_WEB | 0 | 1 且 web/dist 存在时托管静态前端 |
+| API_EXECUTION_MODE | 自动推导 | 旧变量可不设置；若设置，须与数据源一致：files=real、mock=mock |
 | API_CORS_ORIGINS | 空 | 允许访问的前端来源，英文逗号分隔；默认不授予跨域权限 |
 | API_MOCK_STEP_DELAY_S | 0.5 | 每步模拟间隔，允许 0.01～5 秒 |
 | API_MOCK_REPORT_DELAY_S | 3 | report_delay 场景的额外等待，允许 0.01～10 秒 |
@@ -76,11 +100,12 @@ CORS 不是身份认证。本阶段面向本地开发，尚未设计外网部署
 
 | HTTP 状态 | 错误码 | 含义 |
 |---|---|---|
-| 404 | RUN_NOT_FOUND / SESSION_NOT_FOUND / NOT_FOUND | 不存在的运行、会谈或接口 |
+| 404 | RUN_NOT_FOUND / SESSION_NOT_FOUND / NOT_FOUND / NOT_READY / DATA_UNAVAILABLE | 不存在、未生成或不可读取的产物，详见 READ_API.md |
 | 405 | METHOD_NOT_ALLOWED | 不支持该请求方法 |
 | 409 | IDEMPOTENCY_KEY_REUSED / REPORT_NOT_READY | 幂等键冲突或报告尚不可读 |
 | 422 | VALIDATION_ERROR | 请求参数不符合类型要求 |
 | 500 | INTERNAL_ERROR | 未处理的内部异常 |
+| 501 | RUNS_VIA_CLI | files 模式请从操作员终端运行 CLI |
 
 未处理异常日志仅记异常类型和请求编号，不输出请求正文或异常中的敏感内容。
 跨域预检由中间件直接处理，响应格式和请求编号不适用上述业务错误约定。
@@ -90,6 +115,7 @@ Idempotency-Key 已实现并发去重；具体请求比较方式见 MOCK_API.md�
 
 ~~~powershell
 & './.venv/Scripts/python.exe' -m unittest discover -s api/tests -v
+& './.venv/Scripts/python.exe' -m pytest -q api/tests
 & './.venv/Scripts/python.exe' contracts/validate.py
 & './.venv/Scripts/python.exe' -m pip check
 ~~~
@@ -108,4 +134,4 @@ Idempotency-Key 已实现并发去重；具体请求比较方式见 MOCK_API.md�
 ## 后续
 
 与前端实测“创建运行 → 查询进度 → 查看 Mock 报告”，确认页面展示和异常反馈。
-之后再接入真实引擎、评分、持久化与学习版本管理，不提前复制引擎或评分逻辑。
+files 模式已经读取引擎落盘产物；HTTP 不执行引擎、评分、反思或版本提交。旧离线快照入口保留作历史参考。

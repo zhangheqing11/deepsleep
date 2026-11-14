@@ -1,5 +1,8 @@
 # 第一轮 Mock 联调说明（2026-11-14）
 
+启动时显式设置 `API_DATA_SOURCE=mock`（默认已改为 files）。健康检查额外返回 `data_source: "mock"`。
+新增只读示例接口见 [READ_API.md](READ_API.md)；下述创建、进度、失败与幂等行为保持不变。
+
 本轮实现前端确认的接口草案 v0。运行报告与会谈使用正式 contracts v0.1.0。
 后端地址：http://127.0.0.1:8000。前缀：/api/v1。
 前端 localhost:5173 的 Vite 代理将 /api 转到后端，保留完整前缀，无需跨域配置。
