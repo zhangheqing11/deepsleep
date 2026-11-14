@@ -1,0 +1,63 @@
+import { useEffect } from 'react';
+import { api } from './api';
+import { SessionView } from './components/SessionView';
+import { useConsoleRun } from './hooks/useConsoleRun';
+import { isUserRoute, useHashRoute, type ConsoleRoute, type UserRoute } from './hooks/useHashRoute';
+import { useHealth } from './hooks/useRunData';
+import { AppLayout } from './layouts/AppLayout';
+import { ConsoleLayout } from './layouts/ConsoleLayout';
+import { applyAppearance, useSavedPreferences } from './lib/userDemoStore';
+import { ChatPage } from './pages/app/ChatPage';
+import { SettingsPage } from './pages/app/SettingsPage';
+import { DebugPage } from './pages/console/DebugPage';
+import { EvolutionPage } from './pages/console/EvolutionPage';
+import { RunsPage } from './pages/console/RunsPage';
+import { VisitorsPage } from './pages/console/VisitorsPage';
+
+function ConsoleApp({ route }: { route: ConsoleRoute }) {
+  const health = useHealth();
+  const state = useConsoleRun();
+  const mode = health.status === 'ok' ? health.data.execution_mode : null;
+  const healthOk = health.status === 'ok';
+  const healthChecked = health.status === 'ok' || health.status === 'error';
+
+  let page;
+  switch (route.name) {
+    case 'console-session':
+      page = <SessionView runId={route.runId} visitorId={route.visitorId} adapter={api.adapter} mode={mode} />;
+      break;
+    case 'console-visitors':
+      page = <VisitorsPage state={state} />;
+      break;
+    case 'console-evolution':
+      page = <EvolutionPage />;
+      break;
+    case 'console-debug':
+      page = <DebugPage state={state} health={health} />;
+      break;
+    default:
+      page = <RunsPage state={state} healthOk={healthOk} healthChecked={healthChecked} healthMode={mode} />;
+  }
+
+  return (
+    <ConsoleLayout route={route} adapter={api.adapter} health={health} onRetryHealth={health.reload}>
+      {page}
+    </ConsoleLayout>
+  );
+}
+
+function UserApp({ route }: { route: UserRoute }) {
+  return <AppLayout route={route}>{route.name === 'app-settings' ? <SettingsPage /> : <ChatPage />}</AppLayout>;
+}
+
+export function App() {
+  const route = useHashRoute();
+  const prefs = useSavedPreferences();
+
+  // 外观偏好对两套界面都生效
+  useEffect(() => {
+    applyAppearance(prefs.appearance);
+  }, [prefs.appearance]);
+
+  return isUserRoute(route) ? <UserApp route={route} /> : <ConsoleApp route={route} />;
+}
