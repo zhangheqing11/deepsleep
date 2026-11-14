@@ -1,0 +1,4 @@
+-r requirements.txt
+-r ../requirements.txt
+# 使用标准库 unittest；httpx 供 FastAPI TestClient 使用。
+httpx>=0.28,<1

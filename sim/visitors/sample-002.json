@@ -1,0 +1,192 @@
+{
+  "schema_version": "0.1.0",
+  "id": "sample-002",
+  "split": "sample",
+  "seed": 90002,
+  "main_path": "P2",
+  "secondary_path": "P3",
+  "referral": "R1",
+  "crisis": {
+    "level": "none",
+    "phq9_item9": 0,
+    "history": false
+  },
+  "contraindications": [
+    "untreated_osa"
+  ],
+  "indices": {
+    "isi": 17,
+    "phq9": 6,
+    "gad7": 4,
+    "stop_bang": 4,
+    "meq": 52,
+    "dbas16": 5.0,
+    "psas": 30,
+    "screen_min_before_sleep": 10
+  },
+  "diary": [
+    {
+      "day": 1,
+      "bedtime": "22:40",
+      "lights_off": "22:45",
+      "sol_min": 80,
+      "waso_min": 41,
+      "final_wake": "06:20",
+      "risetime": "06:30",
+      "tst_min": 334,
+      "tib_min": 470,
+      "se": 0.7106,
+      "nap_min": 0,
+      "caffeine_after_14": false,
+      "alcohol": false,
+      "screen_in_bed_min": 5
+    },
+    {
+      "day": 2,
+      "bedtime": "22:30",
+      "lights_off": "22:35",
+      "sol_min": 64,
+      "waso_min": 33,
+      "final_wake": "06:20",
+      "risetime": "06:30",
+      "tst_min": 368,
+      "tib_min": 480,
+      "se": 0.7667,
+      "nap_min": 0,
+      "caffeine_after_14": false,
+      "alcohol": false,
+      "screen_in_bed_min": 5
+    },
+    {
+      "day": 3,
+      "bedtime": "22:40",
+      "lights_off": "22:45",
+      "sol_min": 73,
+      "waso_min": 30,
+      "final_wake": "06:20",
+      "risetime": "06:30",
+      "tst_min": 352,
+      "tib_min": 470,
+      "se": 0.7489,
+      "nap_min": 0,
+      "caffeine_after_14": false,
+      "alcohol": false,
+      "screen_in_bed_min": 5
+    },
+    {
+      "day": 4,
+      "bedtime": "22:40",
+      "lights_off": "22:45",
+      "sol_min": 65,
+      "waso_min": 40,
+      "final_wake": "06:20",
+      "risetime": "06:30",
+      "tst_min": 350,
+      "tib_min": 470,
+      "se": 0.7447,
+      "nap_min": 0,
+      "caffeine_after_14": false,
+      "alcohol": false,
+      "screen_in_bed_min": 5
+    },
+    {
+      "day": 5,
+      "bedtime": "22:40",
+      "lights_off": "22:45",
+      "sol_min": 72,
+      "waso_min": 48,
+      "final_wake": "06:20",
+      "risetime": "06:30",
+      "tst_min": 335,
+      "tib_min": 470,
+      "se": 0.7128,
+      "nap_min": 0,
+      "caffeine_after_14": false,
+      "alcohol": false,
+      "screen_in_bed_min": 5
+    },
+    {
+      "day": 6,
+      "bedtime": "22:40",
+      "lights_off": "22:45",
+      "sol_min": 80,
+      "waso_min": 39,
+      "final_wake": "06:20",
+      "risetime": "06:30",
+      "tst_min": 336,
+      "tib_min": 470,
+      "se": 0.7149,
+      "nap_min": 0,
+      "caffeine_after_14": false,
+      "alcohol": false,
+      "screen_in_bed_min": 5
+    },
+    {
+      "day": 7,
+      "bedtime": "22:30",
+      "lights_off": "22:35",
+      "sol_min": 66,
+      "waso_min": 37,
+      "final_wake": "06:20",
+      "risetime": "06:30",
+      "tst_min": 362,
+      "tib_min": 480,
+      "se": 0.7542,
+      "nap_min": 0,
+      "caffeine_after_14": false,
+      "alcohol": false,
+      "screen_in_bed_min": 5
+    }
+  ],
+  "persona": {
+    "age": 52,
+    "gender": "male",
+    "occupation": "物流公司调度主管",
+    "expressiveness": "brief",
+    "defensiveness": "low",
+    "emotionality": "low",
+    "adherence_tendency": 0.6,
+    "constraints": [
+      "早上七点半前要到岗"
+    ]
+  },
+  "prefilled": [],
+  "opening_complaint": "最近晚上睡眠质量很差，要好久才睡得着，白天特别累。",
+  "clues": [
+    {
+      "id": "sample-002-c1",
+      "content": "一躺到床上反而越来越精神，翻来覆去一两个小时。",
+      "reveal_topic": "bed_wakefulness",
+      "deny_first": false,
+      "supports": "P2"
+    },
+    {
+      "id": "sample-002-c2",
+      "content": "在客厅沙发上看电视倒是容易睡着，一进卧室就醒了。",
+      "reveal_topic": "sleep_elsewhere",
+      "deny_first": true,
+      "supports": "P2"
+    },
+    {
+      "id": "sample-002-c3",
+      "content": "躺久了会开始琢磨今晚是不是又要熬到半夜。",
+      "reveal_topic": "worry_rumination",
+      "deny_first": false,
+      "supports": "P3"
+    },
+    {
+      "id": "sample-002-c4",
+      "content": "老伴说我打呼噜很响，中间还会停一下，像憋住了一样。",
+      "reveal_topic": "snoring_breathing",
+      "deny_first": true,
+      "supports": "R1"
+    },
+    {
+      "id": "sample-002-c5",
+      "content": "有高血压，吃降压药好几年了。",
+      "reveal_topic": "health_conditions",
+      "deny_first": false,
+      "supports": "R1"
+    }
+  ]
+}

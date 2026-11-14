@@ -1,0 +1,189 @@
+{
+  "schema_version": "0.1.0",
+  "id": "sample-015",
+  "split": "sample",
+  "seed": 90015,
+  "main_path": "P5",
+  "secondary_path": "P1",
+  "referral": "R0",
+  "crisis": {
+    "level": "none",
+    "phq9_item9": 0,
+    "history": false
+  },
+  "contraindications": [],
+  "indices": {
+    "isi": 13,
+    "phq9": 4,
+    "gad7": 4,
+    "stop_bang": 1,
+    "meq": 47,
+    "dbas16": 3.0,
+    "psas": 21,
+    "screen_min_before_sleep": 100
+  },
+  "diary": [
+    {
+      "day": 1,
+      "bedtime": "23:10",
+      "lights_off": "01:00",
+      "sol_min": 20,
+      "waso_min": 7,
+      "final_wake": "07:20",
+      "risetime": "07:30",
+      "tst_min": 353,
+      "tib_min": 500,
+      "se": 0.706,
+      "nap_min": 0,
+      "caffeine_after_14": false,
+      "alcohol": false,
+      "screen_in_bed_min": 100
+    },
+    {
+      "day": 2,
+      "bedtime": "23:00",
+      "lights_off": "00:50",
+      "sol_min": 32,
+      "waso_min": 9,
+      "final_wake": "07:20",
+      "risetime": "07:30",
+      "tst_min": 349,
+      "tib_min": 510,
+      "se": 0.6843,
+      "nap_min": 0,
+      "caffeine_after_14": false,
+      "alcohol": false,
+      "screen_in_bed_min": 100
+    },
+    {
+      "day": 3,
+      "bedtime": "22:50",
+      "lights_off": "00:40",
+      "sol_min": 32,
+      "waso_min": 21,
+      "final_wake": "07:20",
+      "risetime": "07:30",
+      "tst_min": 347,
+      "tib_min": 520,
+      "se": 0.6673,
+      "nap_min": 0,
+      "caffeine_after_14": false,
+      "alcohol": false,
+      "screen_in_bed_min": 100
+    },
+    {
+      "day": 4,
+      "bedtime": "22:50",
+      "lights_off": "00:40",
+      "sol_min": 27,
+      "waso_min": 25,
+      "final_wake": "07:20",
+      "risetime": "07:30",
+      "tst_min": 348,
+      "tib_min": 520,
+      "se": 0.6692,
+      "nap_min": 0,
+      "caffeine_after_14": false,
+      "alcohol": false,
+      "screen_in_bed_min": 100
+    },
+    {
+      "day": 5,
+      "bedtime": "23:10",
+      "lights_off": "01:00",
+      "sol_min": 26,
+      "waso_min": 13,
+      "final_wake": "07:20",
+      "risetime": "07:30",
+      "tst_min": 341,
+      "tib_min": 500,
+      "se": 0.682,
+      "nap_min": 0,
+      "caffeine_after_14": false,
+      "alcohol": false,
+      "screen_in_bed_min": 100
+    },
+    {
+      "day": 6,
+      "bedtime": "23:50",
+      "lights_off": "01:40",
+      "sol_min": 36,
+      "waso_min": 25,
+      "final_wake": "11:20",
+      "risetime": "11:30",
+      "tst_min": 519,
+      "tib_min": 700,
+      "se": 0.7414,
+      "nap_min": 0,
+      "caffeine_after_14": false,
+      "alcohol": false,
+      "screen_in_bed_min": 100
+    },
+    {
+      "day": 7,
+      "bedtime": "00:00",
+      "lights_off": "01:50",
+      "sol_min": 37,
+      "waso_min": 12,
+      "final_wake": "11:20",
+      "risetime": "11:30",
+      "tst_min": 521,
+      "tib_min": 690,
+      "se": 0.7551,
+      "nap_min": 0,
+      "caffeine_after_14": false,
+      "alcohol": false,
+      "screen_in_bed_min": 100
+    }
+  ],
+  "persona": {
+    "age": 30,
+    "gender": "female",
+    "occupation": "银行柜员",
+    "expressiveness": "verbose",
+    "defensiveness": "low",
+    "emotionality": "mid",
+    "adherence_tendency": 0.7,
+    "constraints": [
+      "工作日八点半到网点"
+    ]
+  },
+  "prefilled": [
+    {
+      "scale": "isi",
+      "reported_score": 13,
+      "items": null
+    }
+  ],
+  "opening_complaint": "晚上老是睡得很晚，睡眠时间不够，想调整一下。",
+  "clues": [
+    {
+      "id": "sample-015-c1",
+      "content": "不带手机的时候，比如上次出差忘带充电器，我睡得特别快。",
+      "reveal_topic": "screen_in_bed",
+      "deny_first": false,
+      "supports": "P5"
+    },
+    {
+      "id": "sample-015-c2",
+      "content": "说好十一点睡，追剧追着追着就一点多了。",
+      "reveal_topic": "revenge_bedtime",
+      "deny_first": false,
+      "supports": "P5"
+    },
+    {
+      "id": "sample-015-c3",
+      "content": "晚上追剧停不下来，一集接一集。",
+      "reveal_topic": "screen_in_bed",
+      "deny_first": true,
+      "supports": "P5"
+    },
+    {
+      "id": "sample-015-c4",
+      "content": "周末就靠补觉，睡到中午才起。",
+      "reveal_topic": "weekend_catchup",
+      "deny_first": false,
+      "supports": "P1"
+    }
+  ]
+}
