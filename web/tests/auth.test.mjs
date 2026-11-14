@@ -170,6 +170,26 @@ test('登录与用户视角', async (t) => {
       assert.doesNotMatch(renderToStaticMarkup(React.createElement(LoginPage, { reason: 'required' })), /lg-note/);
     });
 
+    await t.test('顶栏的退出登录：只在已登录时出现', async () => {
+      const { SignOutButton } = await server.ssrLoadModule('/src/components/SignOutButton.tsx');
+      const render = () => renderToStaticMarkup(React.createElement(SignOutButton, { className: 'x-link' }));
+      assert.equal(auth.getAuthState().state, 'signed-out');
+      assert.equal(render(), '');
+      reset(() => json(200, { authenticated: false, user: null }));
+      await auth.refreshAuth();
+      assert.equal(auth.getAuthState().state, 'open');
+      assert.equal(render(), '');
+      reset(() => json(200, { access_token: 'tok-bar', token_type: 'bearer', expires_in: 60, user: USER }));
+      await auth.signIn('demo', 'right-password');
+      assert.match(render(), /<button type="button" class="x-link">退出登录<span class="so-who">（演示用户）<\/span><\/button>/);
+      // 三套界面的顶栏都接了这个按钮
+      for (const f of ['src/pages/board/BoardPage.tsx', 'src/pages/app/UserApp.tsx', 'src/layouts/ConsoleLayout.tsx']) {
+        assert.match(await readFile(join(root, f), 'utf8'), /<SignOutButton className=/, f);
+      }
+      reset(() => json(200, { status: 'ok' }));
+      await auth.signOut();
+    });
+
     await t.test('用户视角：路由、默认来访和第一人称的称呼', async () => {
       assert.deepEqual(parseRoute('#/me'), { name: 'me', visitorId: null, tab: 'tonight' });
       assert.deepEqual(parseRoute('#/me/chat'), { name: 'me', visitorId: null, tab: 'chat' });

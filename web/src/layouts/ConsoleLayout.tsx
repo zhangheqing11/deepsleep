@@ -3,6 +3,7 @@ import type { HealthResponse } from '../api/draftTypes';
 import { DataSourceBanner } from '../components/DataSourceBanner';
 import { HealthBar } from '../components/HealthBar';
 import { DevconsoleNavLink } from '../components/console/DevconsoleNavLink';
+import { SignOutButton } from '../components/SignOutButton';
 import type { AdapterKind } from '../config';
 import { HREF, type ConsoleRoute } from '../hooks/useHashRoute';
 import type { ResourceState } from '../hooks/useResource';
@@ -52,6 +53,7 @@ export function ConsoleLayout({
           <a className="quiet-link small" href={HREF.app}>
             来访视角 →
           </a>
+          <SignOutButton className="quiet-btn small" />
         </div>
       </header>
       <nav className="console-nav" aria-label="控制台导航">

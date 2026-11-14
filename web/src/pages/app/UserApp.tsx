@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { describeError } from '../../api/errors';
 import { Compare, Ending, Scales, Transcript } from '../../components/app/Replay';
+import { SignOutButton } from '../../components/SignOutButton';
 import { HREF, visitorHref, type UserRoute, type VisitorTab } from '../../hooks/useHashRoute';
 import { useCatalog, useSession, type CatalogState } from '../../hooks/useReplay';
 import { Moon } from '../../layouts/ConsoleLayout';
@@ -49,6 +50,7 @@ function Shell({ children, back }: { children: React.ReactNode; back?: boolean }
           <a className="ua-link" href={HREF.me}>用户视角</a>
           <a className="ua-link" href={HREF.board}>进化看板</a>
           <ThemeToggle />
+          <SignOutButton className="ua-link" />
         </nav>
       </header>
       {children}
