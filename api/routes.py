@@ -4,6 +4,7 @@ from typing import Annotated
 
 from fastapi import APIRouter, Header, Request
 
+from api.auth import current_user
 from api.run_models import ErrorResponse, MockScenario, RunAccepted, RunRequest, RunState, SessionList
 from api.read_routes import RunID, VisitorID
 
@@ -24,24 +25,29 @@ async def create_run(
     idempotency_key: Annotated[str, Header(min_length=1, max_length=128, pattern=r"^[A-Za-z0-9._:-]+$")],
     x_mock_scenario: Annotated[MockScenario, Header()] = "normal",
 ) -> RunAccepted:
+    current_user(request)
     return await request.app.state.runs.create(body, idempotency_key, x_mock_scenario)
 
 
 @router.get("/{run_id}")
 async def get_run(run_id: RunID, request: Request) -> RunState:
+    current_user(request)
     return run_source(request, run_id).state(run_id)
 
 
 @router.get("/{run_id}/report")
 async def get_report(run_id: RunID, request: Request) -> dict:
+    current_user(request)
     return run_source(request, run_id).report(run_id)
 
 
 @router.get("/{run_id}/sessions")
 async def get_sessions(run_id: RunID, request: Request) -> SessionList:
+    current_user(request)
     return run_source(request, run_id).sessions(run_id)
 
 
 @router.get("/{run_id}/sessions/{visitor_id}")
 async def get_session(run_id: RunID, visitor_id: VisitorID, request: Request) -> dict:
+    current_user(request)
     return run_source(request, run_id).session(run_id, visitor_id)

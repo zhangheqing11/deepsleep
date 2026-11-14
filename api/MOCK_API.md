@@ -123,3 +123,12 @@ Invoke-RestMethod -Uri "$apiBase/runs/$($mockRun.run_id)/sessions"
 
 仅限单进程 Mock 联调，不支持多 workers、持久化或真实引擎并发评测。
 运行记录与报告不会写入团队仓库。契约、前端、引擎、安全层和评分模块均未修改。
+
+## 本地演示登录（可选）
+
+默认 API_AUTH_MODE=none，保持匿名 Mock 联调兼容。启用 demo 后，/runs、报告、会谈和只读看板接口都要求 Authorization: Bearer <access_token>。GET /health 和登录接口公开；token 只存在后端进程内，重启服务后失效。
+
+POST /api/v1/auth/login
+{"username":"demo","password":"demo-pass"}
+
+成功返回 access_token、token_type、expires_in 和 user；前端应将 token 放入 sessionStorage，收到 401 时清除并返回登录页。
