@@ -114,6 +114,10 @@ class SessionRunner:
         self.entries: list[dict] = []
         self.tool_calls: list[dict] = []
         self.safety_events: list[dict] = []
+        self._scale_event_index: int | None = None
+        self._safety_check_asked = False
+        self._risk_disclosed_after_check = False
+        self._scale_recheck_done = False
         self.behaviors = dict.fromkeys(BEHAVIORS, 0)
         self.turn = 0
         self.crisis = False
@@ -134,6 +138,7 @@ class SessionRunner:
                       "classifier": getattr(deps.classifier, "provider", type(deps.classifier).__name__),
                       "fallbacks": [], "llm_calls": [], "path_probs": [], "strategies": [], "history_checks": [], "vetoes": [],
                       "plans": {}, "memory": {}, "round1_outcome": None, "selection": None, "forced_tool_calls": [],
+                      "scale_rechecks": [],
                       "speculation": {"used": 0, "discarded": 0, "discarded_calls": 0}, "ignored_events": []}
 
     def _pipeline_name(self) -> str:
@@ -219,6 +224,10 @@ class SessionRunner:
             await self._ensure_mood_screen(actions)  # covers early end_round and caps below two
         if not self.crisis:
             await self._flush_history_check()
+        if number == 1 and not self.crisis:
+            await self._recheck_scale()
+            if not self.crisis:
+                await self._flush_history_check()
         await self._close_round()
 
     async def _close_round(self) -> None:
@@ -391,6 +400,27 @@ class SessionRunner:
         if not self.crisis:
             await self._flush_history_check()
 
+    async def _recheck_scale(self) -> None:
+        """Frozen 11/14 rule: once after round-1 actions, before memory/plan/closing.
+
+        Reuse the original scale evidence; this is a follow-up action, not a new
+        assessment. Ordinary safety_check speech dedup must not swallow it.
+        """
+        if (self.current.number != 1 or self.crisis or self.safety_state.highest_level == "active"
+                or self._scale_event_index is None or not self._safety_check_asked
+                or self._risk_disclosed_after_check or self._scale_recheck_done):
+            return
+        self._scale_recheck_done = True
+        event = {**self.safety_events[self._scale_event_index], "round": 1, "turn": self.turn + 1,
+                 "action": "safety_check"}
+        self.trace["scale_rechecks"].append({
+            "round": 1, "turn": event["turn"], "recheck": True, "counts_toward_cap": False,
+            "trigger_event_index": self._scale_event_index, "safety_event_index": len(self.safety_events),
+        })
+        self.safety_events.append(event)
+        self._add("safety", self.deps.safety.script_for("scale_recheck"))
+        await self._visitor_speaks(speculate=False)
+
     async def _visitor_speaks(self, *, speculate: bool, next_left: int = 0, record_topics: bool = True):
         """Visitor answers; the next loop-1 step may run while the crisis judge works (discarded on any event)."""
         reply = await self.deps.sim.reply(self.visitor, self.current.number, [dict(e) for e in self.entries],
@@ -424,6 +454,10 @@ class SessionRunner:
         if spec is not None and event is not None:
             await self._discard(spec)
             spec = None
+        # Count text disclosures even when repeated passive has local action=none
+        # and is omitted from contract events. Later positive scales are not disclosures.
+        if self._safety_check_asked and event is not None and event.level in ("passive", "active"):
+            self._risk_disclosed_after_check = True
         await self._handle_event(event)
         if spec is not None and self.crisis:
             await self._discard(spec)
@@ -446,6 +480,8 @@ class SessionRunner:
             self.trace["ignored_events"].append(event.to_dict())
             return
         self.safety_events.append(event.to_dict())
+        if event.source == "scale_item9" and self._scale_event_index is None:
+            self._scale_event_index = len(self.safety_events) - 1
         if event.action == "crisis_protocol":
             self._add("safety", self._event_script(event))
             self.crisis = True
@@ -453,6 +489,7 @@ class SessionRunner:
             script = self._event_script(event)
             if script:
                 self._add("safety", script)
+                self._safety_check_asked = True
                 await self._visitor_speaks(speculate=False)
 
     def _event_script(self, event):

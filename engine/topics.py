@@ -22,7 +22,8 @@ TOPIC_PATTERNS: dict[str, str] = {
     "leg_discomfort": r"腿|小腿|下肢",
     "mood": r"心情|情绪|低落|提不起(?:劲|兴趣)|兴趣|开心",
     "anxiety": r"紧张|焦虑|心慌|不安|放松不下来",
-    "self_harm": r"伤害自己|自伤|轻生|不想活|不再醒来|这种念头|这些念头",
+    # Include the approved fixed recheck question, without classifying generic "准备" as risk talk.
+    "self_harm": r"伤害自己|自伤|轻生|不想活|不再醒来|这种念头|这些念头|最近有没有想过具体怎么做、做过什么准备",
     "medication": r"药|褪黑素",
     "life_constraints": r"工作.{0,6}(?:时间|安排)|上班|孩子|通勤|家里.{0,6}安排|几点到岗",
     "health_conditions": r"身体(?:状况|情况)|疾病|高血压|怀孕|癫痫|双相|看过医生|健康",
