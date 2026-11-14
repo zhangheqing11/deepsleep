@@ -20,6 +20,15 @@ export interface RunSlot {
   status: RunStatusResponse | null;
   /** 报告读取失败的原因；下一次轮询会重试 */
   error: ApiError | null;
+  /** 问诊证据：会谈每一步里正确路径的平均权重；后端没有时为 null */
+  evidence: EvidenceStep[] | null;
+}
+
+export interface EvidenceStep {
+  round: number;
+  step: number;
+  /** 0–1 */
+  pTrue: number;
 }
 
 export interface BoardData {
@@ -45,13 +54,15 @@ export interface BoardCache {
   evolution: Evolution | null;
   versions: PlaybookVersion[] | null;
   versionsKey: string | null;
+  /** 已读过的证据；null 表示后端明确没有，不再重复请求 */
+  evidence: Map<string, EvidenceStep[] | null>;
 }
 
 export function createBoardCache(): BoardCache {
-  return { experimentId: null, reports: new Map(), finalStatus: new Map(), evolution: null, versions: null, versionsKey: null };
+  return { experimentId: null, reports: new Map(), finalStatus: new Map(), evolution: null, versions: null, versionsKey: null, evidence: new Map() };
 }
 
-const emptySlot = (role: RunRole): RunSlot => ({ role, node: null, report: null, status: null, error: null });
+const emptySlot = (role: RunRole): RunSlot => ({ role, node: null, report: null, status: null, error: null, evidence: null });
 
 export const EMPTY_BOARD: BoardData = {
   experiment: null,
@@ -88,13 +99,19 @@ async function readSlot(api: ApiClient, cache: BoardCache, role: RunRole, node: 
       const s = await soft(signal, () => api.getRun(id, signal));
       if (s.data) cache.finalStatus.set(id, s.data);
     }
-    return { role, node, report: cache.reports.get(id) ?? null, status: cache.finalStatus.get(id) ?? null, error };
+    // 证据只画对照与运行 2；读到一次（包括“没有”）就不再请求。
+    if (role !== 'run1' && cache.reports.has(id) && !cache.evidence.has(id)) {
+      const e = await soft(signal, () => api.getEvidence(id, signal));
+      if (!e.error) cache.evidence.set(id, parseEvidence(e.data));
+    }
+    return { role, node, report: cache.reports.get(id) ?? null, status: cache.finalStatus.get(id) ?? null, error,
+      evidence: cache.evidence.get(id) ?? null };
   }
   if (node.state === 'running') {
     const s = await soft(signal, () => api.getRun(id, signal));
-    return { role, node, report: null, status: s.data, error: null };
+    return { ...emptySlot(role), node, status: s.data };
   }
-  return { role, node, report: null, status: null, error: null };
+  return { ...emptySlot(role), node };
 }
 
 /** 读取一份完整快照。实验清单读取失败时抛出，由调用方保留上一份数据。 */
@@ -134,6 +151,22 @@ export async function readBoard(api: ApiClient, cache: BoardCache, signal: Abort
 
   const mock = api.adapter === 'mock' || [run1, control, run2].some((s) => s.status?.execution_mode === 'mock');
   return { experiment, run1, control, run2, evolution: cache.evolution, evolutionStatus, versions: cache.versions, mock };
+}
+
+/**
+ * 证据接口不在契约里，字段未冻结：只取页面要画的三个数，结构不对就当作没有。
+ */
+export function parseEvidence(raw: unknown): EvidenceStep[] | null {
+  const summary = (raw as { summary?: { by_step?: unknown } } | null)?.summary;
+  if (!summary || !Array.isArray(summary.by_step)) return null;
+  const steps: EvidenceStep[] = [];
+  for (const item of summary.by_step as Record<string, unknown>[]) {
+    const { round, step, mean_p_true: p } = item ?? {};
+    if (typeof round !== 'number' || typeof step !== 'number' || typeof p !== 'number' || !Number.isFinite(p)) return null;
+    steps.push({ round, step, pTrue: p });
+  }
+  steps.sort((a, b) => a.round - b.round || a.step - b.step);
+  return steps.length > 0 ? steps : null;
 }
 
 function versionNumber(v: string): number {
@@ -275,3 +308,13 @@ export const SECONDARY_METRICS: MetricRow[] = [
   { key: 'ref_precision', title: '转介精确率', get: (m) => m.referral_precision, kind: 'ratio', better: 'higher' },
   { key: 'isi_change', title: '平均 ISI 变化', get: (m) => m.mean_isi_change, kind: 'score', better: 'lower' },
 ];
+
+/** 每位来访相对第 0 周的 ISI 变化（第 0–4 周），以及各周的平均。周数不齐的来访不画。 */
+export function isiTrajectories(report: RunReport): { visitors: { id: string; deltas: number[] }[]; mean: number[] } | null {
+  const visitors = report.per_visitor
+    .filter((v) => v.isi_week.length === 5 && v.isi_week.every((n) => Number.isFinite(n)))
+    .map((v) => ({ id: v.visitor_id, deltas: v.isi_week.map((n) => n - v.isi_week[0]) }));
+  if (visitors.length === 0) return null;
+  const mean = [0, 1, 2, 3, 4].map((w) => visitors.reduce((sum, v) => sum + v.deltas[w], 0) / visitors.length);
+  return { visitors, mean };
+}

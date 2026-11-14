@@ -29,7 +29,7 @@ test('进化看板：聚合、结论与各阶段展示', async (t) => {
     const { EvolutionBoard } = await server.ssrLoadModule('/src/components/board/Board.tsx');
     const { ApiError } = await server.ssrLoadModule('/src/api/errors.ts');
     const { parseRoute } = await server.ssrLoadModule('/src/hooks/useHashRoute.ts');
-    const { readBoard, createBoardCache, finding, pairVisitors, alertSlots, EMPTY_BOARD } = board;
+    const { readBoard, createBoardCache, finding, pairVisitors, alertSlots, parseEvidence, isiTrajectories, EMPTY_BOARD } = board;
 
     const run1 = await example('run_report.run1.json');
     const control = await example('run_report.control.json');
@@ -61,6 +61,7 @@ test('进化看板：聚合、结论与各阶段展示', async (t) => {
         getRun: async (id) => status(reports[id]),
         getEvolution: async () => clone(evolution),
         getEvolutionStatus: async () => { throw new Error('不应读取进度'); },
+        getEvidence: async () => ({ available: false }),
         listPlaybookVersions: async () => ({ items: clone(versions) }),
       };
       const api = {};
@@ -72,7 +73,7 @@ test('进化看板：聚合、结论与各阶段展示', async (t) => {
     };
     const signal = new AbortController().signal;
     const html = (data, props = {}) => renderToStaticMarkup(React.createElement(EvolutionBoard, { data, ...props }));
-    const slot = (role, report, extra = {}) => ({ role, node: report ? node(report) : null, report, status: null, error: null, ...extra });
+    const slot = (role, report, extra = {}) => ({ role, node: report ? node(report) : null, report, status: null, error: null, evidence: null, ...extra });
     const full = (extra = {}) => ({
       experiment: doneExperiment(), run1: slot('run1', run1), control: slot('control', control), run2: slot('run2', run2),
       evolution, evolutionStatus: null, versions: [...versions].reverse(), mock: false, ...extra,
@@ -97,6 +98,9 @@ test('进化看板：聚合、结论与各阶段展示', async (t) => {
       assert.equal(calls.getReport, 3);
       assert.equal(calls.getEvolution, 1);
       assert.equal(calls.listPlaybookVersions, 1);
+      // 证据只读对照与运行 2，各一次；后端说没有也不再重复请求
+      assert.equal(calls.getEvidence, 2);
+      assert.equal(second.run2.evidence, null);
       assert.equal(second.run2.report.run_id, run2.run_id);
       assert.deepEqual(first.versions.map((v) => v.version), ['v1', 'v2']);
       assert.equal(first.mock, false);
@@ -237,8 +241,65 @@ test('进化看板：聚合、结论与各阶段展示', async (t) => {
       partial.metrics.referral_precision = null;
       const page = html(full({ run2: slot('run2', partial) }));
       const row = page.slice(page.indexOf('转介精确率'), page.indexOf('平均 ISI 变化'));
-      assert.match(row, /class="num  none">—</);
+      assert.match(row, /class="num none">—</);
       assert.match(row, /class="num bd-diff flat">—</);
+      // 缺失的值不画点：这一行只剩对照的点和运行 1 的短线
+      assert.doesNotMatch(row, /dot lead/);
+      assert.match(row, /dot base/);
+    });
+
+    await t.test('证据接口字段未冻结：结构不对就当作没有', async () => {
+      const raw = { contract: false, visitors: [], summary: { by_step: [
+        { round: 2, step: 1, n: 6, mean_p_true: 0.4 }, { round: 1, step: 2, n: 6, mean_p_true: 0.3 }, { round: 1, step: 1, n: 6, mean_p_true: 0.2 }] } };
+      assert.deepEqual(parseEvidence(raw), [{ round: 1, step: 1, pTrue: 0.2 }, { round: 1, step: 2, pTrue: 0.3 }, { round: 2, step: 1, pTrue: 0.4 }]);
+      assert.equal(parseEvidence({ available: false }), null);
+      assert.equal(parseEvidence({ summary: { by_step: [{ round: 1, step: 1, mean_p_true: 'x' }] } }), null);
+      assert.equal(parseEvidence({ summary: { by_step: [] } }), null);
+      assert.equal(parseEvidence(null), null);
+      const { api, calls } = fakeApi(doneExperiment(), { getEvidence: async () => raw });
+      const cache = createBoardCache();
+      const data = await readBoard(api, cache, signal);
+      await readBoard(api, cache, signal);
+      assert.equal(calls.getEvidence, 2);
+      assert.equal(data.control.evidence.length, 3);
+      assert.equal(data.run1.evidence, null);
+      const page = html(data);
+      assert.match(page, /逐步判断把握：对照 40%，运行 2 40%/);
+      assert.match(page, /第 2 轮/);
+      assert.match(page, /五选一的起点/);
+    });
+
+    await t.test('图表从数据画出：轨迹、对比条与门禁条', () => {
+      const t2 = isiTrajectories(run2);
+      assert.equal(t2.visitors.length, run2.per_visitor.length);
+      assert.equal(t2.mean[0], 0);
+      const expected = run2.per_visitor.reduce((sum, v) => sum + (v.isi_week[4] - v.isi_week[0]), 0) / run2.per_visitor.length;
+      assert.ok(Math.abs(t2.mean[4] - expected) < 1e-9);
+      const broken = clone(run2);
+      broken.per_visitor.forEach((v) => { v.isi_week = v.isi_week.slice(0, 3); });
+      assert.equal(isiTrajectories(broken), null);
+
+      const page = html(full());
+      // 轨迹：对照与运行 2 各一条均值线，每位来访一条细线，有效线画出
+      assert.equal((page.match(/class="ch-line /g) ?? []).length, 2);
+      assert.equal((page.match(/class="ch-faint /g) ?? []).length, control.per_visitor.length + run2.per_visitor.length);
+      assert.match(page, /有效线 −7 分/);
+      // 对比条：路径准确率第 2 轮 62.5% → 100%
+      assert.match(page, /路径准确率 · 第 2 轮：对照 62\.5%，运行 2 100%，运行 1 62\.5%/);
+      assert.match(page, /class="dot lead" style="left:100%"/);
+      assert.match(page, /class="dot base" style="left:62\.5%"/);
+      // 门禁条：基线 50%，选中的候选 75%，被硬规则拦下的不画长度
+      assert.match(page, /--baseline:50%/);
+      assert.match(page, /class="bar lead" style="width:75%"/);
+      assert.match(page, /class="bar none"/);
+      assert.match(page, /竖线是上一代 v1 的 <b>50%<\/b>/);
+      // 没有证据时说明原因，不画假曲线
+      assert.match(page, /这份证据尚未生成/);
+      // 只有一次运行完成时，轨迹只画那一条
+      const partial = html(full({ run2: slot('run2', null) }));
+      assert.equal((partial.match(/class="ch-line /g) ?? []).length, 1);
+      const none = html(full({ run2: slot('run2', null), control: slot('control', null) }));
+      assert.doesNotMatch(none, /class="ch"/);
     });
 
     await t.test('安全线失守或实验失败时整页告警', () => {
