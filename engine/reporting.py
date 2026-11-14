@@ -5,6 +5,21 @@ contain only scoreable sessions; summary.json always records the full attempted 
 completion/coverage and safety assessments. An empty cohort produces no run_report.
 """
 from collections import Counter
+import re
+
+
+def _provider_switches(trace):
+    # Count actual attempts, not cached path_probs or deterministic mock fallbacks.
+    # Older traces encode classifier failover in the returned provider string.
+    classifier = sum(c.get('provider_switches', int(bool(re.fullmatch(
+        r'ds_flash\(fallback:jev_(?:error|timeout|cancelled)\)', c.get('provider', '')))))
+        for c in trace.get('llm_calls', []) if c.get('agent') == 'classifier')
+    judges = trace.get('all_judge_results', [])
+    # The frozen safety chain is ds_flash -> jev. Returning to ds_flash starts a
+    # new utterance; a failed last leg followed by a new utterance is not a switch.
+    safety = sum(a['provider'] == 'ds_flash' and a['status'] != 'ok' and b['provider'] == 'jev'
+                 for a, b in zip(judges, judges[1:]))
+    return classifier + safety
 
 
 def summarize(results):
@@ -22,6 +37,7 @@ def summarize(results):
         'unknown_path_rounds': sum(len(t.get('unknown_path_rounds', [])) for _, t in results),
         'degraded_sessions': sum(any(not f.get('discarded', False) for f in t.get('fallbacks', []))
                                  for _, t in results),
+        'provider_switches': sum(_provider_switches(t) for _, t in results),  # 服务商切换次数
         'llm_attempts': len(calls),  # logical agent/classifier attempts, including mock and queue cancellation
         'agent_classifier_requests_started': sum(c.get('request_started', False) for c in calls),
         'call_statuses': dict(Counter(c['status'] for c in calls)),
