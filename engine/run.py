@@ -33,6 +33,9 @@ def build_deps(*, config=None, llm=None, classifier=None, sim=None, screening=No
     # One limiter for every ds flash request the engine itself makes (agent sub-agents + path classifier).
     limiter = asyncio.Semaphore(config["agent_llm"]["max_inflight"])
     prompts_dir = Path(config["prompts_dir"])
+    if sim is None and config["visitor_renderer"] == "template":
+        from .adapters_sim import make_s2_sim
+        sim = make_s2_sim(config)
     return EngineDeps(
         llm=llm or make_agent_llm(config["agent_llm"], limiter=limiter),
         classifier=classifier or make_classifier(config["path_classifier"], limiter=limiter),
@@ -86,17 +89,24 @@ def main(argv=None) -> int:
     parser.add_argument("--screening", help="module:factory returning a ScreeningProvider")
     parser.add_argument("--outcome", help="module:factory returning a PlanOutcomeModel (4-week model)")
     parser.add_argument("--scorer", help="module:function producing run_report (e.g. scoring.score:score_run)")
+    parser.add_argument("--visitor-renderer", choices=("llm", "template"))
     parser.add_argument("--mock", action="store_true", help="force the mock agent LLM and mock path classifier")
     parser.add_argument("--merged", action="store_true", help="merge strategy + response into one call")
     args = parser.parse_args(argv)
     load_dotenv()
     overrides = {}
+    if args.visitor_renderer:
+        overrides["visitor_renderer"] = args.visitor_renderer
     if args.mock:
         overrides.update(agent_llm={"provider": "mock"}, path_classifier={"provider": "mock"})
     if args.merged:
         overrides["pipeline"] = {"merge_strategy_response": True}
     playbook = load_playbook(args.playbook, args.playbook_version) if args.playbook else None
-    deps = build_deps(config=overrides, sim=_factory(args.sim) if args.sim else None,
+    sim = _factory(args.sim) if args.sim else None
+    if sim is None and args.visitor_renderer:
+        from .adapters_sim import make_s2_sim
+        sim = make_s2_sim(load_config(overrides), mock=args.mock)
+    deps = build_deps(config=overrides, sim=sim,
                       screening=_factory(args.screening) if args.screening else None,
                       outcome=_factory(args.outcome) if args.outcome else None,
                       playbook=playbook, playbook_version=args.playbook_version)

@@ -28,6 +28,7 @@ from domain.vetoes import check_plan, check_text
 from safety.layer import SafetyLayer, SessionSafetyState
 from safety.rules import LEVEL_RANK
 
+from .network import is_connection_error, is_http_error
 from .classifier import PATHS, PathClassifier, PathState
 from .interfaces import PlanOutcomeModel, ScreeningProvider, VisitorReply, VisitorSim
 from .llm import AgentLLM, LLMError, TruncatedOutput
@@ -734,7 +735,11 @@ class SessionRunner:
                 limit = settings.get("max_tokens_by_task", {}).get(task, settings["max_tokens"])
                 request_state["_max_tokens"] = limit * settings.get("truncation_retry_multiplier", 2)
                 truncation_retried = True
-            except Exception:
+            except Exception as exc:
+                # Transport retries are bounded at the client; do not multiply
+                # them here, and never retry HTTP status failures (including 4xx).
+                if is_connection_error(exc) or is_http_error(exc):
+                    break
                 if truncation_retried or failures >= retries:
                     break
                 failures += 1
