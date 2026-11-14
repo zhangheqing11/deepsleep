@@ -9,7 +9,7 @@ BoHack 2026 · 日新主题赛道「打造会自我进化的智能」
 
 ## 提交与贡献说明
 
-开发期间，部分组员因网络连接不稳定，使用其他账号或请他人协助提交。其中，通过 [JiaqiChen-tju](https://github.com/JiaqiChen-tju) 和 [RufusMacintosh](https://github.com/RufusMacintosh) 账号提交的相关改动，由本组其他成员完成。GitHub 显示的提交账号及贡献统计不完全对应实际开发者与分工，不应单独作为判断个人工作量或作者归属的依据。感谢协助提交的同学。
+开发期间，部分组员因网络连接不稳定，使用其他账号或请他人协助提交。其中，通过 [JiaqiChen-tju](https://github.com/JiaqiChen-tju) 和 [RufusMacintosh](https://github.com/RufusMacintosh) 账号提交的相关改动，由本组其他成员完成。感谢协助提交的同学。
 
 ## 协作
 
