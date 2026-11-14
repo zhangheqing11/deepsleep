@@ -1,0 +1,204 @@
+{
+  "schema_version": "0.1.0",
+  "id": "sample-007",
+  "split": "sample",
+  "seed": 90007,
+  "main_path": "P2",
+  "secondary_path": null,
+  "referral": "R0",
+  "crisis": {
+    "level": "none",
+    "phq9_item9": 0,
+    "history": true
+  },
+  "contraindications": [],
+  "indices": {
+    "isi": 18,
+    "phq9": 7,
+    "gad7": 6,
+    "stop_bang": 1,
+    "meq": 54,
+    "dbas16": 5.2,
+    "psas": 28,
+    "screen_min_before_sleep": 10
+  },
+  "diary": [
+    {
+      "day": 1,
+      "bedtime": "21:30",
+      "lights_off": "21:40",
+      "sol_min": 75,
+      "waso_min": 60,
+      "final_wake": "05:50",
+      "risetime": "06:30",
+      "tst_min": 355,
+      "tib_min": 540,
+      "se": 0.6574,
+      "nap_min": 0,
+      "caffeine_after_14": false,
+      "alcohol": false,
+      "screen_in_bed_min": 0
+    },
+    {
+      "day": 2,
+      "bedtime": "21:20",
+      "lights_off": "21:30",
+      "sol_min": 82,
+      "waso_min": 56,
+      "final_wake": "05:50",
+      "risetime": "06:30",
+      "tst_min": 362,
+      "tib_min": 550,
+      "se": 0.6582,
+      "nap_min": 0,
+      "caffeine_after_14": false,
+      "alcohol": false,
+      "screen_in_bed_min": 0
+    },
+    {
+      "day": 3,
+      "bedtime": "21:40",
+      "lights_off": "21:50",
+      "sol_min": 80,
+      "waso_min": 66,
+      "final_wake": "05:50",
+      "risetime": "06:30",
+      "tst_min": 334,
+      "tib_min": 530,
+      "se": 0.6302,
+      "nap_min": 0,
+      "caffeine_after_14": false,
+      "alcohol": false,
+      "screen_in_bed_min": 0
+    },
+    {
+      "day": 4,
+      "bedtime": "21:30",
+      "lights_off": "21:40",
+      "sol_min": 80,
+      "waso_min": 64,
+      "final_wake": "05:50",
+      "risetime": "06:30",
+      "tst_min": 346,
+      "tib_min": 540,
+      "se": 0.6407,
+      "nap_min": 0,
+      "caffeine_after_14": false,
+      "alcohol": false,
+      "screen_in_bed_min": 0
+    },
+    {
+      "day": 5,
+      "bedtime": "21:20",
+      "lights_off": "21:30",
+      "sol_min": 81,
+      "waso_min": 56,
+      "final_wake": "05:50",
+      "risetime": "06:30",
+      "tst_min": 363,
+      "tib_min": 550,
+      "se": 0.66,
+      "nap_min": 0,
+      "caffeine_after_14": false,
+      "alcohol": false,
+      "screen_in_bed_min": 0
+    },
+    {
+      "day": 6,
+      "bedtime": "21:40",
+      "lights_off": "21:50",
+      "sol_min": 90,
+      "waso_min": 50,
+      "final_wake": "05:50",
+      "risetime": "06:30",
+      "tst_min": 340,
+      "tib_min": 530,
+      "se": 0.6415,
+      "nap_min": 0,
+      "caffeine_after_14": false,
+      "alcohol": false,
+      "screen_in_bed_min": 0
+    },
+    {
+      "day": 7,
+      "bedtime": "21:40",
+      "lights_off": "21:50",
+      "sol_min": 84,
+      "waso_min": 67,
+      "final_wake": "05:50",
+      "risetime": "06:30",
+      "tst_min": 329,
+      "tib_min": 530,
+      "se": 0.6208,
+      "nap_min": 0,
+      "caffeine_after_14": false,
+      "alcohol": false,
+      "screen_in_bed_min": 0
+    }
+  ],
+  "persona": {
+    "age": 31,
+    "gender": "female",
+    "occupation": "中学语文老师",
+    "expressiveness": "verbose",
+    "defensiveness": "low",
+    "emotionality": "mid",
+    "adherence_tendency": 0.75,
+    "constraints": [
+      "早上七点十分前要到校"
+    ]
+  },
+  "prefilled": [
+    {
+      "scale": "isi",
+      "reported_score": 18,
+      "items": null
+    },
+    {
+      "scale": "phq9",
+      "reported_score": 7,
+      "items": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        0,
+        0
+      ]
+    }
+  ],
+  "opening_complaint": "最近晚上睡眠质量很差，要好久才睡得着，白天特别累。",
+  "clues": [
+    {
+      "id": "sample-007-c1",
+      "content": "睡不着我也不起来，硬躺着，一晚上在床上快十个小时，实际睡不到六个。",
+      "reveal_topic": "bed_wakefulness",
+      "deny_first": false,
+      "supports": "P2"
+    },
+    {
+      "id": "sample-007-c2",
+      "content": "上次带学生出去研学住酒店，反而睡得挺好，一回家又不行。",
+      "reveal_topic": "sleep_elsewhere",
+      "deny_first": false,
+      "supports": "P2"
+    },
+    {
+      "id": "sample-007-c3",
+      "content": "躺着也没在想什么，就是脑子很清醒。",
+      "reveal_topic": "bed_wakefulness",
+      "deny_first": false,
+      "supports": "P2"
+    },
+    {
+      "id": "sample-007-c4",
+      "content": "大学的时候有一阵想过死，不过已经五年多没有这种念头了。",
+      "reveal_topic": "self_harm",
+      "deny_first": false,
+      "supports": "crisis"
+    }
+  ]
+}

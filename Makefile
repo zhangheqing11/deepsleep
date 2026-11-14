@@ -1,4 +1,4 @@
-.PHONY: venv contracts smoke
+.PHONY: venv contracts smoke test
 
 venv: .venv/.requirements-installed
 
@@ -10,5 +10,9 @@ venv: .venv/.requirements-installed
 contracts: venv
 	.venv/bin/python contracts/validate.py
 
-# 后续加入 10 个来访 + mock LLM 的端到端冒烟。
+# 10 个样例来访 + mock LLM + stub agent → session + run_report，全部过契约校验（scoring/smoke.py）。
 smoke: contracts
+	.venv/bin/python -m scoring.smoke
+
+test: venv
+	.venv/bin/python -m pytest -q tests

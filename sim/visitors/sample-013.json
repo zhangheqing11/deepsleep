@@ -1,0 +1,194 @@
+{
+  "schema_version": "0.1.0",
+  "id": "sample-013",
+  "split": "sample",
+  "seed": 90013,
+  "main_path": "P3",
+  "secondary_path": null,
+  "referral": "R3",
+  "crisis": {
+    "level": "none",
+    "phq9_item9": 0,
+    "history": false
+  },
+  "contraindications": [],
+  "indices": {
+    "isi": 19,
+    "phq9": 9,
+    "gad7": 13,
+    "stop_bang": 1,
+    "meq": 49,
+    "dbas16": 7.5,
+    "psas": 55,
+    "screen_min_before_sleep": 20
+  },
+  "diary": [
+    {
+      "day": 1,
+      "bedtime": "23:10",
+      "lights_off": "23:20",
+      "sol_min": 72,
+      "waso_min": 47,
+      "final_wake": "06:20",
+      "risetime": "06:30",
+      "tst_min": 301,
+      "tib_min": 440,
+      "se": 0.6841,
+      "nap_min": 0,
+      "caffeine_after_14": false,
+      "alcohol": false,
+      "screen_in_bed_min": 0
+    },
+    {
+      "day": 2,
+      "bedtime": "23:10",
+      "lights_off": "23:20",
+      "sol_min": 67,
+      "waso_min": 44,
+      "final_wake": "06:20",
+      "risetime": "06:30",
+      "tst_min": 309,
+      "tib_min": 440,
+      "se": 0.7023,
+      "nap_min": 0,
+      "caffeine_after_14": false,
+      "alcohol": false,
+      "screen_in_bed_min": 0
+    },
+    {
+      "day": 3,
+      "bedtime": "22:50",
+      "lights_off": "23:00",
+      "sol_min": 68,
+      "waso_min": 43,
+      "final_wake": "06:20",
+      "risetime": "06:30",
+      "tst_min": 329,
+      "tib_min": 460,
+      "se": 0.7152,
+      "nap_min": 0,
+      "caffeine_after_14": false,
+      "alcohol": false,
+      "screen_in_bed_min": 0
+    },
+    {
+      "day": 4,
+      "bedtime": "23:10",
+      "lights_off": "23:20",
+      "sol_min": 62,
+      "waso_min": 30,
+      "final_wake": "06:20",
+      "risetime": "06:30",
+      "tst_min": 328,
+      "tib_min": 440,
+      "se": 0.7455,
+      "nap_min": 0,
+      "caffeine_after_14": false,
+      "alcohol": false,
+      "screen_in_bed_min": 0
+    },
+    {
+      "day": 5,
+      "bedtime": "22:50",
+      "lights_off": "23:00",
+      "sol_min": 55,
+      "waso_min": 38,
+      "final_wake": "06:20",
+      "risetime": "06:30",
+      "tst_min": 347,
+      "tib_min": 460,
+      "se": 0.7543,
+      "nap_min": 0,
+      "caffeine_after_14": false,
+      "alcohol": false,
+      "screen_in_bed_min": 0
+    },
+    {
+      "day": 6,
+      "bedtime": "23:00",
+      "lights_off": "23:10",
+      "sol_min": 71,
+      "waso_min": 30,
+      "final_wake": "06:20",
+      "risetime": "06:30",
+      "tst_min": 329,
+      "tib_min": 450,
+      "se": 0.7311,
+      "nap_min": 0,
+      "caffeine_after_14": false,
+      "alcohol": false,
+      "screen_in_bed_min": 0
+    },
+    {
+      "day": 7,
+      "bedtime": "23:00",
+      "lights_off": "23:10",
+      "sol_min": 57,
+      "waso_min": 32,
+      "final_wake": "06:20",
+      "risetime": "06:30",
+      "tst_min": 341,
+      "tib_min": 450,
+      "se": 0.7578,
+      "nap_min": 0,
+      "caffeine_after_14": false,
+      "alcohol": false,
+      "screen_in_bed_min": 0
+    }
+  ],
+  "persona": {
+    "age": 27,
+    "gender": "female",
+    "occupation": "三甲医院规培护士",
+    "expressiveness": "verbose",
+    "defensiveness": "mid",
+    "emotionality": "high",
+    "adherence_tendency": 0.6,
+    "constraints": [
+      "规培轮转，偶尔值班"
+    ]
+  },
+  "prefilled": [
+    {
+      "scale": "isi",
+      "reported_score": 19,
+      "items": null
+    },
+    {
+      "scale": "gad7",
+      "reported_score": 13,
+      "items": null
+    }
+  ],
+  "opening_complaint": "我最近睡眠有点问题，晚上睡不好，白天状态也受影响。",
+  "clues": [
+    {
+      "id": "sample-013-c1",
+      "content": "一躺下就复盘今天有没有给错药、交接漏了什么。",
+      "reveal_topic": "worry_rumination",
+      "deny_first": false,
+      "supports": "P3"
+    },
+    {
+      "id": "sample-013-c2",
+      "content": "越想快点睡越睡不着，老看手机上的时间。",
+      "reveal_topic": "fear_of_sleeplessness",
+      "deny_first": false,
+      "supports": "P3"
+    },
+    {
+      "id": "sample-013-c3",
+      "content": "其实白天也一直提心吊胆，总觉得要出事。",
+      "reveal_topic": "anxiety",
+      "deny_first": true,
+      "supports": "R3"
+    },
+    {
+      "id": "sample-013-c4",
+      "content": "整个人绷得很紧，坐不住，容易烦躁。",
+      "reveal_topic": "anxiety",
+      "deny_first": false,
+      "supports": "R3"
+    }
+  ]
+}

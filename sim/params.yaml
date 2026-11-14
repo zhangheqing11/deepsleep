@@ -1,0 +1,48 @@
+# 4 周状态模型参数 —— ⚠️ 全部是占位值（harness 组为跑通端到端随手定的），没有文献出处。
+# 数据科学同学接手后按 AGENTS.md §9 替换：每个参数注明出处，赛前冻结。
+# 改这里不改接口：sim/state_model.py 的 simulate(visitor, session) 签名与返回结构保持不变。
+version: "0.0-placeholder"
+
+# 每周疗效兑现比例（第 0–4 周），第 4 周 = 1.0。占位：近似先快后慢的曲线。
+week_curve: [0.0, 0.3, 0.55, 0.8, 1.0]
+
+# 处方完全对路 × 完全依从时，4 周 ISI 最大降幅（分）。占位。
+effect_max: 16
+
+# 每条路径的"对路"处方组件：处方里出现任意一个就算命中该路径。占位，口径应与 domain/ 处方规则对齐。
+path_components:
+  P1: [sleep_hygiene, fixed_risetime]
+  P2: [stimulus_control, sleep_restriction]
+  P3: [cognitive_restructuring, worry_time, relaxation]
+  P4: [light_timing, schedule_shift]
+  P5: [digital_curfew]
+
+# 路径匹配度 = base + (1 - base) * (w_main * 命中主路径 + w_secondary * 命中次路径)
+# 没有次路径时 w_main 视为 1。占位。
+match:
+  base: 0.25          # 任何处方都有的非特异效果
+  w_main: 0.8
+  w_secondary: 0.2
+
+# 转介判错（真值非 R0 且预测 ≠ 真值）时疗效打折：共病未处理会拖累睡眠改善。占位。
+referral_unaddressed_factor: 0.5
+
+# 对有禁忌的来访用了睡眠限制：疗效打折（同时计分会打 contraindication_violation）。占位。
+contraindication_effect_factor: 0.5
+
+# 卧床时间下限（分钟）。数值来自临床审核结论 PV-1（330），低于下限视为不可行，依从打折。
+min_tib_minutes: 330
+infeasible_adherence_factor: 0.5
+
+# 同盟 = base + 加分项 - 扣分项，截断到 [0, 1]。行为计数取自 session.behaviors，每项最多计 cap 次。占位。
+alliance:
+  base: 0.5
+  cap: 3
+  plus: {goal_setting: 0.05, reflection: 0.04, emotion_response: 0.04, rationale_explained: 0.05}
+  minus: {lecturing: 0.08, premature_advice: 0.08}
+  rationale_given_bonus: 0.05
+
+# 依从 = adherence_tendency * (a + b * 同盟) * 可行性系数，截断到 [0, 1]。占位。
+adherence:
+  a: 0.6
+  b: 0.4

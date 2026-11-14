@@ -1,0 +1,183 @@
+{
+  "schema_version": "0.1.0",
+  "id": "sample-008",
+  "split": "sample",
+  "seed": 90008,
+  "main_path": "P3",
+  "secondary_path": "P2",
+  "referral": "R0",
+  "crisis": {
+    "level": "none",
+    "phq9_item9": 0,
+    "history": false
+  },
+  "contraindications": [],
+  "indices": {
+    "isi": 16,
+    "phq9": 6,
+    "gad7": 7,
+    "stop_bang": 1,
+    "meq": 50,
+    "dbas16": 6.8,
+    "psas": 45,
+    "screen_min_before_sleep": 15
+  },
+  "diary": [
+    {
+      "day": 1,
+      "bedtime": "23:30",
+      "lights_off": "23:40",
+      "sol_min": 61,
+      "waso_min": 41,
+      "final_wake": "07:20",
+      "risetime": "07:30",
+      "tst_min": 358,
+      "tib_min": 480,
+      "se": 0.7458,
+      "nap_min": 0,
+      "caffeine_after_14": false,
+      "alcohol": false,
+      "screen_in_bed_min": 0
+    },
+    {
+      "day": 2,
+      "bedtime": "23:40",
+      "lights_off": "23:50",
+      "sol_min": 64,
+      "waso_min": 37,
+      "final_wake": "07:20",
+      "risetime": "07:30",
+      "tst_min": 349,
+      "tib_min": 470,
+      "se": 0.7426,
+      "nap_min": 0,
+      "caffeine_after_14": false,
+      "alcohol": false,
+      "screen_in_bed_min": 0
+    },
+    {
+      "day": 3,
+      "bedtime": "23:20",
+      "lights_off": "23:30",
+      "sol_min": 55,
+      "waso_min": 27,
+      "final_wake": "07:20",
+      "risetime": "07:30",
+      "tst_min": 388,
+      "tib_min": 490,
+      "se": 0.7918,
+      "nap_min": 0,
+      "caffeine_after_14": false,
+      "alcohol": false,
+      "screen_in_bed_min": 0
+    },
+    {
+      "day": 4,
+      "bedtime": "23:20",
+      "lights_off": "23:30",
+      "sol_min": 47,
+      "waso_min": 45,
+      "final_wake": "07:20",
+      "risetime": "07:30",
+      "tst_min": 378,
+      "tib_min": 490,
+      "se": 0.7714,
+      "nap_min": 0,
+      "caffeine_after_14": false,
+      "alcohol": false,
+      "screen_in_bed_min": 0
+    },
+    {
+      "day": 5,
+      "bedtime": "23:30",
+      "lights_off": "23:40",
+      "sol_min": 47,
+      "waso_min": 43,
+      "final_wake": "07:20",
+      "risetime": "07:30",
+      "tst_min": 370,
+      "tib_min": 480,
+      "se": 0.7708,
+      "nap_min": 0,
+      "caffeine_after_14": false,
+      "alcohol": false,
+      "screen_in_bed_min": 0
+    },
+    {
+      "day": 6,
+      "bedtime": "23:20",
+      "lights_off": "23:30",
+      "sol_min": 50,
+      "waso_min": 31,
+      "final_wake": "07:20",
+      "risetime": "07:30",
+      "tst_min": 389,
+      "tib_min": 490,
+      "se": 0.7939,
+      "nap_min": 0,
+      "caffeine_after_14": false,
+      "alcohol": false,
+      "screen_in_bed_min": 0
+    },
+    {
+      "day": 7,
+      "bedtime": "23:30",
+      "lights_off": "23:40",
+      "sol_min": 47,
+      "waso_min": 28,
+      "final_wake": "07:20",
+      "risetime": "07:30",
+      "tst_min": 385,
+      "tib_min": 480,
+      "se": 0.8021,
+      "nap_min": 0,
+      "caffeine_after_14": false,
+      "alcohol": false,
+      "screen_in_bed_min": 0
+    }
+  ],
+  "persona": {
+    "age": 45,
+    "gender": "male",
+    "occupation": "小餐馆老板",
+    "expressiveness": "brief",
+    "defensiveness": "mid",
+    "emotionality": "mid",
+    "adherence_tendency": 0.55,
+    "constraints": [
+      "晚上十点才打烊"
+    ]
+  },
+  "prefilled": [],
+  "opening_complaint": "我最近睡眠有点问题，晚上睡不好，白天状态也受影响。",
+  "clues": [
+    {
+      "id": "sample-008-c1",
+      "content": "一躺下就开始算账，房租、进货、明天几桌预订，停不下来。",
+      "reveal_topic": "worry_rumination",
+      "deny_first": false,
+      "supports": "P3"
+    },
+    {
+      "id": "sample-008-c2",
+      "content": "白天忙起来还好，一到快睡觉的点就莫名紧张，心跳也快。",
+      "reveal_topic": "anxiety",
+      "deny_first": true,
+      "supports": "P3"
+    },
+    {
+      "id": "sample-008-c3",
+      "content": "戴着手环看睡眠分数，分数一低第二天就更紧张。",
+      "reveal_topic": "fear_of_sleeplessness",
+      "deny_first": false,
+      "supports": "P3"
+    },
+    {
+      "id": "sample-008-c4",
+      "content": "现在一看到卧室的床就有点发怵。",
+      "reveal_topic": "sleep_elsewhere",
+      "deny_first": false,
+      "supports": "P2"
+    }
+  ]
+}

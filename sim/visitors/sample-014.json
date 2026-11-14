@@ -1,0 +1,176 @@
+{
+  "schema_version": "0.1.0",
+  "id": "sample-014",
+  "split": "sample",
+  "seed": 90014,
+  "main_path": "P4",
+  "secondary_path": null,
+  "referral": "R0",
+  "crisis": {
+    "level": "none",
+    "phq9_item9": 0,
+    "history": true
+  },
+  "contraindications": [],
+  "indices": {
+    "isi": 14,
+    "phq9": 6,
+    "gad7": 5,
+    "stop_bang": 1,
+    "meq": 28,
+    "dbas16": 3.6,
+    "psas": 23,
+    "screen_min_before_sleep": 25
+  },
+  "diary": [
+    {
+      "day": 1,
+      "bedtime": "01:10",
+      "lights_off": "01:20",
+      "sol_min": 68,
+      "waso_min": 17,
+      "final_wake": "08:20",
+      "risetime": "08:30",
+      "tst_min": 335,
+      "tib_min": 440,
+      "se": 0.7614,
+      "nap_min": 0,
+      "caffeine_after_14": false,
+      "alcohol": false,
+      "screen_in_bed_min": 20
+    },
+    {
+      "day": 2,
+      "bedtime": "00:50",
+      "lights_off": "01:00",
+      "sol_min": 61,
+      "waso_min": 12,
+      "final_wake": "08:20",
+      "risetime": "08:30",
+      "tst_min": 367,
+      "tib_min": 460,
+      "se": 0.7978,
+      "nap_min": 0,
+      "caffeine_after_14": false,
+      "alcohol": false,
+      "screen_in_bed_min": 20
+    },
+    {
+      "day": 3,
+      "bedtime": "01:00",
+      "lights_off": "01:10",
+      "sol_min": 77,
+      "waso_min": 12,
+      "final_wake": "08:20",
+      "risetime": "08:30",
+      "tst_min": 341,
+      "tib_min": 450,
+      "se": 0.7578,
+      "nap_min": 0,
+      "caffeine_after_14": false,
+      "alcohol": false,
+      "screen_in_bed_min": 20
+    },
+    {
+      "day": 4,
+      "bedtime": "01:00",
+      "lights_off": "01:10",
+      "sol_min": 78,
+      "waso_min": 15,
+      "final_wake": "08:20",
+      "risetime": "08:30",
+      "tst_min": 337,
+      "tib_min": 450,
+      "se": 0.7489,
+      "nap_min": 0,
+      "caffeine_after_14": false,
+      "alcohol": false,
+      "screen_in_bed_min": 20
+    },
+    {
+      "day": 5,
+      "bedtime": "00:50",
+      "lights_off": "01:00",
+      "sol_min": 78,
+      "waso_min": 0,
+      "final_wake": "08:20",
+      "risetime": "08:30",
+      "tst_min": 362,
+      "tib_min": 460,
+      "se": 0.787,
+      "nap_min": 0,
+      "caffeine_after_14": false,
+      "alcohol": false,
+      "screen_in_bed_min": 20
+    },
+    {
+      "day": 6,
+      "bedtime": "02:30",
+      "lights_off": "02:40",
+      "sol_min": 74,
+      "waso_min": 12,
+      "final_wake": "11:40",
+      "risetime": "11:50",
+      "tst_min": 454,
+      "tib_min": 560,
+      "se": 0.8107,
+      "nap_min": 0,
+      "caffeine_after_14": false,
+      "alcohol": false,
+      "screen_in_bed_min": 20
+    },
+    {
+      "day": 7,
+      "bedtime": "02:30",
+      "lights_off": "02:40",
+      "sol_min": 75,
+      "waso_min": 20,
+      "final_wake": "11:40",
+      "risetime": "11:50",
+      "tst_min": 445,
+      "tib_min": 560,
+      "se": 0.7946,
+      "nap_min": 0,
+      "caffeine_after_14": false,
+      "alcohol": false,
+      "screen_in_bed_min": 20
+    }
+  ],
+  "persona": {
+    "age": 35,
+    "gender": "female",
+    "occupation": "游戏公司程序员",
+    "expressiveness": "brief",
+    "defensiveness": "low",
+    "emotionality": "low",
+    "adherence_tendency": 0.65,
+    "constraints": [
+      "公司十点打卡"
+    ]
+  },
+  "prefilled": [],
+  "opening_complaint": "这阵子睡得很不好，每天早上都很难受，白天也没劲。",
+  "clues": [
+    {
+      "id": "sample-014-c1",
+      "content": "从学生时代起就是夜猫子，让我早睡就是躺着熬。",
+      "reveal_topic": "chronotype",
+      "deny_first": false,
+      "supports": "P4"
+    },
+    {
+      "id": "sample-014-c2",
+      "content": "假期没手机也要两三点才困，能睡到中午，睡着了睡得挺好。",
+      "reveal_topic": "chronotype",
+      "deny_first": false,
+      "supports": "P4"
+    },
+    {
+      "id": "sample-014-c3",
+      "content": "三年前有一次吃了很多药住过院，现在一直在复查，状态挺稳定的。",
+      "reveal_topic": "self_harm",
+      "deny_first": false,
+      "supports": "crisis"
+    }
+  ]
+}
