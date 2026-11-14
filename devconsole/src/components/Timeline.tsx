@@ -67,13 +67,17 @@ function Node({
       <div className="small muted">{node.sub}</div>
       {poll && poll.enabled && (
         <div className="node-progress small">
-          {p ? (
+          {p && p.total !== null ? (
             <>
               <progress max={p.total} value={(p.completed ?? 0) + (p.failed ?? 0)} aria-label={`${node.title} 进度`} />
               <span>
                 {p.completed ?? '—'} / {p.total} 个来访完成{p.failed ? `，失败 ${p.failed}` : ''}
               </span>
             </>
+          ) : p ? (
+            <span>
+              已完成 {p.completed ?? '—'} 个来访{p.failed ? `，失败 ${p.failed}` : ''}（后端未给出总人数）
+            </span>
           ) : poll.data ? (
             <span className="muted">后端未提供进度</span>
           ) : null}

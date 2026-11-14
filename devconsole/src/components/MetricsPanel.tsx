@@ -97,7 +97,7 @@ function BigNumber({ k, m, run }: { k: RunKey; m: ExperimentManifest; run: RunDa
           <div className="big-value big-empty">{pendingText(run, m[k].state)}</div>
           {partial !== undefined && progress && (
             <div className="small">
-              <Badge tone="warn">阶段统计</Badge> 已完成 {progress.completed ?? '—'} / {progress.total}：{pct(partial)}（不是最终指标）
+              <Badge tone="warn">阶段统计</Badge> 已完成 {progress.completed ?? '—'}{progress.total !== null ? ` / ${progress.total}` : ''}：{pct(partial)}（不是最终指标）
             </div>
           )}
         </>

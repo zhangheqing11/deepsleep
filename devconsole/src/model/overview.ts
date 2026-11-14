@@ -118,7 +118,7 @@ export interface TimelineNode {
   title: string;
   sub: string;
   state: StageState;
-  progress: { completed: number | null; failed: number | null; total: number } | null;
+  progress: { completed: number | null; failed: number | null; total: number | null } | null;
 }
 
 function runSub(r: ManifestRun): string {
