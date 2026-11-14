@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#214d40">
+    <title>DeepSleep 眠序 · 静态设计参考</title>
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <div class="page-shell">
+      <header class="site-header">
+        <span class="brand-mark" aria-hidden="true">◔</span>
+        <span class="brand">DeepSleep <small>眠序</small></span>
+        <span class="preview-label">静态界面参考</span>
+      </header>
+
+      <div class="layout">
+        <nav class="sidebar" aria-label="主导航">
+          <a href="#dialogue" class="nav-link nav-chat">对话</a>
+          <a href="#settings" class="nav-link nav-settings">个性化设置</a>
+          <p class="sidebar-note">模拟案例展示<br>不接收真实个人信息</p>
+        </nav>
+
+        <main>
+          <section id="dialogue" class="surface dialogue" aria-label="对话示意">
+            <div class="section-heading">
+              <span class="eyebrow">今晚的安排</span>
+              <h1>先把今晚的时间安排好</h1>
+              <p>明天几点需要起床？今晚大概几点忙完？</p>
+            </div>
+
+            <div class="conversation">
+              <div class="bubble user">七点起，十点半能忙完。</div>
+              <div class="bubble assistant">那我们先约 23:00 上床，22:30 开始准备。这个时间合适吗？</div>
+              <div class="bubble user">可能还要改一份材料。</div>
+              <div class="bubble assistant">可以再商量一个实际能做到的时间。先说说大约要忙到几点？</div>
+            </div>
+
+            <div class="plan-summary">
+              <span><b>22:30</b><small>睡前准备</small></span>
+              <span class="plan-separator" aria-hidden="true"></span>
+              <span><b>23:00</b><small>计划上床</small></span>
+              <p>时间只是模拟案例，须由用户确认后启用。</p>
+            </div>
+          </section>
+
+          <section id="settings" class="surface settings" aria-label="个性化设置示意">
+            <div class="section-heading">
+              <span class="eyebrow">个性化设置</span>
+              <h1>把建议调到适合自己</h1>
+              <p>这里展示设置的排布，不保存任何输入。</p>
+            </div>
+            <div class="setting-row"><div><b>常用起床时间</b><small>作为商量今晚计划的起点</small></div><span>07:00</span></div>
+            <div class="setting-row"><div><b>睡前准备</b><small>提前留出收尾与放松时间</small></div><span>30 分钟</span></div>
+            <div class="setting-row"><div><b>灯光建议 · 演示</b><small>只展示建议，不连接灯具</small></div><span>暖光 30%</span></div>
+            <div class="setting-row"><div><b>娱乐使用 · 演示</b><small>只展示提醒，不限制应用或网站</small></div><span>仅提醒</span></div>
+            <div class="setting-row"><div><b>聊天 Agent · 演示</b><small>本页面没有网络连接入口</small></div><span>未连接</span></div>
+            <p class="review-copy">【健康与风险提示文案待团队审定】</p>
+          </section>
+        </main>
+
+        <aside class="insight-panel" aria-label="反馈与版本布局示意">
+          <div class="aside-heading"><span class="eyebrow">反馈怎样被使用</span><h2>下一次，少犯同一种错</h2></div>
+          <div class="insight-card"><small>模拟反馈</small><p>“灯光太暗，我还要读一会儿。”</p></div>
+          <div class="insight-card"><small>规则变化示意</small><p>先询问是否仍需阅读，再讨论亮度建议。</p></div>
+          <div class="insight-card"><small>版本回退示意</small><p>v1 与 v2 的差异和评测结果由正式进化看板提供。</p></div>
+          <p class="aside-foot">本页是页面布局示意。所示反馈和评分不是比赛指标。</p>
+        </aside>
+      </div>
+    </div>
+  </body>
+</html>
