@@ -24,7 +24,7 @@ LLM 已解析输出、重试、否决记录、history 核验结果、被丢弃�
 - `uncertainty` = 权重的归一化香农熵 H(w)/ln 5（0 = 全部集中在一条路径，1 = 均匀）；另记 `margin` = 第一名减第二名。
 - 分类器失败或超时（`path_classifier.timeout_s` = 6）→ 均匀权重、`status` 记 error/timeout，会谈继续。
 - 分类器可插拔：`ds_flash`（JSON 输出）、`jev`（TypeSafe 两道 Choice 题）、`mock`；接口只吃对话条目、返回 `PathState`，之后的微调小模型实现同一个 `classify(dialogue)` 即可。Gemini Decision / StartLux 尚未实现，可照 `safety/judges.py` 写。
-- 策略原则（冻结在 `strategy.md`）：路径不确定时选区分度最高的问题；attitude = resistant 时改支持性策略并记 `revisit_later`，合作后回到这些话题；有【安全层指令】时策略必须是 verify_safety。具体鉴别问法放 playbook（可进化），v0 只写了 PC-3 一条。
+- 策略原则（冻结在 `strategy.md`）：路径不确定时选区分度最高的问题；attitude = resistant 时改支持性策略并记 `revisit_later`，合作后回到这些话题；有【安全层指令】时策略必须是 verify_safety。具体鉴别问法放 playbook（可进化），v1 只写了 PC-3 一条。
 - `pipeline.merge_strategy_response: true` 把策略与回复合并成一次调用（`prompts/turn_merged.md`），用于比较延迟；`--merged` 命令行开关同效。
 - 最终 `path_pred` = 本轮结束时分类器权重的 argmax，`path_confidence` = 其权重；`referral_pred` 来自记忆更新。
 
@@ -46,7 +46,7 @@ LLM 已解析输出、重试、否决记录、history 核验结果、被丢弃�
 | 文件 | 内容 |
 |---|---|
 | `config.yaml` | **冻结配置**：agent 模型参数（temperature 0 等）、`path_classifier`、`pipeline`、每轮回合上限 `round_turn_cap`（C4）、并发 ≤ 50、否决重写次数 |
-| `playbook_v0.md` | 五个章节严格对应 `playbook_section`；只写"有筛查工具可用"，不写何时用（C3） |
+| `playbook_v1.md` | 五个章节严格对应 `playbook_section`；只写"有筛查工具可用"，不写何时用（C3） |
 | `prompts/` | `boundaries.md`（冻结边界，所有子智能体共用）+ 各子智能体 prompt + `path_classifier.md` |
 | `session.py` | 双环会谈循环 + 安全层集成 + 处方否决 |
 | `classifier.py` · `mock_agent.py` · `llm.py` | 路径分类器；离线 mock 策略；ds flash 客户端（与分类器共用一个在途请求上限） |

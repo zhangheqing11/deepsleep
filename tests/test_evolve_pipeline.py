@@ -42,12 +42,12 @@ def test_commits_best_candidate_and_matches_contract(tmp_path):
     evo, evaluator, repo = run_evolve(tmp_path, [BLOCKED, GOOD, WORSE],
                                       human_feedback=example("evolution.v1-v2.json")["human_feedback"])
     assert VALIDATE(evo) == []
-    assert (evo["outcome"], evo["chosen"], evo["from_version"], evo["to_version"]) == ("committed", "c2", "v0", "v1")
+    assert (evo["outcome"], evo["chosen"], evo["from_version"], evo["to_version"]) == ("committed", "c2", "v1", "v2")
     c1, c2, c3 = evo["candidates"]
     assert c1["hard_rule_violations"] and c1["val_metrics"] is None and not c1["veto"]["passed"]
     assert c2["passed"] and not c3["passed"] and c3["veto"]["passed"]
-    assert "v0+c1" not in evaluator.labels                       # blocked candidate never validated
-    assert repo.current_version() == "v1" and "标记GOOD" in repo.read()
+    assert "v1+c1" not in evaluator.labels                       # blocked candidate never validated
+    assert repo.current_version() == "v2" and "标记GOOD" in repo.read()
     assert evo["commit"]["sha"] == repo.head() and evo["commit"]["author"] == "deepsleep-agent"
     assert evo["diff"].startswith("--- a/playbook.md\n+++ b/playbook.md") and "+标记GOOD" in evo["diff"]
     assert evo["human_review"] == []                             # blocked high change is not offered for review
@@ -59,7 +59,7 @@ def test_kept_previous_when_nothing_beats_baseline(tmp_path):
     evo, _, repo = run_evolve(tmp_path, [BLOCKED, WORSE, []])
     assert VALIDATE(evo) == []
     assert (evo["outcome"], evo["chosen"], evo["to_version"], evo["commit"], evo["diff"]) == ("kept_previous", None, None, None, None)
-    assert repo.current_version() == "v0" and repo.versions() == ["v0"]
+    assert repo.current_version() == "v1" and repo.versions() == ["v1"]
 
 
 def test_human_veto_blocks_high_change(tmp_path):
@@ -76,7 +76,7 @@ def test_approve_cannot_rescue_hard_blocked_change(tmp_path):
     review.submit(config, "evo-test", "c1-plan_rules-1", "approve")
     evo, evaluator, _ = run_evolve(tmp_path, [BLOCKED, WORSE, []], config=config)
     assert not evo["candidates"][0]["passed"] and evo["outcome"] == "kept_previous"
-    assert evo["human_review"] == [] and "v0+c1" not in evaluator.labels
+    assert evo["human_review"] == [] and "v1+c1" not in evaluator.labels
 
 
 def test_review_timeout_passes_under_default_policy(tmp_path):
@@ -108,7 +108,7 @@ def test_baseline_evaluated_when_missing_and_evaluator_errors_isolated(tmp_path)
     evaluator = MockEvaluator(SCORES, fail_on="标记WORSE")
     evo, evaluator, _ = run_evolve(tmp_path, [WORSE, GOOD, []], evaluator=evaluator, baseline_val_metrics=None)
     assert VALIDATE(evo) == []
-    assert "v0" in evaluator.labels and evo["baseline_val_metrics"] == BASELINE
+    assert "v1" in evaluator.labels and evo["baseline_val_metrics"] == BASELINE
     assert evo["candidates"][0]["val_metrics"] is None and not evo["candidates"][0]["passed"]
     assert evo["chosen"] == "c2"
 
@@ -137,7 +137,7 @@ def test_second_generation_builds_on_first(tmp_path):
                              primary=MockLLM(reply(HIGH, [], [])), evolution_id="evo-2",
                              baseline_val_metrics=SCORES["标记GOOD"]))
     assert VALIDATE(evo) == [] or all(TIMEOUT_CONFLICT in e for e in VALIDATE(evo))
-    assert (evo["from_version"], evo["to_version"]) == ("v1", "v2")
+    assert (evo["from_version"], evo["to_version"]) == ("v2", "v3")
     text = PlaybookRepo(config).read()
     assert "标记GOOD" in text and "标记HIGH" in text
 

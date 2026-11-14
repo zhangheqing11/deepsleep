@@ -9,7 +9,7 @@ import pytest
 from engine.evolve import llm
 from engine.evolve.config import load_config
 from engine.evolve.reflector import reflect
-from evolve_support import FIXTURE_V0, MockLLM, change, example, reply
+from evolve_support import FIXTURE_INITIAL, MockLLM, change, example, reply
 
 GOOD = reply(*[[change("questioning_strategy", f"先询问作息细节{i}。")] for i in range(3)])
 
@@ -44,7 +44,7 @@ def sdk(monkeypatch, result=None, error=None):
 
 
 def run_reflection(config, primary, fallback, error=None):
-    return asyncio.run(reflect(playbook_text=FIXTURE_V0.read_text(), version="v0",
+    return asyncio.run(reflect(playbook_text=FIXTURE_INITIAL.read_text(), version="v1",
         run_report=example("run_report.run1.json"), sessions={}, feedback=[], config=config,
         primary=primary, fallback=fallback, primary_error=error))
 
@@ -191,7 +191,7 @@ def test_reports_preserve_provider_metadata_without_contract_changes(monkeypatch
 
     sdk(monkeypatch, error=RuntimeError("failure") if fall_back else None)
     # Read-only in-memory repo: no git init/commit needed to verify report serialization.
-    repo = NS(init=lambda: None, current_version=lambda: "v0", read=lambda: FIXTURE_V0.read_text())
+    repo = NS(init=lambda: None, current_version=lambda: "v1", read=lambda: FIXTURE_INITIAL.read_text())
     config = make_config(tmp_path)
     evolution, insights = asyncio.run(evolve(
         run_report=example("run_report.run1.json"), sessions={}, config=config, repo=repo,

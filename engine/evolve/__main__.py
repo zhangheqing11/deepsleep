@@ -1,6 +1,6 @@
 """CLI for the evolve engine.
 
-  python -m engine.evolve reset                 # 一键重置 var/playbook-repo 到 v0
+  python -m engine.evolve reset                 # 一键重置 var/playbook-repo 到初始版本 v1
   python -m engine.evolve status                # 当前版本、版本列表、提交历史
   python -m engine.evolve rollback v1           # 以新提交回到 v1（保留历史）
   python -m engine.evolve review-list <evolution_id>
@@ -47,7 +47,7 @@ def main(argv: list[str] | None = None) -> int:
     config = load_config()
     repo = PlaybookRepo(config)
     if args.cmd == "reset":
-        print(f"已重置到 v0: {repo.reset_to_v0()}")
+        print(f"已重置到初始版本 v1: {repo.reset_to_initial()}")
     elif args.cmd == "status":
         repo.init()
         print(json.dumps({"current": repo.current_version(), "versions": repo.versions(), "log": repo.log()},

@@ -30,7 +30,12 @@ def _load_default() -> dict:
 def load_config(overrides: dict | None = None) -> dict:
     """Return a deep copy of the frozen config, optionally merged with test overrides."""
     config = copy.deepcopy(_load_default())
-    for key, value in (overrides or {}).items():
+    overrides = copy.deepcopy(overrides or {})
+    # Normalize the legacy key before merging so it can override the default path.
+    repo_overrides = overrides.get("repo", {})
+    if "initial_path" not in repo_overrides and "v0_path" in repo_overrides:
+        repo_overrides["initial_path"] = repo_overrides["v0_path"]
+    for key, value in overrides.items():
         if isinstance(value, dict) and isinstance(config.get(key), dict):
             config[key].update(value)
         else:

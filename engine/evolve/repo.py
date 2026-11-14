@@ -1,9 +1,9 @@
 """Independent local git repo for agent-written playbook versions (var/playbook-repo).
 
 Layout: ``playbook.md`` + ``VERSION``. Each generation is one commit authored by the
-agent and tagged ``vN``; v0 is copied from the team repo and authored by the team.
+agent and tagged ``vN``; v1 is copied from the team repo and authored by the team.
 ``rollback`` makes a new commit restoring an old version (history is kept);
-``reset_to_v0`` deletes and re-creates the repo for a clean demo.
+``reset_to_initial`` deletes and re-creates the repo for a clean demo.
 """
 from __future__ import annotations
 
@@ -51,24 +51,29 @@ class PlaybookRepo:
         return self._git("rev-parse", "HEAD")
 
     # -- lifecycle ------------------------------------------------------------------
-    def init(self, v0_text: str | None = None) -> str:
-        """Create the repo with v0 if it does not exist; return HEAD sha."""
+    def init(self, initial_text: str | None = None) -> str:
+        """Create the repo with v1 if it does not exist; return HEAD sha."""
         if self.exists():
             return self._git("rev-parse", "HEAD")
-        if v0_text is None:
-            v0_text = resolve(self.config["v0_path"]).read_text(encoding="utf-8")
+        if initial_text is None:
+            # Compatibility with configs supplied directly by older callers.
+            initial_path = self.config["initial_path"] if "initial_path" in self.config else self.config["v0_path"]
+            initial_text = resolve(initial_path).read_text(encoding="utf-8")
         self.path.mkdir(parents=True, exist_ok=True)
         self._git("init", "-q")
-        return self._commit(v0_text, "v0", "v0: 团队手写初始版本", author="team", tag=True)
+        return self._commit(initial_text, "v1", "v1: 团队手写初始版本", author="team", tag=True)
 
-    def reset_to_v0(self, v0_text: str | None = None) -> str:
-        """One-click demo reset: wipe the repo and re-create it at v0."""
+    def reset_to_initial(self, initial_text: str | None = None) -> str:
+        """One-click demo reset: wipe the repo and re-create it at v1."""
         ours = self.exists() and (self.path / "VERSION").is_file()
         if self.path.name != Path(self.config["path"]).name or (self.path.exists() and not ours):
             raise RuntimeError(f"拒绝删除非 playbook 版本库路径: {self.path}")
         if self.path.exists():
             shutil.rmtree(self.path)
-        return self.init(v0_text)
+        return self.init(initial_text)
+
+    # Compatibility alias for unmerged callers; resets to initial v1.
+    reset_to_v0 = reset_to_initial
 
     # -- queries --------------------------------------------------------------------
     def current_version(self) -> str:
@@ -85,7 +90,7 @@ class PlaybookRepo:
 
     def next_version(self) -> str:
         numbers = [int(_TAG.match(t).group(1)) for t in self.versions()]
-        return f"v{max(numbers, default=-1) + 1}"
+        return f"v{max(numbers, default=1) + 1}"
 
     def head(self) -> str:
         return self._git("rev-parse", "HEAD")

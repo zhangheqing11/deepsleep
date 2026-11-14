@@ -28,7 +28,7 @@ PROMPTS = ("boundaries", "strategy", "response", "turn_merged", "memory", "plan"
 
 
 def build_deps(*, config=None, llm=None, classifier=None, sim=None, screening=None, outcome=None, safety=None,
-               playbook=None, playbook_version="v0") -> EngineDeps:
+               playbook=None, playbook_version="v1") -> EngineDeps:
     config = load_config(config)
     # One limiter for every ds flash request the engine itself makes (agent sub-agents + path classifier).
     limiter = asyncio.Semaphore(config["agent_llm"]["max_inflight"])
@@ -80,8 +80,8 @@ def main(argv=None) -> int:
     parser.add_argument("--visitors", nargs="+", type=Path, default=[ROOT / "contracts/examples"])
     parser.add_argument("--run-id", default=time.strftime("dev-%Y%m%d-%H%M%S"))
     parser.add_argument("--out", type=Path, help="default var/runs/<run-id>")
-    parser.add_argument("--playbook", type=Path, help="default engine/playbook_v0.md")
-    parser.add_argument("--playbook-version", default="v0")
+    parser.add_argument("--playbook", type=Path, help="default engine/playbook_v1.md")
+    parser.add_argument("--playbook-version", default="v1")
     parser.add_argument("--sim", help="module:factory returning a VisitorSim (default: engine.stubs mock)")
     parser.add_argument("--screening", help="module:factory returning a ScreeningProvider")
     parser.add_argument("--outcome", help="module:factory returning a PlanOutcomeModel (4-week model)")

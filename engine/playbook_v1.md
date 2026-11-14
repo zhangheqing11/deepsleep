@@ -1,4 +1,4 @@
-# deepsleep 会谈 playbook v0
+# deepsleep 会谈 playbook v1
 
 > 团队手写的初始版本。之后的版本由 agent 自己改写（见 AGENTS.md 7.5）。
 > 章节标题严格对应契约 `playbook_section`，标题里的英文名是解析键，不要改动。

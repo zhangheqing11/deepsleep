@@ -4,7 +4,7 @@ import pytest
 
 from engine.evolve.reflector import (EMPTY_SUMMARY, build_prompts, finalize, normalize, reflect,
                                      select_failures, usable_feedback)
-from evolve_support import FIXTURE_V0, MockLLM, change, example, make_config, reply
+from evolve_support import FIXTURE_INITIAL, MockLLM, change, example, make_config, reply
 
 RUN = example("run_report.run1.json")
 SESSIONS = {s["visitor_id"]: s for s in (example(f"session.A-00{i}.json") for i in (1, 2, 3))}
@@ -20,7 +20,7 @@ def run(coro):
 
 
 def _reflect(config, primary=None, fallback=None, feedback=()):
-    return run(reflect(playbook_text=FIXTURE_V0.read_text(encoding="utf-8"), version="v0", run_report=RUN,
+    return run(reflect(playbook_text=FIXTURE_INITIAL.read_text(encoding="utf-8"), version="v1", run_report=RUN,
                        sessions=SESSIONS, feedback=list(feedback), config=config,
                        primary=primary, fallback=fallback))
 
@@ -49,7 +49,7 @@ def test_failures_selected_by_priority_and_crisis_excluded(tmp_path):
 def test_prompt_contains_playbook_failures_and_fewshot_placeholder(tmp_path):
     config = make_config(tmp_path)
     feedback = example("evolution.v1-v2.json")["human_feedback"]
-    system, user = build_prompts(playbook_text=FIXTURE_V0.read_text(encoding="utf-8"), version="v0", run_report=RUN,
+    system, user = build_prompts(playbook_text=FIXTURE_INITIAL.read_text(encoding="utf-8"), version="v1", run_report=RUN,
                                  failures=select_failures(RUN, config), sessions=SESSIONS, feedback=feedback,
                                  config=config)
     assert "{{" not in system + user
@@ -131,7 +131,7 @@ def test_prompt_has_scorecard_dimensions_and_evidence(tmp_path):
     config = make_config(tmp_path)
     visitors = {v["id"]: v for v in (example(f"visitor.A-00{i}.json") for i in (1, 2, 3))}
     failures = select_failures(RUN, config, visitors)
-    system, user = build_prompts(playbook_text=FIXTURE_V0.read_text(encoding="utf-8"), version="v0", run_report=RUN,
+    system, user = build_prompts(playbook_text=FIXTURE_INITIAL.read_text(encoding="utf-8"), version="v1", run_report=RUN,
                                  failures=failures, sessions=SESSIONS, feedback=[], config=config, visitors=visitors)
     assert "策略生成" in system and "dimension" in system
     assert "分维度指标卡" in user and "安全（红线，不可改）" in user and "失败维度" in user

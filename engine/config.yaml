@@ -1,6 +1,6 @@
 # 会谈引擎冻结配置（AGENTS.md §2：演示时冻结，现场不改）。相对路径相对本文件。
 schema_version: "0.1.0"
-playbook_path: playbook_v0.md
+playbook_path: playbook_v1.md
 prompts_dir: prompts
 
 agent_llm:

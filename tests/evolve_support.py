@@ -11,7 +11,8 @@ from engine.evolve.config import load_config
 
 ROOT = Path(__file__).resolve().parents[1]
 EXAMPLES = ROOT / "contracts" / "examples"
-FIXTURE_V0 = Path(__file__).resolve().parent / "fixtures" / "evolve" / "playbook_v0.md"
+# Keep the historical fixture filename unchanged.
+FIXTURE_INITIAL = Path(__file__).resolve().parent / "fixtures" / "evolve" / "playbook_v0.md"
 
 
 def example(name: str) -> dict:
@@ -23,7 +24,7 @@ BASELINE = example("evolution.v1-v2.json")["baseline_val_metrics"]
 
 def make_config(tmp_path: Path, **overrides) -> dict:
     config = load_config({
-        "repo": {"path": str(tmp_path / "var" / "playbook-repo"), "v0_path": str(FIXTURE_V0)},
+        "repo": {"path": str(tmp_path / "var" / "playbook-repo"), "initial_path": str(FIXTURE_INITIAL)},
         "review": {"run_dir": str(tmp_path / "var" / "evolve"), "timeout_s": 0, "poll_interval_s": 0.01},
     })
     for section, values in overrides.items():

@@ -12,7 +12,7 @@
 | （待开）v0.1.1 契约修复分支 | 契约 v0.1.0 已合入 main（[PR #1](https://github.com/zhangheqing11/deepsleep/pull/1)，2026-11-14，前端组与数据科学同学已线下 approve）。校验器漏检、示例补全和字段调整（F07/F08/F16）按 [`docs/reviews/pr1-contracts-fixes.md`](reviews/pr1-contracts-fixes.md) 修，作为 `[contract]` 后续 PR | 修复已做完并复验，本地分支未 push，待 G1–G4 定案（见 G 节） |
 | `zhq/domain-safety` | 安全层：规则 + 判断器链（ds flash → Jev → 规则兜底）、history_check、定稿词表与 48 条测试集、已审定话术、热线已实测、对比工具、处方硬否决 | [PR #6](https://github.com/zhangheqing11/deepsleep/pull/6)：判断器链与热线核实已推送；按 [`reviews/pr6-safety-fixes.md`](reviews/pr6-safety-fixes.md) 修 S1–S10 中（Codex），修完复验再合并。剩 A4 阈值冻结（待留出集） |
 | `zhq/sim-scoring-min` | S2：18 个样例来访、模拟来访、筛查、4 周状态模型（占位）、计分、`make smoke`、`docs/handoff-algo.md` | 已 push（8081dbc），88 测试 + smoke 通过；未开 PR |
-| `zhq/engine-session` | S3：两轮会谈循环、接安全层、playbook v0、50 路并发；**正按 I 节三环架构改造** | 已 push（520d984），278 测试通过；未开 PR |
+| `zhq/engine-session` | S3：两轮会谈循环、接安全层、playbook v1、50 路并发；**正按 I 节三环架构改造** | 已 push（520d984），278 测试通过；未开 PR |
 | `zhq/engine-evolve` | S4：反思器、硬规则、C 门禁、只否决审核、playbook 仓库；**正按 I 节补多维评估** | 已 push（d9194c0），311 测试通过；未开 PR |
 
 ## 并行开发计划（统筹会话 11/14 10:00 定）
@@ -23,8 +23,8 @@
 |---|---|---|---|
 | S1 判断器对比（A2/A4） | 代码、数据、话术已在 PR #6 完成。剩下：在 `.env` 配好各家 key、准备好 VPN 后，跑五家真实对比；整理结果，交心理学同学拍板判断器选择与阈值，冻结后开小 PR | `zhq/domain-safety` 合并后的 main | 需要 key；不阻塞 S2–S4（S3 可先用 mock 判断器） |
 | S2 `zhq/sim-scoring-min` | 最小版来访生成：按 `domain/path_clues.md` 每条路径 3–4 个手写来访，共 15–20 个，含自评、history、R1–R3；模拟来访（ds flash，分层线索，deny_first）+ mock；简易 4 周状态模型（`sim/params.yaml`，标明是占位）；计分产出 run_report；`make smoke` 用 10 个来访 + mock LLM；`docs/handoff-algo.md` | main | 只依赖契约；session 结构以契约示例为准 |
-| S3 `zhq/engine-session` | 会谈循环：两轮对话、每轮判路径和转介、处方；`engine/playbook_v0.md`（章节对应 playbook_section，不写何时筛查）；ds flash 客户端；接安全层（每条来访发言过安全层；history_check 注入与兜底；passive 插安全确认；active 走 crisis_exit）；筛查工具；回合上限；40–50 路并发；产出 session JSON | `zhq/domain-safety` | 依赖安全层接口；跑端到端需要 S2 的来访和计分 |
-| S4 `zhq/engine-evolve` | 反思器（Opus 5.5，失败降级 ds flash）→ 3 份增量候选（按章节标关键度）→ 硬规则（`domain/vetoes.py`）→ 验证集 C 门禁（`baseline_val_metrics`）→ 人类审核只能否决 → `var/playbook-repo` 独立 git、一键重置 v0 → evolution JSON。批注环节（C1）等主循环跑通后再做 | `zhq/domain-safety` | 先对着契约示例和 mock 开发；端到端需要 S2 和 S3 |
+| S3 `zhq/engine-session` | 会谈循环：两轮对话、每轮判路径和转介、处方；`engine/playbook_v1.md`（章节对应 playbook_section，不写何时筛查）；ds flash 客户端；接安全层（每条来访发言过安全层；history_check 注入与兜底；passive 插安全确认；active 走 crisis_exit）；筛查工具；回合上限；40–50 路并发；产出 session JSON | `zhq/domain-safety` | 依赖安全层接口；跑端到端需要 S2 的来访和计分 |
+| S4 `zhq/engine-evolve` | 反思器（Opus 5.5，失败降级 ds flash）→ 3 份增量候选（按章节标关键度）→ 硬规则（`domain/vetoes.py`）→ 验证集 C 门禁（`baseline_val_metrics`）→ 人类审核只能否决 → `var/playbook-repo` 独立 git、一键重置 v1 → evolution JSON。批注环节（C1）等主循环跑通后再做 | `zhq/domain-safety` | 先对着契约示例和 mock 开发；端到端需要 S2 和 S3 |
 
 共享文件（`Makefile`、`requirements.txt`）只做最小追加，合并时以 rebase 解决冲突。PR #1 已于 11/14 合并，新分支一律基于 main。
 
@@ -56,7 +56,7 @@
 |---|---|---|---|---|
 | C1 | **反思器第一步加"批注"环节（auto_critic）** | 不做成独立子智能体，而是作为反思器流程的第一步。批注 agent 用 ds flash 并行，给每个失败案例写一条带临床理由的批注，few-shot 用心理学同学写的示范。批注进看板等专家确认、驳回或改写，只有确认过的才喂给反思器。人确认有超时，超时的批注不进入。prompt 和 few-shot 赛前冻结。这样现场人的工作量从"写纠正"降到"点确认"，叙事是"专家示范，机器放大" | 字段已进契约补丁 2（`human_feedback.source/status`）；实现归 `engine-evolve` PR | 主循环跑通后再做（**18:00 决策点之前不做**）；C2 |
 | C2 | 心理学同学写 3–5 条示范批注 | 不管做不做 C1，都可以直接作为反思器的 few-shot | 放进 `engine/prompts/` | — |
-| C3 | playbook v0 的章节严格对应契约 `playbook_section` | communication_style / questioning_strategy / path_discrimination / plan_rules / referral_rules。v0 只说"有筛查工具可用"，**不说什么时候用**，给进化留空间 | `engine/playbook_v0.md` | — |
+| C3 | playbook v1 的章节严格对应契约 `playbook_section` | communication_style / questioning_strategy / path_discrimination / plan_rules / referral_rules。v1 只说"有筛查工具可用"，**不说什么时候用**，给进化留空间 | `engine/playbook_v1.md` | — |
 | C4 | 每轮回合上限是引擎的冻结配置 | 筛查工具调用也占一个回合；这个上限防止 agent 靠"全都筛"刷召回 | `engine/` | — |
 | C5 | 人类审核只能否决 | 只针对 high 关键度的改动；超时视为不生效；不能放行被硬规则拦下的改动 | `engine/` gate | 契约已定 |
 | C6 | 消融实验（答辩备用） | 反思器换成 ds flash 后是否仍有提升；有批注 vs 无批注 | `analysis/` | 主循环 |
