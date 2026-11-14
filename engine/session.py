@@ -6,8 +6,8 @@ Loop 1, every agent action (sub-agents with frozen prompts and harness):
   response                 -> text + acts                           (playbook: communication_style)
   (pipeline.merge_strategy_response = true runs strategy + response as one call)
   memory update            -> round 1 combined with plan; round 2 separate referral/summary
-Round end: final classification -> path_pred (argmax) / path_confidence; plan (round 1 provisional, round 2 final;
-  playbook: plan_rules, referral_rules) -> vetoes -> closing message -> visitor reply.
+Round end: classification -> plan (round 1 provisional, round 2 final;
+  playbook: plan_rules, referral_rules) -> vetoes -> closing message -> visitor reply -> final classification.
 Loop 2, start of round 2: f_eval = PlanOutcomeModel on the round-1 plan (4-week simulation),
   f_select = maintain | adjust (playbook: plan_rules, referral_rules); both feed round-2 strategy and plan.
 
@@ -34,6 +34,7 @@ from .llm import AgentLLM, LLMError, TruncatedOutput
 from .mock_agent import MockAgentLLM
 from .telemetry import CALL_SCOPE, record_call
 from .playbook import Playbook, strip_locks
+from .plan_postprocess import annotate_restriction, disclosed_tib, explicit_restriction
 from .topics import TOPIC_PATTERNS, tag_topics
 
 SCHEMA_VERSION = "0.1.0"
@@ -232,27 +233,35 @@ class SessionRunner:
 
     async def _close_round(self) -> None:
         rnd = self.current
-        rnd.path_state = await self._classify_current()
-        effective = rnd.path_state if rnd.path_state.status == "ok" else self._last_path
-        rnd.path_pred = effective.top if effective else None
-        rnd.path_confidence = round(effective.weights[effective.top], 4) if effective else None
-        self.trace["path_probs"].append({"round": rnd.number, "final": True, **rnd.path_state.to_dict(),
-                                         "path_pred": rnd.path_pred or "unknown",
-                                         "prediction_source": "current" if rnd.path_state.status == "ok" else
-                                         "previous_success" if effective else "unknown"})
+        await self._set_round_path()
+        last_visitor = sum(e['speaker'] == 'visitor' for e in self.entries)
         merged = rnd.number == 1 and self.deps.config["pipeline"].get("merge_memory_plan", False) and not self.crisis
         if not merged:
             memory = await self._ask("memory", self._messages("memory", self._snapshot(0)), self._state("memory"),
                                      _valid_memory)
             self._save_memory(memory)
-        if self.crisis:
-            return
-        await self._make_plan(rnd.number, merged_memory=merged)
-        if self.plans[rnd.number]["closing_message"]:
-            self._add("agent", self.plans[rnd.number]["closing_message"])
-            await self._visitor_speaks(speculate=False, record_topics=False)  # a statement, not a question
         if not self.crisis:
-            await self._flush_history_check()
+            await self._make_plan(rnd.number, merged_memory=merged)
+            if self.plans[rnd.number]["closing_message"]:
+                self._add("agent", self.plans[rnd.number]["closing_message"])
+                await self._visitor_speaks(speculate=False, record_topics=False)
+            if not self.crisis:
+                await self._flush_history_check()
+        # Include closing and any safety-followup replies, without another agent action.
+        if sum(e['speaker'] == 'visitor' for e in self.entries) > last_visitor:
+            await self._set_round_path()
+        effective = rnd.path_state if rnd.path_state.status == "ok" else self._last_path
+        self.trace["path_probs"].append({"round": rnd.number, "final": True, **rnd.path_state.to_dict(),
+                                         "path_pred": rnd.path_pred or "unknown",
+                                         "prediction_source": "current" if rnd.path_state.status == "ok" else
+                                         "previous_success" if effective else "unknown"})
+
+    async def _set_round_path(self) -> None:
+        rnd = self.current
+        rnd.path_state = await self._classify_current()
+        effective = rnd.path_state if rnd.path_state.status == "ok" else self._last_path
+        rnd.path_pred = effective.top if effective else None
+        rnd.path_confidence = round(effective.weights[effective.top], 4) if effective else None
 
     async def _evaluate_and_select(self) -> None:
         """Loop 2: f_eval (4-week simulation of the round-1 plan) then f_select (maintain | adjust)."""
@@ -541,6 +550,9 @@ class SessionRunner:
             if merged_memory:
                 self._save_memory(result["memory"])
             plan, extras = self._plan_from(result)
+            evidence = annotate_restriction(plan, extras, self.entries, self.memory)
+            self.trace.setdefault("plan_postprocessing", []).append(
+                {"round": number, "attempt": attempt, **evidence})
             violations = self._plan_violations(plan, extras)
             hard = [v for v in violations if v.severity == "hard"]
             self.trace["vetoes"].append({"stage": "plan", "round": number, "attempt": attempt,
@@ -549,7 +561,20 @@ class SessionRunner:
                 break
             feedback = "；".join(dict.fromkeys(v.message for v in hard))
         if hard:
+            restriction_vetoed = "sleep_restriction" in plan["components"] and any(
+                v.code == "contraindication_violation" and v.field in
+                {"components", "contraindications_checked", "age"} for v in hard)
             plan = self._remediate(plan, hard)
+            if restriction_vetoed:
+                baseline, _ = disclosed_tib(self.entries, self.memory)
+                if baseline is not None:
+                    plan["tib_minutes"] = max(baseline, plan["tib_minutes"])
+                    plan["bedtime"] = _minus_minutes(plan["risetime"], plan["tib_minutes"])
+                # Removing a label alone leaves the rejected prescription in prose/cards.
+                extras["closing_message"] = ""
+                plan["cards"] = []
+                if explicit_restriction(plan["referral_advice"] or ""):
+                    plan["referral_advice"] = None
             extras["closing_message"] = self._redact_text(extras["closing_message"], "closing_message")
             plan["referral_advice"] = self._redact_text(plan["referral_advice"] or "", "referral_advice") or None
             for card in plan["cards"]:

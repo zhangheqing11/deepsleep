@@ -1,0 +1,1638 @@
+{
+  "source": "/Users/zhangheqing/bohack/ds-accept/var/integ/accept-ten-20261114-165333",
+  "cases": [
+    {
+      "visitor_id": "sample-007",
+      "round": 1,
+      "entries": [
+        {
+          "turn": 1,
+          "speaker": "visitor",
+          "text": "最近晚上睡眠质量很差，要好久才睡得着，白天特别累。",
+          "revealed_clue_ids": [],
+          "round": 1
+        },
+        {
+          "turn": 2,
+          "speaker": "agent",
+          "text": "听起来晚上挺熬人的，白天还累着。想先问一个具体的：躺到床上之后，你更多是身体翻来覆去睡不着，还是脑子一直在想事情停不下来？",
+          "revealed_clue_ids": [],
+          "round": 1
+        },
+        {
+          "turn": 3,
+          "speaker": "visitor",
+          "text": "我睡不着也不起来，就硬躺着，一晚上在床上快十个小时，实际睡不到六个小时。躺着也没想什么，就是脑子特别清醒，怎么都睡不进去。",
+          "revealed_clue_ids": [
+            "sample-007-c1",
+            "sample-007-c3"
+          ],
+          "round": 1
+        },
+        {
+          "turn": 4,
+          "speaker": "agent",
+          "text": "谢谢你讲得这么清楚，硬躺十个小时确实很消耗人。想再确认一个场景：如果换成沙发，或者出差住酒店，你会不会反而更容易睡着？",
+          "revealed_clue_ids": [],
+          "round": 1
+        },
+        {
+          "turn": 5,
+          "speaker": "visitor",
+          "text": "上次带学生出去研学住酒店，那几天反而睡得挺好，一回家就又不行了。",
+          "revealed_clue_ids": [
+            "sample-007-c2"
+          ],
+          "round": 1
+        },
+        {
+          "turn": 7,
+          "speaker": "agent",
+          "text": "换到酒店反而睡得着，说明问题可能不在你身上，而在床和清醒绑在了一起。硬躺十小时会让身体把床当成清醒的地方。建议先试一件事：躺了大概二十分钟还清醒，就起来到别处待一会儿，有困意再回床。",
+          "revealed_clue_ids": [],
+          "round": 1
+        },
+        {
+          "turn": 8,
+          "speaker": "visitor",
+          "text": "嗯，我明白了，暂时没什么特别要说的。",
+          "revealed_clue_ids": [],
+          "round": 1
+        }
+      ],
+      "memory": {
+        "1": {
+          "summary": "来访主诉入睡困难、卧床近十小时实际睡着不足六小时，白天疲惫；自评 ISI 18 分，PHQ9 7 分、GAD7 6 分，无明显情绪或焦虑共病信号。关键线索是清醒与床形成条件化联结：外出研学住酒店反而睡得好。本轮已解释刺激控制思路（躺约二十分钟仍清醒就离床），来访表示明白。",
+          "facts": [
+            "夜间卧床近 10 小时，实际睡着不到 6 小时",
+            "躺下后身体不动但脑子特别清醒，不起床，硬躺着",
+            "外出研学住酒店那几天睡得较好，回家后又变差",
+            "ISI 自评 18 分；PHQ9 7 分、GAD7 6 分"
+          ],
+          "open_questions": [
+            "身体状况与禁忌情形（跌倒风险、孕期、癫痫史、打鼾或被观察到憋醒）尚未问过",
+            "工作与作息约束下几点起床可行",
+            "咖啡因、酒精摄入情况本轮未展开",
+            "白天嗜睡程度，是否涉及驾驶或高空作业"
+          ],
+          "referral": "R0",
+          "referral_reason": "情绪与焦虑量表分数轻度，未见打鼾憋醒或腿部不适等线索，暂无需要就医的迹象。"
+        }
+      },
+      "prescription": {
+        "plan": {
+          "bedtime": "23:00",
+          "risetime": "06:00",
+          "tib_minutes": 420,
+          "components": [
+            "fixed_risetime",
+            "stimulus_control",
+            "digital_curfew",
+            "sleep_hygiene"
+          ],
+          "rationale_given": true,
+          "contraindications_checked": false,
+          "referral_advice": null,
+          "cards": [
+            {
+              "type": "reminder",
+              "title": "20 分钟离床提醒",
+              "body": "躺下约 20 分钟仍清醒，就到客厅弱光下坐一会儿，有困意再回床。"
+            },
+            {
+              "type": "smart_home",
+              "title": "睡前调暗灯光",
+              "body": "22:30 起把主灯调暗，手机放远一些，给身体一个准备入睡的信号。"
+            }
+          ]
+        },
+        "closing_message": "这一版先试行两周：起床固定在六点，上床时间先收到二十三点，把十小时卧床缩到七小时左右，让床重新和睡着挂钩。躺下约二十分钟还清醒，就起来到别处待一会儿，有困意再回床；十点半后把灯调暗、手机放远。白天别补长觉，最多二十分钟。下次我们聊聊你的身体状况和作息限制，再决定要不要把时间收得更紧。"
+      },
+      "closing_turns": [
+        {
+          "turn": 9,
+          "speaker": "agent",
+          "text": "这一版先试行两周：起床固定在六点，上床时间先收到二十三点，把十小时卧床缩到七小时左右，让床重新和睡着挂钩。躺下约二十分钟还清醒，就起来到别处待一会儿，有困意再回床；十点半后把灯调暗、手机放远。白天别补长觉，最多二十分钟。下次我们聊聊你的身体状况和作息限制，再决定要不要把时间收得更紧。",
+          "revealed_clue_ids": []
+        },
+        {
+          "turn": 10,
+          "speaker": "visitor",
+          "text": "我平时差不多九点半就上床了，早上六点半起来，因为七点十分前必须到学校。",
+          "revealed_clue_ids": []
+        }
+      ]
+    },
+    {
+      "visitor_id": "sample-002",
+      "round": 2,
+      "entries": [
+        {
+          "turn": 1,
+          "speaker": "visitor",
+          "text": "最近晚上睡眠质量很差，要好久才睡得着，白天特别累。",
+          "revealed_clue_ids": [],
+          "round": 1
+        },
+        {
+          "turn": 2,
+          "speaker": "agent",
+          "text": "白天累、晚上又难睡着，确实挺熬人的。想先问一个具体的：你躺到床上之后，是身体累但脑子开始转个不停，还是主要因为作息不太固定、躺下时间没个准？",
+          "revealed_clue_ids": [],
+          "round": 1
+        },
+        {
+          "turn": 3,
+          "speaker": "visitor",
+          "text": "一躺下反而越来越精神，翻来覆去一两个小时。躺久了就开始琢磨今晚是不是又要熬到半夜。平时大概22:40上床，06:30起床。",
+          "revealed_clue_ids": [
+            "sample-002-c1",
+            "sample-002-c3"
+          ],
+          "round": 1
+        },
+        {
+          "turn": 4,
+          "speaker": "agent",
+          "text": "一躺下反而越来越精神，还开始琢磨今晚会不会又熬到半夜，这种等待的感觉确实很磨人。想再确认一下：那一两个小时里，你脑子里是在想事情、停不下来，还是没想什么，就是身体越躺越清醒？",
+          "revealed_clue_ids": [],
+          "round": 1
+        },
+        {
+          "turn": 5,
+          "speaker": "visitor",
+          "text": "没什么特别的，就是躺着等，也没想啥。",
+          "revealed_clue_ids": [],
+          "round": 1
+        },
+        {
+          "turn": 7,
+          "speaker": "agent",
+          "text": "明白了，就是躺着干等，越等越清醒。那再问一个具体的：如果换成沙发、或者出差住酒店，你会不会反而更容易睡着？",
+          "revealed_clue_ids": [],
+          "round": 1
+        },
+        {
+          "turn": 8,
+          "speaker": "visitor",
+          "text": "在客厅沙发上看电视倒是容易睡着，一进卧室就醒了。",
+          "revealed_clue_ids": [
+            "sample-002-c2"
+          ],
+          "round": 1
+        },
+        {
+          "turn": 9,
+          "speaker": "agent",
+          "text": "沙发上看电视容易睡着、一进卧室就清醒，这个对比挺说明问题的——大脑把床和“清醒、干等”连在一起了。建议先试一个小改变：躺下大约二十分钟还清醒，就起身到客厅待一会儿，有困意再回床。",
+          "revealed_clue_ids": [],
+          "round": 1
+        },
+        {
+          "turn": 10,
+          "speaker": "visitor",
+          "text": "嗯，知道了，没什么特别的。",
+          "revealed_clue_ids": [],
+          "round": 1
+        },
+        {
+          "turn": 11,
+          "speaker": "agent",
+          "text": "这一周先不缩短卧床时间，只把起床时间固定在06:30，上床仍在22:40左右。躺下约二十分钟还清醒，就起身到客厅坐坐，有困意再回床，让床重新和睡觉挂上钩。睡前把灯光调暗、少看手机。今晚开始，可以吗？",
+          "revealed_clue_ids": [],
+          "round": 1
+        },
+        {
+          "turn": 12,
+          "speaker": "visitor",
+          "text": "行，我平时差不多就是22:40上床，06:30起床。",
+          "revealed_clue_ids": [],
+          "round": 1
+        },
+        {
+          "turn": 1,
+          "speaker": "agent",
+          "text": "上次说的二十分钟规则，这一周实际试过吗？如果试了，是卡在哪一步——比如起来太冷、怕越弄越清醒，还是干脆不想动？",
+          "revealed_clue_ids": [],
+          "round": 2
+        },
+        {
+          "turn": 2,
+          "speaker": "visitor",
+          "text": "试过了，没什么特别的，就那样。",
+          "revealed_clue_ids": [],
+          "round": 2
+        },
+        {
+          "turn": 3,
+          "speaker": "agent",
+          "text": "听你这么说，好像试了之后也没什么变化，有点白费劲的感觉。这种反复试却看不到效果，确实容易让人提不起劲来。",
+          "revealed_clue_ids": [],
+          "round": 2
+        },
+        {
+          "turn": 4,
+          "speaker": "visitor",
+          "text": "嗯，是有点白费劲，不过也没啥特别的。",
+          "revealed_clue_ids": [],
+          "round": 2
+        },
+        {
+          "turn": 5,
+          "speaker": "agent",
+          "text": "听你连着说“没啥特别的”，我猜这一周试下来大概挺没劲的，改了也没见什么变化。这种使不上劲的感觉挺让人泄气的，先不急着再给你加任务。",
+          "revealed_clue_ids": [],
+          "round": 2
+        },
+        {
+          "turn": 6,
+          "speaker": "visitor",
+          "text": "嗯，是没什么特别的，就那样吧。",
+          "revealed_clue_ids": [],
+          "round": 2
+        }
+      ],
+      "memory": {
+        "1": {
+          "summary": "来访主诉入睡困难、躺下一两个小时越躺越清醒，白天很累。躺下时并未反复想事，只是干等，且自述在客厅沙发上容易睡着、进卧室就清醒。会谈中已给出刺激控制方向的初步建议，来访回应平淡。",
+          "facts": [
+            "上床约22:40，起床约06:30",
+            "躺下后需1到2小时才入睡，越躺越清醒",
+            "躺下时没有明显反复思考，主要是干等",
+            "在客厅沙发上看电视容易睡着，进卧室就清醒",
+            "PHQ-9为6分，GAD-7为4分"
+          ],
+          "open_questions": [
+            "身体情况和既往病史，是否需避开的禁忌情形",
+            "咖啡因、酒精及白天小睡的具体情况",
+            "实际夜间总睡着时长与夜醒次数"
+          ],
+          "referral": "R0",
+          "referral_reason": "情绪与焦虑量表分数均低，未见呼吸暂停、不宁腿等迹象，暂无建议就医的依据。"
+        },
+        "2": {
+          "summary": "来访第2轮反馈20分钟规则试过但“没什么特别的”，反复表示白费劲、提不起劲，情绪偏平淡。已表达对其泄气感的共情，暂未加新任务。",
+          "facts": [
+            "上床约22:40，起床约06:30",
+            "躺下需1到2小时才入睡，越躺越清醒",
+            "客厅沙发看电视容易睡着，进卧室就清醒",
+            "PHQ-9为6分，GAD-7为4分",
+            "第2轮称试过20分钟规则，但觉得没什么变化、有点白费劲"
+          ],
+          "open_questions": [
+            "20分钟规则具体卡在哪一步（冷、怕更清醒、不想动）",
+            "身体情况与既往病史，是否有需避开的禁忌",
+            "咖啡因、酒精及白天小睡情况",
+            "实际夜间总睡着时长与夜醒次数",
+            "情绪低落、兴趣减退的持续情况"
+          ],
+          "referral": "R3",
+          "referral_reason": "来访反复表达白费劲、提不起劲，情绪偏平淡，建议到医院相关科室进一步评估。"
+        }
+      },
+      "prescription": {
+        "plan": {
+          "bedtime": "23:20",
+          "risetime": "06:30",
+          "tib_minutes": 430,
+          "components": [
+            "fixed_risetime",
+            "stimulus_control",
+            "sleep_hygiene",
+            "relaxation",
+            "digital_curfew",
+            "referral_advice"
+          ],
+          "rationale_given": true,
+          "contraindications_checked": false,
+          "referral_advice": "最近的情绪和担心也值得一并看看，建议到医院相关科室进一步评估。",
+          "cards": [
+            {
+              "type": "reminder",
+              "title": "23:20再上床",
+              "body": "把上床时间推到23:20，困了再进卧室；躺20分钟仍清醒就起身。"
+            },
+            {
+              "type": "smart_home",
+              "title": "卧室只留给睡觉",
+              "body": "客厅灯亮些，卧室22:30后调暗；不在床上看电视、刷手机。"
+            }
+          ]
+        },
+        "closing_message": "这周把上床时间从22:40推到23:20，起床仍固定在06:30，让卧床时间更贴近你真正睡着的时间，也让床重新和困意挂钩。躺下约20分钟还清醒，就起身到客厅，有困意再回床；睡前把灯调暗、少看手机。做不到也没关系，做到多少算多少，不用勉强自己。另外，你的情绪和担心也值得一并看看，建议到医院相关科室进一步评估。"
+      },
+      "closing_turns": [
+        {
+          "turn": 7,
+          "speaker": "agent",
+          "text": "这周把上床时间从22:40推到23:20，起床仍固定在06:30，让卧床时间更贴近你真正睡着的时间，也让床重新和困意挂钩。躺下约20分钟还清醒，就起身到客厅，有困意再回床；睡前把灯调暗、少看手机。做不到也没关系，做到多少算多少，不用勉强自己。另外，你的情绪和担心也值得一并看看，建议到医院相关科室进一步评估。",
+          "revealed_clue_ids": []
+        },
+        {
+          "turn": 8,
+          "speaker": "visitor",
+          "text": "我平时差不多22:40上床，06:30起床。",
+          "revealed_clue_ids": []
+        }
+      ]
+    },
+    {
+      "visitor_id": "sample-005",
+      "round": 2,
+      "entries": [
+        {
+          "turn": 1,
+          "speaker": "visitor",
+          "text": "晚上老是睡得很晚，睡眠时间不够，想调整一下。",
+          "revealed_clue_ids": [],
+          "round": 1
+        },
+        {
+          "turn": 2,
+          "speaker": "agent",
+          "text": "想调整晚睡，这个目标挺实际的。先问一个具体的：工作日和周末，你早上起床的时间大概差多少？",
+          "revealed_clue_ids": [],
+          "round": 1
+        },
+        {
+          "turn": 3,
+          "speaker": "visitor",
+          "text": "我平时大概23:40上床，07:30起床，工作日和周末差不多都是这个点。",
+          "revealed_clue_ids": [],
+          "round": 1
+        },
+        {
+          "turn": 4,
+          "speaker": "agent",
+          "text": "作息挺规律的，这点不错。那再问一个：晚上23:40躺下后，大概多久才真的困？放假不用早起时，会不会自然就睡得晚、起得也晚？",
+          "revealed_clue_ids": [],
+          "round": 1
+        },
+        {
+          "turn": 5,
+          "speaker": "visitor",
+          "text": "我平时差不多就是23点40上床，早上7点半起来，这个时间还挺固定的。",
+          "revealed_clue_ids": [],
+          "round": 1
+        },
+        {
+          "turn": 7,
+          "speaker": "agent",
+          "text": "明白，你作息其实挺固定的。那换个场景：放假完全不用早起、也没闹钟的时候，你一般几点会困、几点自然醒？",
+          "revealed_clue_ids": [],
+          "round": 1
+        },
+        {
+          "turn": 8,
+          "speaker": "visitor",
+          "text": "现在就算不看手机，十二点前也不太困了，躺那儿脑子还挺清醒的。平时大概23:40上床，07:30起床，基本就这个点。",
+          "revealed_clue_ids": [
+            "sample-005-c3"
+          ],
+          "round": 1
+        },
+        {
+          "turn": 9,
+          "speaker": "agent",
+          "text": "谢谢你说得这么清楚，躺下脑子清醒这点我记下了。再确认一个场景：完全不用早起、不设闹钟的休息日，你大概几点会自然困、几点醒？",
+          "revealed_clue_ids": [],
+          "round": 1
+        },
+        {
+          "turn": 10,
+          "speaker": "visitor",
+          "text": "平时我大概二十三点四十上床，早上七点半起床，基本就这个节奏。",
+          "revealed_clue_ids": [],
+          "round": 1
+        },
+        {
+          "turn": 11,
+          "speaker": "agent",
+          "text": "这一轮我们先不动你的作息时间，23:40 上床、07:30 起床保持不变，这是你的优势。床上只用来睡觉，躺下 20 分钟还清醒就起身到暗一点的地方做点安静的事，困了再回来。睡前 30 分钟放下手机，做几组慢呼吸让身体降速。下一轮我们会问你实际睡了多久、夜间醒几次，再决定要不要压缩卧床时间。",
+          "revealed_clue_ids": [],
+          "round": 1
+        },
+        {
+          "turn": 12,
+          "speaker": "visitor",
+          "text": "我平时差不多就是23点40上床，早上7点半起来，这个时间点还算固定。床上我基本不刷手机，就是躺下睡觉，偶尔看看店铺后台也是在外面看完再进去。",
+          "revealed_clue_ids": [],
+          "round": 1
+        },
+        {
+          "turn": 1,
+          "speaker": "agent",
+          "text": "你每次都把作息说得很准，我记下了。换个完全自由的场景：假如连着几天不用上班、不设闹钟，你会几点才困、几点自然醒？",
+          "revealed_clue_ids": [],
+          "round": 2
+        },
+        {
+          "turn": 2,
+          "speaker": "visitor",
+          "text": "平时我大概都是23:40上床，早上07:30起床，这个时间点我摸得挺准的。",
+          "revealed_clue_ids": [],
+          "round": 2
+        },
+        {
+          "turn": 3,
+          "speaker": "agent",
+          "text": "你每次都把作息说得很准，我明白了。那换个问法：如果连着几天完全不用上班、不设闹钟，你会几点才觉得困、几点自然醒？",
+          "revealed_clue_ids": [],
+          "round": 2
+        },
+        {
+          "turn": 4,
+          "speaker": "visitor",
+          "text": "平时我大概23:40上床，早上07:30起床，这个时间点我基本都记得挺清楚的。",
+          "revealed_clue_ids": [],
+          "round": 2
+        },
+        {
+          "turn": 5,
+          "speaker": "agent",
+          "text": "我问了好几遍同一个问题，你每次都耐心回答，谢谢。感觉这个话题问起来有点绕，我们先不追这个了。你最开始说想调整晚睡，是白天哪段时间最难受？",
+          "revealed_clue_ids": [],
+          "round": 2
+        },
+        {
+          "turn": 6,
+          "speaker": "visitor",
+          "text": "哎，这个真没什么特别的，就那样吧，我也说不上来哪段时间特别难受。",
+          "revealed_clue_ids": [],
+          "round": 2
+        }
+      ],
+      "memory": {
+        "1": {
+          "summary": "来访想调整晚睡，但作息其实很固定：23:40 上床、07:30 起床，工作日与周末差别不大。躺下后头脑清醒、12 点前不困，疑似入睡困难为主。情绪筛查 PHQ9 6 分、GAD7 5 分，未见明显异常。",
+          "facts": [
+            "通常 23:40 上床、07:30 起床",
+            "工作日与周末作息基本一致",
+            "不看手机也常在 12 点前不觉得困，躺下时脑子清醒",
+            "会谈前自评 ISI 13 分",
+            "PHQ9 6 分、GAD7 5 分"
+          ],
+          "open_questions": [
+            "上床后大约多久能睡着、夜间醒几次",
+            "完全不用早起的休息日会几点自然困、几点醒",
+            "身体状况与禁忌情形（如跌倒风险、孕期、癫痫等）尚未确认"
+          ],
+          "referral": "R0",
+          "referral_reason": "情绪筛查分数低，会话中未提到打鼾、呼吸停顿或腿部不适，暂无需要就医的迹象。"
+        },
+        "2": {
+          "summary": "来访反复只报固定作息（23:40 上床、07:30 起床），对入睡潜伏、夜醒、自由日节律等问题均未给出新信息，白天困扰也说不清。4 周依从性约 0.45，ISI 由 16 降至 13。本轮仍未确认身体状况与禁忌情形。",
+          "facts": [
+            "通常 23:40 上床、07:30 起床，工作日与周末基本一致",
+            "躺下后脑子清醒，12 点前不觉得困",
+            "床上基本不刷手机，偶尔看店铺后台也在卧室外",
+            "4 周方案依从性约 0.45，ISI 从 16 降到 13",
+            "白天哪段时间最难受说不清"
+          ],
+          "open_questions": [
+            "上床后实际多久能睡着、夜间醒几次",
+            "卧床时间里真正睡着大约多久",
+            "躺下 20 分钟清醒就起身这条是否执行",
+            "身体状况与禁忌情形（跌倒风险、孕期、癫痫等）",
+            "白天困倦或嗜睡程度、是否打鼾或被观察到呼吸停顿"
+          ],
+          "referral": "R0",
+          "referral_reason": "情绪筛查未见明显异常，本轮未提及打鼾、憋醒、腿部不适或持续担心等需就医迹象。"
+        }
+      },
+      "prescription": {
+        "plan": {
+          "bedtime": "23:40",
+          "risetime": "07:30",
+          "tib_minutes": 470,
+          "components": [
+            "fixed_risetime",
+            "stimulus_control",
+            "relaxation",
+            "worry_time",
+            "digital_curfew",
+            "sleep_hygiene"
+          ],
+          "rationale_given": true,
+          "contraindications_checked": false,
+          "referral_advice": null,
+          "cards": [
+            {
+              "type": "reminder",
+              "title": "上床20分钟规则",
+              "body": "躺下约20分钟仍清醒，就起身到暗处做安静的事，困了再回床。"
+            },
+            {
+              "type": "smart_home",
+              "title": "07:30固定起床灯",
+              "body": "到点拉开窗帘、开亮灯，帮身体稳住起床节律。"
+            }
+          ]
+        },
+        "closing_message": "这轮起床时间固定在07:30，上床仍23:40，暂不压缩卧床时间。你还没说过躺下多久能睡着、夜里醒几次，身体状况也还没确认，先不贸然压缩。躺下约20分钟仍清醒就起身到暗处做安静的事，困了再回床；睡前30分钟放下手机、做几组慢呼吸；白天把担心的事放在固定时段处理。下轮请告诉我实际入睡大约多久、夜醒几次。"
+      },
+      "closing_turns": [
+        {
+          "turn": 7,
+          "speaker": "agent",
+          "text": "这轮起床时间固定在07:30，上床仍23:40，暂不压缩卧床时间。你还没说过躺下多久能睡着、夜里醒几次，身体状况也还没确认，先不贸然压缩。躺下约20分钟仍清醒就起身到暗处做安静的事，困了再回床；睡前30分钟放下手机、做几组慢呼吸；白天把担心的事放在固定时段处理。下轮请告诉我实际入睡大约多久、夜醒几次。",
+          "revealed_clue_ids": []
+        },
+        {
+          "turn": 8,
+          "speaker": "visitor",
+          "text": "我上床以后就爱刷短视频，一刷就是一两个小时，停不下来那种。平时大概23:40上床，07:30起床，作息倒是挺固定的。",
+          "revealed_clue_ids": [
+            "sample-005-c1"
+          ]
+        }
+      ]
+    }
+  ],
+  "accounting": [
+    {
+      "visitor_id": "sample-001",
+      "llm_calls": [
+        {
+          "agent": "classifier",
+          "task": "classify",
+          "status": "ok",
+          "provider": "ds_flash(fallback:jev_error)",
+          "discarded": false
+        },
+        {
+          "agent": "classifier",
+          "task": "classify",
+          "status": "ok",
+          "provider": "jev",
+          "discarded": false
+        },
+        {
+          "agent": "classifier",
+          "task": "classify",
+          "status": "ok",
+          "provider": "jev",
+          "discarded": false
+        },
+        {
+          "agent": "classifier",
+          "task": "classify",
+          "status": "ok",
+          "provider": "jev",
+          "discarded": false
+        },
+        {
+          "agent": "classifier",
+          "task": "classify",
+          "status": "ok",
+          "provider": "jev",
+          "discarded": false
+        },
+        {
+          "agent": "classifier",
+          "task": "classify",
+          "status": "ok",
+          "provider": "jev",
+          "discarded": false
+        },
+        {
+          "agent": "classifier",
+          "task": "classify",
+          "status": "ok",
+          "provider": "jev",
+          "discarded": false
+        },
+        {
+          "agent": "classifier",
+          "task": "classify",
+          "status": "ok",
+          "provider": "jev",
+          "discarded": false
+        }
+      ],
+      "all_judge_results": [
+        {
+          "provider": "ds_flash",
+          "status": "ok"
+        },
+        {
+          "provider": "ds_flash",
+          "status": "ok"
+        },
+        {
+          "provider": "ds_flash",
+          "status": "ok"
+        },
+        {
+          "provider": "ds_flash",
+          "status": "ok"
+        },
+        {
+          "provider": "ds_flash",
+          "status": "ok"
+        },
+        {
+          "provider": "ds_flash",
+          "status": "ok"
+        },
+        {
+          "provider": "ds_flash",
+          "status": "ok"
+        },
+        {
+          "provider": "ds_flash",
+          "status": "ok"
+        },
+        {
+          "provider": "ds_flash",
+          "status": "ok"
+        },
+        {
+          "provider": "ds_flash",
+          "status": "ok"
+        }
+      ],
+      "fallbacks": []
+    },
+    {
+      "visitor_id": "sample-002",
+      "llm_calls": [
+        {
+          "agent": "classifier",
+          "task": "classify",
+          "status": "ok",
+          "provider": "jev",
+          "discarded": false
+        },
+        {
+          "agent": "classifier",
+          "task": "classify",
+          "status": "ok",
+          "provider": "jev",
+          "discarded": false
+        },
+        {
+          "agent": "classifier",
+          "task": "classify",
+          "status": "ok",
+          "provider": "jev",
+          "discarded": false
+        },
+        {
+          "agent": "classifier",
+          "task": "classify",
+          "status": "ok",
+          "provider": "jev",
+          "discarded": false
+        },
+        {
+          "agent": "classifier",
+          "task": "classify",
+          "status": "ok",
+          "provider": "jev",
+          "discarded": false
+        },
+        {
+          "agent": "classifier",
+          "task": "classify",
+          "status": "ok",
+          "provider": "jev",
+          "discarded": false
+        },
+        {
+          "agent": "classifier",
+          "task": "classify",
+          "status": "ok",
+          "provider": "jev",
+          "discarded": false
+        },
+        {
+          "agent": "classifier",
+          "task": "classify",
+          "status": "ok",
+          "provider": "jev",
+          "discarded": false
+        },
+        {
+          "agent": "classifier",
+          "task": "classify",
+          "status": "ok",
+          "provider": "jev",
+          "discarded": false
+        }
+      ],
+      "all_judge_results": [
+        {
+          "provider": "ds_flash",
+          "status": "error"
+        },
+        {
+          "provider": "jev",
+          "status": "ok"
+        },
+        {
+          "provider": "ds_flash",
+          "status": "ok"
+        },
+        {
+          "provider": "ds_flash",
+          "status": "ok"
+        },
+        {
+          "provider": "ds_flash",
+          "status": "ok"
+        },
+        {
+          "provider": "ds_flash",
+          "status": "ok"
+        },
+        {
+          "provider": "ds_flash",
+          "status": "ok"
+        },
+        {
+          "provider": "ds_flash",
+          "status": "timeout"
+        },
+        {
+          "provider": "jev",
+          "status": "ok"
+        },
+        {
+          "provider": "ds_flash",
+          "status": "ok"
+        },
+        {
+          "provider": "ds_flash",
+          "status": "ok"
+        },
+        {
+          "provider": "ds_flash",
+          "status": "ok"
+        }
+      ],
+      "fallbacks": []
+    },
+    {
+      "visitor_id": "sample-003",
+      "llm_calls": [
+        {
+          "agent": "classifier",
+          "task": "classify",
+          "status": "ok",
+          "provider": "jev",
+          "discarded": false
+        },
+        {
+          "agent": "classifier",
+          "task": "classify",
+          "status": "ok",
+          "provider": "jev",
+          "discarded": false
+        },
+        {
+          "agent": "classifier",
+          "task": "classify",
+          "status": "ok",
+          "provider": "jev",
+          "discarded": false
+        },
+        {
+          "agent": "classifier",
+          "task": "classify",
+          "status": "ok",
+          "provider": "jev",
+          "discarded": false
+        },
+        {
+          "agent": "classifier",
+          "task": "classify",
+          "status": "ok",
+          "provider": "jev",
+          "discarded": false
+        },
+        {
+          "agent": "classifier",
+          "task": "classify",
+          "status": "ok",
+          "provider": "jev",
+          "discarded": false
+        },
+        {
+          "agent": "classifier",
+          "task": "classify",
+          "status": "ok",
+          "provider": "jev",
+          "discarded": false
+        },
+        {
+          "agent": "classifier",
+          "task": "classify",
+          "status": "ok",
+          "provider": "jev",
+          "discarded": false
+        },
+        {
+          "agent": "classifier",
+          "task": "classify",
+          "status": "ok",
+          "provider": "jev",
+          "discarded": false
+        }
+      ],
+      "all_judge_results": [
+        {
+          "provider": "ds_flash",
+          "status": "ok"
+        },
+        {
+          "provider": "ds_flash",
+          "status": "ok"
+        },
+        {
+          "provider": "ds_flash",
+          "status": "ok"
+        },
+        {
+          "provider": "ds_flash",
+          "status": "ok"
+        },
+        {
+          "provider": "ds_flash",
+          "status": "ok"
+        },
+        {
+          "provider": "ds_flash",
+          "status": "ok"
+        },
+        {
+          "provider": "ds_flash",
+          "status": "error"
+        },
+        {
+          "provider": "jev",
+          "status": "ok"
+        },
+        {
+          "provider": "ds_flash",
+          "status": "ok"
+        },
+        {
+          "provider": "ds_flash",
+          "status": "ok"
+        },
+        {
+          "provider": "ds_flash",
+          "status": "ok"
+        },
+        {
+          "provider": "ds_flash",
+          "status": "ok"
+        },
+        {
+          "provider": "ds_flash",
+          "status": "ok"
+        }
+      ],
+      "fallbacks": []
+    },
+    {
+      "visitor_id": "sample-004",
+      "llm_calls": [
+        {
+          "agent": "classifier",
+          "task": "classify",
+          "status": "ok",
+          "provider": "jev",
+          "discarded": false
+        },
+        {
+          "agent": "classifier",
+          "task": "classify",
+          "status": "ok",
+          "provider": "jev",
+          "discarded": false
+        },
+        {
+          "agent": "classifier",
+          "task": "classify",
+          "status": "ok",
+          "provider": "jev",
+          "discarded": false
+        },
+        {
+          "agent": "classifier",
+          "task": "classify",
+          "status": "ok",
+          "provider": "jev",
+          "discarded": false
+        },
+        {
+          "agent": "classifier",
+          "task": "classify",
+          "status": "ok",
+          "provider": "jev",
+          "discarded": false
+        },
+        {
+          "agent": "classifier",
+          "task": "classify",
+          "status": "ok",
+          "provider": "jev",
+          "discarded": false
+        },
+        {
+          "agent": "classifier",
+          "task": "classify",
+          "status": "ok",
+          "provider": "jev",
+          "discarded": false
+        },
+        {
+          "agent": "classifier",
+          "task": "classify",
+          "status": "ok",
+          "provider": "jev",
+          "discarded": false
+        },
+        {
+          "agent": "classifier",
+          "task": "classify",
+          "status": "ok",
+          "provider": "jev",
+          "discarded": false
+        }
+      ],
+      "all_judge_results": [
+        {
+          "provider": "ds_flash",
+          "status": "ok"
+        },
+        {
+          "provider": "ds_flash",
+          "status": "ok"
+        },
+        {
+          "provider": "ds_flash",
+          "status": "ok"
+        },
+        {
+          "provider": "ds_flash",
+          "status": "ok"
+        },
+        {
+          "provider": "ds_flash",
+          "status": "ok"
+        },
+        {
+          "provider": "ds_flash",
+          "status": "ok"
+        },
+        {
+          "provider": "ds_flash",
+          "status": "ok"
+        },
+        {
+          "provider": "ds_flash",
+          "status": "ok"
+        },
+        {
+          "provider": "ds_flash",
+          "status": "ok"
+        },
+        {
+          "provider": "ds_flash",
+          "status": "ok"
+        }
+      ],
+      "fallbacks": []
+    },
+    {
+      "visitor_id": "sample-005",
+      "llm_calls": [
+        {
+          "agent": "classifier",
+          "task": "classify",
+          "status": "ok",
+          "provider": "jev",
+          "discarded": false
+        },
+        {
+          "agent": "classifier",
+          "task": "classify",
+          "status": "ok",
+          "provider": "jev",
+          "discarded": false
+        },
+        {
+          "agent": "classifier",
+          "task": "classify",
+          "status": "ok",
+          "provider": "jev",
+          "discarded": false
+        },
+        {
+          "agent": "classifier",
+          "task": "classify",
+          "status": "ok",
+          "provider": "jev",
+          "discarded": false
+        },
+        {
+          "agent": "classifier",
+          "task": "classify",
+          "status": "ok",
+          "provider": "jev",
+          "discarded": false
+        },
+        {
+          "agent": "classifier",
+          "task": "classify",
+          "status": "ok",
+          "provider": "jev",
+          "discarded": false
+        },
+        {
+          "agent": "classifier",
+          "task": "classify",
+          "status": "ok",
+          "provider": "jev",
+          "discarded": false
+        },
+        {
+          "agent": "classifier",
+          "task": "classify",
+          "status": "ok",
+          "provider": "jev",
+          "discarded": false
+        },
+        {
+          "agent": "classifier",
+          "task": "classify",
+          "status": "ok",
+          "provider": "jev",
+          "discarded": false
+        }
+      ],
+      "all_judge_results": [
+        {
+          "provider": "ds_flash",
+          "status": "ok"
+        },
+        {
+          "provider": "ds_flash",
+          "status": "ok"
+        },
+        {
+          "provider": "ds_flash",
+          "status": "ok"
+        },
+        {
+          "provider": "ds_flash",
+          "status": "ok"
+        },
+        {
+          "provider": "ds_flash",
+          "status": "ok"
+        },
+        {
+          "provider": "ds_flash",
+          "status": "ok"
+        },
+        {
+          "provider": "ds_flash",
+          "status": "ok"
+        },
+        {
+          "provider": "ds_flash",
+          "status": "ok"
+        },
+        {
+          "provider": "ds_flash",
+          "status": "ok"
+        },
+        {
+          "provider": "ds_flash",
+          "status": "ok"
+        }
+      ],
+      "fallbacks": []
+    },
+    {
+      "visitor_id": "sample-006",
+      "llm_calls": [
+        {
+          "agent": "classifier",
+          "task": "classify",
+          "status": "ok",
+          "provider": "jev",
+          "discarded": false
+        },
+        {
+          "agent": "classifier",
+          "task": "classify",
+          "status": "ok",
+          "provider": "jev",
+          "discarded": false
+        },
+        {
+          "agent": "classifier",
+          "task": "classify",
+          "status": "ok",
+          "provider": "jev",
+          "discarded": false
+        },
+        {
+          "agent": "classifier",
+          "task": "classify",
+          "status": "ok",
+          "provider": "jev",
+          "discarded": false
+        },
+        {
+          "agent": "classifier",
+          "task": "classify",
+          "status": "ok",
+          "provider": "jev",
+          "discarded": false
+        },
+        {
+          "agent": "classifier",
+          "task": "classify",
+          "status": "ok",
+          "provider": "jev",
+          "discarded": false
+        },
+        {
+          "agent": "classifier",
+          "task": "classify",
+          "status": "ok",
+          "provider": "jev",
+          "discarded": false
+        },
+        {
+          "agent": "classifier",
+          "task": "classify",
+          "status": "ok",
+          "provider": "jev",
+          "discarded": false
+        },
+        {
+          "agent": "classifier",
+          "task": "classify",
+          "status": "ok",
+          "provider": "jev",
+          "discarded": false
+        }
+      ],
+      "all_judge_results": [
+        {
+          "provider": "ds_flash",
+          "status": "ok"
+        },
+        {
+          "provider": "ds_flash",
+          "status": "ok"
+        },
+        {
+          "provider": "ds_flash",
+          "status": "ok"
+        },
+        {
+          "provider": "ds_flash",
+          "status": "ok"
+        },
+        {
+          "provider": "ds_flash",
+          "status": "ok"
+        },
+        {
+          "provider": "ds_flash",
+          "status": "ok"
+        },
+        {
+          "provider": "ds_flash",
+          "status": "ok"
+        },
+        {
+          "provider": "ds_flash",
+          "status": "ok"
+        },
+        {
+          "provider": "ds_flash",
+          "status": "ok"
+        },
+        {
+          "provider": "ds_flash",
+          "status": "ok"
+        }
+      ],
+      "fallbacks": []
+    },
+    {
+      "visitor_id": "sample-007",
+      "llm_calls": [
+        {
+          "agent": "classifier",
+          "task": "classify",
+          "status": "ok",
+          "provider": "jev",
+          "discarded": false
+        },
+        {
+          "agent": "classifier",
+          "task": "classify",
+          "status": "ok",
+          "provider": "jev",
+          "discarded": false
+        },
+        {
+          "agent": "classifier",
+          "task": "classify",
+          "status": "ok",
+          "provider": "jev",
+          "discarded": false
+        },
+        {
+          "agent": "classifier",
+          "task": "classify",
+          "status": "ok",
+          "provider": "jev",
+          "discarded": false
+        },
+        {
+          "agent": "classifier",
+          "task": "classify",
+          "status": "ok",
+          "provider": "jev",
+          "discarded": false
+        },
+        {
+          "agent": "classifier",
+          "task": "classify",
+          "status": "ok",
+          "provider": "jev",
+          "discarded": false
+        },
+        {
+          "agent": "classifier",
+          "task": "classify",
+          "status": "ok",
+          "provider": "jev",
+          "discarded": false
+        },
+        {
+          "agent": "classifier",
+          "task": "classify",
+          "status": "ok",
+          "provider": "jev",
+          "discarded": false
+        }
+      ],
+      "all_judge_results": [
+        {
+          "provider": "ds_flash",
+          "status": "ok"
+        },
+        {
+          "provider": "ds_flash",
+          "status": "ok"
+        },
+        {
+          "provider": "ds_flash",
+          "status": "ok"
+        },
+        {
+          "provider": "ds_flash",
+          "status": "ok"
+        },
+        {
+          "provider": "ds_flash",
+          "status": "ok"
+        },
+        {
+          "provider": "ds_flash",
+          "status": "ok"
+        },
+        {
+          "provider": "ds_flash",
+          "status": "ok"
+        },
+        {
+          "provider": "ds_flash",
+          "status": "ok"
+        },
+        {
+          "provider": "ds_flash",
+          "status": "ok"
+        }
+      ],
+      "fallbacks": []
+    },
+    {
+      "visitor_id": "sample-008",
+      "llm_calls": [
+        {
+          "agent": "classifier",
+          "task": "classify",
+          "status": "ok",
+          "provider": "jev",
+          "discarded": false
+        },
+        {
+          "agent": "classifier",
+          "task": "classify",
+          "status": "ok",
+          "provider": "jev",
+          "discarded": false
+        },
+        {
+          "agent": "classifier",
+          "task": "classify",
+          "status": "ok",
+          "provider": "jev",
+          "discarded": false
+        },
+        {
+          "agent": "classifier",
+          "task": "classify",
+          "status": "ok",
+          "provider": "jev",
+          "discarded": false
+        },
+        {
+          "agent": "classifier",
+          "task": "classify",
+          "status": "ok",
+          "provider": "jev",
+          "discarded": false
+        },
+        {
+          "agent": "classifier",
+          "task": "classify",
+          "status": "ok",
+          "provider": "jev",
+          "discarded": false
+        },
+        {
+          "agent": "classifier",
+          "task": "classify",
+          "status": "ok",
+          "provider": "jev",
+          "discarded": false
+        },
+        {
+          "agent": "classifier",
+          "task": "classify",
+          "status": "ok",
+          "provider": "jev",
+          "discarded": false
+        },
+        {
+          "agent": "classifier",
+          "task": "classify",
+          "status": "ok",
+          "provider": "jev",
+          "discarded": false
+        }
+      ],
+      "all_judge_results": [
+        {
+          "provider": "ds_flash",
+          "status": "ok"
+        },
+        {
+          "provider": "ds_flash",
+          "status": "ok"
+        },
+        {
+          "provider": "ds_flash",
+          "status": "ok"
+        },
+        {
+          "provider": "ds_flash",
+          "status": "ok"
+        },
+        {
+          "provider": "ds_flash",
+          "status": "timeout"
+        },
+        {
+          "provider": "jev",
+          "status": "ok"
+        },
+        {
+          "provider": "ds_flash",
+          "status": "ok"
+        },
+        {
+          "provider": "ds_flash",
+          "status": "ok"
+        },
+        {
+          "provider": "ds_flash",
+          "status": "ok"
+        },
+        {
+          "provider": "ds_flash",
+          "status": "ok"
+        },
+        {
+          "provider": "ds_flash",
+          "status": "ok"
+        }
+      ],
+      "fallbacks": []
+    },
+    {
+      "visitor_id": "sample-009",
+      "llm_calls": [
+        {
+          "agent": "classifier",
+          "task": "classify",
+          "status": "ok",
+          "provider": "jev",
+          "discarded": false
+        },
+        {
+          "agent": "classifier",
+          "task": "classify",
+          "status": "ok",
+          "provider": "jev",
+          "discarded": false
+        },
+        {
+          "agent": "classifier",
+          "task": "classify",
+          "status": "ok",
+          "provider": "jev",
+          "discarded": false
+        },
+        {
+          "agent": "classifier",
+          "task": "classify",
+          "status": "ok",
+          "provider": "jev",
+          "discarded": false
+        },
+        {
+          "agent": "classifier",
+          "task": "classify",
+          "status": "ok",
+          "provider": "jev",
+          "discarded": false
+        },
+        {
+          "agent": "classifier",
+          "task": "classify",
+          "status": "ok",
+          "provider": "jev",
+          "discarded": false
+        },
+        {
+          "agent": "classifier",
+          "task": "classify",
+          "status": "ok",
+          "provider": "jev",
+          "discarded": false
+        },
+        {
+          "agent": "classifier",
+          "task": "classify",
+          "status": "ok",
+          "provider": "jev",
+          "discarded": false
+        },
+        {
+          "agent": "classifier",
+          "task": "classify",
+          "status": "ok",
+          "provider": "jev",
+          "discarded": false
+        }
+      ],
+      "all_judge_results": [
+        {
+          "provider": "ds_flash",
+          "status": "ok"
+        },
+        {
+          "provider": "ds_flash",
+          "status": "ok"
+        },
+        {
+          "provider": "ds_flash",
+          "status": "error"
+        },
+        {
+          "provider": "jev",
+          "status": "ok"
+        },
+        {
+          "provider": "ds_flash",
+          "status": "error"
+        },
+        {
+          "provider": "jev",
+          "status": "ok"
+        },
+        {
+          "provider": "ds_flash",
+          "status": "ok"
+        },
+        {
+          "provider": "ds_flash",
+          "status": "ok"
+        },
+        {
+          "provider": "ds_flash",
+          "status": "ok"
+        },
+        {
+          "provider": "ds_flash",
+          "status": "ok"
+        },
+        {
+          "provider": "ds_flash",
+          "status": "ok"
+        }
+      ],
+      "fallbacks": []
+    },
+    {
+      "visitor_id": "sample-010",
+      "llm_calls": [
+        {
+          "agent": "classifier",
+          "task": "classify",
+          "status": "ok",
+          "provider": "jev",
+          "discarded": false
+        },
+        {
+          "agent": "classifier",
+          "task": "classify",
+          "status": "ok",
+          "provider": "jev",
+          "discarded": false
+        },
+        {
+          "agent": "classifier",
+          "task": "classify",
+          "status": "ok",
+          "provider": "jev",
+          "discarded": false
+        },
+        {
+          "agent": "classifier",
+          "task": "classify",
+          "status": "ok",
+          "provider": "jev",
+          "discarded": false
+        },
+        {
+          "agent": "classifier",
+          "task": "classify",
+          "status": "ok",
+          "provider": "jev",
+          "discarded": false
+        }
+      ],
+      "all_judge_results": [
+        {
+          "provider": "ds_flash",
+          "status": "ok"
+        },
+        {
+          "provider": "ds_flash",
+          "status": "ok"
+        },
+        {
+          "provider": "ds_flash",
+          "status": "ok"
+        },
+        {
+          "provider": "ds_flash",
+          "status": "error"
+        },
+        {
+          "provider": "jev",
+          "status": "ok"
+        },
+        {
+          "provider": "ds_flash",
+          "status": "ok"
+        },
+        {
+          "provider": "ds_flash",
+          "status": "ok"
+        },
+        {
+          "provider": "ds_flash",
+          "status": "ok"
+        }
+      ],
+      "fallbacks": []
+    }
+  ]
+}

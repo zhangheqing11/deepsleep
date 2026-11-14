@@ -268,6 +268,9 @@ class FallbackPathClassifier:
         first = await self.primary.classify(dialogue)
         if first.status == "ok":
             return first
+        row = CURRENT_CALL.get()
+        if row is not None:
+            row['provider_switches'] = 1  # Retain the switch even if the second leg is cancelled.
         second = await self.fallback.classify(dialogue)
         return replace(second, provider=f"ds_flash(fallback:jev_{first.status})",
                        latency_ms=round(first.latency_ms + second.latency_ms, 1))
