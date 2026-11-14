@@ -1,0 +1,12 @@
+{
+  "tracked_worktree_status": "clean",
+  "budget_and_http_counts_match": true,
+  "artifact_counts": {
+    "sessions": 10,
+    "traces": 10
+  },
+  "local_links_valid": true,
+  "credential_values_found_in_artifacts": 0,
+  "report_bytes": 18638,
+  "no_rerun": true
+}

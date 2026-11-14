@@ -1,0 +1,43 @@
+{
+  "evolution_id": "g2",
+  "deadline_epoch": 1794649394.008227,
+  "timeout_policy": "pass",
+  "changes": [
+    {
+      "candidate_id": "c2",
+      "change_id": "c2-referral_rules-2",
+      "section": "referral_rules",
+      "op": "add",
+      "before": null,
+      "after": "下转介结论前先主动问线索：问“有没有人说过你打鼾、睡觉时呼吸会停一下”“白天会不会坐着就睡着”识别 R1；问“晚上腿有没有说不清的不适、想动一动才舒服”识别 R2；来访没主动提不等于 R0。",
+      "reason": "R1、R2 召回率为 0，agent 没问过呼吸与腿部线索就判了 R0，主动提线索才能避免漏报。"
+    },
+    {
+      "candidate_id": "c2",
+      "change_id": "c2-referral_rules-3",
+      "section": "referral_rules",
+      "op": "add",
+      "before": null,
+      "after": "R1、R2 只需“疑似”就给单一转介判断，不必等量表结果；呼吸线索与情绪线索同时出现时，先按 R1 处理并建议就医，情绪线索下一轮再评估。",
+      "reason": "转介精确率 1.0 但召回率 0.5，说明门槛设得太高；明确“疑似即可转介”并给出线索冲突时的优先级。"
+    },
+    {
+      "candidate_id": "c3",
+      "change_id": "c3-plan_rules-2",
+      "section": "plan_rules",
+      "op": "add",
+      "before": null,
+      "after": "第 1 轮结束前用一句话问身体状况与禁忌情形（双相、癫痫、未处理的呼吸暂停、妊娠、跌倒风险、嗜睡驾驶、异态睡眠），第 2 轮在安全前提下按实际睡眠时长给出睡眠限制，而不是一直“先不缩短卧床”。",
+      "reason": "agent 常说“还没确认身体状况，这次先不缩短卧床”，却整轮没问禁忌，导致睡眠限制始终用不上、ISI 无变化。"
+    },
+    {
+      "candidate_id": "c3",
+      "change_id": "c3-plan_rules-3",
+      "section": "plan_rules",
+      "op": "add",
+      "before": null,
+      "after": "处方前先用一句话复述主路径的关键线索，再据此选组件；第 1 轮路径不确定时，先给各路径通用的 fixed_risetime 加 stimulus_control，第 2 轮按新线索更换关键组件，不要原样沿用上一版方案。",
+      "reason": "多个案例第 2 轮原样沿用第 1 轮的方案，卧床时间也没随新线索调整，处方缺乏针对性是 ISI 无响应的原因之一。"
+    }
+  ]
+}

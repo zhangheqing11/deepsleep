@@ -190,14 +190,25 @@ async def _evolve(tracker: StatusTracker, *, run_report: dict, sessions: dict, e
         return reviews
 
     eval_errors: list[str] = []
-    baseline_task = _baseline() if baseline_val_metrics is None else asyncio.sleep(0, result=baseline_val_metrics)
-    results = await asyncio.gather(
-        baseline_task,
-        asyncio.gather(*(_candidate(c) for c in to_validate)),
-        _review(),
-    )
+    async def _validation():
+        # Always finish the baseline before candidates; one version owns the
+        # engine's session concurrency at a time. Review remains concurrent.
+        baseline_raw = await _baseline() if baseline_val_metrics is None else baseline_val_metrics
+        values = []
+        for candidate in to_validate:
+            values.append(await _candidate(candidate))
+        return baseline_raw, values
+
+    validation_task = asyncio.create_task(_validation())
+    review_task = asyncio.create_task(_review())
+    try:
+        (baseline_raw, val_results), reviews = await asyncio.gather(validation_task, review_task)
+    finally:
+        for task in (validation_task, review_task):
+            if not task.done():
+                task.cancel()
+        await asyncio.gather(validation_task, review_task, return_exceptions=True)
     tracker.set(phase="committing")
-    baseline_raw, val_results, reviews = results
     baseline, baseline_rich = _unpack(baseline_raw)
     unpacked = {c["id"]: _unpack(r) for c, r in zip(to_validate, val_results)}
     val_by_id = {cid: m for cid, (m, _) in unpacked.items()}

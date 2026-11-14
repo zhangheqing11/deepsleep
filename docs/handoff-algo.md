@@ -276,3 +276,13 @@ P4 不设否认；其余沿用样例的“线索具备否认资格、仅 mid/hig
 上述接口，记录来源并更新生成器版本与 manifest 后重新生成、测试。生成器没有修改
 `sim/params.yaml` 的四周状态模型参数。按本次任务 offline 仅 30 个，后续仍需扩展到
 AGENTS 目标中的 200+ 离线大样本，再谈稳定的置信区间和消融结果。
+
+## 9. 11/14 实测数据在哪
+
+当日实测集中在 [experiments/2026-11-14/README.md](../experiments/2026-11-14/README.md)。先看总表、噪声与结论边界，再用 [逐批索引](../experiments/2026-11-14/RUN_INDEX.md) / [JSON 索引](../experiments/2026-11-14/RUN_INDEX.json) 找到 70 份 run_report；每个实验的 FILES.md 列明 sessions.tar.gz、traces.tar.gz 内路径和条数。MANIFEST.json 记录原来源、时间、SHA256、脱敏和排除，历史报告中的绝对链接可据此映射。
+
+覆盖安全判断器开发/留出链评测、首次联调、S3 修复/二阶段、10 人验收、三分类器两代进化、astra 轻量、A40 噪声与进化、另一会话的真实与 mock 彩排，以及已完成的 gate-fix 重测。分类器对比原始结果仍在 analysis/out，判断器对比报告仍在 docs/judge-comparison-2026-11-14.md；归档仅引用，未复制修改。历史驱动及本次离线校验工具见 [scripts/README.md](../experiments/2026-11-14/scripts/README.md)。
+
+使用时同时读取 run_report、summary、实际模型/渲染配置与 trace：首次联调全 error，S3 二阶段有预算耗尽后的固定降级，真实小彩排没有采纳新版本；同 playbook 重跑也有显著波动。所有 ISI 都来自占位规则状态模型；gate-fix 同时改了渲染、并发、重试和反思超时，不支持单因素归因或独立 B 组泛化结论。
+
+本次归档没有调用 API，没有改动契约、安全判据或算法。验证为临时补齐被忽略的 SFT 导出后 1227 passed、10 个契约示例通过、归档逐文件及 gzip 成员扫描 0 命中；测试前置链接已清理。归档和这两处交接更新仅保存在工作区，未提交。

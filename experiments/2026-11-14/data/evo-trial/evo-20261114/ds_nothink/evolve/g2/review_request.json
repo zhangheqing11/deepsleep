@@ -1,0 +1,34 @@
+{
+  "evolution_id": "g2",
+  "deadline_epoch": 1794649982.814037,
+  "timeout_policy": "pass",
+  "changes": [
+    {
+      "candidate_id": "c2",
+      "change_id": "c2-referral_rules-1",
+      "section": "referral_rules",
+      "op": "add",
+      "before": null,
+      "after": "来访描述「起来走几步就好、一躺回去又来、晚上更明显」这类腿部模式时，按疑似不宁腿给 R2，即使此前说过腿没问题，也再确认一次睡前和夜里的感觉。",
+      "reason": "有来访先否认腿部问题、随后自己描述出典型的不宁腿模式，agent 仍判 R0，R2 召回为 0。"
+    },
+    {
+      "candidate_id": "c2",
+      "change_id": "c2-referral_rules-2",
+      "section": "referral_rules",
+      "op": "add",
+      "before": null,
+      "after": "只有来访明确提到有人观察到打鼾、呼吸停顿，或被憋醒，才考虑 R1；只有白天累、睡得久不足以给 R1。",
+      "reason": "有来访因「白天累」被误报 R1，而真正提到憋醒的来访反而判了 R0，说明 R1 缺证据门槛。"
+    },
+    {
+      "candidate_id": "c2",
+      "change_id": "c2-referral_rules-3",
+      "section": "referral_rules",
+      "op": "add",
+      "before": null,
+      "after": "已根据情绪量表或低落、兴趣减退给出 R3 后，不要因为「白天累或作息长」改成 R1；两类线索都出现时，保留有量表或明确情绪描述支持的那一个。",
+      "reason": "有来访第 1 轮判 R3 是正确的，第 2 轮却凭模糊的呼吸描述改成 R1，造成误报。"
+    }
+  ]
+}

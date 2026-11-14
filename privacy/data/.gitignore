@@ -1,0 +1,3 @@
+sft/*.jsonl
+synth/*.src.jsonl
+__pycache__/

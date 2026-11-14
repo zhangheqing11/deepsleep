@@ -1,7 +1,7 @@
 // deepsleep 离线静态外壳；只在生产构建注册，见 src/main.tsx。
 // CacheStorage 在同源应用间共享：读写和清理必须同时限定应用与注册 scope。
 // 每次发布前更新 VERSION。仅安装时预缓存固定 HTML；导航响应永不写入缓存。
-const VERSION = 'v2';
+const VERSION = 'v5';
 const SCOPE = new URL(self.registration.scope);
 const CACHE_PREFIX = `deepsleep-web:${SCOPE.href}:`;
 const CACHE_NAME = `${CACHE_PREFIX}${VERSION}`;

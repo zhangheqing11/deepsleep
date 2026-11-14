@@ -1,0 +1,5573 @@
+{
+  "logical": [
+    {
+      "visitor_id": "sample-001",
+      "component": "judge.ds_flash",
+      "status": "ok",
+      "ms": 2302.394
+    },
+    {
+      "visitor_id": "sample-002",
+      "component": "judge.ds_flash",
+      "status": "ok",
+      "ms": 3117.677
+    },
+    {
+      "visitor_id": "sample-003",
+      "component": "judge.ds_flash",
+      "status": "ok",
+      "ms": 3522.219
+    },
+    {
+      "visitor_id": "sample-004",
+      "component": "judge.ds_flash",
+      "status": "ok",
+      "ms": 3239.645
+    },
+    {
+      "visitor_id": "sample-005",
+      "component": "judge.ds_flash",
+      "status": "ok",
+      "ms": 2374.792
+    },
+    {
+      "visitor_id": "sample-006",
+      "component": "judge.ds_flash",
+      "status": "ok",
+      "ms": 2562.348
+    },
+    {
+      "visitor_id": "sample-007",
+      "component": "judge.ds_flash",
+      "status": "ok",
+      "ms": 2212.009
+    },
+    {
+      "visitor_id": "sample-008",
+      "component": "judge.ds_flash",
+      "status": "ok",
+      "ms": 2144.053
+    },
+    {
+      "visitor_id": "sample-009",
+      "component": "judge.ds_flash",
+      "status": "ok",
+      "ms": 2622.047
+    },
+    {
+      "visitor_id": "sample-010",
+      "component": "judge.ds_flash",
+      "status": "ok",
+      "ms": 2751.674
+    },
+    {
+      "visitor_id": "sample-008",
+      "component": "classifier",
+      "status": "ok",
+      "ms": 872.845
+    },
+    {
+      "visitor_id": "sample-008",
+      "component": "classifier.jev",
+      "status": "ok",
+      "ms": 872.832
+    },
+    {
+      "visitor_id": "sample-007",
+      "component": "classifier",
+      "status": "ok",
+      "ms": 1198.524
+    },
+    {
+      "visitor_id": "sample-007",
+      "component": "classifier.jev",
+      "status": "ok",
+      "ms": 1198.515
+    },
+    {
+      "visitor_id": "sample-001",
+      "component": "classifier",
+      "status": "ok",
+      "ms": 1170.788
+    },
+    {
+      "visitor_id": "sample-001",
+      "component": "classifier.jev",
+      "status": "ok",
+      "ms": 1170.779
+    },
+    {
+      "visitor_id": "sample-005",
+      "component": "classifier",
+      "status": "ok",
+      "ms": 873.037
+    },
+    {
+      "visitor_id": "sample-005",
+      "component": "classifier.jev",
+      "status": "ok",
+      "ms": 873.029
+    },
+    {
+      "visitor_id": "sample-006",
+      "component": "classifier",
+      "status": "ok",
+      "ms": 1344.312
+    },
+    {
+      "visitor_id": "sample-006",
+      "component": "classifier.jev",
+      "status": "ok",
+      "ms": 1344.302
+    },
+    {
+      "visitor_id": "sample-009",
+      "component": "classifier",
+      "status": "ok",
+      "ms": 978.611
+    },
+    {
+      "visitor_id": "sample-009",
+      "component": "classifier.jev",
+      "status": "ok",
+      "ms": 978.6
+    },
+    {
+      "visitor_id": "sample-010",
+      "component": "classifier",
+      "status": "ok",
+      "ms": 937.704
+    },
+    {
+      "visitor_id": "sample-010",
+      "component": "classifier.jev",
+      "status": "ok",
+      "ms": 937.69
+    },
+    {
+      "visitor_id": "sample-008",
+      "component": "turn",
+      "status": "ok",
+      "ms": 2427.541
+    },
+    {
+      "visitor_id": "sample-002",
+      "component": "classifier",
+      "status": "ok",
+      "ms": 348.654
+    },
+    {
+      "visitor_id": "sample-002",
+      "component": "classifier.jev",
+      "status": "ok",
+      "ms": 348.635
+    },
+    {
+      "visitor_id": "sample-004",
+      "component": "classifier",
+      "status": "ok",
+      "ms": 992.652
+    },
+    {
+      "visitor_id": "sample-004",
+      "component": "classifier.jev",
+      "status": "ok",
+      "ms": 992.638
+    },
+    {
+      "visitor_id": "sample-005",
+      "component": "turn",
+      "status": "ok",
+      "ms": 2405.135
+    },
+    {
+      "visitor_id": "sample-007",
+      "component": "turn",
+      "status": "ok",
+      "ms": 2505.901
+    },
+    {
+      "visitor_id": "sample-001",
+      "component": "turn",
+      "status": "ok",
+      "ms": 2240.31
+    },
+    {
+      "visitor_id": "sample-002",
+      "component": "turn",
+      "status": "ok",
+      "ms": 2144.674
+    },
+    {
+      "visitor_id": "sample-003",
+      "component": "classifier",
+      "status": "ok",
+      "ms": 283.22
+    },
+    {
+      "visitor_id": "sample-003",
+      "component": "classifier.jev",
+      "status": "ok",
+      "ms": 283.204
+    },
+    {
+      "visitor_id": "sample-009",
+      "component": "turn",
+      "status": "ok",
+      "ms": 2322.607
+    },
+    {
+      "visitor_id": "sample-010",
+      "component": "turn",
+      "status": "ok",
+      "ms": 2065.905
+    },
+    {
+      "visitor_id": "sample-003",
+      "component": "turn",
+      "status": "ok",
+      "ms": 2517.123
+    },
+    {
+      "visitor_id": "sample-006",
+      "component": "turn",
+      "status": "ok",
+      "ms": 2310.887
+    },
+    {
+      "visitor_id": "sample-004",
+      "component": "turn",
+      "status": "ok",
+      "ms": 2242.87
+    },
+    {
+      "visitor_id": "sample-008",
+      "component": "visitor",
+      "status": "ok",
+      "ms": 2044.814
+    },
+    {
+      "visitor_id": "sample-002",
+      "component": "visitor",
+      "status": "ok",
+      "ms": 1635.187
+    },
+    {
+      "visitor_id": "sample-005",
+      "component": "visitor",
+      "status": "ok",
+      "ms": 1630.09
+    },
+    {
+      "visitor_id": "sample-001",
+      "component": "visitor",
+      "status": "ok",
+      "ms": 1804.433
+    },
+    {
+      "visitor_id": "sample-010",
+      "component": "visitor",
+      "status": "ok",
+      "ms": 1698.159
+    },
+    {
+      "visitor_id": "sample-007",
+      "component": "visitor",
+      "status": "ok",
+      "ms": 1890.934
+    },
+    {
+      "visitor_id": "sample-009",
+      "component": "visitor",
+      "status": "fallback",
+      "error_type": "APIConnectionError",
+      "ms": 5008.257
+    },
+    {
+      "visitor_id": "sample-006",
+      "component": "visitor",
+      "status": "ok",
+      "ms": 1834.179
+    },
+    {
+      "visitor_id": "sample-003",
+      "component": "visitor",
+      "status": "ok",
+      "ms": 2113.138
+    },
+    {
+      "visitor_id": "sample-004",
+      "component": "visitor",
+      "status": "ok",
+      "ms": 2245.406
+    },
+    {
+      "visitor_id": "sample-002",
+      "component": "classifier",
+      "status": "ok",
+      "ms": 278.934
+    },
+    {
+      "visitor_id": "sample-002",
+      "component": "classifier.jev",
+      "status": "ok",
+      "ms": 278.904
+    },
+    {
+      "visitor_id": "sample-002",
+      "component": "judge.ds_flash",
+      "status": "ok",
+      "ms": 2290.674
+    },
+    {
+      "visitor_id": "sample-005",
+      "component": "classifier",
+      "status": "ok",
+      "ms": 313.681
+    },
+    {
+      "visitor_id": "sample-005",
+      "component": "classifier.jev",
+      "status": "ok",
+      "ms": 313.665
+    },
+    {
+      "visitor_id": "sample-005",
+      "component": "judge.ds_flash",
+      "status": "ok",
+      "ms": 1905.676
+    },
+    {
+      "visitor_id": "sample-010",
+      "component": "classifier",
+      "status": "ok",
+      "ms": 286.72
+    },
+    {
+      "visitor_id": "sample-010",
+      "component": "classifier.jev",
+      "status": "ok",
+      "ms": 286.71
+    },
+    {
+      "visitor_id": "sample-010",
+      "component": "judge.ds_flash",
+      "status": "ok",
+      "ms": 1863.032
+    },
+    {
+      "visitor_id": "sample-001",
+      "component": "classifier",
+      "status": "ok",
+      "ms": 261.027
+    },
+    {
+      "visitor_id": "sample-001",
+      "component": "classifier.jev",
+      "status": "ok",
+      "ms": 261.012
+    },
+    {
+      "visitor_id": "sample-001",
+      "component": "judge.ds_flash",
+      "status": "ok",
+      "ms": 1978.949
+    },
+    {
+      "visitor_id": "sample-002",
+      "component": "turn",
+      "status": "ok",
+      "ms": 1853.685
+    },
+    {
+      "visitor_id": "sample-008",
+      "component": "classifier",
+      "status": "ok",
+      "ms": 268.242
+    },
+    {
+      "visitor_id": "sample-008",
+      "component": "classifier.jev",
+      "status": "ok",
+      "ms": 268.232
+    },
+    {
+      "visitor_id": "sample-008",
+      "component": "judge.ds_flash",
+      "status": "ok",
+      "ms": 1877.88
+    },
+    {
+      "visitor_id": "sample-005",
+      "component": "turn",
+      "status": "ok",
+      "ms": 1932.037
+    },
+    {
+      "visitor_id": "sample-001",
+      "component": "turn",
+      "status": "ok",
+      "ms": 1584.335
+    },
+    {
+      "visitor_id": "sample-010",
+      "component": "turn",
+      "status": "ok",
+      "ms": 1483.576
+    },
+    {
+      "visitor_id": "sample-008",
+      "component": "turn",
+      "status": "ok",
+      "ms": 1343.736
+    },
+    {
+      "visitor_id": "sample-007",
+      "component": "classifier",
+      "status": "ok",
+      "ms": 274.764
+    },
+    {
+      "visitor_id": "sample-007",
+      "component": "classifier.jev",
+      "status": "ok",
+      "ms": 274.751
+    },
+    {
+      "visitor_id": "sample-007",
+      "component": "judge.ds_flash",
+      "status": "ok",
+      "ms": 1806.004
+    },
+    {
+      "visitor_id": "sample-006",
+      "component": "classifier",
+      "status": "ok",
+      "ms": 281.89
+    },
+    {
+      "visitor_id": "sample-006",
+      "component": "classifier.jev",
+      "status": "ok",
+      "ms": 281.881
+    },
+    {
+      "visitor_id": "sample-006",
+      "component": "judge.ds_flash",
+      "status": "ok",
+      "ms": 2088.719
+    },
+    {
+      "visitor_id": "sample-007",
+      "component": "turn",
+      "status": "ok",
+      "ms": 1781.043
+    },
+    {
+      "visitor_id": "sample-006",
+      "component": "turn",
+      "status": "ok",
+      "ms": 1180.227
+    },
+    {
+      "visitor_id": "sample-003",
+      "component": "classifier",
+      "status": "ok",
+      "ms": 298.708
+    },
+    {
+      "visitor_id": "sample-003",
+      "component": "classifier.jev",
+      "status": "ok",
+      "ms": 298.691
+    },
+    {
+      "visitor_id": "sample-003",
+      "component": "judge.ds_flash",
+      "status": "ok",
+      "ms": 2058.997
+    },
+    {
+      "visitor_id": "sample-004",
+      "component": "classifier",
+      "status": "ok",
+      "ms": 283.992
+    },
+    {
+      "visitor_id": "sample-004",
+      "component": "classifier.jev",
+      "status": "ok",
+      "ms": 283.975
+    },
+    {
+      "visitor_id": "sample-004",
+      "component": "judge.ds_flash",
+      "status": "ok",
+      "ms": 2019.626
+    },
+    {
+      "visitor_id": "sample-003",
+      "component": "turn",
+      "status": "ok",
+      "ms": 1323.873
+    },
+    {
+      "visitor_id": "sample-004",
+      "component": "turn",
+      "status": "ok",
+      "ms": 1181.534
+    },
+    {
+      "visitor_id": "sample-010",
+      "component": "visitor",
+      "status": "ok",
+      "ms": 1270.298
+    },
+    {
+      "visitor_id": "sample-008",
+      "component": "visitor",
+      "status": "ok",
+      "ms": 1263.23
+    },
+    {
+      "visitor_id": "sample-001",
+      "component": "visitor",
+      "status": "ok",
+      "ms": 1243.213
+    },
+    {
+      "visitor_id": "sample-002",
+      "component": "visitor",
+      "status": "ok",
+      "ms": 961.875
+    },
+    {
+      "visitor_id": "sample-005",
+      "component": "visitor",
+      "status": "ok",
+      "ms": 1009.698
+    },
+    {
+      "visitor_id": "sample-007",
+      "component": "visitor",
+      "status": "ok",
+      "ms": 1251.588
+    },
+    {
+      "visitor_id": "sample-006",
+      "component": "visitor",
+      "status": "ok",
+      "ms": 934.686
+    },
+    {
+      "visitor_id": "sample-003",
+      "component": "visitor",
+      "status": "ok",
+      "ms": 1106.736
+    },
+    {
+      "visitor_id": "sample-002",
+      "component": "judge.ds_flash",
+      "status": "ok",
+      "ms": 3349.13
+    },
+    {
+      "visitor_id": "sample-005",
+      "component": "judge.ds_flash",
+      "status": "ok",
+      "ms": 2708.5
+    },
+    {
+      "visitor_id": "sample-010",
+      "component": "judge.ds_flash",
+      "status": "ok",
+      "ms": 1833.191
+    },
+    {
+      "visitor_id": "sample-008",
+      "component": "judge.ds_flash",
+      "status": "ok",
+      "ms": 1987.992
+    },
+    {
+      "visitor_id": "sample-001",
+      "component": "judge.ds_flash",
+      "status": "ok",
+      "ms": 1861.658
+    },
+    {
+      "visitor_id": "sample-004",
+      "component": "visitor",
+      "status": "ok",
+      "ms": 1189.641
+    },
+    {
+      "visitor_id": "sample-009",
+      "component": "classifier",
+      "status": "ok",
+      "ms": 263.807
+    },
+    {
+      "visitor_id": "sample-009",
+      "component": "classifier.jev",
+      "status": "ok",
+      "ms": 263.791
+    },
+    {
+      "visitor_id": "sample-009",
+      "component": "judge.ds_flash",
+      "status": "ok",
+      "ms": 2348.298
+    },
+    {
+      "visitor_id": "sample-006",
+      "component": "judge.ds_flash",
+      "status": "ok",
+      "ms": 1821.842
+    },
+    {
+      "visitor_id": "sample-007",
+      "component": "judge.ds_flash",
+      "status": "ok",
+      "ms": 2063.41
+    },
+    {
+      "visitor_id": "sample-009",
+      "component": "turn",
+      "status": "ok",
+      "ms": 1663.098
+    },
+    {
+      "visitor_id": "sample-003",
+      "component": "judge.ds_flash",
+      "status": "ok",
+      "ms": 1970.886
+    },
+    {
+      "visitor_id": "sample-004",
+      "component": "judge.ds_flash",
+      "status": "ok",
+      "ms": 2500.03
+    },
+    {
+      "visitor_id": "sample-010",
+      "component": "visitor",
+      "status": "ok",
+      "ms": 1301.497
+    },
+    {
+      "visitor_id": "sample-001",
+      "component": "classifier",
+      "status": "ok",
+      "ms": 292.472
+    },
+    {
+      "visitor_id": "sample-001",
+      "component": "classifier.jev",
+      "status": "ok",
+      "ms": 292.461
+    },
+    {
+      "visitor_id": "sample-008",
+      "component": "classifier",
+      "status": "ok",
+      "ms": 270.477
+    },
+    {
+      "visitor_id": "sample-008",
+      "component": "classifier.jev",
+      "status": "ok",
+      "ms": 270.463
+    },
+    {
+      "visitor_id": "sample-001",
+      "component": "turn",
+      "status": "ok",
+      "ms": 1767.401
+    },
+    {
+      "visitor_id": "sample-006",
+      "component": "classifier",
+      "status": "ok",
+      "ms": 275.401
+    },
+    {
+      "visitor_id": "sample-006",
+      "component": "classifier.jev",
+      "status": "ok",
+      "ms": 275.388
+    },
+    {
+      "visitor_id": "sample-008",
+      "component": "turn",
+      "status": "ok",
+      "ms": 1606.023
+    },
+    {
+      "visitor_id": "sample-006",
+      "component": "turn",
+      "status": "ok",
+      "ms": 1609.576
+    },
+    {
+      "visitor_id": "sample-007",
+      "component": "classifier",
+      "status": "ok",
+      "ms": 311.899
+    },
+    {
+      "visitor_id": "sample-007",
+      "component": "classifier.jev",
+      "status": "ok",
+      "ms": 311.879
+    },
+    {
+      "visitor_id": "sample-005",
+      "component": "classifier",
+      "status": "ok",
+      "ms": 288.584
+    },
+    {
+      "visitor_id": "sample-005",
+      "component": "classifier.jev",
+      "status": "ok",
+      "ms": 288.566
+    },
+    {
+      "visitor_id": "sample-009",
+      "component": "visitor",
+      "status": "ok",
+      "ms": 891.419
+    },
+    {
+      "visitor_id": "sample-007",
+      "component": "turn",
+      "status": "ok",
+      "ms": 1857.08
+    },
+    {
+      "visitor_id": "sample-005",
+      "component": "turn",
+      "status": "ok",
+      "ms": 1762.226
+    },
+    {
+      "visitor_id": "sample-003",
+      "component": "visitor",
+      "status": "ok",
+      "ms": 1105.4
+    },
+    {
+      "visitor_id": "sample-010",
+      "component": "judge.ds_flash",
+      "status": "ok",
+      "ms": 2425.553
+    },
+    {
+      "visitor_id": "sample-002",
+      "component": "classifier",
+      "status": "ok",
+      "ms": 266.693
+    },
+    {
+      "visitor_id": "sample-002",
+      "component": "classifier.jev",
+      "status": "ok",
+      "ms": 266.676
+    },
+    {
+      "visitor_id": "sample-002",
+      "component": "turn",
+      "status": "ok",
+      "ms": 1723.51
+    },
+    {
+      "visitor_id": "sample-009",
+      "component": "judge.ds_flash",
+      "status": "ok",
+      "ms": 2147.209
+    },
+    {
+      "visitor_id": "sample-004",
+      "component": "classifier",
+      "status": "ok",
+      "ms": 268.346
+    },
+    {
+      "visitor_id": "sample-004",
+      "component": "classifier.jev",
+      "status": "ok",
+      "ms": 268.332
+    },
+    {
+      "visitor_id": "sample-008",
+      "component": "visitor",
+      "status": "ok",
+      "ms": 891.577
+    },
+    {
+      "visitor_id": "sample-001",
+      "component": "visitor",
+      "status": "ok",
+      "ms": 828.838
+    },
+    {
+      "visitor_id": "sample-003",
+      "component": "judge.ds_flash",
+      "status": "ok",
+      "ms": 2339.519
+    },
+    {
+      "visitor_id": "sample-004",
+      "component": "turn",
+      "status": "ok",
+      "ms": 1708.3
+    },
+    {
+      "visitor_id": "sample-006",
+      "component": "visitor",
+      "status": "ok",
+      "ms": 836.392
+    },
+    {
+      "visitor_id": "sample-005",
+      "component": "visitor",
+      "status": "ok",
+      "ms": 1218.102
+    },
+    {
+      "visitor_id": "sample-007",
+      "component": "visitor",
+      "status": "ok",
+      "ms": 1118.792
+    },
+    {
+      "visitor_id": "sample-008",
+      "component": "classifier",
+      "status": "ok",
+      "ms": 272.425
+    },
+    {
+      "visitor_id": "sample-008",
+      "component": "classifier.jev",
+      "status": "ok",
+      "ms": 272.408
+    },
+    {
+      "visitor_id": "sample-008",
+      "component": "judge.ds_flash",
+      "status": "ok",
+      "ms": 1642.464
+    },
+    {
+      "visitor_id": "sample-001",
+      "component": "classifier",
+      "status": "ok",
+      "ms": 330.319
+    },
+    {
+      "visitor_id": "sample-001",
+      "component": "classifier.jev",
+      "status": "ok",
+      "ms": 330.303
+    },
+    {
+      "visitor_id": "sample-001",
+      "component": "judge.ds_flash",
+      "status": "ok",
+      "ms": 2601.132
+    },
+    {
+      "visitor_id": "sample-006",
+      "component": "classifier",
+      "status": "ok",
+      "ms": 278.764
+    },
+    {
+      "visitor_id": "sample-006",
+      "component": "classifier.jev",
+      "status": "ok",
+      "ms": 278.746
+    },
+    {
+      "visitor_id": "sample-006",
+      "component": "judge.ds_flash",
+      "status": "error",
+      "ms": 5010.717
+    },
+    {
+      "visitor_id": "sample-008",
+      "component": "turn",
+      "status": "ok",
+      "ms": 1448.354
+    },
+    {
+      "visitor_id": "sample-001",
+      "component": "turn",
+      "status": "ok",
+      "ms": 1879.021
+    },
+    {
+      "visitor_id": "sample-002",
+      "component": "visitor",
+      "status": "ok",
+      "ms": 1025.17
+    },
+    {
+      "visitor_id": "sample-006",
+      "component": "turn",
+      "status": "ok",
+      "ms": 1421.707
+    },
+    {
+      "visitor_id": "sample-010",
+      "component": "classifier",
+      "status": "ok",
+      "ms": 296.558
+    },
+    {
+      "visitor_id": "sample-010",
+      "component": "classifier.jev",
+      "status": "ok",
+      "ms": 296.536
+    },
+    {
+      "visitor_id": "sample-009",
+      "component": "classifier",
+      "status": "ok",
+      "ms": 294.118
+    },
+    {
+      "visitor_id": "sample-009",
+      "component": "classifier.jev",
+      "status": "ok",
+      "ms": 294.106
+    },
+    {
+      "visitor_id": "sample-004",
+      "component": "visitor",
+      "status": "ok",
+      "ms": 1009.273
+    },
+    {
+      "visitor_id": "sample-010",
+      "component": "turn",
+      "status": "ok",
+      "ms": 1627.928
+    },
+    {
+      "visitor_id": "sample-007",
+      "component": "classifier",
+      "status": "ok",
+      "ms": 288.519
+    },
+    {
+      "visitor_id": "sample-007",
+      "component": "classifier.jev",
+      "status": "ok",
+      "ms": 288.491
+    },
+    {
+      "visitor_id": "sample-007",
+      "component": "judge.ds_flash",
+      "status": "ok",
+      "ms": 2256.088
+    },
+    {
+      "visitor_id": "sample-005",
+      "component": "classifier",
+      "status": "ok",
+      "ms": 278.857
+    },
+    {
+      "visitor_id": "sample-005",
+      "component": "classifier.jev",
+      "status": "ok",
+      "ms": 278.844
+    },
+    {
+      "visitor_id": "sample-005",
+      "component": "judge.ds_flash",
+      "status": "ok",
+      "ms": 2523.288
+    },
+    {
+      "visitor_id": "sample-009",
+      "component": "turn",
+      "status": "ok",
+      "ms": 1361.373
+    },
+    {
+      "visitor_id": "sample-007",
+      "component": "turn",
+      "status": "ok",
+      "ms": 959.775
+    },
+    {
+      "visitor_id": "sample-005",
+      "component": "turn",
+      "status": "ok",
+      "ms": 2363.904
+    },
+    {
+      "visitor_id": "sample-002",
+      "component": "classifier",
+      "status": "ok",
+      "ms": 265.832
+    },
+    {
+      "visitor_id": "sample-002",
+      "component": "classifier.jev",
+      "status": "ok",
+      "ms": 265.82
+    },
+    {
+      "visitor_id": "sample-002",
+      "component": "judge.ds_flash",
+      "status": "ok",
+      "ms": 2080.734
+    },
+    {
+      "visitor_id": "sample-003",
+      "component": "classifier",
+      "status": "ok",
+      "ms": 271.248
+    },
+    {
+      "visitor_id": "sample-003",
+      "component": "classifier.jev",
+      "status": "ok",
+      "ms": 271.235
+    },
+    {
+      "visitor_id": "sample-002",
+      "component": "turn",
+      "status": "ok",
+      "ms": 2382.169
+    },
+    {
+      "visitor_id": "sample-008",
+      "component": "visitor",
+      "status": "ok",
+      "ms": 1347.725
+    },
+    {
+      "visitor_id": "sample-003",
+      "component": "turn",
+      "status": "ok",
+      "ms": 1609.868
+    },
+    {
+      "visitor_id": "sample-004",
+      "component": "classifier",
+      "status": "ok",
+      "ms": 278.423
+    },
+    {
+      "visitor_id": "sample-004",
+      "component": "classifier.jev",
+      "status": "ok",
+      "ms": 278.411
+    },
+    {
+      "visitor_id": "sample-004",
+      "component": "judge.ds_flash",
+      "status": "ok",
+      "ms": 2227.121
+    },
+    {
+      "visitor_id": "sample-004",
+      "component": "turn",
+      "status": "ok",
+      "ms": 1515.656
+    },
+    {
+      "visitor_id": "sample-009",
+      "component": "visitor",
+      "status": "ok",
+      "ms": 1168.771
+    },
+    {
+      "visitor_id": "sample-001",
+      "component": "visitor",
+      "status": "ok",
+      "ms": 1143.858
+    },
+    {
+      "visitor_id": "sample-010",
+      "component": "visitor",
+      "status": "ok",
+      "ms": 878.321
+    },
+    {
+      "visitor_id": "sample-008",
+      "component": "judge.ds_flash",
+      "status": "ok",
+      "ms": 2156.38
+    },
+    {
+      "visitor_id": "sample-007",
+      "component": "memory_plan",
+      "status": "ok",
+      "ms": 5862.043
+    },
+    {
+      "visitor_id": "sample-003",
+      "component": "visitor",
+      "status": "ok",
+      "ms": 916.343
+    },
+    {
+      "visitor_id": "sample-010",
+      "component": "classifier",
+      "status": "ok",
+      "ms": 255.404
+    },
+    {
+      "visitor_id": "sample-010",
+      "component": "classifier.jev",
+      "status": "ok",
+      "ms": 255.393
+    },
+    {
+      "visitor_id": "sample-010",
+      "component": "judge.ds_flash",
+      "status": "ok",
+      "ms": 1894.589
+    },
+    {
+      "visitor_id": "sample-009",
+      "component": "classifier",
+      "status": "ok",
+      "ms": 268.904
+    },
+    {
+      "visitor_id": "sample-009",
+      "component": "classifier.jev",
+      "status": "ok",
+      "ms": 268.887
+    },
+    {
+      "visitor_id": "sample-009",
+      "component": "judge.ds_flash",
+      "status": "ok",
+      "ms": 2217.494
+    },
+    {
+      "visitor_id": "sample-005",
+      "component": "visitor",
+      "status": "ok",
+      "ms": 1161.785
+    },
+    {
+      "visitor_id": "sample-001",
+      "component": "judge.ds_flash",
+      "status": "ok",
+      "ms": 3311.119
+    },
+    {
+      "visitor_id": "sample-010",
+      "component": "turn",
+      "status": "ok",
+      "ms": 1534.094
+    },
+    {
+      "visitor_id": "sample-009",
+      "component": "turn",
+      "status": "ok",
+      "ms": 1844.483
+    },
+    {
+      "visitor_id": "sample-002",
+      "component": "visitor",
+      "status": "ok",
+      "ms": 899.828
+    },
+    {
+      "visitor_id": "sample-004",
+      "component": "visitor",
+      "status": "ok",
+      "ms": 1025.731
+    },
+    {
+      "visitor_id": "sample-003",
+      "component": "classifier",
+      "status": "ok",
+      "ms": 300.247
+    },
+    {
+      "visitor_id": "sample-003",
+      "component": "classifier.jev",
+      "status": "ok",
+      "ms": 300.225
+    },
+    {
+      "visitor_id": "sample-003",
+      "component": "judge.ds_flash",
+      "status": "ok",
+      "ms": 1993.357
+    },
+    {
+      "visitor_id": "sample-003",
+      "component": "turn",
+      "status": "ok",
+      "ms": 1699.145
+    },
+    {
+      "visitor_id": "sample-005",
+      "component": "judge.ds_flash",
+      "status": "ok",
+      "ms": 2857.06
+    },
+    {
+      "visitor_id": "sample-002",
+      "component": "judge.ds_flash",
+      "status": "ok",
+      "ms": 1951.454
+    },
+    {
+      "visitor_id": "sample-008",
+      "component": "classifier",
+      "status": "ok",
+      "ms": 269.354
+    },
+    {
+      "visitor_id": "sample-008",
+      "component": "classifier.jev",
+      "status": "ok",
+      "ms": 269.338
+    },
+    {
+      "visitor_id": "sample-006",
+      "component": "judge.jev",
+      "status": "ok",
+      "ms": 931.146
+    },
+    {
+      "visitor_id": "sample-004",
+      "component": "judge.ds_flash",
+      "status": "ok",
+      "ms": 2151.185
+    },
+    {
+      "visitor_id": "sample-010",
+      "component": "visitor",
+      "status": "ok",
+      "ms": 1197.028
+    },
+    {
+      "visitor_id": "sample-008",
+      "component": "memory_plan",
+      "status": "error",
+      "error_type": "LLMError",
+      "ms": 6054.593
+    },
+    {
+      "visitor_id": "sample-009",
+      "component": "visitor",
+      "status": "ok",
+      "ms": 1129.965
+    },
+    {
+      "visitor_id": "sample-006",
+      "component": "visitor",
+      "status": "ok",
+      "ms": 1335.546
+    },
+    {
+      "visitor_id": "sample-003",
+      "component": "visitor",
+      "status": "ok",
+      "ms": 1206.047
+    },
+    {
+      "visitor_id": "sample-010",
+      "component": "judge.ds_flash",
+      "status": "ok",
+      "ms": 2133.484
+    },
+    {
+      "visitor_id": "sample-002",
+      "component": "classifier",
+      "status": "ok",
+      "ms": 252.117
+    },
+    {
+      "visitor_id": "sample-002",
+      "component": "classifier.jev",
+      "status": "ok",
+      "ms": 252.106
+    },
+    {
+      "visitor_id": "sample-009",
+      "component": "judge.ds_flash",
+      "status": "ok",
+      "ms": 1948.906
+    },
+    {
+      "visitor_id": "sample-001",
+      "component": "classifier",
+      "status": "ok",
+      "ms": 295.72
+    },
+    {
+      "visitor_id": "sample-001",
+      "component": "classifier.jev",
+      "status": "ok",
+      "ms": 295.707
+    },
+    {
+      "visitor_id": "sample-002",
+      "component": "memory_plan",
+      "status": "ok",
+      "ms": 5466.616
+    },
+    {
+      "visitor_id": "sample-001",
+      "component": "memory_plan",
+      "status": "ok",
+      "ms": 6435.77
+    },
+    {
+      "visitor_id": "sample-004",
+      "component": "classifier",
+      "status": "ok",
+      "ms": 265.1
+    },
+    {
+      "visitor_id": "sample-004",
+      "component": "classifier.jev",
+      "status": "ok",
+      "ms": 265.089
+    },
+    {
+      "visitor_id": "sample-006",
+      "component": "judge.ds_flash",
+      "status": "ok",
+      "ms": 1838.485
+    },
+    {
+      "visitor_id": "sample-003",
+      "component": "judge.ds_flash",
+      "status": "ok",
+      "ms": 1827.261
+    },
+    {
+      "visitor_id": "sample-004",
+      "component": "memory_plan",
+      "status": "ok",
+      "ms": 7815.106
+    },
+    {
+      "visitor_id": "sample-005",
+      "component": "classifier",
+      "status": "ok",
+      "ms": 275.663
+    },
+    {
+      "visitor_id": "sample-005",
+      "component": "classifier.jev",
+      "status": "ok",
+      "ms": 275.645
+    },
+    {
+      "visitor_id": "sample-005",
+      "component": "memory_plan",
+      "status": "ok",
+      "ms": 7196.039
+    },
+    {
+      "visitor_id": "sample-010",
+      "component": "classifier",
+      "status": "ok",
+      "ms": 334.539
+    },
+    {
+      "visitor_id": "sample-010",
+      "component": "classifier.jev",
+      "status": "ok",
+      "ms": 334.521
+    },
+    {
+      "visitor_id": "sample-009",
+      "component": "classifier",
+      "status": "ok",
+      "ms": 263.63
+    },
+    {
+      "visitor_id": "sample-009",
+      "component": "classifier.jev",
+      "status": "ok",
+      "ms": 263.608
+    },
+    {
+      "visitor_id": "sample-010",
+      "component": "memory_plan",
+      "status": "ok",
+      "ms": 9076.027
+    },
+    {
+      "visitor_id": "sample-007",
+      "component": "memory_plan",
+      "status": "ok",
+      "ms": 6328.479
+    },
+    {
+      "visitor_id": "sample-009",
+      "component": "memory_plan",
+      "status": "ok",
+      "ms": 9041.823
+    },
+    {
+      "visitor_id": "sample-006",
+      "component": "classifier",
+      "status": "ok",
+      "ms": 255.737
+    },
+    {
+      "visitor_id": "sample-006",
+      "component": "classifier.jev",
+      "status": "ok",
+      "ms": 255.722
+    },
+    {
+      "visitor_id": "sample-003",
+      "component": "classifier",
+      "status": "ok",
+      "ms": 272.405
+    },
+    {
+      "visitor_id": "sample-003",
+      "component": "classifier.jev",
+      "status": "ok",
+      "ms": 272.371
+    },
+    {
+      "visitor_id": "sample-006",
+      "component": "memory_plan",
+      "status": "ok",
+      "ms": 10694.647
+    },
+    {
+      "visitor_id": "sample-003",
+      "component": "memory_plan",
+      "status": "ok",
+      "ms": 8218.606
+    },
+    {
+      "visitor_id": "sample-008",
+      "component": "memory_plan",
+      "status": "ok",
+      "ms": 6554.799
+    },
+    {
+      "visitor_id": "sample-002",
+      "component": "visitor",
+      "status": "ok",
+      "ms": 1984.997
+    },
+    {
+      "visitor_id": "sample-001",
+      "component": "visitor",
+      "status": "ok",
+      "ms": 1877.578
+    },
+    {
+      "visitor_id": "sample-002",
+      "component": "judge.ds_flash",
+      "status": "ok",
+      "ms": 2000.392
+    },
+    {
+      "visitor_id": "sample-005",
+      "component": "visitor",
+      "status": "ok",
+      "ms": 1283.244
+    },
+    {
+      "visitor_id": "sample-004",
+      "component": "visitor",
+      "status": "ok",
+      "ms": 1792.955
+    },
+    {
+      "visitor_id": "sample-007",
+      "component": "visitor",
+      "status": "ok",
+      "ms": 1643.493
+    },
+    {
+      "visitor_id": "sample-001",
+      "component": "judge.ds_flash",
+      "status": "ok",
+      "ms": 2150.127
+    },
+    {
+      "visitor_id": "sample-005",
+      "component": "judge.ds_flash",
+      "status": "ok",
+      "ms": 2822.624
+    },
+    {
+      "visitor_id": "sample-002",
+      "component": "select",
+      "status": "ok",
+      "ms": 1613.853
+    },
+    {
+      "visitor_id": "sample-007",
+      "component": "judge.ds_flash",
+      "status": "error",
+      "ms": 5009.375
+    },
+    {
+      "visitor_id": "sample-004",
+      "component": "judge.ds_flash",
+      "status": "ok",
+      "ms": 1792.198
+    },
+    {
+      "visitor_id": "sample-001",
+      "component": "select",
+      "status": "ok",
+      "ms": 1740.058
+    },
+    {
+      "visitor_id": "sample-003",
+      "component": "visitor",
+      "status": "ok",
+      "ms": 1568.519
+    },
+    {
+      "visitor_id": "sample-008",
+      "component": "visitor",
+      "status": "ok",
+      "ms": 1071.202
+    },
+    {
+      "visitor_id": "sample-010",
+      "component": "visitor",
+      "status": "ok",
+      "ms": 1105.262
+    },
+    {
+      "visitor_id": "sample-002",
+      "component": "classifier",
+      "status": "ok",
+      "ms": 304.212
+    },
+    {
+      "visitor_id": "sample-002",
+      "component": "classifier.jev",
+      "status": "ok",
+      "ms": 304.187
+    },
+    {
+      "visitor_id": "sample-009",
+      "component": "visitor",
+      "status": "ok",
+      "ms": 938.863
+    },
+    {
+      "visitor_id": "sample-002",
+      "component": "turn",
+      "status": "ok",
+      "ms": 1525.441
+    },
+    {
+      "visitor_id": "sample-004",
+      "component": "select",
+      "status": "ok",
+      "ms": 2060.241
+    },
+    {
+      "visitor_id": "sample-008",
+      "component": "judge.ds_flash",
+      "status": "ok",
+      "ms": 2340.11
+    },
+    {
+      "visitor_id": "sample-009",
+      "component": "judge.ds_flash",
+      "status": "ok",
+      "ms": 2088.837
+    },
+    {
+      "visitor_id": "sample-010",
+      "component": "judge.ds_flash",
+      "status": "ok",
+      "ms": 2638.277
+    },
+    {
+      "visitor_id": "sample-005",
+      "component": "select",
+      "status": "ok",
+      "ms": 1473.626
+    },
+    {
+      "visitor_id": "sample-003",
+      "component": "judge.ds_flash",
+      "status": "ok",
+      "ms": 2138.853
+    },
+    {
+      "visitor_id": "sample-001",
+      "component": "classifier",
+      "status": "ok",
+      "ms": 344.726
+    },
+    {
+      "visitor_id": "sample-001",
+      "component": "classifier.jev",
+      "status": "ok",
+      "ms": 344.711
+    },
+    {
+      "visitor_id": "sample-001",
+      "component": "turn",
+      "status": "ok",
+      "ms": 1515.863
+    },
+    {
+      "visitor_id": "sample-002",
+      "component": "visitor",
+      "status": "ok",
+      "ms": 1110.118
+    },
+    {
+      "visitor_id": "sample-006",
+      "component": "visitor",
+      "status": "ok",
+      "ms": 1311.387
+    },
+    {
+      "visitor_id": "sample-005",
+      "component": "classifier",
+      "status": "ok",
+      "ms": 255.654
+    },
+    {
+      "visitor_id": "sample-005",
+      "component": "classifier.jev",
+      "status": "ok",
+      "ms": 255.64
+    },
+    {
+      "visitor_id": "sample-005",
+      "component": "turn",
+      "status": "ok",
+      "ms": 1774.419
+    },
+    {
+      "visitor_id": "sample-004",
+      "component": "classifier",
+      "status": "ok",
+      "ms": 318.164
+    },
+    {
+      "visitor_id": "sample-004",
+      "component": "classifier.jev",
+      "status": "ok",
+      "ms": 318.145
+    },
+    {
+      "visitor_id": "sample-002",
+      "component": "classifier",
+      "status": "ok",
+      "ms": 271.101
+    },
+    {
+      "visitor_id": "sample-002",
+      "component": "classifier.jev",
+      "status": "ok",
+      "ms": 271.087
+    },
+    {
+      "visitor_id": "sample-002",
+      "component": "judge.ds_flash",
+      "status": "cancelled",
+      "ms": 6002.072
+    },
+    {
+      "visitor_id": "sample-009",
+      "component": "select",
+      "status": "ok",
+      "ms": 1820.836
+    },
+    {
+      "visitor_id": "sample-004",
+      "component": "turn",
+      "status": "ok",
+      "ms": 1723.906
+    },
+    {
+      "visitor_id": "sample-001",
+      "component": "visitor",
+      "status": "ok",
+      "ms": 1333.094
+    },
+    {
+      "visitor_id": "sample-002",
+      "component": "turn",
+      "status": "ok",
+      "ms": 1500.091
+    },
+    {
+      "visitor_id": "sample-008",
+      "component": "select",
+      "status": "ok",
+      "ms": 1474.235
+    },
+    {
+      "visitor_id": "sample-006",
+      "component": "judge.ds_flash",
+      "status": "ok",
+      "ms": 1813.252
+    },
+    {
+      "visitor_id": "sample-003",
+      "component": "select",
+      "status": "ok",
+      "ms": 1295.015
+    },
+    {
+      "visitor_id": "sample-010",
+      "component": "select",
+      "status": "ok",
+      "ms": 1563.377
+    },
+    {
+      "visitor_id": "sample-007",
+      "component": "judge.jev",
+      "status": "ok",
+      "ms": 243.671
+    },
+    {
+      "visitor_id": "sample-007",
+      "component": "select",
+      "status": "ok",
+      "ms": 1880.735
+    },
+    {
+      "visitor_id": "sample-001",
+      "component": "classifier",
+      "status": "ok",
+      "ms": 268.817
+    },
+    {
+      "visitor_id": "sample-001",
+      "component": "classifier.jev",
+      "status": "ok",
+      "ms": 268.807
+    },
+    {
+      "visitor_id": "sample-001",
+      "component": "judge.ds_flash",
+      "status": "ok",
+      "ms": 2880.532
+    },
+    {
+      "visitor_id": "sample-005",
+      "component": "visitor",
+      "status": "ok",
+      "ms": 913.862
+    },
+    {
+      "visitor_id": "sample-003",
+      "component": "classifier",
+      "status": "ok",
+      "ms": 277.544
+    },
+    {
+      "visitor_id": "sample-003",
+      "component": "classifier.jev",
+      "status": "ok",
+      "ms": 277.527
+    },
+    {
+      "visitor_id": "sample-008",
+      "component": "classifier",
+      "status": "ok",
+      "ms": 255.215
+    },
+    {
+      "visitor_id": "sample-008",
+      "component": "classifier.jev",
+      "status": "ok",
+      "ms": 255.2
+    },
+    {
+      "visitor_id": "sample-001",
+      "component": "turn",
+      "status": "ok",
+      "ms": 1677.048
+    },
+    {
+      "visitor_id": "sample-004",
+      "component": "visitor",
+      "status": "ok",
+      "ms": 1044.939
+    },
+    {
+      "visitor_id": "sample-009",
+      "component": "classifier",
+      "status": "ok",
+      "ms": 267.142
+    },
+    {
+      "visitor_id": "sample-009",
+      "component": "classifier.jev",
+      "status": "ok",
+      "ms": 267.13
+    },
+    {
+      "visitor_id": "sample-003",
+      "component": "turn",
+      "status": "ok",
+      "ms": 1712.047
+    },
+    {
+      "visitor_id": "sample-008",
+      "component": "turn",
+      "status": "ok",
+      "ms": 1662.719
+    },
+    {
+      "visitor_id": "sample-006",
+      "component": "select",
+      "status": "ok",
+      "ms": 1645.48
+    },
+    {
+      "visitor_id": "sample-009",
+      "component": "turn",
+      "status": "ok",
+      "ms": 1624.126
+    },
+    {
+      "visitor_id": "sample-010",
+      "component": "classifier",
+      "status": "ok",
+      "ms": 243.87
+    },
+    {
+      "visitor_id": "sample-010",
+      "component": "classifier.jev",
+      "status": "ok",
+      "ms": 243.851
+    },
+    {
+      "visitor_id": "sample-010",
+      "component": "turn",
+      "status": "ok",
+      "ms": 1604.493
+    },
+    {
+      "visitor_id": "sample-005",
+      "component": "classifier",
+      "status": "ok",
+      "ms": 314.887
+    },
+    {
+      "visitor_id": "sample-005",
+      "component": "classifier.jev",
+      "status": "ok",
+      "ms": 314.874
+    },
+    {
+      "visitor_id": "sample-005",
+      "component": "judge.ds_flash",
+      "status": "ok",
+      "ms": 2007.323
+    },
+    {
+      "visitor_id": "sample-005",
+      "component": "turn",
+      "status": "ok",
+      "ms": 1819.68
+    },
+    {
+      "visitor_id": "sample-004",
+      "component": "classifier",
+      "status": "ok",
+      "ms": 397.857
+    },
+    {
+      "visitor_id": "sample-004",
+      "component": "classifier.jev",
+      "status": "ok",
+      "ms": 397.844
+    },
+    {
+      "visitor_id": "sample-004",
+      "component": "judge.ds_flash",
+      "status": "ok",
+      "ms": 1905.019
+    },
+    {
+      "visitor_id": "sample-007",
+      "component": "classifier",
+      "status": "ok",
+      "ms": 326.099
+    },
+    {
+      "visitor_id": "sample-007",
+      "component": "classifier.jev",
+      "status": "ok",
+      "ms": 326.083
+    },
+    {
+      "visitor_id": "sample-007",
+      "component": "turn",
+      "status": "ok",
+      "ms": 1867.299
+    },
+    {
+      "visitor_id": "sample-004",
+      "component": "turn",
+      "status": "ok",
+      "ms": 2332.885
+    },
+    {
+      "visitor_id": "sample-008",
+      "component": "visitor",
+      "status": "ok",
+      "ms": 1326.347
+    },
+    {
+      "visitor_id": "sample-003",
+      "component": "visitor",
+      "status": "ok",
+      "ms": 1300.426
+    },
+    {
+      "visitor_id": "sample-006",
+      "component": "classifier",
+      "status": "ok",
+      "ms": 296.188
+    },
+    {
+      "visitor_id": "sample-006",
+      "component": "classifier.jev",
+      "status": "ok",
+      "ms": 296.182
+    },
+    {
+      "visitor_id": "sample-009",
+      "component": "classifier",
+      "status": "ok",
+      "ms": 303.106
+    },
+    {
+      "visitor_id": "sample-009",
+      "component": "classifier.jev",
+      "status": "ok",
+      "ms": 303.099
+    },
+    {
+      "visitor_id": "sample-010",
+      "component": "visitor",
+      "status": "ok",
+      "ms": 2121.66
+    },
+    {
+      "visitor_id": "sample-006",
+      "component": "turn",
+      "status": "ok",
+      "ms": 1867.172
+    },
+    {
+      "visitor_id": "sample-009",
+      "component": "turn",
+      "status": "ok",
+      "ms": 1767.882
+    },
+    {
+      "visitor_id": "sample-001",
+      "component": "visitor",
+      "status": "ok",
+      "ms": 1929.11
+    },
+    {
+      "visitor_id": "sample-005",
+      "component": "visitor",
+      "status": "ok",
+      "ms": 1828.656
+    },
+    {
+      "visitor_id": "sample-003",
+      "component": "classifier",
+      "status": "ok",
+      "ms": 280.402
+    },
+    {
+      "visitor_id": "sample-003",
+      "component": "classifier.jev",
+      "status": "ok",
+      "ms": 280.39
+    },
+    {
+      "visitor_id": "sample-003",
+      "component": "judge.ds_flash",
+      "status": "ok",
+      "ms": 2055.712
+    },
+    {
+      "visitor_id": "sample-008",
+      "component": "classifier",
+      "status": "ok",
+      "ms": 277.128
+    },
+    {
+      "visitor_id": "sample-008",
+      "component": "classifier.jev",
+      "status": "ok",
+      "ms": 277.119
+    },
+    {
+      "visitor_id": "sample-008",
+      "component": "judge.ds_flash",
+      "status": "ok",
+      "ms": 2265.941
+    },
+    {
+      "visitor_id": "sample-007",
+      "component": "visitor",
+      "status": "ok",
+      "ms": 1096.216
+    },
+    {
+      "visitor_id": "sample-003",
+      "component": "turn",
+      "status": "ok",
+      "ms": 1510.414
+    },
+    {
+      "visitor_id": "sample-008",
+      "component": "turn",
+      "status": "ok",
+      "ms": 2240.095
+    },
+    {
+      "visitor_id": "sample-004",
+      "component": "visitor",
+      "status": "ok",
+      "ms": 1089.372
+    },
+    {
+      "visitor_id": "sample-009",
+      "component": "visitor",
+      "status": "ok",
+      "ms": 1842.971
+    },
+    {
+      "visitor_id": "sample-002",
+      "component": "judge.jev",
+      "status": "ok",
+      "ms": 271.75
+    },
+    {
+      "visitor_id": "sample-006",
+      "component": "visitor",
+      "status": "ok",
+      "ms": 1753.263
+    },
+    {
+      "visitor_id": "sample-010",
+      "component": "classifier",
+      "status": "ok",
+      "ms": 295.505
+    },
+    {
+      "visitor_id": "sample-010",
+      "component": "classifier.jev",
+      "status": "ok",
+      "ms": 295.491
+    },
+    {
+      "visitor_id": "sample-010",
+      "component": "judge.ds_flash",
+      "status": "ok",
+      "ms": 2238.048
+    },
+    {
+      "visitor_id": "sample-002",
+      "component": "visitor",
+      "status": "ok",
+      "ms": 938.678
+    },
+    {
+      "visitor_id": "sample-007",
+      "component": "classifier",
+      "status": "ok",
+      "ms": 270.188
+    },
+    {
+      "visitor_id": "sample-007",
+      "component": "classifier.jev",
+      "status": "ok",
+      "ms": 270.176
+    },
+    {
+      "visitor_id": "sample-007",
+      "component": "judge.ds_flash",
+      "status": "ok",
+      "ms": 2172.383
+    },
+    {
+      "visitor_id": "sample-001",
+      "component": "classifier",
+      "status": "ok",
+      "ms": 279.714
+    },
+    {
+      "visitor_id": "sample-001",
+      "component": "classifier.jev",
+      "status": "ok",
+      "ms": 279.696
+    },
+    {
+      "visitor_id": "sample-001",
+      "component": "judge.ds_flash",
+      "status": "ok",
+      "ms": 2350.412
+    },
+    {
+      "visitor_id": "sample-005",
+      "component": "classifier",
+      "status": "ok",
+      "ms": 891.629
+    },
+    {
+      "visitor_id": "sample-005",
+      "component": "classifier.jev",
+      "status": "ok",
+      "ms": 891.616
+    },
+    {
+      "visitor_id": "sample-005",
+      "component": "judge.ds_flash",
+      "status": "ok",
+      "ms": 2453.716
+    },
+    {
+      "visitor_id": "sample-010",
+      "component": "turn",
+      "status": "ok",
+      "ms": 1862.423
+    },
+    {
+      "visitor_id": "sample-007",
+      "component": "turn",
+      "status": "ok",
+      "ms": 1633.338
+    },
+    {
+      "visitor_id": "sample-001",
+      "component": "turn",
+      "status": "ok",
+      "ms": 1385.506
+    },
+    {
+      "visitor_id": "sample-004",
+      "component": "classifier",
+      "status": "ok",
+      "ms": 322.824
+    },
+    {
+      "visitor_id": "sample-004",
+      "component": "classifier.jev",
+      "status": "ok",
+      "ms": 322.807
+    },
+    {
+      "visitor_id": "sample-004",
+      "component": "judge.ds_flash",
+      "status": "ok",
+      "ms": 2318.451
+    },
+    {
+      "visitor_id": "sample-003",
+      "component": "visitor",
+      "status": "ok",
+      "ms": 905.654
+    },
+    {
+      "visitor_id": "sample-004",
+      "component": "turn",
+      "status": "ok",
+      "ms": 1595.389
+    },
+    {
+      "visitor_id": "sample-002",
+      "component": "classifier",
+      "status": "ok",
+      "ms": 307.734
+    },
+    {
+      "visitor_id": "sample-002",
+      "component": "classifier.jev",
+      "status": "ok",
+      "ms": 307.715
+    },
+    {
+      "visitor_id": "sample-002",
+      "component": "judge.ds_flash",
+      "status": "ok",
+      "ms": 2082.411
+    },
+    {
+      "visitor_id": "sample-005",
+      "component": "turn",
+      "status": "ok",
+      "ms": 1883.165
+    },
+    {
+      "visitor_id": "sample-002",
+      "component": "turn",
+      "status": "ok",
+      "ms": 1589.645
+    },
+    {
+      "visitor_id": "sample-008",
+      "component": "visitor",
+      "status": "ok",
+      "ms": 1417.438
+    },
+    {
+      "visitor_id": "sample-006",
+      "component": "classifier",
+      "status": "ok",
+      "ms": 306.34
+    },
+    {
+      "visitor_id": "sample-006",
+      "component": "classifier.jev",
+      "status": "ok",
+      "ms": 306.329
+    },
+    {
+      "visitor_id": "sample-006",
+      "component": "judge.ds_flash",
+      "status": "ok",
+      "ms": 2289.884
+    },
+    {
+      "visitor_id": "sample-009",
+      "component": "classifier",
+      "status": "ok",
+      "ms": 309.852
+    },
+    {
+      "visitor_id": "sample-009",
+      "component": "classifier.jev",
+      "status": "ok",
+      "ms": 309.838
+    },
+    {
+      "visitor_id": "sample-009",
+      "component": "judge.ds_flash",
+      "status": "ok",
+      "ms": 2256.442
+    },
+    {
+      "visitor_id": "sample-003",
+      "component": "classifier",
+      "status": "ok",
+      "ms": 306.93
+    },
+    {
+      "visitor_id": "sample-003",
+      "component": "classifier.jev",
+      "status": "ok",
+      "ms": 306.915
+    },
+    {
+      "visitor_id": "sample-003",
+      "component": "judge.ds_flash",
+      "status": "ok",
+      "ms": 2313.192
+    },
+    {
+      "visitor_id": "sample-006",
+      "component": "turn",
+      "status": "ok",
+      "ms": 1654.032
+    },
+    {
+      "visitor_id": "sample-009",
+      "component": "turn",
+      "status": "ok",
+      "ms": 1840.443
+    },
+    {
+      "visitor_id": "sample-003",
+      "component": "turn",
+      "status": "ok",
+      "ms": 1667.742
+    },
+    {
+      "visitor_id": "sample-010",
+      "component": "visitor",
+      "status": "ok",
+      "ms": 1434.026
+    },
+    {
+      "visitor_id": "sample-007",
+      "component": "visitor",
+      "status": "ok",
+      "ms": 1216.685
+    },
+    {
+      "visitor_id": "sample-001",
+      "component": "visitor",
+      "status": "ok",
+      "ms": 961.36
+    },
+    {
+      "visitor_id": "sample-008",
+      "component": "classifier",
+      "status": "ok",
+      "ms": 262.329
+    },
+    {
+      "visitor_id": "sample-008",
+      "component": "classifier.jev",
+      "status": "ok",
+      "ms": 262.303
+    },
+    {
+      "visitor_id": "sample-008",
+      "component": "judge.ds_flash",
+      "status": "ok",
+      "ms": 1904.622
+    },
+    {
+      "visitor_id": "sample-004",
+      "component": "visitor",
+      "status": "ok",
+      "ms": 1190.697
+    },
+    {
+      "visitor_id": "sample-008",
+      "component": "turn",
+      "status": "ok",
+      "ms": 2156.497
+    },
+    {
+      "visitor_id": "sample-005",
+      "component": "visitor",
+      "status": "ok",
+      "ms": 1334.859
+    },
+    {
+      "visitor_id": "sample-002",
+      "component": "visitor",
+      "status": "ok",
+      "ms": 1214.327
+    },
+    {
+      "visitor_id": "sample-001",
+      "component": "judge.ds_flash",
+      "status": "ok",
+      "ms": 2051.696
+    },
+    {
+      "visitor_id": "sample-007",
+      "component": "classifier",
+      "status": "ok",
+      "ms": 297.371
+    },
+    {
+      "visitor_id": "sample-007",
+      "component": "classifier.jev",
+      "status": "ok",
+      "ms": 297.354
+    },
+    {
+      "visitor_id": "sample-007",
+      "component": "judge.ds_flash",
+      "status": "ok",
+      "ms": 2349.008
+    },
+    {
+      "visitor_id": "sample-010",
+      "component": "classifier",
+      "status": "ok",
+      "ms": 293.767
+    },
+    {
+      "visitor_id": "sample-010",
+      "component": "classifier.jev",
+      "status": "ok",
+      "ms": 293.752
+    },
+    {
+      "visitor_id": "sample-010",
+      "component": "judge.ds_flash",
+      "status": "ok",
+      "ms": 2600.722
+    },
+    {
+      "visitor_id": "sample-009",
+      "component": "visitor",
+      "status": "ok",
+      "ms": 1144.267
+    },
+    {
+      "visitor_id": "sample-006",
+      "component": "visitor",
+      "status": "ok",
+      "ms": 1098.754
+    },
+    {
+      "visitor_id": "sample-007",
+      "component": "turn",
+      "status": "ok",
+      "ms": 1782.943
+    },
+    {
+      "visitor_id": "sample-010",
+      "component": "turn",
+      "status": "ok",
+      "ms": 1477.303
+    },
+    {
+      "visitor_id": "sample-003",
+      "component": "visitor",
+      "status": "ok",
+      "ms": 1070.137
+    },
+    {
+      "visitor_id": "sample-004",
+      "component": "judge.ds_flash",
+      "status": "ok",
+      "ms": 2053.892
+    },
+    {
+      "visitor_id": "sample-002",
+      "component": "judge.ds_flash",
+      "status": "ok",
+      "ms": 1868.914
+    },
+    {
+      "visitor_id": "sample-005",
+      "component": "judge.ds_flash",
+      "status": "ok",
+      "ms": 1902.416
+    },
+    {
+      "visitor_id": "sample-006",
+      "component": "classifier",
+      "status": "ok",
+      "ms": 263.925
+    },
+    {
+      "visitor_id": "sample-006",
+      "component": "classifier.jev",
+      "status": "ok",
+      "ms": 263.909
+    },
+    {
+      "visitor_id": "sample-006",
+      "component": "judge.ds_flash",
+      "status": "error",
+      "ms": 8.494
+    },
+    {
+      "visitor_id": "sample-006",
+      "component": "judge.jev",
+      "status": "error",
+      "ms": 2.046
+    },
+    {
+      "visitor_id": "sample-009",
+      "component": "judge.ds_flash",
+      "status": "error",
+      "ms": 2.043
+    },
+    {
+      "visitor_id": "sample-009",
+      "component": "judge.jev",
+      "status": "error",
+      "ms": 0.568
+    },
+    {
+      "visitor_id": "sample-009",
+      "component": "classifier",
+      "status": "error",
+      "ms": 2.001
+    },
+    {
+      "visitor_id": "sample-009",
+      "component": "classifier.jev",
+      "status": "error",
+      "ms": 0.587
+    },
+    {
+      "visitor_id": "sample-009",
+      "component": "classifier.ds_flash",
+      "status": "error",
+      "ms": 1.378
+    },
+    {
+      "visitor_id": "sample-009",
+      "component": "memory",
+      "status": "error",
+      "error_type": "RequestBudgetExceeded",
+      "ms": 0.436
+    },
+    {
+      "visitor_id": "sample-009",
+      "component": "memory",
+      "status": "error",
+      "error_type": "RequestBudgetExceeded",
+      "ms": 0.388
+    },
+    {
+      "visitor_id": "sample-009",
+      "component": "plan",
+      "status": "error",
+      "error_type": "RequestBudgetExceeded",
+      "ms": 0.49
+    },
+    {
+      "visitor_id": "sample-009",
+      "component": "plan",
+      "status": "error",
+      "error_type": "RequestBudgetExceeded",
+      "ms": 0.442
+    },
+    {
+      "visitor_id": "sample-009",
+      "component": "visitor",
+      "status": "fallback",
+      "error_type": "RequestBudgetExceeded",
+      "ms": 0.416
+    },
+    {
+      "visitor_id": "sample-009",
+      "component": "judge.ds_flash",
+      "status": "error",
+      "ms": 1.99
+    },
+    {
+      "visitor_id": "sample-009",
+      "component": "judge.jev",
+      "status": "error",
+      "ms": 0.543
+    },
+    {
+      "visitor_id": "sample-003",
+      "component": "judge.ds_flash",
+      "status": "error",
+      "ms": 4.923
+    },
+    {
+      "visitor_id": "sample-003",
+      "component": "judge.jev",
+      "status": "error",
+      "ms": 1.007
+    },
+    {
+      "visitor_id": "sample-003",
+      "component": "classifier",
+      "status": "error",
+      "ms": 1.83
+    },
+    {
+      "visitor_id": "sample-003",
+      "component": "classifier.jev",
+      "status": "error",
+      "ms": 0.824
+    },
+    {
+      "visitor_id": "sample-003",
+      "component": "classifier.ds_flash",
+      "status": "error",
+      "ms": 0.981
+    },
+    {
+      "visitor_id": "sample-003",
+      "component": "memory",
+      "status": "error",
+      "error_type": "RequestBudgetExceeded",
+      "ms": 0.787
+    },
+    {
+      "visitor_id": "sample-003",
+      "component": "memory",
+      "status": "error",
+      "error_type": "RequestBudgetExceeded",
+      "ms": 0.811
+    },
+    {
+      "visitor_id": "sample-003",
+      "component": "plan",
+      "status": "error",
+      "error_type": "RequestBudgetExceeded",
+      "ms": 1.044
+    },
+    {
+      "visitor_id": "sample-003",
+      "component": "plan",
+      "status": "error",
+      "error_type": "RequestBudgetExceeded",
+      "ms": 0.812
+    },
+    {
+      "visitor_id": "sample-003",
+      "component": "visitor",
+      "status": "fallback",
+      "error_type": "RequestBudgetExceeded",
+      "ms": 0.917
+    },
+    {
+      "visitor_id": "sample-003",
+      "component": "judge.ds_flash",
+      "status": "error",
+      "ms": 3.175
+    },
+    {
+      "visitor_id": "sample-003",
+      "component": "judge.jev",
+      "status": "error",
+      "ms": 0.805
+    },
+    {
+      "visitor_id": "sample-008",
+      "component": "visitor",
+      "status": "fallback",
+      "error_type": "RequestBudgetExceeded",
+      "ms": 0.973
+    },
+    {
+      "visitor_id": "sample-008",
+      "component": "judge.ds_flash",
+      "status": "error",
+      "ms": 2.607
+    },
+    {
+      "visitor_id": "sample-008",
+      "component": "judge.jev",
+      "status": "error",
+      "ms": 0.712
+    },
+    {
+      "visitor_id": "sample-008",
+      "component": "classifier",
+      "status": "error",
+      "ms": 1.368
+    },
+    {
+      "visitor_id": "sample-008",
+      "component": "classifier.jev",
+      "status": "error",
+      "ms": 0.623
+    },
+    {
+      "visitor_id": "sample-008",
+      "component": "classifier.ds_flash",
+      "status": "error",
+      "ms": 0.728
+    },
+    {
+      "visitor_id": "sample-008",
+      "component": "memory",
+      "status": "error",
+      "error_type": "RequestBudgetExceeded",
+      "ms": 0.693
+    },
+    {
+      "visitor_id": "sample-008",
+      "component": "memory",
+      "status": "error",
+      "error_type": "RequestBudgetExceeded",
+      "ms": 0.694
+    },
+    {
+      "visitor_id": "sample-008",
+      "component": "plan",
+      "status": "error",
+      "error_type": "RequestBudgetExceeded",
+      "ms": 0.641
+    },
+    {
+      "visitor_id": "sample-008",
+      "component": "plan",
+      "status": "error",
+      "error_type": "RequestBudgetExceeded",
+      "ms": 0.583
+    },
+    {
+      "visitor_id": "sample-008",
+      "component": "visitor",
+      "status": "fallback",
+      "error_type": "RequestBudgetExceeded",
+      "ms": 0.53
+    },
+    {
+      "visitor_id": "sample-008",
+      "component": "judge.ds_flash",
+      "status": "error",
+      "ms": 2.492
+    },
+    {
+      "visitor_id": "sample-008",
+      "component": "judge.jev",
+      "status": "error",
+      "ms": 0.591
+    },
+    {
+      "visitor_id": "sample-006",
+      "component": "turn",
+      "status": "error",
+      "error_type": "RequestBudgetExceeded",
+      "ms": 1.137
+    },
+    {
+      "visitor_id": "sample-006",
+      "component": "turn",
+      "status": "error",
+      "error_type": "RequestBudgetExceeded",
+      "ms": 0.671
+    },
+    {
+      "visitor_id": "sample-006",
+      "component": "visitor",
+      "status": "fallback",
+      "error_type": "RequestBudgetExceeded",
+      "ms": 0.556
+    },
+    {
+      "visitor_id": "sample-006",
+      "component": "judge.ds_flash",
+      "status": "error",
+      "ms": 2.329
+    },
+    {
+      "visitor_id": "sample-006",
+      "component": "judge.jev",
+      "status": "error",
+      "ms": 0.956
+    },
+    {
+      "visitor_id": "sample-006",
+      "component": "classifier",
+      "status": "error",
+      "ms": 1.241
+    },
+    {
+      "visitor_id": "sample-006",
+      "component": "classifier.jev",
+      "status": "error",
+      "ms": 0.551
+    },
+    {
+      "visitor_id": "sample-006",
+      "component": "classifier.ds_flash",
+      "status": "error",
+      "ms": 0.674
+    },
+    {
+      "visitor_id": "sample-006",
+      "component": "memory",
+      "status": "error",
+      "error_type": "RequestBudgetExceeded",
+      "ms": 0.53
+    },
+    {
+      "visitor_id": "sample-006",
+      "component": "memory",
+      "status": "error",
+      "error_type": "RequestBudgetExceeded",
+      "ms": 0.491
+    },
+    {
+      "visitor_id": "sample-006",
+      "component": "plan",
+      "status": "error",
+      "error_type": "RequestBudgetExceeded",
+      "ms": 0.507
+    },
+    {
+      "visitor_id": "sample-006",
+      "component": "plan",
+      "status": "error",
+      "error_type": "RequestBudgetExceeded",
+      "ms": 0.494
+    },
+    {
+      "visitor_id": "sample-006",
+      "component": "visitor",
+      "status": "fallback",
+      "error_type": "RequestBudgetExceeded",
+      "ms": 0.439
+    },
+    {
+      "visitor_id": "sample-006",
+      "component": "judge.ds_flash",
+      "status": "error",
+      "ms": 1.727
+    },
+    {
+      "visitor_id": "sample-006",
+      "component": "judge.jev",
+      "status": "error",
+      "ms": 0.43
+    },
+    {
+      "visitor_id": "sample-001",
+      "component": "classifier",
+      "status": "error",
+      "ms": 3.51
+    },
+    {
+      "visitor_id": "sample-001",
+      "component": "classifier.jev",
+      "status": "error",
+      "ms": 1.89
+    },
+    {
+      "visitor_id": "sample-001",
+      "component": "classifier.ds_flash",
+      "status": "error",
+      "ms": 1.583
+    },
+    {
+      "visitor_id": "sample-001",
+      "component": "memory",
+      "status": "error",
+      "error_type": "RequestBudgetExceeded",
+      "ms": 0.73
+    },
+    {
+      "visitor_id": "sample-001",
+      "component": "memory",
+      "status": "error",
+      "error_type": "RequestBudgetExceeded",
+      "ms": 0.983
+    },
+    {
+      "visitor_id": "sample-001",
+      "component": "plan",
+      "status": "error",
+      "error_type": "RequestBudgetExceeded",
+      "ms": 1.076
+    },
+    {
+      "visitor_id": "sample-001",
+      "component": "plan",
+      "status": "error",
+      "error_type": "RequestBudgetExceeded",
+      "ms": 0.93
+    },
+    {
+      "visitor_id": "sample-001",
+      "component": "visitor",
+      "status": "fallback",
+      "error_type": "RequestBudgetExceeded",
+      "ms": 0.765
+    },
+    {
+      "visitor_id": "sample-001",
+      "component": "judge.ds_flash",
+      "status": "error",
+      "ms": 3.032
+    },
+    {
+      "visitor_id": "sample-001",
+      "component": "judge.jev",
+      "status": "error",
+      "ms": 0.806
+    },
+    {
+      "visitor_id": "sample-007",
+      "component": "visitor",
+      "status": "fallback",
+      "error_type": "RequestBudgetExceeded",
+      "ms": 1.122
+    },
+    {
+      "visitor_id": "sample-007",
+      "component": "judge.ds_flash",
+      "status": "error",
+      "ms": 2.92
+    },
+    {
+      "visitor_id": "sample-007",
+      "component": "judge.jev",
+      "status": "error",
+      "ms": 0.574
+    },
+    {
+      "visitor_id": "sample-007",
+      "component": "classifier",
+      "status": "error",
+      "ms": 1.253
+    },
+    {
+      "visitor_id": "sample-007",
+      "component": "classifier.jev",
+      "status": "error",
+      "ms": 0.577
+    },
+    {
+      "visitor_id": "sample-007",
+      "component": "classifier.ds_flash",
+      "status": "error",
+      "ms": 0.659
+    },
+    {
+      "visitor_id": "sample-007",
+      "component": "memory",
+      "status": "error",
+      "error_type": "RequestBudgetExceeded",
+      "ms": 0.596
+    },
+    {
+      "visitor_id": "sample-007",
+      "component": "memory",
+      "status": "error",
+      "error_type": "RequestBudgetExceeded",
+      "ms": 0.552
+    },
+    {
+      "visitor_id": "sample-007",
+      "component": "plan",
+      "status": "error",
+      "error_type": "RequestBudgetExceeded",
+      "ms": 1.751
+    },
+    {
+      "visitor_id": "sample-007",
+      "component": "plan",
+      "status": "error",
+      "error_type": "RequestBudgetExceeded",
+      "ms": 0.525
+    },
+    {
+      "visitor_id": "sample-007",
+      "component": "visitor",
+      "status": "fallback",
+      "error_type": "RequestBudgetExceeded",
+      "ms": 0.452
+    },
+    {
+      "visitor_id": "sample-007",
+      "component": "judge.ds_flash",
+      "status": "error",
+      "ms": 1.892
+    },
+    {
+      "visitor_id": "sample-007",
+      "component": "judge.jev",
+      "status": "error",
+      "ms": 0.461
+    },
+    {
+      "visitor_id": "sample-002",
+      "component": "classifier",
+      "status": "error",
+      "ms": 3.572
+    },
+    {
+      "visitor_id": "sample-002",
+      "component": "classifier.jev",
+      "status": "error",
+      "ms": 2.089
+    },
+    {
+      "visitor_id": "sample-002",
+      "component": "classifier.ds_flash",
+      "status": "error",
+      "ms": 1.45
+    },
+    {
+      "visitor_id": "sample-002",
+      "component": "memory",
+      "status": "error",
+      "error_type": "RequestBudgetExceeded",
+      "ms": 0.867
+    },
+    {
+      "visitor_id": "sample-002",
+      "component": "memory",
+      "status": "error",
+      "error_type": "RequestBudgetExceeded",
+      "ms": 0.774
+    },
+    {
+      "visitor_id": "sample-002",
+      "component": "plan",
+      "status": "error",
+      "error_type": "RequestBudgetExceeded",
+      "ms": 1.172
+    },
+    {
+      "visitor_id": "sample-002",
+      "component": "plan",
+      "status": "error",
+      "error_type": "RequestBudgetExceeded",
+      "ms": 0.877
+    },
+    {
+      "visitor_id": "sample-002",
+      "component": "visitor",
+      "status": "fallback",
+      "error_type": "RequestBudgetExceeded",
+      "ms": 0.638
+    },
+    {
+      "visitor_id": "sample-002",
+      "component": "judge.ds_flash",
+      "status": "error",
+      "ms": 3.022
+    },
+    {
+      "visitor_id": "sample-002",
+      "component": "judge.jev",
+      "status": "error",
+      "ms": 0.769
+    },
+    {
+      "visitor_id": "sample-004",
+      "component": "classifier",
+      "status": "error",
+      "ms": 2.796
+    },
+    {
+      "visitor_id": "sample-004",
+      "component": "classifier.jev",
+      "status": "error",
+      "ms": 1.733
+    },
+    {
+      "visitor_id": "sample-004",
+      "component": "classifier.ds_flash",
+      "status": "error",
+      "ms": 1.039
+    },
+    {
+      "visitor_id": "sample-004",
+      "component": "memory",
+      "status": "error",
+      "error_type": "RequestBudgetExceeded",
+      "ms": 0.748
+    },
+    {
+      "visitor_id": "sample-004",
+      "component": "memory",
+      "status": "error",
+      "error_type": "RequestBudgetExceeded",
+      "ms": 0.655
+    },
+    {
+      "visitor_id": "sample-004",
+      "component": "plan",
+      "status": "error",
+      "error_type": "RequestBudgetExceeded",
+      "ms": 0.703
+    },
+    {
+      "visitor_id": "sample-004",
+      "component": "plan",
+      "status": "error",
+      "error_type": "RequestBudgetExceeded",
+      "ms": 0.638
+    },
+    {
+      "visitor_id": "sample-004",
+      "component": "visitor",
+      "status": "fallback",
+      "error_type": "RequestBudgetExceeded",
+      "ms": 0.581
+    },
+    {
+      "visitor_id": "sample-004",
+      "component": "judge.ds_flash",
+      "status": "error",
+      "ms": 2.663
+    },
+    {
+      "visitor_id": "sample-004",
+      "component": "judge.jev",
+      "status": "error",
+      "ms": 0.639
+    },
+    {
+      "visitor_id": "sample-010",
+      "component": "visitor",
+      "status": "fallback",
+      "error_type": "RequestBudgetExceeded",
+      "ms": 1.753
+    },
+    {
+      "visitor_id": "sample-005",
+      "component": "classifier",
+      "status": "error",
+      "ms": 1.921
+    },
+    {
+      "visitor_id": "sample-005",
+      "component": "classifier.jev",
+      "status": "error",
+      "ms": 1.059
+    },
+    {
+      "visitor_id": "sample-005",
+      "component": "classifier.ds_flash",
+      "status": "error",
+      "ms": 0.84
+    },
+    {
+      "visitor_id": "sample-005",
+      "component": "memory",
+      "status": "error",
+      "error_type": "RequestBudgetExceeded",
+      "ms": 0.942
+    },
+    {
+      "visitor_id": "sample-005",
+      "component": "memory",
+      "status": "error",
+      "error_type": "RequestBudgetExceeded",
+      "ms": 0.785
+    },
+    {
+      "visitor_id": "sample-005",
+      "component": "plan",
+      "status": "error",
+      "error_type": "RequestBudgetExceeded",
+      "ms": 0.79
+    },
+    {
+      "visitor_id": "sample-005",
+      "component": "plan",
+      "status": "error",
+      "error_type": "RequestBudgetExceeded",
+      "ms": 0.704
+    },
+    {
+      "visitor_id": "sample-005",
+      "component": "visitor",
+      "status": "fallback",
+      "error_type": "RequestBudgetExceeded",
+      "ms": 0.596
+    },
+    {
+      "visitor_id": "sample-010",
+      "component": "judge.ds_flash",
+      "status": "error",
+      "ms": 5.048
+    },
+    {
+      "visitor_id": "sample-005",
+      "component": "judge.ds_flash",
+      "status": "error",
+      "ms": 9.595
+    },
+    {
+      "visitor_id": "sample-010",
+      "component": "judge.jev",
+      "status": "error",
+      "ms": 0.79
+    },
+    {
+      "visitor_id": "sample-010",
+      "component": "classifier",
+      "status": "error",
+      "ms": 1.471
+    },
+    {
+      "visitor_id": "sample-010",
+      "component": "classifier.jev",
+      "status": "error",
+      "ms": 0.667
+    },
+    {
+      "visitor_id": "sample-010",
+      "component": "classifier.ds_flash",
+      "status": "error",
+      "ms": 0.785
+    },
+    {
+      "visitor_id": "sample-010",
+      "component": "memory",
+      "status": "error",
+      "error_type": "RequestBudgetExceeded",
+      "ms": 0.678
+    },
+    {
+      "visitor_id": "sample-010",
+      "component": "memory",
+      "status": "error",
+      "error_type": "RequestBudgetExceeded",
+      "ms": 0.96
+    },
+    {
+      "visitor_id": "sample-010",
+      "component": "plan",
+      "status": "error",
+      "error_type": "RequestBudgetExceeded",
+      "ms": 0.767
+    },
+    {
+      "visitor_id": "sample-010",
+      "component": "plan",
+      "status": "error",
+      "error_type": "RequestBudgetExceeded",
+      "ms": 0.667
+    },
+    {
+      "visitor_id": "sample-010",
+      "component": "visitor",
+      "status": "fallback",
+      "error_type": "RequestBudgetExceeded",
+      "ms": 0.619
+    },
+    {
+      "visitor_id": "sample-005",
+      "component": "judge.jev",
+      "status": "error",
+      "ms": 0.684
+    },
+    {
+      "visitor_id": "sample-010",
+      "component": "judge.ds_flash",
+      "status": "error",
+      "ms": 6.074
+    },
+    {
+      "visitor_id": "sample-010",
+      "component": "judge.jev",
+      "status": "error",
+      "ms": 0.466
+    }
+  ],
+  "http": [
+    {
+      "visitor_id": "sample-004",
+      "component": "judge.ds_flash",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 3233.668
+    },
+    {
+      "visitor_id": "sample-002",
+      "component": "judge.ds_flash",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 3087.231
+    },
+    {
+      "visitor_id": "sample-001",
+      "component": "judge.ds_flash",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 2256.937
+    },
+    {
+      "visitor_id": "sample-003",
+      "component": "judge.ds_flash",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 3496.449
+    },
+    {
+      "visitor_id": "sample-005",
+      "component": "judge.ds_flash",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 2368.331
+    },
+    {
+      "visitor_id": "sample-006",
+      "component": "judge.ds_flash",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 2556.764
+    },
+    {
+      "visitor_id": "sample-007",
+      "component": "judge.ds_flash",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 2206.614
+    },
+    {
+      "visitor_id": "sample-008",
+      "component": "judge.ds_flash",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 2133.493
+    },
+    {
+      "visitor_id": "sample-009",
+      "component": "judge.ds_flash",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 2618.027
+    },
+    {
+      "visitor_id": "sample-010",
+      "component": "judge.ds_flash",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 2748.04
+    },
+    {
+      "visitor_id": "sample-008",
+      "component": "classifier.jev",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 865.873
+    },
+    {
+      "visitor_id": "sample-007",
+      "component": "classifier.jev",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 1196.73
+    },
+    {
+      "visitor_id": "sample-001",
+      "component": "classifier.jev",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 1169.541
+    },
+    {
+      "visitor_id": "sample-005",
+      "component": "classifier.jev",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 872.17
+    },
+    {
+      "visitor_id": "sample-006",
+      "component": "classifier.jev",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 1343.232
+    },
+    {
+      "visitor_id": "sample-009",
+      "component": "classifier.jev",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 977.232
+    },
+    {
+      "visitor_id": "sample-010",
+      "component": "classifier.jev",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 936.405
+    },
+    {
+      "visitor_id": "sample-008",
+      "component": "turn",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 2422.101
+    },
+    {
+      "visitor_id": "sample-002",
+      "component": "classifier.jev",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 346.862
+    },
+    {
+      "visitor_id": "sample-004",
+      "component": "classifier.jev",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 990.389
+    },
+    {
+      "visitor_id": "sample-005",
+      "component": "turn",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 2402.232
+    },
+    {
+      "visitor_id": "sample-007",
+      "component": "turn",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 2503.205
+    },
+    {
+      "visitor_id": "sample-001",
+      "component": "turn",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 2238.637
+    },
+    {
+      "visitor_id": "sample-002",
+      "component": "turn",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 2141.99
+    },
+    {
+      "visitor_id": "sample-003",
+      "component": "classifier.jev",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 280.64
+    },
+    {
+      "visitor_id": "sample-009",
+      "component": "turn",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 2320.125
+    },
+    {
+      "visitor_id": "sample-010",
+      "component": "turn",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 2063.21
+    },
+    {
+      "visitor_id": "sample-003",
+      "component": "turn",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 2514.469
+    },
+    {
+      "visitor_id": "sample-006",
+      "component": "turn",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 2308.501
+    },
+    {
+      "visitor_id": "sample-004",
+      "component": "turn",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 2239.682
+    },
+    {
+      "visitor_id": "sample-008",
+      "component": "visitor",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 2042.144
+    },
+    {
+      "visitor_id": "sample-002",
+      "component": "visitor",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 1632.018
+    },
+    {
+      "visitor_id": "sample-005",
+      "component": "visitor",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 1627.86
+    },
+    {
+      "visitor_id": "sample-001",
+      "component": "visitor",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 1803.168
+    },
+    {
+      "visitor_id": "sample-010",
+      "component": "visitor",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 1696.42
+    },
+    {
+      "visitor_id": "sample-007",
+      "component": "visitor",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 1888.332
+    },
+    {
+      "visitor_id": "sample-009",
+      "component": "visitor",
+      "status": "error",
+      "error_type": "ConnectError",
+      "ms": 5006.253
+    },
+    {
+      "visitor_id": "sample-006",
+      "component": "visitor",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 1830.284
+    },
+    {
+      "visitor_id": "sample-003",
+      "component": "visitor",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 2111.086
+    },
+    {
+      "visitor_id": "sample-004",
+      "component": "visitor",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 2243.115
+    },
+    {
+      "visitor_id": "sample-002",
+      "component": "classifier.jev",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 275.952
+    },
+    {
+      "visitor_id": "sample-002",
+      "component": "judge.ds_flash",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 2284.976
+    },
+    {
+      "visitor_id": "sample-005",
+      "component": "classifier.jev",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 311.08
+    },
+    {
+      "visitor_id": "sample-005",
+      "component": "judge.ds_flash",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 1900.097
+    },
+    {
+      "visitor_id": "sample-010",
+      "component": "classifier.jev",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 284.791
+    },
+    {
+      "visitor_id": "sample-010",
+      "component": "judge.ds_flash",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 1857.858
+    },
+    {
+      "visitor_id": "sample-001",
+      "component": "classifier.jev",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 258.975
+    },
+    {
+      "visitor_id": "sample-001",
+      "component": "judge.ds_flash",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 1974.934
+    },
+    {
+      "visitor_id": "sample-002",
+      "component": "turn",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 1851.772
+    },
+    {
+      "visitor_id": "sample-008",
+      "component": "classifier.jev",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 267.119
+    },
+    {
+      "visitor_id": "sample-008",
+      "component": "judge.ds_flash",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 1873.171
+    },
+    {
+      "visitor_id": "sample-005",
+      "component": "turn",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 1928.781
+    },
+    {
+      "visitor_id": "sample-001",
+      "component": "turn",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 1581.563
+    },
+    {
+      "visitor_id": "sample-010",
+      "component": "turn",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 1481.823
+    },
+    {
+      "visitor_id": "sample-008",
+      "component": "turn",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 1340.834
+    },
+    {
+      "visitor_id": "sample-007",
+      "component": "classifier.jev",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 272.8
+    },
+    {
+      "visitor_id": "sample-007",
+      "component": "judge.ds_flash",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 1799.395
+    },
+    {
+      "visitor_id": "sample-006",
+      "component": "classifier.jev",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 279.959
+    },
+    {
+      "visitor_id": "sample-006",
+      "component": "judge.ds_flash",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 2081.525
+    },
+    {
+      "visitor_id": "sample-007",
+      "component": "turn",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 1778.317
+    },
+    {
+      "visitor_id": "sample-006",
+      "component": "turn",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 1177.672
+    },
+    {
+      "visitor_id": "sample-003",
+      "component": "classifier.jev",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 296.643
+    },
+    {
+      "visitor_id": "sample-003",
+      "component": "judge.ds_flash",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 2053.872
+    },
+    {
+      "visitor_id": "sample-004",
+      "component": "classifier.jev",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 282.229
+    },
+    {
+      "visitor_id": "sample-004",
+      "component": "judge.ds_flash",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 2014.511
+    },
+    {
+      "visitor_id": "sample-003",
+      "component": "turn",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 1322.139
+    },
+    {
+      "visitor_id": "sample-004",
+      "component": "turn",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 1178.945
+    },
+    {
+      "visitor_id": "sample-010",
+      "component": "visitor",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 1268.904
+    },
+    {
+      "visitor_id": "sample-008",
+      "component": "visitor",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 1260.634
+    },
+    {
+      "visitor_id": "sample-001",
+      "component": "visitor",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 1240.123
+    },
+    {
+      "visitor_id": "sample-002",
+      "component": "visitor",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 959.751
+    },
+    {
+      "visitor_id": "sample-005",
+      "component": "visitor",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 1006.936
+    },
+    {
+      "visitor_id": "sample-007",
+      "component": "visitor",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 1249.075
+    },
+    {
+      "visitor_id": "sample-006",
+      "component": "visitor",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 932.438
+    },
+    {
+      "visitor_id": "sample-003",
+      "component": "visitor",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 1104.591
+    },
+    {
+      "visitor_id": "sample-002",
+      "component": "judge.ds_flash",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 3343.93
+    },
+    {
+      "visitor_id": "sample-005",
+      "component": "judge.ds_flash",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 2702.553
+    },
+    {
+      "visitor_id": "sample-010",
+      "component": "judge.ds_flash",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 1827.488
+    },
+    {
+      "visitor_id": "sample-008",
+      "component": "judge.ds_flash",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 1982.563
+    },
+    {
+      "visitor_id": "sample-001",
+      "component": "judge.ds_flash",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 1855.459
+    },
+    {
+      "visitor_id": "sample-004",
+      "component": "visitor",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 1187.413
+    },
+    {
+      "visitor_id": "sample-009",
+      "component": "classifier.jev",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 261.607
+    },
+    {
+      "visitor_id": "sample-009",
+      "component": "judge.ds_flash",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 2339.994
+    },
+    {
+      "visitor_id": "sample-006",
+      "component": "judge.ds_flash",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 1817.215
+    },
+    {
+      "visitor_id": "sample-007",
+      "component": "judge.ds_flash",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 2058.129
+    },
+    {
+      "visitor_id": "sample-009",
+      "component": "turn",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 1660.483
+    },
+    {
+      "visitor_id": "sample-003",
+      "component": "judge.ds_flash",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 1965.926
+    },
+    {
+      "visitor_id": "sample-004",
+      "component": "judge.ds_flash",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 2493.539
+    },
+    {
+      "visitor_id": "sample-010",
+      "component": "visitor",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 1299.596
+    },
+    {
+      "visitor_id": "sample-001",
+      "component": "classifier.jev",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 290.024
+    },
+    {
+      "visitor_id": "sample-008",
+      "component": "classifier.jev",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 268.628
+    },
+    {
+      "visitor_id": "sample-001",
+      "component": "turn",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 1765.496
+    },
+    {
+      "visitor_id": "sample-006",
+      "component": "classifier.jev",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 273.131
+    },
+    {
+      "visitor_id": "sample-008",
+      "component": "turn",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 1603.83
+    },
+    {
+      "visitor_id": "sample-006",
+      "component": "turn",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 1607.38
+    },
+    {
+      "visitor_id": "sample-007",
+      "component": "classifier.jev",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 309.588
+    },
+    {
+      "visitor_id": "sample-005",
+      "component": "classifier.jev",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 286.862
+    },
+    {
+      "visitor_id": "sample-009",
+      "component": "visitor",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 889.119
+    },
+    {
+      "visitor_id": "sample-007",
+      "component": "turn",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 1854.855
+    },
+    {
+      "visitor_id": "sample-005",
+      "component": "turn",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 1758.941
+    },
+    {
+      "visitor_id": "sample-003",
+      "component": "visitor",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 1102.458
+    },
+    {
+      "visitor_id": "sample-010",
+      "component": "judge.ds_flash",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 2419.305
+    },
+    {
+      "visitor_id": "sample-002",
+      "component": "classifier.jev",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 264.621
+    },
+    {
+      "visitor_id": "sample-002",
+      "component": "turn",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 1720.827
+    },
+    {
+      "visitor_id": "sample-009",
+      "component": "judge.ds_flash",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 2141.507
+    },
+    {
+      "visitor_id": "sample-004",
+      "component": "classifier.jev",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 266.538
+    },
+    {
+      "visitor_id": "sample-008",
+      "component": "visitor",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 889.25
+    },
+    {
+      "visitor_id": "sample-001",
+      "component": "visitor",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 826.488
+    },
+    {
+      "visitor_id": "sample-003",
+      "component": "judge.ds_flash",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 2334.112
+    },
+    {
+      "visitor_id": "sample-004",
+      "component": "turn",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 1704.832
+    },
+    {
+      "visitor_id": "sample-006",
+      "component": "visitor",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 832.967
+    },
+    {
+      "visitor_id": "sample-005",
+      "component": "visitor",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 1215.646
+    },
+    {
+      "visitor_id": "sample-007",
+      "component": "visitor",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 1116.675
+    },
+    {
+      "visitor_id": "sample-008",
+      "component": "classifier.jev",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 269.77
+    },
+    {
+      "visitor_id": "sample-008",
+      "component": "judge.ds_flash",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 1632.553
+    },
+    {
+      "visitor_id": "sample-001",
+      "component": "classifier.jev",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 327.772
+    },
+    {
+      "visitor_id": "sample-001",
+      "component": "judge.ds_flash",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 2595.819
+    },
+    {
+      "visitor_id": "sample-006",
+      "component": "classifier.jev",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 276.279
+    },
+    {
+      "visitor_id": "sample-006",
+      "component": "judge.ds_flash",
+      "status": "error",
+      "error_type": "ConnectError",
+      "ms": 5005.931
+    },
+    {
+      "visitor_id": "sample-008",
+      "component": "turn",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 1445.897
+    },
+    {
+      "visitor_id": "sample-001",
+      "component": "turn",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 1875.886
+    },
+    {
+      "visitor_id": "sample-002",
+      "component": "visitor",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 1023.246
+    },
+    {
+      "visitor_id": "sample-006",
+      "component": "turn",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 1419.073
+    },
+    {
+      "visitor_id": "sample-010",
+      "component": "classifier.jev",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 293.662
+    },
+    {
+      "visitor_id": "sample-009",
+      "component": "classifier.jev",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 291.513
+    },
+    {
+      "visitor_id": "sample-004",
+      "component": "visitor",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 1006.54
+    },
+    {
+      "visitor_id": "sample-010",
+      "component": "turn",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 1625.271
+    },
+    {
+      "visitor_id": "sample-007",
+      "component": "classifier.jev",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 285.882
+    },
+    {
+      "visitor_id": "sample-007",
+      "component": "judge.ds_flash",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 2250.813
+    },
+    {
+      "visitor_id": "sample-005",
+      "component": "classifier.jev",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 277.291
+    },
+    {
+      "visitor_id": "sample-005",
+      "component": "judge.ds_flash",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 2518.393
+    },
+    {
+      "visitor_id": "sample-009",
+      "component": "turn",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 1358.773
+    },
+    {
+      "visitor_id": "sample-007",
+      "component": "turn",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 957.113
+    },
+    {
+      "visitor_id": "sample-005",
+      "component": "turn",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 2361.898
+    },
+    {
+      "visitor_id": "sample-002",
+      "component": "classifier.jev",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 264.46
+    },
+    {
+      "visitor_id": "sample-002",
+      "component": "judge.ds_flash",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 2076.172
+    },
+    {
+      "visitor_id": "sample-003",
+      "component": "classifier.jev",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 269.444
+    },
+    {
+      "visitor_id": "sample-002",
+      "component": "turn",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 2379.712
+    },
+    {
+      "visitor_id": "sample-008",
+      "component": "visitor",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 1345.999
+    },
+    {
+      "visitor_id": "sample-003",
+      "component": "turn",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 1607.712
+    },
+    {
+      "visitor_id": "sample-004",
+      "component": "classifier.jev",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 276.418
+    },
+    {
+      "visitor_id": "sample-004",
+      "component": "judge.ds_flash",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 2220.619
+    },
+    {
+      "visitor_id": "sample-004",
+      "component": "turn",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 1512.578
+    },
+    {
+      "visitor_id": "sample-009",
+      "component": "visitor",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 1166.317
+    },
+    {
+      "visitor_id": "sample-001",
+      "component": "visitor",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 1142.05
+    },
+    {
+      "visitor_id": "sample-010",
+      "component": "visitor",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 876.657
+    },
+    {
+      "visitor_id": "sample-008",
+      "component": "judge.ds_flash",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 2151.448
+    },
+    {
+      "visitor_id": "sample-007",
+      "component": "memory_plan",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 5858.605
+    },
+    {
+      "visitor_id": "sample-003",
+      "component": "visitor",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 914.651
+    },
+    {
+      "visitor_id": "sample-010",
+      "component": "classifier.jev",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 254.136
+    },
+    {
+      "visitor_id": "sample-010",
+      "component": "judge.ds_flash",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 1891.002
+    },
+    {
+      "visitor_id": "sample-009",
+      "component": "classifier.jev",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 266.585
+    },
+    {
+      "visitor_id": "sample-005",
+      "component": "visitor",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 1159.988
+    },
+    {
+      "visitor_id": "sample-009",
+      "component": "judge.ds_flash",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 2209.599
+    },
+    {
+      "visitor_id": "sample-001",
+      "component": "judge.ds_flash",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 3306.134
+    },
+    {
+      "visitor_id": "sample-010",
+      "component": "turn",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 1531.567
+    },
+    {
+      "visitor_id": "sample-009",
+      "component": "turn",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 1841.5
+    },
+    {
+      "visitor_id": "sample-002",
+      "component": "visitor",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 897.226
+    },
+    {
+      "visitor_id": "sample-004",
+      "component": "visitor",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 1023.409
+    },
+    {
+      "visitor_id": "sample-003",
+      "component": "classifier.jev",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 298.11
+    },
+    {
+      "visitor_id": "sample-003",
+      "component": "judge.ds_flash",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 1987.949
+    },
+    {
+      "visitor_id": "sample-003",
+      "component": "turn",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 1696.203
+    },
+    {
+      "visitor_id": "sample-005",
+      "component": "judge.ds_flash",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 2851.635
+    },
+    {
+      "visitor_id": "sample-002",
+      "component": "judge.ds_flash",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 1946.349
+    },
+    {
+      "visitor_id": "sample-008",
+      "component": "classifier.jev",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 266.84
+    },
+    {
+      "visitor_id": "sample-006",
+      "component": "judge.jev",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 929.715
+    },
+    {
+      "visitor_id": "sample-004",
+      "component": "judge.ds_flash",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 2145.081
+    },
+    {
+      "visitor_id": "sample-010",
+      "component": "visitor",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 1194.687
+    },
+    {
+      "visitor_id": "sample-008",
+      "component": "memory_plan",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 6051.2
+    },
+    {
+      "visitor_id": "sample-009",
+      "component": "visitor",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 1127.287
+    },
+    {
+      "visitor_id": "sample-006",
+      "component": "visitor",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 1333.171
+    },
+    {
+      "visitor_id": "sample-003",
+      "component": "visitor",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 1203.441
+    },
+    {
+      "visitor_id": "sample-010",
+      "component": "judge.ds_flash",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 2126.754
+    },
+    {
+      "visitor_id": "sample-002",
+      "component": "classifier.jev",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 250.021
+    },
+    {
+      "visitor_id": "sample-009",
+      "component": "judge.ds_flash",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 1942.553
+    },
+    {
+      "visitor_id": "sample-001",
+      "component": "classifier.jev",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 293.528
+    },
+    {
+      "visitor_id": "sample-002",
+      "component": "memory_plan",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 5463.561
+    },
+    {
+      "visitor_id": "sample-001",
+      "component": "memory_plan",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 6432.967
+    },
+    {
+      "visitor_id": "sample-004",
+      "component": "classifier.jev",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 263.531
+    },
+    {
+      "visitor_id": "sample-006",
+      "component": "judge.ds_flash",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 1831.676
+    },
+    {
+      "visitor_id": "sample-003",
+      "component": "judge.ds_flash",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 1822.077
+    },
+    {
+      "visitor_id": "sample-004",
+      "component": "memory_plan",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 7812.848
+    },
+    {
+      "visitor_id": "sample-005",
+      "component": "classifier.jev",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 273.373
+    },
+    {
+      "visitor_id": "sample-005",
+      "component": "memory_plan",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 7193.054
+    },
+    {
+      "visitor_id": "sample-010",
+      "component": "classifier.jev",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 331.418
+    },
+    {
+      "visitor_id": "sample-009",
+      "component": "classifier.jev",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 260.99
+    },
+    {
+      "visitor_id": "sample-010",
+      "component": "memory_plan",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 9072.399
+    },
+    {
+      "visitor_id": "sample-007",
+      "component": "memory_plan",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 6325.731
+    },
+    {
+      "visitor_id": "sample-009",
+      "component": "memory_plan",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 9039.209
+    },
+    {
+      "visitor_id": "sample-006",
+      "component": "classifier.jev",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 253.039
+    },
+    {
+      "visitor_id": "sample-003",
+      "component": "classifier.jev",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 269.88
+    },
+    {
+      "visitor_id": "sample-006",
+      "component": "memory_plan",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 10691.122
+    },
+    {
+      "visitor_id": "sample-003",
+      "component": "memory_plan",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 8215.857
+    },
+    {
+      "visitor_id": "sample-008",
+      "component": "memory_plan",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 6551.526
+    },
+    {
+      "visitor_id": "sample-002",
+      "component": "visitor",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 1982.745
+    },
+    {
+      "visitor_id": "sample-001",
+      "component": "visitor",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 1875.03
+    },
+    {
+      "visitor_id": "sample-002",
+      "component": "judge.ds_flash",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 1991.86
+    },
+    {
+      "visitor_id": "sample-005",
+      "component": "visitor",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 1280.764
+    },
+    {
+      "visitor_id": "sample-004",
+      "component": "visitor",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 1788.083
+    },
+    {
+      "visitor_id": "sample-007",
+      "component": "visitor",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 1641.116
+    },
+    {
+      "visitor_id": "sample-001",
+      "component": "judge.ds_flash",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 2143.045
+    },
+    {
+      "visitor_id": "sample-005",
+      "component": "judge.ds_flash",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 2817.162
+    },
+    {
+      "visitor_id": "sample-002",
+      "component": "select",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 1610.987
+    },
+    {
+      "visitor_id": "sample-007",
+      "component": "judge.ds_flash",
+      "status": "error",
+      "error_type": "ConnectError",
+      "ms": 5003.764
+    },
+    {
+      "visitor_id": "sample-004",
+      "component": "judge.ds_flash",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 1787.199
+    },
+    {
+      "visitor_id": "sample-001",
+      "component": "select",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 1737.487
+    },
+    {
+      "visitor_id": "sample-003",
+      "component": "visitor",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 1566.301
+    },
+    {
+      "visitor_id": "sample-008",
+      "component": "visitor",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 1069.197
+    },
+    {
+      "visitor_id": "sample-010",
+      "component": "visitor",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 1103.138
+    },
+    {
+      "visitor_id": "sample-002",
+      "component": "classifier.jev",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 300.698
+    },
+    {
+      "visitor_id": "sample-009",
+      "component": "visitor",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 936.552
+    },
+    {
+      "visitor_id": "sample-002",
+      "component": "turn",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 1522.785
+    },
+    {
+      "visitor_id": "sample-004",
+      "component": "select",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 2056.5
+    },
+    {
+      "visitor_id": "sample-008",
+      "component": "judge.ds_flash",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 2333.407
+    },
+    {
+      "visitor_id": "sample-009",
+      "component": "judge.ds_flash",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 2079.537
+    },
+    {
+      "visitor_id": "sample-010",
+      "component": "judge.ds_flash",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 2632.84
+    },
+    {
+      "visitor_id": "sample-005",
+      "component": "select",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 1471.5
+    },
+    {
+      "visitor_id": "sample-003",
+      "component": "judge.ds_flash",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 2131.53
+    },
+    {
+      "visitor_id": "sample-001",
+      "component": "classifier.jev",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 342.374
+    },
+    {
+      "visitor_id": "sample-001",
+      "component": "turn",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 1513.292
+    },
+    {
+      "visitor_id": "sample-002",
+      "component": "visitor",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 1107.704
+    },
+    {
+      "visitor_id": "sample-006",
+      "component": "visitor",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 1308.848
+    },
+    {
+      "visitor_id": "sample-005",
+      "component": "classifier.jev",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 253.428
+    },
+    {
+      "visitor_id": "sample-005",
+      "component": "turn",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 1771.408
+    },
+    {
+      "visitor_id": "sample-004",
+      "component": "classifier.jev",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 315.703
+    },
+    {
+      "visitor_id": "sample-002",
+      "component": "classifier.jev",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 268.859
+    },
+    {
+      "visitor_id": "sample-002",
+      "component": "judge.ds_flash",
+      "status": "cancelled",
+      "ms": 5995.066
+    },
+    {
+      "visitor_id": "sample-009",
+      "component": "select",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 1817.972
+    },
+    {
+      "visitor_id": "sample-004",
+      "component": "turn",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 1721.185
+    },
+    {
+      "visitor_id": "sample-001",
+      "component": "visitor",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 1329.385
+    },
+    {
+      "visitor_id": "sample-002",
+      "component": "turn",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 1498.185
+    },
+    {
+      "visitor_id": "sample-008",
+      "component": "select",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 1472.457
+    },
+    {
+      "visitor_id": "sample-006",
+      "component": "judge.ds_flash",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 1807.724
+    },
+    {
+      "visitor_id": "sample-003",
+      "component": "select",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 1291.659
+    },
+    {
+      "visitor_id": "sample-010",
+      "component": "select",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 1561.252
+    },
+    {
+      "visitor_id": "sample-007",
+      "component": "judge.jev",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 241.81
+    },
+    {
+      "visitor_id": "sample-007",
+      "component": "select",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 1878.358
+    },
+    {
+      "visitor_id": "sample-001",
+      "component": "classifier.jev",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 267.023
+    },
+    {
+      "visitor_id": "sample-001",
+      "component": "judge.ds_flash",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 2874.353
+    },
+    {
+      "visitor_id": "sample-005",
+      "component": "visitor",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 910.619
+    },
+    {
+      "visitor_id": "sample-003",
+      "component": "classifier.jev",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 275.045
+    },
+    {
+      "visitor_id": "sample-008",
+      "component": "classifier.jev",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 253.187
+    },
+    {
+      "visitor_id": "sample-001",
+      "component": "turn",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 1674.88
+    },
+    {
+      "visitor_id": "sample-004",
+      "component": "visitor",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 1042.701
+    },
+    {
+      "visitor_id": "sample-009",
+      "component": "classifier.jev",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 265.275
+    },
+    {
+      "visitor_id": "sample-003",
+      "component": "turn",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 1710.125
+    },
+    {
+      "visitor_id": "sample-008",
+      "component": "turn",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 1659.93
+    },
+    {
+      "visitor_id": "sample-006",
+      "component": "select",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 1643.022
+    },
+    {
+      "visitor_id": "sample-009",
+      "component": "turn",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 1621.16
+    },
+    {
+      "visitor_id": "sample-010",
+      "component": "classifier.jev",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 241.848
+    },
+    {
+      "visitor_id": "sample-010",
+      "component": "turn",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 1601.013
+    },
+    {
+      "visitor_id": "sample-005",
+      "component": "classifier.jev",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 312.377
+    },
+    {
+      "visitor_id": "sample-005",
+      "component": "judge.ds_flash",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 2001.316
+    },
+    {
+      "visitor_id": "sample-005",
+      "component": "turn",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 1816.824
+    },
+    {
+      "visitor_id": "sample-004",
+      "component": "classifier.jev",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 395.611
+    },
+    {
+      "visitor_id": "sample-004",
+      "component": "judge.ds_flash",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 1899.604
+    },
+    {
+      "visitor_id": "sample-007",
+      "component": "classifier.jev",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 324.391
+    },
+    {
+      "visitor_id": "sample-007",
+      "component": "turn",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 1864.044
+    },
+    {
+      "visitor_id": "sample-004",
+      "component": "turn",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 2330.505
+    },
+    {
+      "visitor_id": "sample-008",
+      "component": "visitor",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 1324.978
+    },
+    {
+      "visitor_id": "sample-003",
+      "component": "visitor",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 1295.845
+    },
+    {
+      "visitor_id": "sample-006",
+      "component": "classifier.jev",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 295.255
+    },
+    {
+      "visitor_id": "sample-009",
+      "component": "classifier.jev",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 301.718
+    },
+    {
+      "visitor_id": "sample-010",
+      "component": "visitor",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 2118.849
+    },
+    {
+      "visitor_id": "sample-006",
+      "component": "turn",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 1864.816
+    },
+    {
+      "visitor_id": "sample-009",
+      "component": "turn",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 1765.43
+    },
+    {
+      "visitor_id": "sample-001",
+      "component": "visitor",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 1926.505
+    },
+    {
+      "visitor_id": "sample-005",
+      "component": "visitor",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 1826.352
+    },
+    {
+      "visitor_id": "sample-003",
+      "component": "classifier.jev",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 278.181
+    },
+    {
+      "visitor_id": "sample-003",
+      "component": "judge.ds_flash",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 2050.232
+    },
+    {
+      "visitor_id": "sample-008",
+      "component": "classifier.jev",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 275.657
+    },
+    {
+      "visitor_id": "sample-008",
+      "component": "judge.ds_flash",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 2261.259
+    },
+    {
+      "visitor_id": "sample-007",
+      "component": "visitor",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 1093.287
+    },
+    {
+      "visitor_id": "sample-003",
+      "component": "turn",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 1507.411
+    },
+    {
+      "visitor_id": "sample-008",
+      "component": "turn",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 2238.35
+    },
+    {
+      "visitor_id": "sample-004",
+      "component": "visitor",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 1086.97
+    },
+    {
+      "visitor_id": "sample-009",
+      "component": "visitor",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 1840.542
+    },
+    {
+      "visitor_id": "sample-002",
+      "component": "judge.jev",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 269.139
+    },
+    {
+      "visitor_id": "sample-006",
+      "component": "visitor",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 1750.613
+    },
+    {
+      "visitor_id": "sample-010",
+      "component": "classifier.jev",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 293.387
+    },
+    {
+      "visitor_id": "sample-010",
+      "component": "judge.ds_flash",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 2232.441
+    },
+    {
+      "visitor_id": "sample-002",
+      "component": "visitor",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 936.402
+    },
+    {
+      "visitor_id": "sample-007",
+      "component": "classifier.jev",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 268.127
+    },
+    {
+      "visitor_id": "sample-007",
+      "component": "judge.ds_flash",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 2163.655
+    },
+    {
+      "visitor_id": "sample-001",
+      "component": "classifier.jev",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 277.207
+    },
+    {
+      "visitor_id": "sample-001",
+      "component": "judge.ds_flash",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 2345.512
+    },
+    {
+      "visitor_id": "sample-005",
+      "component": "classifier.jev",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 889.798
+    },
+    {
+      "visitor_id": "sample-005",
+      "component": "judge.ds_flash",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 2448.136
+    },
+    {
+      "visitor_id": "sample-010",
+      "component": "turn",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 1858.572
+    },
+    {
+      "visitor_id": "sample-007",
+      "component": "turn",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 1630.803
+    },
+    {
+      "visitor_id": "sample-001",
+      "component": "turn",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 1382.629
+    },
+    {
+      "visitor_id": "sample-004",
+      "component": "classifier.jev",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 320.315
+    },
+    {
+      "visitor_id": "sample-004",
+      "component": "judge.ds_flash",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 2313.566
+    },
+    {
+      "visitor_id": "sample-003",
+      "component": "visitor",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 903.272
+    },
+    {
+      "visitor_id": "sample-004",
+      "component": "turn",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 1591.97
+    },
+    {
+      "visitor_id": "sample-002",
+      "component": "classifier.jev",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 300.662
+    },
+    {
+      "visitor_id": "sample-002",
+      "component": "judge.ds_flash",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 2072.875
+    },
+    {
+      "visitor_id": "sample-005",
+      "component": "turn",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 1880.737
+    },
+    {
+      "visitor_id": "sample-002",
+      "component": "turn",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 1585.745
+    },
+    {
+      "visitor_id": "sample-008",
+      "component": "visitor",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 1415.468
+    },
+    {
+      "visitor_id": "sample-006",
+      "component": "classifier.jev",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 304.38
+    },
+    {
+      "visitor_id": "sample-006",
+      "component": "judge.ds_flash",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 2283.918
+    },
+    {
+      "visitor_id": "sample-009",
+      "component": "classifier.jev",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 308.028
+    },
+    {
+      "visitor_id": "sample-009",
+      "component": "judge.ds_flash",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 2250.097
+    },
+    {
+      "visitor_id": "sample-003",
+      "component": "classifier.jev",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 304.811
+    },
+    {
+      "visitor_id": "sample-003",
+      "component": "judge.ds_flash",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 2308.153
+    },
+    {
+      "visitor_id": "sample-006",
+      "component": "turn",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 1652.414
+    },
+    {
+      "visitor_id": "sample-009",
+      "component": "turn",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 1839.053
+    },
+    {
+      "visitor_id": "sample-003",
+      "component": "turn",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 1664.848
+    },
+    {
+      "visitor_id": "sample-010",
+      "component": "visitor",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 1431.915
+    },
+    {
+      "visitor_id": "sample-007",
+      "component": "visitor",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 1214.197
+    },
+    {
+      "visitor_id": "sample-001",
+      "component": "visitor",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 958.863
+    },
+    {
+      "visitor_id": "sample-008",
+      "component": "classifier.jev",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 259.62
+    },
+    {
+      "visitor_id": "sample-008",
+      "component": "judge.ds_flash",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 1898.963
+    },
+    {
+      "visitor_id": "sample-004",
+      "component": "visitor",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 1188.326
+    },
+    {
+      "visitor_id": "sample-008",
+      "component": "turn",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 2154.14
+    },
+    {
+      "visitor_id": "sample-005",
+      "component": "visitor",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 1332.208
+    },
+    {
+      "visitor_id": "sample-002",
+      "component": "visitor",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 1212.55
+    },
+    {
+      "visitor_id": "sample-001",
+      "component": "judge.ds_flash",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 2044.281
+    },
+    {
+      "visitor_id": "sample-007",
+      "component": "classifier.jev",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 293.934
+    },
+    {
+      "visitor_id": "sample-007",
+      "component": "judge.ds_flash",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 2342.521
+    },
+    {
+      "visitor_id": "sample-010",
+      "component": "classifier.jev",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 291.567
+    },
+    {
+      "visitor_id": "sample-010",
+      "component": "judge.ds_flash",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 2594.421
+    },
+    {
+      "visitor_id": "sample-009",
+      "component": "visitor",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 1142.193
+    },
+    {
+      "visitor_id": "sample-006",
+      "component": "visitor",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 1096.43
+    },
+    {
+      "visitor_id": "sample-007",
+      "component": "turn",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 1780.636
+    },
+    {
+      "visitor_id": "sample-010",
+      "component": "turn",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 1474.477
+    },
+    {
+      "visitor_id": "sample-003",
+      "component": "visitor",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 1067.333
+    },
+    {
+      "visitor_id": "sample-004",
+      "component": "judge.ds_flash",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 2047.879
+    },
+    {
+      "visitor_id": "sample-002",
+      "component": "judge.ds_flash",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 1863.498
+    },
+    {
+      "visitor_id": "sample-005",
+      "component": "judge.ds_flash",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 1896.707
+    },
+    {
+      "visitor_id": "sample-006",
+      "component": "classifier.jev",
+      "status": "ok",
+      "http_status": 200,
+      "ms": 261.577
+    }
+  ]
+}

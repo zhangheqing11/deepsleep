@@ -1,0 +1,824 @@
+{
+  "evolution_id": "g1",
+  "note": "环 3 跨来访进化的补充报告；契约 v0.1.1 前不进 evolution JSON。",
+  "changes": {
+    "c1-path_discrimination-1": {
+      "section": "path_discrimination",
+      "subagent": "strategy_generation",
+      "dimension": "path"
+    },
+    "c1-path_discrimination-2": {
+      "section": "path_discrimination",
+      "subagent": "strategy_generation",
+      "dimension": "path"
+    },
+    "c1-questioning_strategy-3": {
+      "section": "questioning_strategy",
+      "subagent": "strategy_generation",
+      "dimension": "path"
+    },
+    "c2-questioning_strategy-1": {
+      "section": "questioning_strategy",
+      "subagent": "strategy_generation",
+      "dimension": "screening"
+    },
+    "c2-questioning_strategy-2": {
+      "section": "questioning_strategy",
+      "subagent": "strategy_generation",
+      "dimension": "screening"
+    },
+    "c2-referral_rules-3": {
+      "section": "referral_rules",
+      "subagent": "plan_adjustment",
+      "dimension": "referral"
+    },
+    "c3-questioning_strategy-1": {
+      "section": "questioning_strategy",
+      "subagent": "strategy_generation",
+      "dimension": "resistance"
+    },
+    "c3-communication_style-2": {
+      "section": "communication_style",
+      "subagent": "response_generation",
+      "dimension": "resistance"
+    },
+    "c3-plan_rules-3": {
+      "section": "plan_rules",
+      "subagent": "plan_adjustment",
+      "dimension": "plan"
+    }
+  },
+  "failure_dimensions": {
+    "sample-009": [
+      "path",
+      "referral",
+      "screening",
+      "plan"
+    ],
+    "sample-002": [
+      "referral",
+      "screening",
+      "plan"
+    ],
+    "sample-005": [
+      "path",
+      "referral",
+      "plan",
+      "resistance"
+    ],
+    "sample-010": [
+      "path",
+      "plan",
+      "resistance"
+    ],
+    "sample-006": [
+      "path",
+      "resistance"
+    ]
+  },
+  "source_run": {
+    "run_id": "evo-20261114-jev-r0",
+    "scorecard": {
+      "path": {
+        "path_acc_r1": 0.6,
+        "path_acc_r2": 0.7,
+        "path_acc_gain": 0.09999999999999998
+      },
+      "referral": {
+        "referral_recall": 0.5,
+        "referral_precision": 1.0,
+        "referral_recall_by_label": {
+          "R1": 0.0,
+          "R2": 0.0,
+          "R3": 1.0
+        }
+      },
+      "screening": {
+        "screening_coverage": 0.3333333333333333
+      },
+      "safety": {
+        "crisis_recall": 1.0,
+        "crisis_missed": 0
+      },
+      "plan": {
+        "isi_response_rate": 0.6,
+        "mean_isi_change": -6.9,
+        "contraindication_violations": 0,
+        "mean_adherence": 0.5058
+      },
+      "resistance": {
+        "n_defensive": 5,
+        "defensive_path_acc_r2": 0.6,
+        "defensive_mean_alliance": 0.892,
+        "mean_alliance": 0.893
+      },
+      "failures_by_dimension": {
+        "path": 4,
+        "referral": 3,
+        "screening": 2,
+        "safety": 0,
+        "plan": 4,
+        "resistance": 3
+      }
+    },
+    "evidence": {
+      "n_visitors": 10,
+      "n_with_path_probs": 10,
+      "by_step": [
+        {
+          "round": 1,
+          "step": 1,
+          "n": 10,
+          "mean_p_true": 0.251,
+          "mean_entropy": 1.5183
+        },
+        {
+          "round": 1,
+          "step": 2,
+          "n": 10,
+          "mean_p_true": 0.358,
+          "mean_entropy": 0.6829
+        },
+        {
+          "round": 1,
+          "step": 3,
+          "n": 10,
+          "mean_p_true": 0.56,
+          "mean_entropy": 0.7457
+        },
+        {
+          "round": 1,
+          "step": 4,
+          "n": 10,
+          "mean_p_true": 0.639,
+          "mean_entropy": 0.6253
+        },
+        {
+          "round": 2,
+          "step": 1,
+          "n": 9,
+          "mean_p_true": 0.7011,
+          "mean_entropy": 0.5434
+        },
+        {
+          "round": 2,
+          "step": 2,
+          "n": 9,
+          "mean_p_true": 0.8244,
+          "mean_entropy": 0.416
+        },
+        {
+          "round": 2,
+          "step": 3,
+          "n": 9,
+          "mean_p_true": 0.8344,
+          "mean_entropy": 0.438
+        }
+      ],
+      "d1_p_true": [
+        0.107,
+        0.202,
+        0.079,
+        0.0621,
+        0.1233,
+        0.01
+      ],
+      "d2_p_true": [
+        0.095,
+        -0.123,
+        -0.0169,
+        0.0612,
+        -0.1133
+      ],
+      "d1_entropy": [
+        -0.8354,
+        0.0628,
+        -0.1204,
+        -0.0819,
+        -0.1274,
+        0.022
+      ],
+      "r1_end_p_true": 0.633,
+      "r2_end_p_true": 0.8289,
+      "classifier_failures": 0,
+      "resistant_step_rate": 0.3284,
+      "key_clue_rate": 0.8,
+      "mean_key_clue_agent_turn": 2.25,
+      "mean_first_correct_agent_turn": 2.125
+    }
+  },
+  "validation": {
+    "baseline": {
+      "scorecard": {
+        "path": {
+          "path_acc_r1": 1.0,
+          "path_acc_r2": 1.0,
+          "path_acc_gain": 0.0
+        },
+        "referral": {
+          "referral_recall": 0.3333333333333333,
+          "referral_precision": 1.0,
+          "referral_recall_by_label": {
+            "R1": 0.0,
+            "R2": 0.0,
+            "R3": 1.0
+          }
+        },
+        "screening": {
+          "screening_coverage": null
+        },
+        "safety": {
+          "crisis_recall": null,
+          "crisis_missed": 0
+        },
+        "plan": {
+          "isi_response_rate": 0.75,
+          "mean_isi_change": -8.5,
+          "contraindication_violations": 0,
+          "mean_adherence": 0.6249
+        },
+        "resistance": {
+          "n_defensive": 3,
+          "defensive_path_acc_r2": 1.0,
+          "defensive_mean_alliance": 0.9067,
+          "mean_alliance": 0.925
+        },
+        "failures_by_dimension": {
+          "path": 0,
+          "referral": 2,
+          "screening": 0,
+          "safety": 0,
+          "plan": 2,
+          "resistance": 1
+        }
+      },
+      "evidence": {
+        "n_visitors": 8,
+        "n_with_path_probs": 8,
+        "by_step": [
+          {
+            "round": 1,
+            "step": 1,
+            "n": 8,
+            "mean_p_true": 0.305,
+            "mean_entropy": 1.5555
+          },
+          {
+            "round": 1,
+            "step": 2,
+            "n": 8,
+            "mean_p_true": 0.3175,
+            "mean_entropy": 0.6911
+          },
+          {
+            "round": 1,
+            "step": 3,
+            "n": 8,
+            "mean_p_true": 0.6112,
+            "mean_entropy": 0.1881
+          },
+          {
+            "round": 1,
+            "step": 4,
+            "n": 8,
+            "mean_p_true": 0.7125,
+            "mean_entropy": 0.2682
+          },
+          {
+            "round": 2,
+            "step": 1,
+            "n": 8,
+            "mean_p_true": 0.9637,
+            "mean_entropy": 0.2155
+          },
+          {
+            "round": 2,
+            "step": 2,
+            "n": 8,
+            "mean_p_true": 0.95,
+            "mean_entropy": 0.2683
+          },
+          {
+            "round": 2,
+            "step": 3,
+            "n": 8,
+            "mean_p_true": 0.9512,
+            "mean_entropy": 0.2643
+          }
+        ],
+        "d1_p_true": [
+          0.0125,
+          0.2937,
+          0.1013,
+          0.2512,
+          -0.0137,
+          0.0012
+        ],
+        "d2_p_true": [
+          0.2812,
+          -0.1924,
+          0.1499,
+          -0.2649,
+          0.0149
+        ],
+        "d1_entropy": [
+          -0.8644,
+          -0.503,
+          0.0801,
+          -0.0527,
+          0.0528,
+          -0.004
+        ],
+        "r1_end_p_true": 0.9637,
+        "r2_end_p_true": 0.9637,
+        "classifier_failures": 0,
+        "resistant_step_rate": 0.3571,
+        "key_clue_rate": 1.0,
+        "mean_key_clue_agent_turn": 2.625,
+        "mean_first_correct_agent_turn": 2.375
+      }
+    },
+    "candidates": {
+      "c1": {
+        "scorecard": {
+          "path": {
+            "path_acc_r1": 0.75,
+            "path_acc_r2": 0.75,
+            "path_acc_gain": 0.0
+          },
+          "referral": {
+            "referral_recall": 0.3333333333333333,
+            "referral_precision": 1.0,
+            "referral_recall_by_label": {
+              "R1": 0.0,
+              "R2": 0.0,
+              "R3": 1.0
+            }
+          },
+          "screening": {
+            "screening_coverage": null
+          },
+          "safety": {
+            "crisis_recall": null,
+            "crisis_missed": 0
+          },
+          "plan": {
+            "isi_response_rate": 0.625,
+            "mean_isi_change": -8.375,
+            "contraindication_violations": 0,
+            "mean_adherence": 0.6268
+          },
+          "resistance": {
+            "n_defensive": 3,
+            "defensive_path_acc_r2": 0.6667,
+            "defensive_mean_alliance": 0.9233,
+            "mean_alliance": 0.9337
+          },
+          "failures_by_dimension": {
+            "path": 2,
+            "referral": 2,
+            "screening": 0,
+            "safety": 0,
+            "plan": 3,
+            "resistance": 3
+          }
+        },
+        "evidence": {
+          "n_visitors": 8,
+          "n_with_path_probs": 8,
+          "by_step": [
+            {
+              "round": 1,
+              "step": 1,
+              "n": 8,
+              "mean_p_true": 0.3,
+              "mean_entropy": 1.5647
+            },
+            {
+              "round": 1,
+              "step": 2,
+              "n": 8,
+              "mean_p_true": 0.3312,
+              "mean_entropy": 0.7893
+            },
+            {
+              "round": 1,
+              "step": 3,
+              "n": 8,
+              "mean_p_true": 0.7212,
+              "mean_entropy": 0.4441
+            },
+            {
+              "round": 1,
+              "step": 4,
+              "n": 8,
+              "mean_p_true": 0.6863,
+              "mean_entropy": 0.4956
+            },
+            {
+              "round": 2,
+              "step": 1,
+              "n": 8,
+              "mean_p_true": 0.695,
+              "mean_entropy": 0.5299
+            },
+            {
+              "round": 2,
+              "step": 2,
+              "n": 8,
+              "mean_p_true": 0.6763,
+              "mean_entropy": 0.5988
+            },
+            {
+              "round": 2,
+              "step": 3,
+              "n": 8,
+              "mean_p_true": 0.6813,
+              "mean_entropy": 0.5862
+            }
+          ],
+          "d1_p_true": [
+            0.0312,
+            0.39,
+            -0.0349,
+            0.0087,
+            -0.0187,
+            0.005
+          ],
+          "d2_p_true": [
+            0.3588,
+            -0.4249,
+            0.0436,
+            -0.0274,
+            0.0237
+          ],
+          "d1_entropy": [
+            -0.7754,
+            -0.3452,
+            0.0515,
+            0.0343,
+            0.0689,
+            -0.0126
+          ],
+          "r1_end_p_true": 0.695,
+          "r2_end_p_true": 0.69,
+          "classifier_failures": 0,
+          "resistant_step_rate": 0.3571,
+          "key_clue_rate": 0.75,
+          "mean_key_clue_agent_turn": 1.6667,
+          "mean_first_correct_agent_turn": 1.3333
+        },
+        "scorecard_delta": {
+          "path": {
+            "path_acc_r1": -0.25,
+            "path_acc_r2": -0.25,
+            "path_acc_gain": 0.0
+          },
+          "referral": {
+            "referral_recall": 0.0,
+            "referral_precision": 0.0
+          },
+          "screening": {
+            "screening_coverage": null
+          },
+          "safety": {
+            "crisis_recall": null,
+            "crisis_missed": 0
+          },
+          "plan": {
+            "isi_response_rate": -0.125,
+            "mean_isi_change": 0.125,
+            "contraindication_violations": 0,
+            "mean_adherence": 0.0019
+          },
+          "resistance": {
+            "n_defensive": 0,
+            "defensive_path_acc_r2": -0.3333,
+            "defensive_mean_alliance": 0.0166,
+            "mean_alliance": 0.0087
+          }
+        }
+      },
+      "c2": {
+        "scorecard": {
+          "path": {
+            "path_acc_r1": 0.875,
+            "path_acc_r2": 1.0,
+            "path_acc_gain": 0.125
+          },
+          "referral": {
+            "referral_recall": 0.6666666666666666,
+            "referral_precision": 0.5,
+            "referral_recall_by_label": {
+              "R1": 1.0,
+              "R2": 0.0,
+              "R3": 1.0
+            }
+          },
+          "screening": {
+            "screening_coverage": null
+          },
+          "safety": {
+            "crisis_recall": null,
+            "crisis_missed": 0
+          },
+          "plan": {
+            "isi_response_rate": 0.75,
+            "mean_isi_change": -8.5,
+            "contraindication_violations": 0,
+            "mean_adherence": 0.6198
+          },
+          "resistance": {
+            "n_defensive": 3,
+            "defensive_path_acc_r2": 1.0,
+            "defensive_mean_alliance": 0.9067,
+            "mean_alliance": 0.905
+          },
+          "failures_by_dimension": {
+            "path": 1,
+            "referral": 3,
+            "screening": 0,
+            "safety": 0,
+            "plan": 2,
+            "resistance": 1
+          }
+        },
+        "evidence": {
+          "n_visitors": 8,
+          "n_with_path_probs": 8,
+          "by_step": [
+            {
+              "round": 1,
+              "step": 1,
+              "n": 8,
+              "mean_p_true": 0.305,
+              "mean_entropy": 1.5579
+            },
+            {
+              "round": 1,
+              "step": 2,
+              "n": 8,
+              "mean_p_true": 0.4125,
+              "mean_entropy": 0.5408
+            },
+            {
+              "round": 1,
+              "step": 3,
+              "n": 8,
+              "mean_p_true": 0.5188,
+              "mean_entropy": 0.3378
+            },
+            {
+              "round": 1,
+              "step": 4,
+              "n": 8,
+              "mean_p_true": 0.5275,
+              "mean_entropy": 0.4903
+            },
+            {
+              "round": 2,
+              "step": 1,
+              "n": 8,
+              "mean_p_true": 0.8387,
+              "mean_entropy": 0.352
+            },
+            {
+              "round": 2,
+              "step": 2,
+              "n": 8,
+              "mean_p_true": 0.8275,
+              "mean_entropy": 0.4201
+            },
+            {
+              "round": 2,
+              "step": 3,
+              "n": 8,
+              "mean_p_true": 0.8475,
+              "mean_entropy": 0.3584
+            }
+          ],
+          "d1_p_true": [
+            0.1075,
+            0.1063,
+            0.0087,
+            0.3112,
+            -0.0112,
+            0.02
+          ],
+          "d2_p_true": [
+            -0.0012,
+            -0.0976,
+            0.3025,
+            -0.3224,
+            0.0312
+          ],
+          "d1_entropy": [
+            -1.0171,
+            -0.203,
+            0.1525,
+            -0.1383,
+            0.0681,
+            -0.0617
+          ],
+          "r1_end_p_true": 0.8387,
+          "r2_end_p_true": 0.96,
+          "classifier_failures": 0,
+          "resistant_step_rate": 0.3393,
+          "key_clue_rate": 1.0,
+          "mean_key_clue_agent_turn": 3.5,
+          "mean_first_correct_agent_turn": 2.5714
+        },
+        "scorecard_delta": {
+          "path": {
+            "path_acc_r1": -0.125,
+            "path_acc_r2": 0.0,
+            "path_acc_gain": 0.125
+          },
+          "referral": {
+            "referral_recall": 0.3333,
+            "referral_precision": -0.5
+          },
+          "screening": {
+            "screening_coverage": null
+          },
+          "safety": {
+            "crisis_recall": null,
+            "crisis_missed": 0
+          },
+          "plan": {
+            "isi_response_rate": 0.0,
+            "mean_isi_change": 0.0,
+            "contraindication_violations": 0,
+            "mean_adherence": -0.0051
+          },
+          "resistance": {
+            "n_defensive": 0,
+            "defensive_path_acc_r2": 0.0,
+            "defensive_mean_alliance": 0.0,
+            "mean_alliance": -0.02
+          }
+        }
+      },
+      "c3": {
+        "scorecard": {
+          "path": {
+            "path_acc_r1": 1.0,
+            "path_acc_r2": 1.0,
+            "path_acc_gain": 0.0
+          },
+          "referral": {
+            "referral_recall": 0.6666666666666666,
+            "referral_precision": 1.0,
+            "referral_recall_by_label": {
+              "R1": 0.0,
+              "R2": 1.0,
+              "R3": 1.0
+            }
+          },
+          "screening": {
+            "screening_coverage": null
+          },
+          "safety": {
+            "crisis_recall": null,
+            "crisis_missed": 0
+          },
+          "plan": {
+            "isi_response_rate": 0.75,
+            "mean_isi_change": -9.25,
+            "contraindication_violations": 0,
+            "mean_adherence": 0.6376
+          },
+          "resistance": {
+            "n_defensive": 3,
+            "defensive_path_acc_r2": 1.0,
+            "defensive_mean_alliance": 0.9733,
+            "mean_alliance": 0.9762
+          },
+          "failures_by_dimension": {
+            "path": 0,
+            "referral": 1,
+            "screening": 0,
+            "safety": 0,
+            "plan": 2,
+            "resistance": 2
+          }
+        },
+        "evidence": {
+          "n_visitors": 8,
+          "n_with_path_probs": 8,
+          "by_step": [
+            {
+              "round": 1,
+              "step": 1,
+              "n": 8,
+              "mean_p_true": 0.3075,
+              "mean_entropy": 1.5548
+            },
+            {
+              "round": 1,
+              "step": 2,
+              "n": 8,
+              "mean_p_true": 0.4763,
+              "mean_entropy": 0.6376
+            },
+            {
+              "round": 1,
+              "step": 3,
+              "n": 8,
+              "mean_p_true": 0.6075,
+              "mean_entropy": 0.5728
+            },
+            {
+              "round": 1,
+              "step": 4,
+              "n": 8,
+              "mean_p_true": 0.73,
+              "mean_entropy": 0.343
+            },
+            {
+              "round": 2,
+              "step": 1,
+              "n": 8,
+              "mean_p_true": 0.9,
+              "mean_entropy": 0.3579
+            },
+            {
+              "round": 2,
+              "step": 2,
+              "n": 8,
+              "mean_p_true": 0.8625,
+              "mean_entropy": 0.3942
+            },
+            {
+              "round": 2,
+              "step": 3,
+              "n": 8,
+              "mean_p_true": 0.89,
+              "mean_entropy": 0.4128
+            }
+          ],
+          "d1_p_true": [
+            0.1688,
+            0.1312,
+            0.1225,
+            0.17,
+            -0.0375,
+            0.0275
+          ],
+          "d2_p_true": [
+            -0.0376,
+            -0.0087,
+            0.0475,
+            -0.2075,
+            0.065
+          ],
+          "d1_entropy": [
+            -0.9172,
+            -0.0648,
+            -0.2298,
+            0.0149,
+            0.0363,
+            0.0186
+          ],
+          "r1_end_p_true": 0.9,
+          "r2_end_p_true": 0.9325,
+          "classifier_failures": 0,
+          "resistant_step_rate": 0.3571,
+          "key_clue_rate": 1.0,
+          "mean_key_clue_agent_turn": 2.5,
+          "mean_first_correct_agent_turn": 2.25
+        },
+        "scorecard_delta": {
+          "path": {
+            "path_acc_r1": 0.0,
+            "path_acc_r2": 0.0,
+            "path_acc_gain": 0.0
+          },
+          "referral": {
+            "referral_recall": 0.3333,
+            "referral_precision": 0.0
+          },
+          "screening": {
+            "screening_coverage": null
+          },
+          "safety": {
+            "crisis_recall": null,
+            "crisis_missed": 0
+          },
+          "plan": {
+            "isi_response_rate": 0.0,
+            "mean_isi_change": -0.75,
+            "contraindication_violations": 0,
+            "mean_adherence": 0.0127
+          },
+          "resistance": {
+            "n_defensive": 0,
+            "defensive_path_acc_r2": 0.0,
+            "defensive_mean_alliance": 0.0666,
+            "mean_alliance": 0.0512
+          }
+        }
+      }
+    }
+  }
+}

@@ -2,6 +2,7 @@
 from copy import deepcopy
 
 
+from .network import retry_connection
 from .interfaces import VisitorReply
 from .topics import tag_topics
 
@@ -93,7 +94,9 @@ async def run_session(visitor, sim, *, run_id, playbook_version):
 
 class S2RendererClient:
     """Real S2 renderer with thinking disabled; S2 code and its content rules stay untouched."""
-    def __init__(self, config, timeout_s=15):
+    def __init__(self, config, timeout_s=15, *, network_retry=None):
+        self.network_retry = network_retry or {}
+        self.network_stats = {"attempts": 0, "retries": 0}
         self.timeout_s = timeout_s
         self.model = config.model
         self.config = config
@@ -110,9 +113,11 @@ class S2RendererClient:
     async def complete(self, system, user, max_tokens=300):
         self.last_error = None
         try:
-            response = await self._get_client().chat.completions.create(
-                model=self.model, messages=[{'role':'system', 'content':system}, {'role':'user', 'content':user}],
-                temperature=0, max_tokens=max_tokens, extra_body={'thinking': {'type':'disabled'}})
+            async def request():
+                return await self._get_client().chat.completions.create(
+                    model=self.model, messages=[{'role':'system', 'content':system}, {'role':'user', 'content':user}],
+                    temperature=0, max_tokens=max_tokens, extra_body={'thinking': {'type':'disabled'}})
+            response = await retry_connection(request, self.network_retry, stats=self.network_stats)
             if response.choices[0].finish_reason == 'length':
                 self.last_error = 'TruncatedOutput'
                 return None
@@ -124,3 +129,19 @@ class S2RendererClient:
         except Exception as exc:
             self.last_error = type(exc).__name__  # never log provider error bodies/credentials
             return None
+
+
+def make_s2_sim(config, *, mock=False):
+    """Template uses S2's existing deterministic renderer and reveal state."""
+    if mock or config["visitor_renderer"] == "template":
+        sim = S2VisitorSim()
+        if not mock:
+            sim.model_name = "template"
+        return sim
+    import os
+    from sim.llm import DsConfig
+    required = ("DS_BASE_URL", "DS_API_KEY", "DS_MODEL")
+    if not all(os.getenv(k, "").strip() for k in required):
+        raise ValueError("LLM visitor renderer requires DS_BASE_URL, DS_API_KEY and DS_MODEL")
+    return S2VisitorSim(S2RendererClient(DsConfig(*(os.environ[k] for k in required)),
+                                       network_retry=config["agent_llm"].get("network_retry")))

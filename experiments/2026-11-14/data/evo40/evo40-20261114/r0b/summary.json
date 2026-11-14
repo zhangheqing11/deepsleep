@@ -1,0 +1,46 @@
+{
+  "wall_s": 104.38897587452084,
+  "version": "v0",
+  "http_attempts": 1642,
+  "http_statuses": {
+    "error": 134,
+    "cancelled": 53,
+    "ok": 1455
+  },
+  "accounting": {
+    "attempted": 40,
+    "completed": 38,
+    "completion_rate": 0.95,
+    "error_count": 0,
+    "crisis_exit_count": 2,
+    "unknown_path_sessions": 0,
+    "unknown_path_rounds": 0,
+    "degraded_sessions": 0,
+    "provider_switches": 103,
+    "llm_attempts": 823,
+    "agent_classifier_requests_started": 495,
+    "call_statuses": {
+      "ok": 782,
+      "error": 41
+    },
+    "finish_reasons": {
+      "unavailable": 357,
+      "stop": 466
+    },
+    "discarded_calls": 2,
+    "safety_summary": {
+      "judge_provider": "ds_flash+jev",
+      "judge_calls": 459,
+      "judge_fallbacks": 131,
+      "safety_checks": 10,
+      "crisis_protocols": 2
+    },
+    "report_scope": "scoreable sessions only; full attempted cohort is in summary",
+    "scored": 40,
+    "excluded": [],
+    "scoring_coverage": 1.0,
+    "crisis_missed_all_attempts": 0,
+    "evaluation_complete": true
+  },
+  "validation_errors": {}
+}

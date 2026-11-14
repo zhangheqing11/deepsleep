@@ -1,0 +1,35 @@
+{
+  "started_at": "2026-11-14T17:34:04+08:00",
+  "id": "evo-20261114",
+  "budget": 15000,
+  "head": "2e806f79d77f54f043b657d16a0ad035af18251e",
+  "source_sha256": "2002e59767937e0ed565cbdad7bef55446bc27035b5e599e06f165586c74c2fa",
+  "anthropic_key_present": false,
+  "ds_model": "deepseek-flash",
+  "A": [
+    "sample-001",
+    "sample-002",
+    "sample-003",
+    "sample-004",
+    "sample-005",
+    "sample-006",
+    "sample-007",
+    "sample-008",
+    "sample-009",
+    "sample-010"
+  ],
+  "C": [
+    "sample-011",
+    "sample-012",
+    "sample-013",
+    "sample-014",
+    "sample-015",
+    "sample-016",
+    "sample-017",
+    "sample-018"
+  ],
+  "repo_mode": "snapshot",
+  "same_A_reused": true,
+  "bootstrap_seed": 20261114,
+  "bootstrap_replicates": 10000
+}

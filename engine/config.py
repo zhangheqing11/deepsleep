@@ -53,6 +53,14 @@ def load_config(config=None) -> dict:
             raise ValueError(f"pipeline.{key} must be boolean")
     if values["agent_llm"]["provider"] not in ("ds_flash", "mock"):
         raise ValueError("agent_llm.provider must be ds_flash or mock")
+    if values["visitor_renderer"] not in ("llm", "template"):
+        raise ValueError("visitor_renderer must be llm or template")
+    retry = values["agent_llm"]["network_retry"]
+    if type(retry["max_retries"]) is not int or not 0 <= retry["max_retries"] <= 5:
+        raise ValueError("network_retry.max_retries must be an integer between 0 and 5")
+    if any(not isinstance(retry[k], (int, float)) or not 0 <= retry[k] <= 60
+           for k in ("backoff_s", "max_backoff_s")):
+        raise ValueError("network retry delays must be between 0 and 60 seconds")
     for key in PATH_KEYS:
         values[key] = str((path.parent / values[key]).resolve())
     return values

@@ -1,0 +1,29 @@
+{
+  "schema": "evolve-status/1",
+  "evolution_id": "g1",
+  "updated_at": "2026-11-14T19:38:51+08:00",
+  "from_version": "v0",
+  "phase": "done",
+  "reflector": {
+    "state": "done",
+    "model": "gpt-6-astra",
+    "fell_back": false
+  },
+  "validation": {
+    "baseline": "done",
+    "candidates": {
+      "c1": "done",
+      "c2": "done",
+      "c3": "done"
+    }
+  },
+  "review": {
+    "state": "done",
+    "deadline": "2026-11-14T19:21:54+08:00",
+    "pending_changes": 1
+  },
+  "outcome": "committed",
+  "to_version": "v1",
+  "chosen": "c3",
+  "error": null
+}

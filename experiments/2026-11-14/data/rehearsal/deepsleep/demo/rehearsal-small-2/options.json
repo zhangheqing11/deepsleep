@@ -1,0 +1,9 @@
+{
+  "visitors_dir": "data/visitors",
+  "dev": false,
+  "mock": false,
+  "n_a": 5,
+  "n_b": 5,
+  "n_c": 5,
+  "max_sessions": 50
+}

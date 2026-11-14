@@ -1,0 +1,17 @@
+{
+  "reports": 7,
+  "validation_errors": {},
+  "gate_recomputed": true,
+  "http_starts_results_budget": [
+    7934,
+    7934,
+    10227
+  ],
+  "prior_aborted_attempts": 2293,
+  "max_inflight": 16,
+  "visitor_http_requests": 0,
+  "source_changes_during_run": [],
+  "tracked_unchanged_during_run": true,
+  "runtime_git_dirs": [],
+  "secret_matching_files": []
+}

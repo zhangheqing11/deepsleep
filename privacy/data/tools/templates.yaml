@@ -1,0 +1,1308 @@
+# v0.3：日历日期和精确年龄为 KEEP；生日、出生年份仍替换。
+- id: tpl-001
+  kind: negative
+  text: 昨晚{time}还醒着，{symptom}，真不知道咋办。
+  keep:
+  - '{time}'
+  - '{symptom}'
+  tags:
+  - time_keep
+  - symptom_keep
+  - path_P1
+- id: tpl-002
+  kind: negative
+  text: 一躺进被窝就{symptom}，挪到沙发倒想睡，已经{time}了。
+  keep:
+  - '{symptom}'
+  - '{time}'
+  tags:
+  - symptom_keep
+  - time_keep
+  - path_P2
+- id: tpl-003
+  kind: negative
+  text: 脑子里翻来覆去都是工作的事，到{time}还没停，{symptom}。
+  keep:
+  - '{time}'
+  - '{symptom}'
+  tags:
+  - time_keep
+  - symptom_keep
+  - path_P3
+- id: tpl-004
+  kind: negative
+  text: 在{city}换了{shift}，休息日也{symptom}。
+  keep:
+  - '{city}'
+  - '{shift}'
+  - '{symptom}'
+  tags:
+  - city_keep
+  - shift_keep
+  - path_P4
+- id: tpl-005
+  kind: negative
+  text: '{app_action}没刹住，{time}才想起来明天得早起。'
+  keep:
+  - '{app}'
+  - '{time}'
+  tags:
+  - app_keep
+  - time_keep
+  - path_P5
+- id: tpl-006
+  kind: negative
+  text: '{relation}说我打鼾会突然没声音，{metric}那栏我还记得。'
+  keep:
+  - '{relation}'
+  - 打鼾会突然没声音
+  - '{metric}'
+  tags:
+  - relation_keep
+  - metric_keep
+  - ref_R1
+- id: tpl-007
+  kind: negative
+  text: 晚上腿里像有虫爬，折腾到{time}，起来走才好。
+  keep:
+  - 腿里像有虫爬
+  - '{time}'
+  - 起来走才好
+  tags:
+  - symptom_keep
+  - time_keep
+  - ref_R2
+- id: tpl-008
+  kind: negative
+  text: 最近情绪低落，{symptom}，在{city}也不想出门。
+  keep:
+  - 情绪低落
+  - '{symptom}'
+  - '{city}'
+  tags:
+  - symptom_keep
+  - city_keep
+  - ref_R3
+- id: tpl-009
+  kind: negative
+  text: 我在用{drug}，昨晚{time}脑子还特别清醒，想把情况记下来。
+  keep:
+  - '{drug}'
+  - '{time}'
+  tags:
+  - drug_keep
+  - time_keep
+  - path_P1
+- id: tpl-010
+  kind: negative
+  text: '{device}记录了昨晚的睡眠，我看到{metric}反而更紧张。'
+  keep:
+  - '{device}'
+  - '{metric}'
+  - 更紧张
+  tags:
+  - device_keep
+  - metric_keep
+  - path_P3
+- id: tpl-011
+  kind: negative
+  text: '{time}去医院值班，回来后{symptom}。'
+  keep:
+  - '{time}'
+  - 医院
+  - 值班
+  - '{symptom}'
+  tags:
+  - time_keep
+  - generic_place
+  - symptom_keep
+  - path_P4
+- id: tpl-012
+  kind: negative
+  text: 我是{occupation}，最近{shift}排得多，困劲全错位了。
+  keep:
+  - '{occupation}'
+  - '{shift}'
+  - 困劲全错位
+  tags:
+  - shift_keep
+  - path_P4
+- id: tpl-013
+  kind: negative
+  text: '{substance_action}后到{time}还不困，怪难受的。'
+  keep:
+  - '{substance_action}'
+  - '{time}'
+  tags:
+  - substance_keep
+  - time_keep
+  - path_P1
+- id: tpl-014
+  kind: negative
+  text: 同住的{relation}睡着以后我才敢{app_action}，一玩手机就是大半夜。
+  keep:
+  - 同住的{relation}
+  - '{app_action}'
+  - 大半夜
+  tags:
+  - relation_keep
+  - app_keep
+  - path_P5
+- id: tpl-015
+  kind: negative
+  text: 从{city}出差回来就{symptom}，生物钟好像没跟回来。
+  keep:
+  - '{city}'
+  - '{symptom}'
+  - 生物钟
+  tags:
+  - city_keep
+  - symptom_keep
+  - path_P4
+- id: tpl-016
+  kind: negative
+  text: 拿{device}看时间都到{time}了，眼睛还盯着屏幕。
+  keep:
+  - '{device}'
+  - '{time}'
+  - 眼睛还盯着屏幕
+  tags:
+  - device_keep
+  - time_keep
+  - path_P5
+- id: tpl-017
+  kind: negative
+  text: 我是{occupation}，白天忙工作，夜里{symptom}，实在累。
+  keep:
+  - '{occupation}'
+  - 夜里
+  - '{symptom}'
+  tags:
+  - shift_keep
+  - symptom_keep
+  - path_P3
+- id: tpl-018
+  kind: negative
+  text: '{metric}这个数我抄下了，跟{relation}说了我的呼噜情况。'
+  keep:
+  - '{metric}'
+  - '{relation}'
+  - 呼噜
+  tags:
+  - metric_keep
+  - relation_keep
+  - ref_R1
+- id: tpl-019
+  kind: negative
+  text: 我怕睡不够，老是查{device}，今天又{symptom}。
+  keep:
+  - 怕睡不够
+  - '{device}'
+  - '{symptom}'
+  tags:
+  - device_keep
+  - symptom_keep
+  - path_P3
+- id: tpl-020
+  kind: negative
+  text: 躺了挺久才肯离床，在客厅坐到{time}，还{symptom}。
+  keep:
+  - 离床
+  - 客厅
+  - '{time}'
+  - '{symptom}'
+  tags:
+  - cbti_keep
+  - generic_place
+  - time_keep
+  - path_P2
+- id: tpl-021
+  kind: negative
+  text: 睡前把{app}退出，手又忍不住点回去，拖到{time}。
+  keep:
+  - '{app}'
+  - '{time}'
+  tags:
+  - app_keep
+  - time_keep
+  - path_P5
+- id: tpl-022
+  kind: negative
+  text: 这周{shift}，下班本来困，{substance_action}反倒清醒。
+  keep:
+  - '{shift}'
+  - '{substance_action}'
+  tags:
+  - shift_keep
+  - substance_keep
+  - path_P4
+- id: tpl-023
+  kind: negative
+  text: '{relation}提醒别盯深睡，{device}的分数却让我放不下。'
+  keep:
+  - '{relation}'
+  - 深睡
+  - '{device}'
+  tags:
+  - relation_keep
+  - device_keep
+  - path_P3
+- id: tpl-024
+  kind: negative
+  text: 在{city}的宿舍住着，最近{symptom}，我想先记下来。
+  keep:
+  - '{city}'
+  - 宿舍
+  - '{symptom}'
+  tags:
+  - city_keep
+  - generic_place
+  - symptom_keep
+  - path_P1
+- id: tpl-025
+  kind: negative
+  text: 这回用{drug}的情况我想记清楚，{time}又醒了。
+  keep:
+  - '{drug}'
+  - '{time}'
+  tags:
+  - drug_keep
+  - time_keep
+  - path_P1
+- id: tpl-026
+  kind: negative
+  text: 睡眠日记里我写着{time}，旁边备注是{symptom}。
+  keep:
+  - 睡眠日记
+  - '{time}'
+  - '{symptom}'
+  tags:
+  - cbti_keep
+  - time_keep
+  - symptom_keep
+  - path_P2
+- id: tpl-027
+  kind: negative
+  text: '{occupation}也要睡觉呀，可我{time}还在回消息。'
+  keep:
+  - '{occupation}'
+  - '{time}'
+  tags:
+  - shift_keep
+  - time_keep
+  - path_P4
+- id: tpl-028
+  kind: negative
+  text: '{relation}说我夜里蹬腿，我只记得{time}起来走过。'
+  keep:
+  - '{relation}'
+  - 夜里蹬腿
+  - '{time}'
+  - 起来走过
+  tags:
+  - relation_keep
+  - time_keep
+  - ref_R2
+- id: tpl-029
+  kind: negative
+  text: 现在{symptom}，{app_action}是我逃开烦心事的办法。
+  keep:
+  - '{symptom}'
+  - '{app}'
+  tags:
+  - symptom_keep
+  - app_keep
+  - ref_R3
+- id: tpl-030
+  kind: negative
+  text: 买{device}本想了解睡眠，结果一到{time}就查数据。
+  keep:
+  - '{device}'
+  - '{time}'
+  - 查数据
+  tags:
+  - device_keep
+  - time_keep
+  - path_P3
+- id: tpl-031
+  kind: normal
+  text: 我叫{person}，{time}还在熬，{symptom}。
+  keep:
+  - '{time}'
+  - '{symptom}'
+  tags:
+  - time_keep
+  - symptom_keep
+  - path_P1
+- id: tpl-032
+  kind: normal
+  text: '{person}是我老公，他打鼾憋醒，我也跟着醒。'
+  keep:
+  - 老公
+  - 打鼾憋醒
+  tags:
+  - relation_keep
+  - symptom_keep
+  - ref_R1
+- id: tpl-033
+  kind: normal
+  text: '{person}说我晚上蹬腿，我自己觉得{symptom}。'
+  keep:
+  - 晚上蹬腿
+  - '{symptom}'
+  tags:
+  - symptom_keep
+  - ref_R2
+- id: tpl-034
+  kind: normal
+  text: 我今年{age}，最近{symptom}，心情也低落。
+  keep:
+  - '{symptom}'
+  - 心情也低落
+  - '{age}'
+  tags:
+  - symptom_keep
+  - ref_R3
+- id: tpl-035
+  kind: normal
+  text: 生日{birthday_md}不想过，想到那天要聚会就{symptom}。
+  keep:
+  - '{symptom}'
+  tags:
+  - symptom_keep
+  - ref_R3
+- id: tpl-036
+  kind: normal
+  text: 从{day}开始倒班，{time}还醒着成了常事。
+  keep:
+  - '{time}'
+  - '{day}开始倒班'
+  tags:
+  - shift_keep
+  - time_keep
+  - path_P4
+- id: tpl-037
+  kind: normal
+  text: 我住{city}{address}，{time}楼下还有动静。
+  keep:
+  - '{city}'
+  - '{time}'
+  tags:
+  - city_keep
+  - time_keep
+  - path_P1
+- id: tpl-038
+  kind: normal
+  text: 单位是{org}，一想到上班我就{symptom}。
+  keep:
+  - '{symptom}'
+  tags:
+  - symptom_keep
+  - path_P3
+- id: tpl-039
+  kind: normal
+  text: 我在{school}上学，睡前总{app_action}。
+  keep:
+  - 上学
+  - 睡前
+  - '{app}'
+  tags:
+  - app_keep
+  - path_P5
+- id: tpl-040
+  kind: normal
+  text: 去{hospital}睡眠科前，我把{metric}记在纸上。
+  keep:
+  - 睡眠科
+  - '{metric}'
+  tags:
+  - metric_keep
+  - ref_R1
+- id: tpl-041
+  kind: normal
+  text: 联系我用{phone}，{time}以后我不一定醒着。
+  keep:
+  - '{time}'
+  tags:
+  - time_keep
+  - path_P1
+- id: tpl-042
+  kind: normal
+  text: 登记的身份证号{ident}，上次讲了腿不舒服，现在{symptom}。
+  keep:
+  - 腿不舒服
+  - '{symptom}'
+  tags:
+  - symptom_keep
+  - ref_R2
+- id: tpl-043
+  kind: normal
+  text: 邮箱是{email}，夜里工作邮件让我反复醒。
+  keep:
+  - 夜里
+  - 工作邮件
+  - 反复醒
+  tags:
+  - symptom_keep
+  - path_P3
+- id: tpl-044
+  kind: normal
+  text: 微信号{account}晚上还在线，一般是在{app_action}。
+  keep:
+  - 微信
+  - 晚上
+  - '{app}'
+  tags:
+  - app_keep
+  - path_P5
+- id: tpl-045
+  kind: normal
+  text: 我的车牌{plate}，{shift}后开车困得不行。
+  keep:
+  - '{shift}'
+  - 开车困得不行
+  tags:
+  - shift_keep
+  - path_P4
+- id: tpl-046
+  kind: normal
+  text: 我叫{person}，我在{org}加班后还得{app_action}放松。
+  keep:
+  - 加班
+  - '{app}'
+  tags:
+  - app_keep
+  - path_P5
+- id: tpl-047
+  kind: normal
+  text: 我住{address}，从{address}去上班每天要早起。
+  keep:
+  - 每天
+  - 早起
+  tags:
+  - time_keep
+  - path_P4
+- id: tpl-048
+  kind: normal
+  text: 我老公{person}睡不实，{person}总怪床不舒服。
+  keep:
+  - 老公
+  - 睡不实
+  - 床不舒服
+  tags:
+  - relation_keep
+  - path_P2
+- id: tpl-049
+  kind: normal
+  text: 我住的{school}宿舍熄灯前，我已经偷偷开了{app}。
+  keep:
+  - 熄灯前
+  - '{app}'
+  tags:
+  - app_keep
+  - path_P5
+- id: tpl-050
+  kind: normal
+  text: '{hospital}的心理科还没约上，我{time}又早醒了。'
+  keep:
+  - 心理科
+  - '{time}'
+  - 早醒
+  tags:
+  - time_keep
+  - ref_R3
+- id: tpl-051
+  kind: normal
+  text: 给{phone}打电话前发条消息，我{shift}需要补觉。
+  keep:
+  - '{shift}'
+  - 补觉
+  tags:
+  - shift_keep
+  - path_P4
+- id: tpl-052
+  kind: normal
+  text: 工牌号{work_id}，做{occupation}的，最近睡得乱。
+  keep:
+  - '{occupation}'
+  - 睡得乱
+  tags:
+  - shift_keep
+  - path_P4
+- id: tpl-053
+  kind: normal
+  text: 医保卡{insurance_id}找到啦，我想先问问{drug}的记录怎么写。
+  keep:
+  - '{drug}'
+  - 记录
+  tags:
+  - drug_keep
+  - path_P1
+- id: tpl-054
+  kind: normal
+  text: 银行卡号{bank}是我的，账单压力害我{symptom}。
+  keep:
+  - 账单压力
+  - '{symptom}'
+  tags:
+  - symptom_keep
+  - path_P3
+- id: tpl-055
+  kind: normal
+  text: 我在{org}当{occupation}，工号{work_id}，上{shift}。
+  keep:
+  - '{occupation}'
+  - '{shift}'
+  tags:
+  - shift_keep
+  - path_P4
+- id: tpl-056
+  kind: normal
+  text: '{day}那晚{person}说我打鼾像断了气。'
+  keep:
+  - 打鼾像断了气
+  - '{day}那晚'
+  tags:
+  - symptom_keep
+  - ref_R1
+- id: tpl-057
+  kind: normal
+  text: 我今年{age}，一到卧室就清醒，哪怕已是{time}。
+  keep:
+  - 一到卧室就清醒
+  - '{time}'
+  - '{age}'
+  tags:
+  - time_keep
+  - path_P2
+- id: tpl-058
+  kind: normal
+  text: 在{hospital}留过{phone}，但白天我基本睡着。
+  keep:
+  - 白天
+  - 睡着
+  tags:
+  - time_keep
+  - path_P4
+- id: tpl-059
+  kind: normal
+  text: '{person}约我在{address}打游戏，我怕又拖到{time}。'
+  keep:
+  - 打游戏
+  - '{time}'
+  tags:
+  - time_keep
+  - path_P5
+- id: tpl-060
+  kind: normal
+  text: 在{school}上学那时我就{symptom}，跟现在差不多。
+  keep:
+  - '{symptom}'
+  tags:
+  - symptom_keep
+  - path_P1
+- id: tpl-061
+  kind: normal
+  text: 去{hospital}神经内科前，{person}劝我记录腿部感觉。
+  keep:
+  - 神经内科
+  - 腿部感觉
+  tags:
+  - symptom_keep
+  - ref_R2
+- id: tpl-062
+  kind: normal
+  text: 我的身份证{ident}需要登记，睡眠日记写在{day}那页。
+  keep:
+  - 睡眠日记
+  - '{day}'
+  tags:
+  - cbti_keep
+  - path_P2
+- id: tpl-063
+  kind: normal
+  text: 住{address}的{person}就是我，{device}说我深睡太少。
+  keep:
+  - '{device}'
+  tags:
+  - device_keep
+  - path_P3
+- id: tpl-064
+  kind: normal
+  text: 朋友{person}叫我别看时间，我还在{time}摸手机。
+  keep:
+  - 朋友
+  - '{time}'
+  - 摸手机
+  tags:
+  - relation_keep
+  - time_keep
+  - path_P5
+- id: tpl-065
+  kind: normal
+  text: 我出生于{birthday}，真正换班是在{day}。
+  keep:
+  - 换班
+  - '{day}'
+  tags:
+  - shift_keep
+  - path_P4
+- id: tpl-066
+  kind: normal
+  text: '{person}和我一起从{city}出差回来，困意完全不对点。'
+  keep:
+  - '{city}'
+  - 困意完全不对点
+  tags:
+  - city_keep
+  - path_P4
+- id: tpl-067
+  kind: normal
+  text: 在{org}上班压力大，{day}那次之后我开始怕上床。
+  keep:
+  - 压力大
+  - 怕上床
+  - '{day}'
+  tags:
+  - path_P2
+- id: tpl-068
+  kind: normal
+  text: 我在{hospital}睡眠科排的门诊号是{outpatient_id}，{metric}我记下了。
+  keep:
+  - 睡眠科
+  - '{metric}'
+  tags:
+  - metric_keep
+  - ref_R1
+- id: tpl-069
+  kind: normal
+  text: '{age}以后睡眠浅了，夜里{symptom}，给我回电用{phone}。'
+  keep:
+  - 睡眠浅
+  - 夜里
+  - '{symptom}'
+  - '{age}'
+  tags:
+  - symptom_keep
+  - path_P1
+- id: tpl-070
+  kind: normal
+  text: 我在{school}的宿舍住不惯，室友{person}一翻身我就醒。
+  keep:
+  - 宿舍
+  - 一翻身我就醒
+  tags:
+  - generic_place
+  - path_P1
+- id: tpl-071
+  kind: ambiguous
+  text: 我说的{amb_red}是{amb_role}，{amb_clause}，夜里总聊到{time}。
+  keep:
+  - '{amb_keep}'
+  - '{time}'
+  tags:
+  - ambiguous
+  - time_keep
+  - path_P5
+- id: tpl-072
+  kind: ambiguous
+  text: 聊完{amb_role}{amb_red}的事就失眠，{amb_clause}，都到{time}了。
+  keep:
+  - '{amb_keep}'
+  - '{time}'
+  tags:
+  - ambiguous
+  - time_keep
+  - path_P3
+- id: tpl-073
+  kind: ambiguous
+  text: '{amb_role}{amb_red}那边的事压得我睡不下，{amb_clause}，我还{symptom}。'
+  keep:
+  - '{amb_keep}'
+  - '{symptom}'
+  tags:
+  - ambiguous
+  - symptom_keep
+  - path_P3
+- id: tpl-074
+  kind: ambiguous
+  text: 说起{amb_role}{amb_red}我就担心，{amb_clause}，{time}了也难放下。
+  keep:
+  - '{amb_keep}'
+  - '{time}'
+  tags:
+  - ambiguous
+  - time_keep
+  - path_P3
+- id: tpl-075
+  kind: ambiguous
+  text: '{amb_clause}。提到{amb_red}，我是说{amb_role}，最近总{symptom}。'
+  keep:
+  - '{amb_keep}'
+  - '{symptom}'
+  tags:
+  - ambiguous
+  - symptom_keep
+  - path_P3
+- id: tpl-076
+  kind: ambiguous
+  text: 别把{amb_role}{amb_red}和这事弄混，{amb_clause}；我到{time}才睡。
+  keep:
+  - '{amb_keep}'
+  - '{time}'
+  tags:
+  - ambiguous
+  - time_keep
+  - path_P1
+- id: tpl-077
+  kind: ambiguous
+  text: '{time}还没睡，刚聊到{amb_role}{amb_red}的事，{amb_clause}。'
+  keep:
+  - '{amb_keep}'
+  - '{time}'
+  tags:
+  - ambiguous
+  - time_keep
+  - path_P3
+- id: tpl-078
+  kind: ambiguous
+  text: '{amb_clause}，可提起{amb_role}{amb_red}就放不下心，{symptom}。'
+  keep:
+  - '{amb_keep}'
+  - '{symptom}'
+  tags:
+  - ambiguous
+  - symptom_keep
+  - path_P3
+- id: tpl-079
+  kind: crisis
+  text: 我叫{person}，{crisis}，{time}了还睡不了。
+  keep:
+  - '{crisis}'
+  - '{time}'
+  tags:
+  - crisis
+  - time_keep
+  - ref_R3
+- id: tpl-080
+  kind: crisis
+  text: 住在{address}，{crisis}，这些夜里太难过。昨晚十一点上床，凌晨两点才有困意，早上闹钟一响又得起来，白天做事常漏掉步骤。
+  keep:
+  - '{crisis}'
+  - 夜里太难过
+  - 凌晨两点才有困意
+  tags:
+  - crisis
+  - ref_R3
+- id: tpl-081
+  kind: crisis
+  text: 电话{phone}是我留的，{crisis}，还有{symptom}。我这周连续三个晚上醒来后要躺很久，早晨起来眼睛酸，白天看消息也会走神。
+  keep:
+  - '{crisis}'
+  - '{symptom}'
+  - 连续三个晚上醒来后要躺很久
+  tags:
+  - crisis
+  - symptom_keep
+  - ref_R3
+- id: tpl-082
+  kind: crisis
+  text: '{person}是我名字，{crisis}，想去{hospital}说说睡眠。'
+  keep:
+  - '{crisis}'
+  - 睡眠
+  tags:
+  - crisis
+  - ref_R3
+- id: tpl-083
+  kind: crisis
+  text: 我以前说过“{crisis}”，现在已经没有那种念头了；我叫{person}，仍会早醒。这周常常五点醒，闹钟还没响就开始担心当天的工作，中午补觉后晚上又没困意。
+  keep:
+  - 我以前说过“{crisis}”，现在已经没有那种念头了
+  - 早醒
+  - 这周常常五点醒
+  tags:
+  - crisis
+  - ref_R3
+- id: tpl-084
+  kind: crisis
+  text: '{hospital}的预约还没到，{crisis}，{time}一直醒着。'
+  keep:
+  - '{crisis}'
+  - '{time}'
+  - 醒着
+  tags:
+  - crisis
+  - time_keep
+  - ref_R3
+- id: tpl-085
+  kind: crisis
+  text: 我在{org}工作，{crisis}，夜里反复想，{symptom}。
+  keep:
+  - '{crisis}'
+  - '{symptom}'
+  tags:
+  - crisis
+  - symptom_keep
+  - ref_R3
+- id: tpl-086
+  kind: crisis
+  text: 家里{address}那屋子夜里很静，{crisis}，我睡不下。
+  keep:
+  - '{crisis}'
+  - 睡不下
+  tags:
+  - crisis
+  - ref_R3
+- id: tpl-087
+  kind: crisis
+  text: 我以前有过“{crisis}”的想法，现在已经结束了，{person}是登记姓名。后来我开始记睡眠日记，发现上床后还在想工作，关了手机也没困意，白天会犯困。
+  keep:
+  - 我以前有过“{crisis}”的想法，现在已经结束了
+  - 关了手机也没困意
+  tags:
+  - crisis
+  - ref_R3
+- id: tpl-088
+  kind: crisis
+  text: '{phone}可以联系我，{crisis}，昨晚{time}我还在哭。'
+  keep:
+  - '{crisis}'
+  - '{time}'
+  - 哭
+  tags:
+  - crisis
+  - time_keep
+  - ref_R3
+- id: tpl-089
+  kind: negative
+  text: '{time}躺下时总想起过去那句“{crisis}”，现在已经没有这个念头了。早上闹钟响了我又不想起，午休趴着倒能睡着，晚上看手机时明明困了，回床上却又清醒。'
+  keep:
+  - '{time}躺下时总想起过去那句“{crisis}”，现在已经没有这个念头了'
+  - 回床上却又清醒
+  tags:
+  - crisis
+  - time_keep
+  - ref_R3
+- id: tpl-090
+  kind: negative
+  text: '{city}的夜晚也不好熬，{crisis}，我又睡不着。'
+  keep:
+  - '{city}'
+  - '{crisis}'
+  - 睡不着
+  tags:
+  - crisis
+  - city_keep
+  - ref_R3
+- id: tpl-091
+  kind: negative
+  text: 睡前刷美团外卖，选来选去已经{time}了，根本没有下单。
+  keep:
+  - 睡前刷美团外卖
+  - 已经{time}了
+  tags:
+  - ambiguous
+  - time_keep
+- id: tpl-092
+  kind: negative
+  text: 新闻说腾讯裁员我也跟着焦虑，{time}还在想自己的工作。
+  keep:
+  - 腾讯裁员
+  - 跟着焦虑
+  - '{time}还在想自己的工作'
+  tags:
+  - ambiguous
+  - time_keep
+- id: tpl-093
+  kind: negative
+  text: 看苹果发布手机的新闻到{time}，我只是想换手机。
+  keep:
+  - 苹果发布手机的新闻
+  - 到{time}
+  tags:
+  - ambiguous
+  - time_keep
+- id: tpl-094
+  kind: negative
+  text: 我比较小米手环和华为手环的数据，到{time}还没关屏。
+  keep:
+  - 小米手环和华为手环
+  - 到{time}还没关屏
+  tags:
+  - ambiguous
+  - time_keep
+- id: tpl-095
+  kind: negative
+  text: 京东上的枕头看了半天，{time}还是没选好。
+  keep:
+  - 京东
+  - 枕头看了半天
+  - '{time}还是没选好'
+  tags:
+  - ambiguous
+  - time_keep
+- id: tpl-096
+  kind: negative
+  text: 别人讨论百度的新产品，我看到{time}也没困意。
+  keep:
+  - 百度的新产品
+  - 看到{time}也没困意
+  tags:
+  - ambiguous
+  - time_keep
+- id: tpl-097
+  kind: negative
+  text: 刷到协和医院的科普视频，我并没有去那里看病，{time}还在看。
+  keep:
+  - 协和医院的科普视频
+  - 并没有去那里看病
+  - '{time}还在看'
+  tags:
+  - ambiguous
+  - time_keep
+- id: tpl-098
+  kind: negative
+  text: 我听清华大学的公开课，不是在那里读书，听到{time}就忘了睡。
+  keep:
+  - 清华大学的公开课
+  - 不是在那里读书
+  - 听到{time}就忘了睡
+  tags:
+  - ambiguous
+  - time_keep
+- id: tpl-099
+  kind: negative
+  text: 星巴克的杯子放桌边，我{time}还在担心下午喝的咖啡。
+  keep:
+  - 星巴克
+  - '{time}还在担心下午喝的咖啡'
+  tags:
+  - ambiguous
+  - time_keep
+- id: tpl-100
+  kind: negative
+  text: 海尔空调响得我睡不实，醒来一看已经{time}。
+  keep:
+  - 海尔空调
+  - 响得我睡不实
+  - 已经{time}
+  tags:
+  - ambiguous
+  - time_keep
+- id: tpl-101
+  kind: negative
+  text: 拼多多里逛枕套逛到{time}，越选越不想放手机。
+  keep:
+  - 拼多多
+  - 逛到{time}
+  - 越不想放手机
+  tags:
+  - ambiguous
+  - time_keep
+- id: tpl-102
+  kind: negative
+  text: 字节跳动的新闻只是话题，我看到{time}跟着心慌。
+  keep:
+  - 字节跳动的新闻
+  - 看到{time}跟着心慌
+  tags:
+  - ambiguous
+  - time_keep
+- id: tpl-103
+  kind: negative
+  text: 老板让我早点睡，可我还玩王者荣耀到{time}。
+  keep:
+  - 玩王者荣耀到{time}
+  tags:
+  - ambiguous
+  - time_keep
+- id: tpl-104
+  kind: negative
+  text: 小区门口没有施工，我到{time}还是不困。
+  keep:
+  - 没有施工
+  - 到{time}还是不困
+  tags:
+  - ambiguous
+  - time_keep
+- id: tpl-105
+  kind: negative
+  text: 我{time}还想再玩一会儿{game_device}，明明之前已经犯困。
+  keep:
+  - '{time}还想再玩一会儿{game_device}'
+  - 明明之前已经犯困
+  tags:
+  - ambiguous
+  - time_keep
+- id: tpl-106
+  kind: negative
+  text: 白天补觉到{daytime}才起来，我想把这段和夜里的睡眠分开记。
+  keep:
+  - 白天补觉到{daytime}才起来
+  tags:
+  - ambiguous
+  - time_keep
+- id: tpl-107
+  kind: normal
+  surname: 王
+  text: '{surname}医生问我最近{symptom}的情况，我说昨晚{time}还清醒。'
+  keep:
+  - '{time}'
+  - 我说昨晚{time}还清醒
+  tags:
+  - person
+  - time_keep
+  - relation_keep
+- id: tpl-108
+  kind: normal
+  surname: 欧阳
+  text: '{surname}老师提醒我先停下写作业，已经{time}了，我还{symptom}。'
+  keep:
+  - '{time}'
+  - 我还{symptom}
+  tags:
+  - person
+  - time_keep
+  - relation_keep
+- id: tpl-109
+  kind: normal
+  surname: 李
+  text: 同住的{surname}姐说我夜里踢腿，我记得{time}起来走过。
+  keep:
+  - '{time}'
+  - 我记得{time}起来走过
+  tags:
+  - person
+  - time_keep
+  - relation_keep
+- id: tpl-110
+  kind: normal
+  surname: 张
+  text: 老{surname}是我室友，他{time}还在打鼾，我被吵醒了。
+  keep:
+  - '{time}'
+  - 我被吵醒了
+  tags:
+  - person
+  - time_keep
+  - relation_keep
+- id: tpl-111
+  kind: normal
+  surname: 陈
+  text: 小{surname}是同事，提醒我{time}别回消息，我还是停不下来。
+  keep:
+  - '{time}'
+  - 我还是停不下来
+  tags:
+  - person
+  - time_keep
+  - relation_keep
+- id: tpl-112
+  kind: normal
+  text: 我在{hospital}登记的住院号是{inpatient_id}，昨晚{time}又醒了，想记下来。
+  keep:
+  - 昨晚{time}又醒了
+  tags:
+  - id_num
+  - hospital
+  - time_keep
+- id: tpl-113
+  kind: normal
+  text: 我在{hospital}登记的病历号是{record_id}，昨晚{time}又醒了，想记下来。
+  keep:
+  - 昨晚{time}又醒了
+  tags:
+  - id_num
+  - hospital
+  - time_keep
+- id: tpl-114
+  kind: negative
+  long: true
+  sentences:
+  - text: 昨晚{time}还没睡，我躺着一直在想白天没做完的事，明明困了却又摸出手机看一眼。
+    keep:
+    - 昨晚{time}还没睡
+    - 躺着一直在想白天没做完的事
+  - text: 关掉屏幕后我没有马上睡着，脑子还在转，越担心第二天起不来就越难放松下来。
+    keep:
+    - 关掉屏幕后我没有马上睡着
+    - 脑子还在转
+  - text: 我想先把上床后清醒的时间记清楚，白天困的时候也写下来，不再只看睡了多久。
+    keep:
+    - 白天困
+  - text: 今晚打算把手机放客厅，困了再回床上，不想一躺下就开始算自己还能睡几个小时。
+    keep:
+    - 困了再回床上
+  tags:
+  - long
+  - time_keep
+- id: tpl-115
+  kind: negative
+  long: true
+  sentences:
+  - text: 最近我在{city}倒班，下了{shift}回来很累，拉上窗帘仍然容易被门外的声音惊醒。
+    keep:
+    - '{city}倒班'
+    - 下了{shift}回来很累
+    - 被门外的声音惊醒
+  - text: 醒来以后我不看手机也没再睡着，后来坐到客厅休息，担心这样的作息会一直延续下去。
+    keep:
+    - 不看手机也没再睡着
+  - text: 家人愿意轻一点说话，我也把提醒声音关掉了，想看看安静一些后能不能连着睡一会。
+    keep:
+    - 把提醒声音关掉了
+  - text: 我准备把每个班次和白天补觉分开记录，休息日的变化也记上，再来讨论下一步。
+    keep:
+    - 白天补觉
+  tags:
+  - long
+  - time_keep
+- id: tpl-116
+  kind: normal
+  long: true
+  sentences:
+  - text: 我叫{person}，我在{org}工作，最近一下班脑子也停不下来，昨晚{time}还在想白天的任务。
+    keep:
+    - 一下班脑子也停不下来
+    - 昨晚{time}还在想白天的任务
+  - text: 睡前已经没有新消息了，我还是忍不住反复检查，关了屏幕后又担心自己有没有漏掉事情。
+    keep:
+    - 睡前已经没有新消息了
+    - 我还是忍不住反复检查
+  - text: 同事都叫我{person}，其实我很想把工作留到白天，夜里醒了也别再拿手机处理。
+    keep:
+    - 很想把工作留到白天
+  - text: 我先记上床、入睡和起床的大致时间，午睡也算进去，希望能看清哪几天更容易困。
+    keep:
+    - 午睡也算进去
+  tags:
+  - long
+  - time_keep
+- id: tpl-117
+  kind: normal
+  long: true
+  sentences:
+  - text: 我和老公{person}住在{address}，他最近打鼾会把我吵醒，我醒来以后还得躺很久才有困意。
+    keep:
+    - 老公
+    - 他最近打鼾会把我吵醒
+    - 我醒来以后还得躺很久才有困意
+  - text: 屋里并不吵，也没有开着电视，可我会一直留意他的呼吸，怕自己睡着后听不到变化。
+    keep:
+    - 一直留意他的呼吸
+  - text: '{person}说白天坐车也容易打盹，我想把这件事一起记下来，不能只写我自己睡不好。'
+    keep:
+    - 白天坐车也容易打盹
+  - text: 我没有替他判断原因，只是想带上夜里醒来的记录，把两个人各自的情况分开说清楚。
+    keep: []
+  tags:
+  - long
+  - time_keep
+- id: tpl-118
+  kind: ambiguous
+  long: true
+  sentences:
+  - text: 我最近总惦记{amb_role}{amb_red}的事情，{amb_clause}，到{time}还是没放下手机。
+    keep:
+    - '{amb_keep}'
+    - 到{time}还是没放下手机
+  - text: 眼前能做的事情我都已经做完了，可是睡前一想到这些就开始担心，困意过去又难睡。
+    keep:
+    - 睡前一想到这些就开始担心
+    - 困意过去又难睡
+  - text: 后来我关了屏幕坐了一会，没有立刻睡着，越算第二天还能睡多久就越难放松。
+    keep:
+    - 没有立刻睡着
+  - text: 我想把睡前的活动和清醒时间都记下来，看看不碰手机的晚上会不会稍微好一些。
+    keep:
+    - 不碰手机的晚上
+  tags:
+  - long
+  - time_keep
+  - ambiguous
+- id: tpl-119
+  kind: crisis
+  long: true
+  sentences:
+  - text: 我叫{person}，我以前说过“{crisis}”，现在已经没有那种念头了，但最近夜里仍然睡不踏实。
+    keep:
+    - 我以前说过“{crisis}”，现在已经没有那种念头了
+  - text: 过去的那段话和现在的情况请分开记，我不是说今天还想这样做，只是想把经历完整说明白。
+    keep:
+    - 我不是说今天还想这样做
+  - text: 昨晚{time}还醒着，关灯后我想了很久，早上起来很累，白天坐着又容易打瞌睡。
+    keep:
+    - 昨晚{time}还醒着
+    - 白天坐着又容易打瞌睡
+  - text: 我希望先把睡眠的变化记下来，保留我说的过去和现在这些词，别把两段时间混在一起。
+    tags:
+    - adversarial
+    keep: []
+  tags:
+  - long
+  - time_keep
+  - crisis
+- id: tpl-120
+  kind: negative
+  text: 我吃了{oral_drug}，也把昨晚{time}醒来的情况记下了，先分开记录。
+  keep:
+  - 吃了{oral_drug}
+  - 昨晚{time}醒来
+  tags:
+  - drug_keep
+  - time_keep
+- id: tpl-121
+  kind: negative
+  text: 我今年{age}，从{day}开始早醒。
+  keep:
+  - '{age}'
+  - '{day}开始早醒'
+  tags:
+  - age_keep
+  - date_keep
+  - symptom_keep
+- id: tpl-122
+  kind: negative
+  text: '{day}那次夜班之后，{time}还醒着。'
+  keep:
+  - '{day}那次夜班之后'
+  - '{time}还醒着'
+  tags:
+  - date_keep
+  - shift_keep
+- id: tpl-123
+  kind: normal
+  text: 生日是{birthday_md}，从{day}开始早醒。
+  keep:
+  - '{day}开始早醒'
+  tags:
+  - date_keep
+  - symptom_keep
+- id: tpl-124
+  kind: normal
+  text: 我出生于{birthyear}，今年{age}，最近{symptom}。
+  keep:
+  - '{age}'
+  - '{symptom}'
+  tags:
+  - age_keep
+  - symptom_keep
+- id: tpl-125
+  kind: normal
+  text: 我出生于{birthyear}，检查是在{day}，那以后仍然{symptom}。
+  keep:
+  - 检查是在{day}
+  - '{symptom}'
+  tags:
+  - date_keep
+  - symptom_keep
+- id: tpl-126
+  kind: normal
+  text: 我今年{age}，生日是{birthday_md}，睡前老是想工作。
+  keep:
+  - '{age}'
+  - 睡前老是想工作
+  tags:
+  - age_keep
+  - symptom_keep

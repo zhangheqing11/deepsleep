@@ -1,0 +1,9 @@
+{
+  "visitors_dir": "sim/visitors",
+  "dev": true,
+  "mock": true,
+  "n_a": null,
+  "n_b": null,
+  "n_c": null,
+  "max_sessions": 50
+}

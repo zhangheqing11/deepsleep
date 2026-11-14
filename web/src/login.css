@@ -1,0 +1,141 @@
+/* 登录页：一张居中的卡片。颜色只用 styles.css 的变量。 */
+.lg {
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: grid;
+  grid-template-rows: 1fr auto;
+  justify-items: center;
+  align-items: center;
+  padding: 24px 16px;
+  background: var(--bg);
+  color: var(--text);
+  font-size: 16px;
+  line-height: 1.6;
+}
+.lg-card {
+  width: 100%;
+  max-width: 380px;
+  display: grid;
+  gap: 14px;
+  padding: 28px 24px 24px;
+  border-radius: var(--radius-lg);
+  background: var(--surface);
+}
+.lg-card h1,
+.lg-card p {
+  margin: 0;
+}
+.lg-brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+.lg-card h1 {
+  margin-top: 10px;
+  font-size: 1.75rem;
+  font-weight: 600;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+}
+.lg-sub {
+  margin-top: -8px;
+  color: var(--muted);
+  font-size: 0.875rem;
+}
+.lg-card form {
+  display: grid;
+  gap: 12px;
+  margin-top: 6px;
+}
+.lg-field {
+  display: grid;
+  gap: 4px;
+}
+.lg-field span {
+  color: var(--muted);
+  font-size: 0.8125rem;
+}
+.lg-field input {
+  width: 100%;
+  min-height: 46px;
+  padding: 0 12px;
+  border: 1px solid var(--control);
+  border-radius: var(--radius);
+  background: var(--surface);
+  color: var(--text);
+  font: inherit;
+}
+.lg-field input:focus-visible {
+  outline: 2px solid var(--link);
+  outline-offset: 1px;
+  border-color: var(--link);
+}
+.lg-submit {
+  min-height: 48px;
+  margin-top: 4px;
+  border: 0;
+  border-radius: var(--radius);
+  background: var(--button);
+  color: var(--button-ink);
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+}
+.lg-submit:disabled {
+  opacity: 0.45;
+  cursor: default;
+}
+.lg-submit:focus-visible {
+  outline: 2px solid var(--link);
+  outline-offset: 2px;
+}
+.lg-note,
+.lg-error {
+  padding: 8px 10px;
+  border-radius: var(--radius);
+  background: var(--surface-2);
+  font-size: 0.875rem;
+}
+.lg-error {
+  background: var(--danger-soft);
+  color: var(--danger-ink);
+}
+.lg-fine,
+.lg-foot {
+  color: var(--muted);
+  font-size: 0.75rem;
+  line-height: 1.5;
+}
+.lg-foot {
+  max-width: 380px;
+  padding-top: 20px;
+  text-align: center;
+}
+
+/* 登录 / 注册切换 */
+.lg-switch {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--muted);
+  font-size: 0.875rem;
+}
+.lg-switch button {
+  padding: 6px 2px;
+  border: 0;
+  background: none;
+  color: var(--link);
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+}
+.lg-switch button:focus-visible {
+  outline: 2px solid var(--link);
+  outline-offset: 2px;
+}
+.lg-hint {
+  color: var(--muted);
+  font-size: 0.75rem;
+}

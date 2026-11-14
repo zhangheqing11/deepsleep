@@ -1,0 +1,124 @@
+........................................................................ [  5%]
+........................................................................ [ 11%]
+........................................................................ [ 17%]
+........................................................................ [ 23%]
+........................................................................ [ 29%]
+........................................................................ [ 35%]
+........................................................................ [ 41%]
+........................................................................ [ 46%]
+.....F..............F................................................... [ 52%]
+........................................................................ [ 58%]
+........................................................................ [ 64%]
+........................................................................ [ 70%]
+........................................................................ [ 76%]
+........................................................................ [ 82%]
+........................................................................ [ 88%]
+........................................................................ [ 93%]
+........................................................................ [ 99%]
+...                                                                      [100%]
+=================================== FAILURES ===================================
+___________________ test_exports_roundtrip_and_no_test_leak ____________________
+
+    def test_exports_roundtrip_and_no_test_leak():
+        from privacy.data.tools.build_sft import extract_target,bio
+        from privacy.data.tools.prompts import EXTRACT,REWRITE
+        assert len(EXTRACT)<=700 and len(REWRITE)<=700
+        for path in [ROOT/'gold/seed.jsonl',ROOT/'gold/dev.jsonl',ROOT/'gold/test.jsonl',ROOT/'synth/train.jsonl']:
+            for r in read_jsonl(path):
+                errors=[]
+                assert apply(r['text'],extract_target(r),errors=errors)[0]==r['deid'],r['id']
+                assert not errors
+                b=bio(r)
+                assert ''.join(b['chars'])==r['text'] and len(b['chars'])==len(b['tags'])
+>       exported=read_jsonl(ROOT/'sft/train_extract.jsonl')+read_jsonl(ROOT/'sft/dev_extract.jsonl')
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_privacy_data.py:112: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+privacy/data/tools/build.py:10: in read_jsonl
+    with Path(path).open(encoding='utf-8') as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = PosixPath('/Users/zhangheqing/bohack/ds-exp/privacy/data/sft/train_extract.jsonl')
+mode = 'r', buffering = -1, encoding = 'utf-8', errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: '/Users/zhangheqing/bohack/ds-exp/privacy/data/sft/train_extract.jsonl'
+
+/Library/Frameworks/Python.framework/Versions/3.14/lib/python3.14/pathlib/__init__.py:771: FileNotFoundError
+_______________________ test_long_and_sessions_roundtrip _______________________
+
+    def test_long_and_sessions_roundtrip():
+        from privacy.data.tools.build_sft import extract_target,session_messages
+        from privacy.data.tools.evaluate import evaluate
+        for split in ['dev','test']:
+            long=[r for r in read_jsonl(ROOT/f'gold/{split}.jsonl') if 'long' in r['tags']]
+            assert len(long)==30
+            assert all(2<=len(r['keep'])<=6 for r in long)
+            assert all(60<=len(r['text'])<=200 and (not r['entities'] or 1<=len(r['entities'])<=5) for r in long)
+        train=read_jsonl(ROOT/'synth/train.jsonl')
+        assert sum('long' in r['tags'] for r in train)==600
+        assert all(60<=len(r['text'])<=200 for r in train if 'long' in r['tags'])
+        for path in [ROOT/'gold/sessions.jsonl',ROOT/'synth/sessions_train.jsonl',ROOT/'synth/sessions_dev.jsonl']:
+            rows=read_jsonl(path);groups=Counter(r['session_id'] for r in rows)
+            assert sum(not r['entities'] for r in rows)/len(rows)>=.3
+            if path.parent.name=='synth':assert all(4<=n<=8 for n in groups.values())
+            if path.name=='sessions_train.jsonl':assert len(groups)>=200
+            maps={};pred={}
+            for r in rows:
+                mapping=maps.get(r['session_id'],{})
+                pred[r['id']]=extract_target(r,mapping)
+                out,m=apply(r['text'],pred[r['id']],mapping)
+                assert out==r['deid'],r['id']
+                maps[r['session_id']]=m
+            metrics=evaluate(list(reversed(rows)),pred,'extract',session_mode=True)
+            assert metrics['overall']['exact_match']==1
+            assert metrics['overall']['valid_output_rate']==1
+            assert metrics['session_numbering']['accuracy']==1
+            exported=session_messages(rows)
+            assert all('本会话已有映射：' in r['messages'][1]['content'] and '\n当前发言：' in r['messages'][1]['content'] for r in exported)
+            assert any('same_as' in r['messages'][2]['content'] for r in exported)
+        # Gold sessions stay evaluation-only; dev synthetic sessions remain whole.
+        ids=[]
+        for split in ['train','dev']:
+            ids.append({r['session_id'] for r in read_jsonl(ROOT/f'synth/sessions_{split}.jsonl')})
+>           rows=read_jsonl(ROOT/f'sft/{split}_session_extract.jsonl')
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_privacy_data.py:285: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+privacy/data/tools/build.py:10: in read_jsonl
+    with Path(path).open(encoding='utf-8') as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = PosixPath('/Users/zhangheqing/bohack/ds-exp/privacy/data/sft/train_session_extract.jsonl')
+mode = 'r', buffering = -1, encoding = 'utf-8', errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: '/Users/zhangheqing/bohack/ds-exp/privacy/data/sft/train_session_extract.jsonl'
+
+/Library/Frameworks/Python.framework/Versions/3.14/lib/python3.14/pathlib/__init__.py:771: FileNotFoundError
+=========================== short test summary info ============================
+FAILED tests/test_privacy_data.py::test_exports_roundtrip_and_no_test_leak - ...
+FAILED tests/test_privacy_data.py::test_long_and_sessions_roundtrip - FileNot...
+2 failed, 1225 passed in 18.61s

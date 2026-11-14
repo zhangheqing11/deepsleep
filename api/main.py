@@ -15,6 +15,8 @@ from pydantic import BaseModel
 from starlette.exceptions import HTTPException
 
 from api.config import Settings
+from api.auth import AuthService
+from api.auth_routes import router as auth_router
 from api.errors import APIError
 from api.file_store import FileStore
 from api.mock_read_store import MockReadStore
@@ -68,8 +70,10 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     application.state.settings = settings
     application.state.runs = runs
     application.state.read_store = read_store
+    application.state.auth = AuthService(settings)
     application.include_router(read_router)
     application.include_router(router if runs is not None else files_router)
+    application.include_router(auth_router)
 
     @application.middleware("http")
     async def request_context(request: Request, call_next):
@@ -123,7 +127,7 @@ def create_app(settings: Settings | None = None) -> FastAPI:
         allow_origins=list(settings.cors_origins),
         allow_credentials=False,
         allow_methods=["GET", "POST"],
-        allow_headers=["Content-Type", "Idempotency-Key", "X-Mock-Scenario"],
+        allow_headers=["Content-Type", "Idempotency-Key", "X-Mock-Scenario", "Authorization"],
         expose_headers=["X-Request-ID"],
     )
     return application

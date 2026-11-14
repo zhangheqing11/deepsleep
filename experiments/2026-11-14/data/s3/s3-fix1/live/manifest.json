@@ -1,0 +1,73 @@
+{
+  "scope": "real agent; S2 deterministic renderer, mock path classifier and safety judge; 1 action per round; merged",
+  "config": {
+    "schema_version": "0.1.0",
+    "playbook_path": "/Users/zhangheqing/bohack/deepsleep/.claude/worktrees/engine-session-b8fd78/engine/playbook_v0.md",
+    "prompts_dir": "/Users/zhangheqing/bohack/deepsleep/.claude/worktrees/engine-session-b8fd78/engine/prompts",
+    "agent_llm": {
+      "provider": "ds_flash",
+      "temperature": 0,
+      "top_p": 1,
+      "max_tokens": 1600,
+      "max_tokens_by_task": {
+        "plan": 3200,
+        "strategy": 1600,
+        "turn": 2200,
+        "response": 1200,
+        "memory": 1800,
+        "select": 1200
+      },
+      "truncation_retry_multiplier": 2,
+      "response_format": "json_object",
+      "timeout_s": 20,
+      "max_retries": 2,
+      "max_inflight": 32
+    },
+    "path_classifier": {
+      "provider": "mock",
+      "timeout_s": 6,
+      "temperature": 0
+    },
+    "pipeline": {
+      "merge_strategy_response": true
+    },
+    "round_turn_cap": {
+      "1": 1,
+      "2": 1
+    },
+    "concurrency": {
+      "max_sessions": 50
+    },
+    "veto_rewrite_attempts": 1
+  },
+  "probe_calls_before_run": 2,
+  "remaining_real_call_limit": 28,
+  "source_sha256": {
+    "engine/README.md": "43a0faaeae8f8775e56e360015b7e763f1b33938720fe04c9abd8f0e771eeb6a",
+    "engine/__init__.py": "3f308afab933ced02ea9cb58d4d222661bb3780f162dfbb4e6c964fcceac0641",
+    "engine/adapters_sim.py": "46e6b125d226556ce5f3a1c245b6b9a98c7421845ca4634e7db6e664689d6c33",
+    "engine/classifier.py": "f325ae41ffc0d87079efec16dea2734b170e845c51dddb642c8a2798c1420e56",
+    "engine/config.py": "8bdab923e360097d525c2be133fc9f07806c788922ce0af466c5440e2c1136e6",
+    "engine/config.yaml": "23421d8090765e3289bc7990b27e9ac16222d11e031e88458d4748fb9aad05f2",
+    "engine/fixtures/README.md": "ba66796fc3a470247e8627c67528d20a54943c9d0d9507346e6d7214a5772801",
+    "engine/interfaces.py": "a1410de12691973a7c0f5a46170b69a26b9b6f9908e97b34644c4c62128cceab",
+    "engine/llm.py": "4ca23786a561332e809ef9742f5cf9e83c80e81915fcf5ec6b17ba0b3841c147",
+    "engine/mock_agent.py": "1ff550e03044a89c9c4e07a9806a91f4f17a7ab71c464ad6d43e469d99147a8e",
+    "engine/playbook.py": "2f5cca14e68523458d1100e520508542b49b79684cd6ae513a1192768d2c99e7",
+    "engine/playbook_v0.md": "222a7dda8579c58d2c7534d259fca372adb9ccc56c39c64440f25c5869202696",
+    "engine/prompts/boundaries.md": "b498215c97575ef2a142066bc873b3391e7f71f984ef9c4d66ceddff448df5c4",
+    "engine/prompts/memory.md": "4f41fd4f4615ef64788be07599a0b7f81d20d8be083f011007b57329eee3afd0",
+    "engine/prompts/path_classifier.md": "beb57829d4b2227e928c36acce9c58b5e782a43f0f41236b319bfc7e3a27f4b5",
+    "engine/prompts/plan.md": "c544150054bd2c551f04c3a229cff2915f6bc895d70344b6d4556b6bec2870fc",
+    "engine/prompts/response.md": "9696dd50a1cd30f6fd30b9863233545193fb845a4b1f7dc748177e7c6c1c5130",
+    "engine/prompts/select.md": "6448eb182b08c4986e6f3222e4ec82c555f512f759cd6e2740569347324d5d1c",
+    "engine/prompts/strategy.md": "ac3066b20c68a790c9218337120bc3043b02c6ecde6712cd5d17e47235e45076",
+    "engine/prompts/turn_merged.md": "2ae2b9cf116fb0fa5fd98fe3534d10d0dc69e35b3d25f0cd2bbc3973cf3f17ee",
+    "engine/reporting.py": "272824e338dcf9337139d7dc4af3c28d80cb887b5d15ce21edf3e22d5b9d3b11",
+    "engine/run.py": "9360cf11d826f4c61d3bc913d08ae698b780ddde1527dcbe588f24f74d55d975",
+    "engine/session.py": "2b5f48918b3419b2aacf74d7daedf08ef0a47dc6141e3dec7716cf51d0002644",
+    "engine/stubs.py": "4439b19d924dfb8c2a2ec40aa9ef2882e6d33a4aa9a894359450f29361d2f73f",
+    "engine/telemetry.py": "c9898ebb81d8a8ef6529330f229d950f0996145d9fc0a62b8074fad2bb6c8a00",
+    "engine/topics.py": "9867d3900c235d4c510c39c6b591b7549e80b0ee7a339c480d7c4ccb69c12d0e"
+  }
+}

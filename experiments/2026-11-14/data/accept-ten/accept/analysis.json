@@ -1,0 +1,58 @@
+{
+  "run_id": "accept-ten-20261114-165333",
+  "http_count": 381,
+  "budget_lines": 381,
+  "within_round_entropy_steps": {
+    "n": 67,
+    "down": 29,
+    "up": 21,
+    "equal": 17
+  },
+  "entropy_means": {
+    "r1_1": {
+      "n": 10,
+      "mean": 0.69406
+    },
+    "r1_2": {
+      "n": 10,
+      "mean": 0.4053
+    },
+    "r1_3": {
+      "n": 10,
+      "mean": 0.40647
+    },
+    "r1_4": {
+      "n": 10,
+      "mean": 0.27865
+    },
+    "r1_F": {
+      "n": 10,
+      "mean": 0.27683
+    },
+    "r2_1": {
+      "n": 9,
+      "mean": 0.13723333333333332
+    },
+    "r2_2": {
+      "n": 9,
+      "mean": 0.11735555555555556
+    },
+    "r2_3": {
+      "n": 9,
+      "mean": 0.11634444444444444
+    },
+    "r2_F": {
+      "n": 9,
+      "mean": 0.10540000000000001
+    }
+  },
+  "provider_switch_sessions": [
+    "sample-001",
+    "sample-002",
+    "sample-003",
+    "sample-008",
+    "sample-009",
+    "sample-010"
+  ],
+  "report_path": "/Users/zhangheqing/bohack/research/codex-tasks/accept-report.md"
+}

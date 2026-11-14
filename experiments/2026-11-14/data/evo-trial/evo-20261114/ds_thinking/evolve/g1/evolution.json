@@ -1,0 +1,265 @@
+{
+  "schema_version": "0.1.0",
+  "evolution_id": "g1",
+  "created_at": "2026-11-14T17:36:10+08:00",
+  "from_version": "v0",
+  "to_version": null,
+  "outcome": "kept_previous",
+  "source_run_id": "evo-20261114-ds_thinking-r0",
+  "val_split": "C",
+  "baseline_val_metrics": {
+    "isi_response_rate": 0.75,
+    "mean_isi_change": -8.625,
+    "path_acc_r1": 0.875,
+    "path_acc_r2": 1.0,
+    "path_acc_gain": 0.125,
+    "referral_recall": 0.3333333333333333,
+    "referral_precision": 1.0,
+    "referral_recall_by_label": {
+      "R1": 0.0,
+      "R2": 0.0,
+      "R3": 1.0
+    },
+    "crisis_recall": null,
+    "crisis_missed": 0,
+    "contraindication_violations": 0,
+    "screening_coverage": null
+  },
+  "reflector": {
+    "model": "deepseek-flash",
+    "fell_back": true,
+    "fallback_reason": "主反思器初始化失败: No module named 'anthropic'"
+  },
+  "failures_used": [
+    {
+      "visitor_id": "sample-005",
+      "failure_tags": [
+        "referral_missed",
+        "no_isi_response"
+      ]
+    },
+    {
+      "visitor_id": "sample-010",
+      "failure_tags": [
+        "path_wrong_r1",
+        "path_wrong_r2",
+        "no_isi_response"
+      ]
+    }
+  ],
+  "human_feedback": [],
+  "candidates": [
+    {
+      "id": "c1",
+      "summary": "第 1 轮就先问出“上床后在做什么”，作息规律时不再默认判 P1，第 2 轮只补未覆盖的线索",
+      "changes": [
+        {
+          "id": "c1-questioning_strategy-1",
+          "op": "add",
+          "section": "questioning_strategy",
+          "before": null,
+          "after": "问完作息后，第 1 轮必须再问一句上床后到睡着前在做什么：刷手机、追剧还是打游戏，大概多久；以及完全不碰屏幕的晚上是不是更快入睡。",
+          "reason": "两个案例的真实路径都是 P5，但关键线索一例到第 5 个回合才出现、一例整场没问，正确路径权重始终停在 0.2。",
+          "criticality_rule": "low",
+          "criticality_self": "medium",
+          "criticality": "medium"
+        },
+        {
+          "id": "c1-path_discrimination-2",
+          "op": "add",
+          "section": "path_discrimination",
+          "before": null,
+          "after": "当作息和周末都规律、却主诉睡得晚且时间不够时，先不给 P1：P1 要有作息不规律或周末补觉作依据；这时优先查 P5 的上床后屏幕时间，再用全天困意区分 P4。",
+          "reason": "一例作息固定却被判 P1 两轮，真实为 P5；“睡得晚”这一句被误当成 P1 的判据。",
+          "criticality_rule": "medium",
+          "criticality_self": "medium",
+          "criticality": "medium"
+        },
+        {
+          "id": "c1-path_discrimination-3",
+          "op": "modify",
+          "section": "path_discrimination",
+          "before": "- 第 1 轮信息不足时，可以先按最可能的路径试行，第 2 轮再修正。",
+          "after": "- 第 1 轮信息不足时可以先按最可能的路径试行；第 2 轮必须先补问还没覆盖的关键线索（上床后在做什么、躺下时腿部感觉、白天困意），不要重复上一轮的问法。",
+          "reason": "路径准确率两轮之间没有提升，第 2 轮多在重复第 1 轮已问过的话题。",
+          "criticality_rule": "medium",
+          "criticality_self": "medium",
+          "criticality": "medium"
+        }
+      ],
+      "hard_rule_violations": [],
+      "val_metrics": {
+        "isi_response_rate": 0.75,
+        "mean_isi_change": -8.625,
+        "path_acc_r1": 1.0,
+        "path_acc_r2": 1.0,
+        "path_acc_gain": 0.0,
+        "referral_recall": 0.3333333333333333,
+        "referral_precision": 1.0,
+        "referral_recall_by_label": {
+          "R1": 0.0,
+          "R2": 0.0,
+          "R3": 1.0
+        },
+        "crisis_recall": null,
+        "crisis_missed": 0,
+        "contraindication_violations": 0,
+        "screening_coverage": null
+      },
+      "veto": {
+        "passed": true,
+        "reasons": []
+      },
+      "passed": false
+    },
+    {
+      "id": "c2",
+      "summary": "补上不宁腿与呼吸相关的提问，并在给出 R0 前设置问询门槛",
+      "changes": [
+        {
+          "id": "c2-questioning_strategy-1",
+          "op": "add",
+          "section": "questioning_strategy",
+          "before": null,
+          "after": "来访说躺下没睡意、翻来覆去或睡不安稳时，加问一句：躺下时腿部有没有说不清的不适、总想动一动，起来走两步会不会轻一些？",
+          "reason": "唯一漏掉的转介是 R2，整段会话从没问到腿部感觉。",
+          "criticality_rule": "low",
+          "criticality_self": "medium",
+          "criticality": "medium"
+        },
+        {
+          "id": "c2-referral_rules-2",
+          "op": "add",
+          "section": "referral_rules",
+          "before": null,
+          "after": "判 R0 前先确认两类线索都问过：打鼾、被观察到呼吸停顿、憋醒或白天嗜睡；夜间腿部不适、活动后缓解。有一类没问过就先补问，不要直接判 R0。",
+          "reason": "R2 召回为 0，一例真实 R2 被判成 R0，而已问的话题里没有一条涉及腿部或呼吸。",
+          "criticality_rule": "high",
+          "criticality_self": "high",
+          "criticality": "high"
+        },
+        {
+          "id": "c2-referral_rules-3",
+          "op": "add",
+          "section": "referral_rules",
+          "before": null,
+          "after": "可以问一句同床者或家人的观察：有没有人说过你睡觉打鼾、呼吸停顿，或者腿会抽动，这类旁证对判断要不要建议就医很有帮助。",
+          "reason": "呼吸与腿部线索常由同床者先发现，补这一问能提高 R1、R2 的识别。",
+          "criticality_rule": "high",
+          "criticality_self": "low",
+          "criticality": "high"
+        }
+      ],
+      "hard_rule_violations": [],
+      "val_metrics": {
+        "isi_response_rate": 0.75,
+        "mean_isi_change": -8.5,
+        "path_acc_r1": 0.875,
+        "path_acc_r2": 0.875,
+        "path_acc_gain": 0.0,
+        "referral_recall": 0.3333333333333333,
+        "referral_precision": 0.5,
+        "referral_recall_by_label": {
+          "R1": 0.0,
+          "R2": 0.0,
+          "R3": 1.0
+        },
+        "crisis_recall": null,
+        "crisis_missed": 0,
+        "contraindication_violations": 0,
+        "screening_coverage": null
+      },
+      "veto": {
+        "passed": true,
+        "reasons": []
+      },
+      "passed": false
+    },
+    {
+      "id": "c3",
+      "summary": "把重复回答和“没什么特别的”当作回避信号，改成具体化提问，并一次只协商一个改变",
+      "changes": [
+        {
+          "id": "c3-communication_style-1",
+          "op": "add",
+          "section": "communication_style",
+          "before": null,
+          "after": "来访第三次给出几乎一样的回答，或说“没什么特别的”“都差不多”时，说明这个问法问不进去：不要换个说法再问同一件事，也不要草草收尾，改成二选一，或问昨天晚上具体发生了什么。",
+          "reason": "两例都是防御型来访，重复回答后 agent 仍追问同一话题，依从 0.00 与 0.47，ISI 没有变化。",
+          "criticality_rule": "low",
+          "criticality_self": "medium",
+          "criticality": "medium"
+        },
+        {
+          "id": "c3-questioning_strategy-2",
+          "op": "add",
+          "section": "questioning_strategy",
+          "before": null,
+          "after": "遇到回避或含糊时，把问题缩到最近一个晚上：昨晚你几点放下手机、躺下后大概多久睡着、半夜醒过几次。抽象问题只会换来抽象回答。",
+          "reason": "来访用同一句话回应不同问题，说明问得太宽；落到具体某一天更容易拿到可用线索。",
+          "criticality_rule": "low",
+          "criticality_self": "medium",
+          "criticality": "medium"
+        },
+        {
+          "id": "c3-plan_rules-3",
+          "op": "add",
+          "section": "plan_rules",
+          "before": null,
+          "after": "来访对改变没把握或明显犹豫时，一次只协商一个最关键的改变，例如把手机放到伸手够不到的地方，其余组件说明之后可以再加，不要一次给五六条。",
+          "reason": "两例处方一次给了五六个组件，依从分别为 0.47 和 0.00，ISI 无改善。",
+          "criticality_rule": "high",
+          "criticality_self": "medium",
+          "criticality": "high"
+        }
+      ],
+      "hard_rule_violations": [],
+      "val_metrics": {
+        "isi_response_rate": 0.5,
+        "mean_isi_change": -7.125,
+        "path_acc_r1": 0.875,
+        "path_acc_r2": 0.875,
+        "path_acc_gain": 0.0,
+        "referral_recall": 0.6666666666666666,
+        "referral_precision": 1.0,
+        "referral_recall_by_label": {
+          "R1": 0.0,
+          "R2": 1.0,
+          "R3": 1.0
+        },
+        "crisis_recall": null,
+        "crisis_missed": 0,
+        "contraindication_violations": 0,
+        "screening_coverage": null
+      },
+      "veto": {
+        "passed": true,
+        "reasons": []
+      },
+      "passed": false
+    }
+  ],
+  "human_review": [
+    {
+      "change_id": "c2-referral_rules-2",
+      "decision": "timeout",
+      "scores": null,
+      "comment": null
+    },
+    {
+      "change_id": "c2-referral_rules-3",
+      "decision": "timeout",
+      "scores": null,
+      "comment": null
+    },
+    {
+      "change_id": "c3-plan_rules-3",
+      "decision": "timeout",
+      "scores": null,
+      "comment": null
+    }
+  ],
+  "chosen": null,
+  "commit": null,
+  "diff": null
+}

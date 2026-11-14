@@ -22,7 +22,7 @@ from uuid import uuid4
 from scoring.score import score_run
 from safety.judges import MockJudge
 from safety.layer import SafetyLayer
-from .adapters_sim import S2OutcomeModel, S2RendererClient, S2Screening, S2VisitorSim
+from .adapters_sim import make_s2_sim, S2OutcomeModel, S2RendererClient, S2Screening, S2VisitorSim
 from .config import ROOT, load_config, load_dotenv
 from .evolve.config import load_config as evolve_config
 from .evolve.pipeline import evolve
@@ -34,7 +34,7 @@ from .session import SessionRunner
 
 VAR_DIR = ROOT / "var"
 PLAYBOOK_REPO = VAR_DIR / "playbook-repo"
-OPTIONS = ("visitors_dir", "dev", "mock", "n_a", "n_b", "n_c", "max_sessions")
+OPTIONS = ("visitors_dir", "dev", "mock", "n_a", "n_b", "n_c", "max_sessions", "visitor_renderer")
 METRICS = ("isi_response_rate", "path_acc_r2", "referral_recall", "referral_precision", "crisis_missed")
 
 
@@ -157,17 +157,15 @@ class MockReflector:
 
 def make_deps(options):
     mock = options["mock"]
-    renderer = None
-    if not mock:
-        from sim.llm import DsConfig
-        required = ("DS_BASE_URL", "DS_API_KEY", "DS_MODEL")
-        if not all(os.getenv(k, "").strip() for k in required):
-            raise ValueError("真实模式需要进程环境 DS_BASE_URL、DS_API_KEY、DS_MODEL；离线请用 --mock")
-        # Deliberately avoid DsConfig.from_env(): it can read an external DS_ENV_FILE.
-        renderer = S2RendererClient(DsConfig(*(os.environ[k] for k in required)))
+    # Template removes visitor calls, not the real agent's credential requirement.
+    if not mock and not all(os.getenv(k, "").strip() for k in ("DS_BASE_URL", "DS_API_KEY", "DS_MODEL")):
+        raise ValueError("真实模式需要进程环境 DS_BASE_URL、DS_API_KEY、DS_MODEL；离线请用 --mock")
+    config = load_config({"visitor_renderer": options.get("visitor_renderer") or "llm"})
+    if mock:
+        config["agent_llm"]["provider"] = "mock"
+        config["path_classifier"]["provider"] = "mock"
     return build_deps(
-        config={"agent_llm": {"provider": "mock"}, "path_classifier": {"provider": "mock"}} if mock else None,
-        sim=S2VisitorSim(client=renderer), screening=S2Screening(), outcome=S2OutcomeModel(),
+        config=config, sim=make_s2_sim(config, mock=mock), screening=S2Screening(), outcome=S2OutcomeModel(),
         safety=SafetyLayer(judge=MockJudge()) if mock else SafetyLayer())
 
 
@@ -353,6 +351,7 @@ def main(argv=None):
     parser.add_argument("--reset", action="store_true", help="仅 all：先重置 playbook")
     parser.add_argument("--visitors-dir")
     parser.add_argument("--dev", action="store_true", default=None)
+    parser.add_argument("--visitor-renderer", choices=("llm", "template"))
     parser.add_argument("--mock", action="store_true", default=None)
     for flag in ("n-a", "n-b", "n-c", "max-sessions"):
         parser.add_argument(f"--{flag}", type=positive)
