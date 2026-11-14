@@ -27,17 +27,30 @@ export function VisitorsPage({ state }: { state: ConsoleRunState }) {
 
   if (!runId) {
     return (
-      <Card title="模拟来访">
-        <p className="muted">
+      <div className="page">
+      <div className="page-title-row">
+        <div>
+          <h1>模拟来访</h1>
+          <p className="muted">来访 ID 是匿名编号。会谈记录只读展示评测过程，不是实时聊天。</p>
+        </div>
+      </div>
+        <p className="empty">
           还没有选中的运行。请先在 <a href={HREF.runs}>运行与报告</a> 里发起或选择一次运行。
         </p>
-      </Card>
+      </div>
     );
   }
 
   return (
+    <div className="page">
+      <div className="page-title-row">
+        <div>
+          <h1>模拟来访</h1>
+          <p className="muted">来访 ID 是匿名编号。会谈记录只读展示评测过程，不是实时聊天。</p>
+        </div>
+      </div>
     <Card
-      title="模拟来访"
+      title="来访列表"
       aside={
         <span className="tags">
           <span className="mono small">{runId}</span>
@@ -45,7 +58,6 @@ export function VisitorsPage({ state }: { state: ConsoleRunState }) {
         </span>
       }
     >
-      <p className="small muted">来访 ID 是匿名编号。会谈记录只读展示评测过程，不是实时聊天。</p>
       {!terminal && <p className="muted">运行结束后提供完整来访列表（首版不在运行中逐个展示）。</p>}
       {terminal && (
         <>
@@ -108,5 +120,6 @@ export function VisitorsPage({ state }: { state: ConsoleRunState }) {
         </>
       )}
     </Card>
+    </div>
   );
 }

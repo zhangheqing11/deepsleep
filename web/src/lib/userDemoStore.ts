@@ -144,3 +144,37 @@ export function applyAppearance(a: Preferences['appearance']): void {
   if (a.font === 'large') el.dataset.font = 'large';
   else delete el.dataset.font;
 }
+
+// ---------- 演示调试开关（只在内存里，刷新即恢复） ----------
+
+export interface DemoFlags {
+  /** 下一条聊天消息模拟发送失败 */
+  chatFailNext: boolean;
+  /** 下一次保存偏好模拟失败 */
+  saveFailNext: boolean;
+}
+
+let flags: DemoFlags = { chatFailNext: false, saveFailNext: false };
+const flagListeners = new Set<() => void>();
+
+export const demoFlags = {
+  get: () => flags,
+  set(patch: Partial<DemoFlags>) {
+    flags = { ...flags, ...patch };
+    flagListeners.forEach((l) => l());
+  },
+  subscribe(l: () => void) {
+    flagListeners.add(l);
+    return () => flagListeners.delete(l);
+  },
+  /** 读取并清除一次性开关 */
+  take(key: keyof DemoFlags): boolean {
+    const v = flags[key];
+    if (v) demoFlags.set({ [key]: false });
+    return v;
+  },
+};
+
+export function useDemoFlags(): DemoFlags {
+  return useSyncExternalStore(demoFlags.subscribe, demoFlags.get, demoFlags.get);
+}

@@ -36,7 +36,7 @@ function ConsoleApp({ route }: { route: ConsoleRoute }) {
       page = <DebugPage state={state} health={health} />;
       break;
     default:
-      page = <RunsPage state={state} healthOk={healthOk} healthChecked={healthChecked} />;
+      page = <RunsPage state={state} healthOk={healthOk} healthChecked={healthChecked} healthMode={mode} />;
   }
 
   return (

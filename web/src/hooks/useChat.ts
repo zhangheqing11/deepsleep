@@ -2,7 +2,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { chatDemo, type MemoryCandidate, type Preset, type Suggestion } from '../api/chatDemo';
 import { isAbortError } from '../api/errors';
 import { newIdempotencyKey, readJson, removeKey, writeJson } from '../lib/storage';
-import { getSavedPreferences, memories } from '../lib/userDemoStore';
+import { demoFlags, getSavedPreferences, memories } from '../lib/userDemoStore';
 
 export type UserItem = {
   kind: 'user';
@@ -59,7 +59,6 @@ function memoryAllowed(): boolean {
 
 export function useChat() {
   const [conv, setConv] = useState<Conversation>(load);
-  const [failNext, setFailNext] = useState(false);
   const controllers = useRef(new Set<AbortController>());
 
   useEffect(() => {
@@ -115,11 +114,9 @@ export function useChat() {
     (preset: Preset) => {
       const item: UserItem = { kind: 'user', id: newIdempotencyKey(), preset_id: preset.id, text: preset.text, status: 'sending' };
       setConv((c) => ({ ...c, items: [...c.items, item] }));
-      const fail = failNext;
-      setFailNext(false);
-      void deliver(item, fail);
+      void deliver(item, demoFlags.take('chatFailNext'));
     },
-    [deliver, failNext],
+    [deliver],
   );
 
   const retry = useCallback(
@@ -200,8 +197,6 @@ export function useChat() {
     quickReplies,
     accepted,
     remembered,
-    failNext,
-    setFailNext,
     send,
     retry,
     removeFailed,

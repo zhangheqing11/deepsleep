@@ -37,7 +37,13 @@ export function DebugPage({
   const { runId, run, poller } = state;
 
   return (
-    <div className="stack">
+    <div className="page">
+      <div className="page-title-row">
+        <div>
+          <h1>调试与日志</h1>
+          <p className="muted">把网络错误与执行失败分开排查。</p>
+        </div>
+      </div>
       <Card title="服务与配置">
         <KeyValue
           items={[
@@ -119,7 +125,7 @@ export function DebugPage({
                     <td className="mono">{e.target || '—'}</td>
                     <td>
                       {e.ok ? (
-                        <Badge tone="ok">成功</Badge>
+                        <Badge tone="ok">{e.status ? `成功 ${e.status}` : '成功'}</Badge>
                       ) : e.aborted ? (
                         <Badge>取消</Badge>
                       ) : (

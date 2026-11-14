@@ -55,7 +55,8 @@ function ColumnHead({ state }: { state: ResourceState<RunReport> }) {
   );
 }
 
-export function RunCompare({ history }: { history: RunHistoryEntry[] }) {
+/** sourceNote：数据来源说明（如“模拟数据（后端 Mock…）”），与运行页副标题一致 */
+export function RunCompare({ history, sourceNote }: { history: RunHistoryEntry[]; sourceNote: string }) {
   const candidates = history.filter((h) => h.status !== 'not_found');
   const [left, setLeft] = useState('');
   const [right, setRight] = useState('');
@@ -157,7 +158,7 @@ export function RunCompare({ history }: { history: RunHistoryEntry[] }) {
             </div>
           )}
           <p className="small muted">
-            数值均来自两份运行报告，前端只并排展示并标出较好的一侧（危机漏报、违反禁忌、平均 ISI 变化以低为好），不计算差值；是否由前端计算差值待团队确认。
+            数据来源：{sourceNote}。模拟数据是固定示例，数值高低不代表真实学习效果。数值均来自两份运行报告，前端只并排展示并标出较好的一侧（危机漏报、违反禁忌、平均 ISI 变化以低为好），不计算差值；是否由前端计算差值待团队确认。
           </p>
         </>
       )}

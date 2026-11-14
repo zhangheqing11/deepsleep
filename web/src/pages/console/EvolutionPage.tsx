@@ -64,11 +64,17 @@ export function EvolutionPage() {
   const committed = evo.outcome === 'committed';
 
   return (
-    <div className="stack">
-      <div className="banner banner-mock" role="note">
-        <strong>契约示例 · 静态展示</strong>
-        <span>内容来自 contracts/examples/evolution.v1-v2.json。学习任务接口尚未确定，这里没有发起学习或回滚的操作。</span>
+    <div className="page">
+      <div className="page-title-row">
+        <div>
+          <h1>进化记录</h1>
+          <p className="muted">改了什么、为什么允许生效、如何保留或回退旧版本。</p>
+        </div>
       </div>
+      <p className="source-note" role="note">
+        <strong>契约示例 · 静态展示</strong>
+        内容来自 contracts/examples/evolution.v1-v2.json。学习任务接口尚未确定，这里没有发起学习或回滚的操作。
+      </p>
 
       <Card
         title={
@@ -248,7 +254,8 @@ export function EvolutionPage() {
         <p className="small muted">回退方式：每一代 playbook 是独立版本库里的一次提交，可以回到任一上一代。回滚操作接口确定后再接入。</p>
       </Card>
 
-      <Card title="反思器读到的材料">
+      <details className="fold">
+        <summary>反思器读到的材料（{evo.failures_used.length} 个失败案例 · {evo.human_feedback.length} 条意见）</summary>
         <h3 className="h3">失败案例</h3>
         <ul className="plain-list">
           {evo.failures_used.map((f) => (
@@ -273,7 +280,7 @@ export function EvolutionPage() {
             </li>
           ))}
         </ul>
-      </Card>
+      </details>
     </div>
   );
 }
