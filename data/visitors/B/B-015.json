@@ -1,0 +1,190 @@
+{
+  "schema_version": "0.1.0",
+  "id": "B-015",
+  "split": "B",
+  "seed": 214235036,
+  "main_path": "P1",
+  "secondary_path": "P4",
+  "referral": "R0",
+  "crisis": {
+    "level": "none",
+    "phq9_item9": 0,
+    "history": false
+  },
+  "contraindications": [],
+  "indices": {
+    "isi": 15,
+    "phq9": 4,
+    "gad7": 6,
+    "stop_bang": 2,
+    "meq": 58,
+    "dbas16": 3.0,
+    "psas": 33,
+    "screen_min_before_sleep": 15
+  },
+  "diary": [
+    {
+      "day": 1,
+      "bedtime": "23:30",
+      "lights_off": "23:50",
+      "sol_min": 59,
+      "waso_min": 42,
+      "final_wake": "06:20",
+      "risetime": "06:30",
+      "tst_min": 289,
+      "tib_min": 420,
+      "se": 0.6881,
+      "nap_min": 80,
+      "caffeine_after_14": true,
+      "alcohol": false,
+      "screen_in_bed_min": 15
+    },
+    {
+      "day": 2,
+      "bedtime": "22:30",
+      "lights_off": "22:50",
+      "sol_min": 53,
+      "waso_min": 0,
+      "final_wake": "06:20",
+      "risetime": "06:30",
+      "tst_min": 397,
+      "tib_min": 480,
+      "se": 0.8271,
+      "nap_min": 80,
+      "caffeine_after_14": true,
+      "alcohol": false,
+      "screen_in_bed_min": 15
+    },
+    {
+      "day": 3,
+      "bedtime": "23:00",
+      "lights_off": "23:20",
+      "sol_min": 44,
+      "waso_min": 8,
+      "final_wake": "06:20",
+      "risetime": "06:30",
+      "tst_min": 368,
+      "tib_min": 450,
+      "se": 0.8178,
+      "nap_min": 80,
+      "caffeine_after_14": true,
+      "alcohol": false,
+      "screen_in_bed_min": 15
+    },
+    {
+      "day": 4,
+      "bedtime": "23:00",
+      "lights_off": "23:20",
+      "sol_min": 29,
+      "waso_min": 0,
+      "final_wake": "06:20",
+      "risetime": "06:30",
+      "tst_min": 391,
+      "tib_min": 450,
+      "se": 0.8689,
+      "nap_min": 80,
+      "caffeine_after_14": true,
+      "alcohol": false,
+      "screen_in_bed_min": 15
+    },
+    {
+      "day": 5,
+      "bedtime": "22:30",
+      "lights_off": "22:50",
+      "sol_min": 13,
+      "waso_min": 34,
+      "final_wake": "06:20",
+      "risetime": "06:30",
+      "tst_min": 403,
+      "tib_min": 480,
+      "se": 0.8396,
+      "nap_min": 80,
+      "caffeine_after_14": true,
+      "alcohol": false,
+      "screen_in_bed_min": 15
+    },
+    {
+      "day": 6,
+      "bedtime": "23:30",
+      "lights_off": "23:50",
+      "sol_min": 5,
+      "waso_min": 0,
+      "final_wake": "09:20",
+      "risetime": "09:30",
+      "tst_min": 565,
+      "tib_min": 600,
+      "se": 0.9417,
+      "nap_min": 80,
+      "caffeine_after_14": true,
+      "alcohol": false,
+      "screen_in_bed_min": 15
+    },
+    {
+      "day": 7,
+      "bedtime": "23:30",
+      "lights_off": "23:50",
+      "sol_min": 12,
+      "waso_min": 9,
+      "final_wake": "09:20",
+      "risetime": "09:30",
+      "tst_min": 549,
+      "tib_min": 600,
+      "se": 0.915,
+      "nap_min": 80,
+      "caffeine_after_14": true,
+      "alcohol": false,
+      "screen_in_bed_min": 15
+    }
+  ],
+  "persona": {
+    "age": 42,
+    "gender": "other",
+    "occupation": "中学老师",
+    "expressiveness": "verbose",
+    "defensiveness": "high",
+    "emotionality": "mid",
+    "adherence_tendency": 0.6,
+    "constraints": [
+      "早上七点半前到校",
+      "与家人同住"
+    ]
+  },
+  "opening_complaint": "这段时间睡得不太顺，起床后注意力不太集中，想找找原因。",
+  "clues": [
+    {
+      "reveal_topic": "schedule_regularity",
+      "supports": "P1",
+      "deny_first": false,
+      "content": "最近忙着备课，上床没个准点，早晚能差一个多小时。",
+      "id": "B-015-c1"
+    },
+    {
+      "reveal_topic": "caffeine_alcohol",
+      "supports": "P1",
+      "deny_first": false,
+      "content": "下午还要忙备课，咖啡喝到四五点，晚上也不一定停。",
+      "id": "B-015-c2"
+    },
+    {
+      "reveal_topic": "chronotype",
+      "supports": "P4",
+      "deny_first": false,
+      "content": "作息跟着往后挪了一点，尤其休息日过后更难早睡。",
+      "id": "B-015-c3"
+    },
+    {
+      "reveal_topic": "leg_discomfort",
+      "supports": "R0",
+      "deny_first": false,
+      "content": "腿酸跟当天走得多有关，坐下歇歇就好，不是晚上躺着想动。",
+      "id": "B-015-c4"
+    }
+  ],
+  "prefilled": [
+    {
+      "scale": "isi",
+      "reported_score": 12,
+      "items": null
+    }
+  ]
+}

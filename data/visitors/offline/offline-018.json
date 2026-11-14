@@ -1,0 +1,184 @@
+{
+  "schema_version": "0.1.0",
+  "id": "offline-018",
+  "split": "offline",
+  "seed": 677905968,
+  "main_path": "P5",
+  "secondary_path": "P4",
+  "referral": "R0",
+  "crisis": {
+    "level": "none",
+    "phq9_item9": 0,
+    "history": false
+  },
+  "contraindications": [],
+  "indices": {
+    "isi": 14,
+    "phq9": 8,
+    "gad7": 3,
+    "stop_bang": 1,
+    "meq": 54,
+    "dbas16": 4.4,
+    "psas": 30,
+    "screen_min_before_sleep": 90
+  },
+  "diary": [
+    {
+      "day": 1,
+      "bedtime": "23:10",
+      "lights_off": "00:45",
+      "sol_min": 24,
+      "waso_min": 13,
+      "final_wake": "06:20",
+      "risetime": "06:30",
+      "tst_min": 298,
+      "tib_min": 440,
+      "se": 0.6773,
+      "nap_min": 0,
+      "caffeine_after_14": false,
+      "alcohol": false,
+      "screen_in_bed_min": 90
+    },
+    {
+      "day": 2,
+      "bedtime": "23:00",
+      "lights_off": "00:35",
+      "sol_min": 23,
+      "waso_min": 22,
+      "final_wake": "06:20",
+      "risetime": "06:30",
+      "tst_min": 300,
+      "tib_min": 450,
+      "se": 0.6667,
+      "nap_min": 0,
+      "caffeine_after_14": false,
+      "alcohol": false,
+      "screen_in_bed_min": 90
+    },
+    {
+      "day": 3,
+      "bedtime": "23:00",
+      "lights_off": "00:35",
+      "sol_min": 35,
+      "waso_min": 14,
+      "final_wake": "06:20",
+      "risetime": "06:30",
+      "tst_min": 296,
+      "tib_min": 450,
+      "se": 0.6578,
+      "nap_min": 0,
+      "caffeine_after_14": false,
+      "alcohol": false,
+      "screen_in_bed_min": 90
+    },
+    {
+      "day": 4,
+      "bedtime": "23:10",
+      "lights_off": "00:45",
+      "sol_min": 27,
+      "waso_min": 28,
+      "final_wake": "06:20",
+      "risetime": "06:30",
+      "tst_min": 280,
+      "tib_min": 440,
+      "se": 0.6364,
+      "nap_min": 0,
+      "caffeine_after_14": false,
+      "alcohol": false,
+      "screen_in_bed_min": 90
+    },
+    {
+      "day": 5,
+      "bedtime": "23:00",
+      "lights_off": "00:35",
+      "sol_min": 20,
+      "waso_min": 13,
+      "final_wake": "06:20",
+      "risetime": "06:30",
+      "tst_min": 312,
+      "tib_min": 450,
+      "se": 0.6933,
+      "nap_min": 0,
+      "caffeine_after_14": false,
+      "alcohol": false,
+      "screen_in_bed_min": 90
+    },
+    {
+      "day": 6,
+      "bedtime": "23:00",
+      "lights_off": "00:35",
+      "sol_min": 27,
+      "waso_min": 25,
+      "final_wake": "06:20",
+      "risetime": "06:30",
+      "tst_min": 293,
+      "tib_min": 450,
+      "se": 0.6511,
+      "nap_min": 0,
+      "caffeine_after_14": false,
+      "alcohol": false,
+      "screen_in_bed_min": 90
+    },
+    {
+      "day": 7,
+      "bedtime": "23:10",
+      "lights_off": "00:45",
+      "sol_min": 33,
+      "waso_min": 20,
+      "final_wake": "06:20",
+      "risetime": "06:30",
+      "tst_min": 282,
+      "tib_min": 440,
+      "se": 0.6409,
+      "nap_min": 0,
+      "caffeine_after_14": false,
+      "alcohol": false,
+      "screen_in_bed_min": 90
+    }
+  ],
+  "persona": {
+    "age": 30,
+    "gender": "male",
+    "occupation": "社区店员",
+    "expressiveness": "verbose",
+    "defensiveness": "low",
+    "emotionality": "high",
+    "adherence_tendency": 0.57,
+    "constraints": [
+      "轮流负责开店",
+      "周末常有家务安排"
+    ]
+  },
+  "opening_complaint": "最近睡完也不舒服，白天没精神，想试试调整作息。",
+  "clues": [
+    {
+      "reveal_topic": "screen_in_bed",
+      "supports": "P5",
+      "deny_first": true,
+      "content": "躺床上看直播，常常就是90分钟，停不下来。",
+      "id": "offline-018-c1"
+    },
+    {
+      "reveal_topic": "revenge_bedtime",
+      "supports": "P5",
+      "deny_first": false,
+      "content": "白天都在忙整理货架，只有夜里是自己的，就舍不得睡。",
+      "id": "offline-018-c2"
+    },
+    {
+      "reveal_topic": "revenge_bedtime",
+      "supports": "P5",
+      "deny_first": false,
+      "content": "其实眼皮已经沉了，手却还在翻下一条，就这么错过睡觉时间。",
+      "id": "offline-018-c3"
+    },
+    {
+      "reveal_topic": "chronotype",
+      "supports": "P4",
+      "deny_first": false,
+      "content": "最近休息日睡得晚，到了该早睡的那晚还没睡意。",
+      "id": "offline-018-c4"
+    }
+  ],
+  "prefilled": []
+}

@@ -1,0 +1,219 @@
+{
+  "schema_version": "0.1.0",
+  "id": "A-042",
+  "split": "A",
+  "seed": 1261660033,
+  "main_path": "P4",
+  "secondary_path": "P1",
+  "referral": "R2",
+  "crisis": {
+    "level": "none",
+    "phq9_item9": 0,
+    "history": false
+  },
+  "contraindications": [],
+  "indices": {
+    "isi": 21,
+    "phq9": 7,
+    "gad7": 5,
+    "stop_bang": 1,
+    "meq": 27,
+    "dbas16": 5.3,
+    "psas": 32,
+    "screen_min_before_sleep": 10
+  },
+  "diary": [
+    {
+      "day": 1,
+      "bedtime": "00:55",
+      "lights_off": "01:10",
+      "sol_min": 90,
+      "waso_min": 5,
+      "final_wake": "07:50",
+      "risetime": "08:00",
+      "tst_min": 305,
+      "tib_min": 425,
+      "se": 0.7176,
+      "nap_min": 0,
+      "caffeine_after_14": true,
+      "alcohol": false,
+      "screen_in_bed_min": 10
+    },
+    {
+      "day": 2,
+      "bedtime": "01:05",
+      "lights_off": "01:20",
+      "sol_min": 81,
+      "waso_min": 9,
+      "final_wake": "07:50",
+      "risetime": "08:00",
+      "tst_min": 300,
+      "tib_min": 415,
+      "se": 0.7229,
+      "nap_min": 0,
+      "caffeine_after_14": true,
+      "alcohol": false,
+      "screen_in_bed_min": 10
+    },
+    {
+      "day": 3,
+      "bedtime": "00:55",
+      "lights_off": "01:10",
+      "sol_min": 81,
+      "waso_min": 15,
+      "final_wake": "07:50",
+      "risetime": "08:00",
+      "tst_min": 304,
+      "tib_min": 425,
+      "se": 0.7153,
+      "nap_min": 0,
+      "caffeine_after_14": true,
+      "alcohol": false,
+      "screen_in_bed_min": 10
+    },
+    {
+      "day": 4,
+      "bedtime": "01:00",
+      "lights_off": "01:15",
+      "sol_min": 89,
+      "waso_min": 7,
+      "final_wake": "07:50",
+      "risetime": "08:00",
+      "tst_min": 299,
+      "tib_min": 420,
+      "se": 0.7119,
+      "nap_min": 0,
+      "caffeine_after_14": true,
+      "alcohol": false,
+      "screen_in_bed_min": 10
+    },
+    {
+      "day": 5,
+      "bedtime": "01:05",
+      "lights_off": "01:20",
+      "sol_min": 80,
+      "waso_min": 12,
+      "final_wake": "07:50",
+      "risetime": "08:00",
+      "tst_min": 298,
+      "tib_min": 415,
+      "se": 0.7181,
+      "nap_min": 0,
+      "caffeine_after_14": true,
+      "alcohol": false,
+      "screen_in_bed_min": 10
+    },
+    {
+      "day": 6,
+      "bedtime": "01:25",
+      "lights_off": "01:40",
+      "sol_min": 83,
+      "waso_min": 15,
+      "final_wake": "10:50",
+      "risetime": "11:00",
+      "tst_min": 452,
+      "tib_min": 575,
+      "se": 0.7861,
+      "nap_min": 0,
+      "caffeine_after_14": true,
+      "alcohol": false,
+      "screen_in_bed_min": 10
+    },
+    {
+      "day": 7,
+      "bedtime": "01:20",
+      "lights_off": "01:35",
+      "sol_min": 89,
+      "waso_min": 13,
+      "final_wake": "10:50",
+      "risetime": "11:00",
+      "tst_min": 453,
+      "tib_min": 580,
+      "se": 0.781,
+      "nap_min": 0,
+      "caffeine_after_14": true,
+      "alcohol": false,
+      "screen_in_bed_min": 10
+    }
+  ],
+  "persona": {
+    "age": 39,
+    "gender": "female",
+    "occupation": "自由插画师",
+    "expressiveness": "brief",
+    "defensiveness": "mid",
+    "emotionality": "high",
+    "adherence_tendency": 0.62,
+    "constraints": [
+      "在家接单，交稿时间不固定",
+      "与家人同住"
+    ]
+  },
+  "opening_complaint": "这阵子睡眠不太好，第二天觉得累，有点影响生活。",
+  "clues": [
+    {
+      "reveal_topic": "chronotype",
+      "supports": "P4",
+      "deny_first": false,
+      "content": "早上床也是干躺着，凌晨才有睡意，放假晚睡晚起反而睡得好。",
+      "id": "A-042-c1"
+    },
+    {
+      "reveal_topic": "chronotype",
+      "supports": "P4",
+      "deny_first": false,
+      "content": "早起特别难受，上午反应慢，越到夜里越清醒。",
+      "id": "A-042-c2"
+    },
+    {
+      "reveal_topic": "caffeine_alcohol",
+      "supports": "P1",
+      "deny_first": false,
+      "content": "下午犯困就续一杯奶茶，常常晚饭前还在喝。",
+      "id": "A-042-c3"
+    },
+    {
+      "reveal_topic": "leg_discomfort",
+      "supports": "R2",
+      "deny_first": true,
+      "content": "晚上静下来腿里像有东西爬，特别想动，躺着更明显。",
+      "id": "A-042-c4"
+    },
+    {
+      "reveal_topic": "leg_discomfort",
+      "supports": "R2",
+      "deny_first": false,
+      "content": "只要在屋里走就会好一些，一停住又开始难受。",
+      "id": "A-042-c5"
+    },
+    {
+      "reveal_topic": "leg_discomfort",
+      "supports": "R2",
+      "deny_first": false,
+      "content": "这个腿的问题主要在晚上，白天很少有。",
+      "id": "A-042-c6"
+    }
+  ],
+  "prefilled": [
+    {
+      "scale": "isi",
+      "reported_score": 18,
+      "items": null
+    },
+    {
+      "scale": "phq9",
+      "reported_score": 2,
+      "items": [
+        1,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    }
+  ]
+}

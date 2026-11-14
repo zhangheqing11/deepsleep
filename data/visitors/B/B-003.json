@@ -1,0 +1,205 @@
+{
+  "schema_version": "0.1.0",
+  "id": "B-003",
+  "split": "B",
+  "seed": 2965679992,
+  "main_path": "P2",
+  "secondary_path": "P3",
+  "referral": "R2",
+  "crisis": {
+    "level": "none",
+    "phq9_item9": 0,
+    "history": false
+  },
+  "contraindications": [],
+  "indices": {
+    "isi": 12,
+    "phq9": 4,
+    "gad7": 7,
+    "stop_bang": 0,
+    "meq": 45,
+    "dbas16": 4.9,
+    "psas": 21,
+    "screen_min_before_sleep": 25
+  },
+  "diary": [
+    {
+      "day": 1,
+      "bedtime": "22:00",
+      "lights_off": "22:30",
+      "sol_min": 62,
+      "waso_min": 31,
+      "final_wake": "06:20",
+      "risetime": "06:30",
+      "tst_min": 377,
+      "tib_min": 510,
+      "se": 0.7392,
+      "nap_min": 0,
+      "caffeine_after_14": false,
+      "alcohol": false,
+      "screen_in_bed_min": 25
+    },
+    {
+      "day": 2,
+      "bedtime": "22:10",
+      "lights_off": "22:40",
+      "sol_min": 66,
+      "waso_min": 45,
+      "final_wake": "06:20",
+      "risetime": "06:30",
+      "tst_min": 349,
+      "tib_min": 500,
+      "se": 0.698,
+      "nap_min": 0,
+      "caffeine_after_14": false,
+      "alcohol": false,
+      "screen_in_bed_min": 25
+    },
+    {
+      "day": 3,
+      "bedtime": "22:10",
+      "lights_off": "22:40",
+      "sol_min": 72,
+      "waso_min": 42,
+      "final_wake": "06:20",
+      "risetime": "06:30",
+      "tst_min": 346,
+      "tib_min": 500,
+      "se": 0.692,
+      "nap_min": 0,
+      "caffeine_after_14": false,
+      "alcohol": false,
+      "screen_in_bed_min": 25
+    },
+    {
+      "day": 4,
+      "bedtime": "21:50",
+      "lights_off": "22:20",
+      "sol_min": 78,
+      "waso_min": 30,
+      "final_wake": "06:20",
+      "risetime": "06:30",
+      "tst_min": 372,
+      "tib_min": 520,
+      "se": 0.7154,
+      "nap_min": 0,
+      "caffeine_after_14": false,
+      "alcohol": false,
+      "screen_in_bed_min": 25
+    },
+    {
+      "day": 5,
+      "bedtime": "22:10",
+      "lights_off": "22:40",
+      "sol_min": 75,
+      "waso_min": 30,
+      "final_wake": "06:20",
+      "risetime": "06:30",
+      "tst_min": 355,
+      "tib_min": 500,
+      "se": 0.71,
+      "nap_min": 0,
+      "caffeine_after_14": false,
+      "alcohol": false,
+      "screen_in_bed_min": 25
+    },
+    {
+      "day": 6,
+      "bedtime": "21:50",
+      "lights_off": "22:20",
+      "sol_min": 71,
+      "waso_min": 33,
+      "final_wake": "06:20",
+      "risetime": "06:30",
+      "tst_min": 376,
+      "tib_min": 520,
+      "se": 0.7231,
+      "nap_min": 0,
+      "caffeine_after_14": false,
+      "alcohol": false,
+      "screen_in_bed_min": 25
+    },
+    {
+      "day": 7,
+      "bedtime": "21:50",
+      "lights_off": "22:20",
+      "sol_min": 80,
+      "waso_min": 31,
+      "final_wake": "06:20",
+      "risetime": "06:30",
+      "tst_min": 369,
+      "tib_min": 520,
+      "se": 0.7096,
+      "nap_min": 0,
+      "caffeine_after_14": false,
+      "alcohol": false,
+      "screen_in_bed_min": 25
+    }
+  ],
+  "persona": {
+    "age": 27,
+    "gender": "other",
+    "occupation": "财务专员",
+    "expressiveness": "brief",
+    "defensiveness": "mid",
+    "emotionality": "mid",
+    "adherence_tendency": 0.84,
+    "constraints": [
+      "月末加班多",
+      "住处空间有限"
+    ]
+  },
+  "opening_complaint": "最近睡完也不舒服，白天提不起劲，想试试调整作息。",
+  "clues": [
+    {
+      "reveal_topic": "bed_wakefulness",
+      "supports": "P2",
+      "deny_first": false,
+      "content": "核对账目弄完还觉得困，关了灯躺上去反而醒了，起初也没什么心事。",
+      "id": "B-003-c1"
+    },
+    {
+      "reveal_topic": "sleep_elsewhere",
+      "supports": "P2",
+      "deny_first": true,
+      "content": "在沙发上歇着倒能打盹，挪回自己的床就又清醒了。",
+      "id": "B-003-c2"
+    },
+    {
+      "reveal_topic": "bed_wakefulness",
+      "supports": "P2",
+      "deny_first": false,
+      "content": "关灯后一直在床上熬，不想起来，结果大半天都没睡着。",
+      "id": "B-003-c3"
+    },
+    {
+      "reveal_topic": "worry_rumination",
+      "supports": "P3",
+      "deny_first": false,
+      "content": "拖得久了也开始担心，今晚会不会又睡不着。",
+      "id": "B-003-c4"
+    },
+    {
+      "reveal_topic": "leg_discomfort",
+      "supports": "R2",
+      "deny_first": true,
+      "content": "晚上静下来腿里像有东西爬，特别想动，躺着更明显。",
+      "id": "B-003-c5"
+    },
+    {
+      "reveal_topic": "leg_discomfort",
+      "supports": "R2",
+      "deny_first": false,
+      "content": "起来走几步就舒服，躺回去不动又来了。",
+      "id": "B-003-c6"
+    },
+    {
+      "reveal_topic": "leg_discomfort",
+      "supports": "R2",
+      "deny_first": false,
+      "content": "白天坐着还好，入夜以后同样坐着就难受。",
+      "id": "B-003-c7"
+    }
+  ],
+  "prefilled": []
+}

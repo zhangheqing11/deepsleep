@@ -194,3 +194,85 @@ ISI、隐藏筛查分数、人格及依从倾向仍为规则占位，MEQ/DBAS/PS
 明确时间线索与日记一致性。全库离线验收用指定 Python 执行
 `-m pytest -q --ignore=api`。`make contracts` 目标只验证原契约示例，
 新增 72 张卡另外由生成器和测试逐张校验。
+
+## 8. 正式来访生成器（2026-11-14，晚于第 7 节）
+
+> 与第 7 节的临时集并存：`engine.demo` 默认读本节的 `data/visitors/{A,B,C}`（含 B 组，供运行 2 与对照）；第 7 节 `data/visitors/interim/` 是进化实测用的临时集。两者都可被数据科学同学的正式版本替换。
+
+
+实现：`sim/generate.py`；模板库：`sim/generate_templates.py`；入库数据：
+`data/visitors/{A,B,C,offline}/<id>.json`，另有 `data/visitors/MANIFEST.json`。
+这是 150 个**合成**来访，不含真实用户资料，不调用 LLM、不读密钥、不联网。
+原来的 18 个手写样例继续用于 smoke，未被替换。
+
+```sh
+/Users/zhangheqing/bohack/deepsleep/.venv/bin/python -m sim.generate --seed 20261115 --out data/visitors
+PYTHONPATH=. /Users/zhangheqing/bohack/deepsleep/.venv/bin/python -m pytest -q tests
+/Users/zhangheqing/bohack/deepsleep/.venv/bin/python contracts/validate.py
+```
+
+生成器在写盘前逐个调用 `contracts.validate.validate_document(..., 'visitor', ...)`。
+最后一条契约命令仍只验证 `contracts/examples/`；正式 150 个的校验证据来自生成器和
+`tests/test_sim_generate.py`，不要把 examples 通过当成正式集通过。
+同 seed 重跑逐字节一致（包括 manifest，无时间戳、绝对路径），写入同名文件；
+若输出目录各子目录内存在额外 JSON，会报错并保留原文件，避免混入旧批次。
+
+### 分配方式与分布
+
+先构造 `main_path × referral × defensiveness` 的 60 个联合层。每个
+`path × defensiveness` 单元 10 人，其中 R0 六人，R1/R2/R3 为 2/1/1，
+重复标签按防御性轮换；按 3/3/2/2 分给 A/B/C/offline，再在同单元内交换
+R0 与阳性标签达到各组转介配额。P4/R1 每组保留覆盖职业禁忌的来访。
+联合层每组人数为理想比例人数的向下或向上取整；并非把同一完整来访复制到四组。
+分配后打乱顺序，给每人独立 seed，再生成措辞、人格、指数和日记。
+
+| 组 | 人数 | P1/P2/P3/P4/P5 | R0/R1/R2/R3 | 防御 low/mid/high | 有自评 | 少报自评人数 | history | passive / active |
+|---|---:|---|---|---|---:|---:|---:|---|
+| A | 45 | 9/9/9/9/9 | 27/6/6/6 | 15/15/15 | 18（40%） | 12 | 3 | 1 / 1 |
+| B | 45 | 9/9/9/9/9 | 27/6/6/6 | 15/15/15 | 18（40%） | 12 | 3 | 1 / 1 |
+| C | 30 | 6/6/6/6/6 | 18/4/4/4 | 10/10/10 | 12（40%） | 8 | 2 | 1 / 1 |
+| offline | 30 | 6/6/6/6/6 | 18/4/4/4 | 10/10/10 | 12（40%） | 8 | 2 | 1 / 1 |
+
+每组 R0 中的三分之一带低风险近似线索（9/9/6/6 人）：如鼻塞时偶尔打鼾、
+活动后腿酸、已缓解的短期情绪变化。对应 `supports=R0`，不伪造 R1–R3 阳性。
+每组 1 个 bipolar、1 个 P4/R1/驾驶职业双禁忌；R1 均设置 untreated_osa，
+并明示既往睡眠检查提示呼吸暂停但后续处理未开始，避免仅凭筛查分就推断已确诊病史。
+主路径 2–3 条线索先列，次要路径 1–2 条后列，再追加转介、禁忌和风险线索。
+P4 不设否认；其余沿用样例的“线索具备否认资格、仅 mid/high 实际触发”的机制。
+
+模板库包含 **31 个语义槽 × 每槽 3 种说法 = 93 条非危机模板**，配合职业任务、
+饮品、娱乐方式、时长等变量；另有 **6 条模糊开场模板、15 套职业/年龄/约束配置**。
+危机部分直接复用 C7 已审定样例的 **5 条原文**（history 3、passive 1、active 1），
+没有新写危机话术。开场模板从共同池抽样，不按主路径选择，避免开场句成为标签暗号。
+默认批次 150 人的完整线索序列均不相同；这不表示每句都不重复，也不表示语言来源独立。
+
+### 接口与替换边界
+
+- `generate(seed: int = 20261115) -> list[dict]`：纯确定性生成，返回 A/B/C/offline 顺序的 visitor 列表。
+- `write_dataset(seed: int, out: Path) -> dict`：校验后写 JSON，返回 manifest。
+- `manifest(seed, visitors)`：计数、边际与联合分层表、模板规模、来源和局限。
+- visitor 继续使用契约 v0.1.0，日记继续调用 `sim.samples.build_diary`；
+  `SimVisitor` / `run_tool` 等既有消费接口不变。正式数据尚未自动接到引擎默认加载路径。
+- 测试覆盖全部 150 个的契约与样例结构要求、主次顺序、风险/禁忌、日记时间守恒，
+  四个 seed 的联合层整数误差、不同进程/PYTHONHASHSEED 的逐字节复现，以及入库文件与生成器一致性。
+
+### 占位与临床不确定性
+
+1. **模板语言及人格不是经验证的语言分布。** 非危机措辞由线索表和样例改写，
+   尚未逐条临床审阅。四组共享模板库，C/offline 只提供同源模拟验证，不能证明对真实来访的泛化。
+   当前危机只配置在 R3，history 则保持 none + item9=0；这种覆盖选择不能解释为危机只会伴随 R3。
+2. **指数分布和关联未有文献出处。** `build_visitor` 中 ISI、PHQ-9、GAD-7、STOP-Bang、
+   MEQ、DBAS、PSAS 的抽样区间，及职业、年龄、依从倾向、少报幅度，均为工程占位。
+   阈值采用 RC-2/RC-6、AGENTS 与 review-decisions 的审定口径，但“阈值有依据”不等于
+   “合成联合分布有依据”。本版 mid/high 的填表者都会少报，是难例构造而非经验发生率；
+   STOP-Bang 也未完整逐题建模，仅保证已披露的年龄/性别及 R1 打鼾/暂停信息不超过总分。
+3. **并存问题和日记偏简化。** 主次路径限定在 PC-4 方向、排除 R1/R3 重叠；
+   R2 全用足够明显的典型特征，R1 全带未处理的呼吸暂停背景，禁忌只覆盖三类。
+   这些简化会影响转介/路径难度，不能据此估计真实临床准确率。
+   日记复用“平日/周末 + 抖动”，倒班例仅代表一段夜班后的白天补觉，未模拟完整轮班周期；
+   指数与日记也不是共同潜在状态推导出的观测。
+
+数据科学同学可替换模板、分层配额、指数/人格/日记抽样及其参数；保留 visitor 字段和
+上述接口，记录来源并更新生成器版本与 manifest 后重新生成、测试。生成器没有修改
+`sim/params.yaml` 的四周状态模型参数。按本次任务 offline 仅 30 个，后续仍需扩展到
+AGENTS 目标中的 200+ 离线大样本，再谈稳定的置信区间和消融结果。

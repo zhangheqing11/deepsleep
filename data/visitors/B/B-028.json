@@ -1,0 +1,184 @@
+{
+  "schema_version": "0.1.0",
+  "id": "B-028",
+  "split": "B",
+  "seed": 2502260567,
+  "main_path": "P1",
+  "secondary_path": "P4",
+  "referral": "R0",
+  "crisis": {
+    "level": "none",
+    "phq9_item9": 0,
+    "history": false
+  },
+  "contraindications": [],
+  "indices": {
+    "isi": 15,
+    "phq9": 4,
+    "gad7": 3,
+    "stop_bang": 1,
+    "meq": 48,
+    "dbas16": 4.8,
+    "psas": 31,
+    "screen_min_before_sleep": 10
+  },
+  "diary": [
+    {
+      "day": 1,
+      "bedtime": "23:30",
+      "lights_off": "23:45",
+      "sol_min": 24,
+      "waso_min": 0,
+      "final_wake": "06:20",
+      "risetime": "06:30",
+      "tst_min": 371,
+      "tib_min": 420,
+      "se": 0.8833,
+      "nap_min": 60,
+      "caffeine_after_14": true,
+      "alcohol": false,
+      "screen_in_bed_min": 10
+    },
+    {
+      "day": 2,
+      "bedtime": "23:00",
+      "lights_off": "23:15",
+      "sol_min": 35,
+      "waso_min": 36,
+      "final_wake": "06:20",
+      "risetime": "06:30",
+      "tst_min": 354,
+      "tib_min": 450,
+      "se": 0.7867,
+      "nap_min": 60,
+      "caffeine_after_14": true,
+      "alcohol": false,
+      "screen_in_bed_min": 10
+    },
+    {
+      "day": 3,
+      "bedtime": "22:30",
+      "lights_off": "22:45",
+      "sol_min": 21,
+      "waso_min": 18,
+      "final_wake": "06:20",
+      "risetime": "06:30",
+      "tst_min": 416,
+      "tib_min": 480,
+      "se": 0.8667,
+      "nap_min": 60,
+      "caffeine_after_14": true,
+      "alcohol": false,
+      "screen_in_bed_min": 10
+    },
+    {
+      "day": 4,
+      "bedtime": "22:30",
+      "lights_off": "22:45",
+      "sol_min": 46,
+      "waso_min": 30,
+      "final_wake": "06:20",
+      "risetime": "06:30",
+      "tst_min": 379,
+      "tib_min": 480,
+      "se": 0.7896,
+      "nap_min": 60,
+      "caffeine_after_14": true,
+      "alcohol": false,
+      "screen_in_bed_min": 10
+    },
+    {
+      "day": 5,
+      "bedtime": "22:30",
+      "lights_off": "22:45",
+      "sol_min": 9,
+      "waso_min": 35,
+      "final_wake": "06:20",
+      "risetime": "06:30",
+      "tst_min": 411,
+      "tib_min": 480,
+      "se": 0.8562,
+      "nap_min": 60,
+      "caffeine_after_14": true,
+      "alcohol": false,
+      "screen_in_bed_min": 10
+    },
+    {
+      "day": 6,
+      "bedtime": "00:30",
+      "lights_off": "00:45",
+      "sol_min": 36,
+      "waso_min": 0,
+      "final_wake": "09:20",
+      "risetime": "09:30",
+      "tst_min": 479,
+      "tib_min": 540,
+      "se": 0.887,
+      "nap_min": 60,
+      "caffeine_after_14": true,
+      "alcohol": false,
+      "screen_in_bed_min": 10
+    },
+    {
+      "day": 7,
+      "bedtime": "23:30",
+      "lights_off": "23:45",
+      "sol_min": 15,
+      "waso_min": 38,
+      "final_wake": "09:20",
+      "risetime": "09:30",
+      "tst_min": 522,
+      "tib_min": 600,
+      "se": 0.87,
+      "nap_min": 60,
+      "caffeine_after_14": true,
+      "alcohol": false,
+      "screen_in_bed_min": 10
+    }
+  ],
+  "persona": {
+    "age": 49,
+    "gender": "other",
+    "occupation": "中学老师",
+    "expressiveness": "brief",
+    "defensiveness": "mid",
+    "emotionality": "mid",
+    "adherence_tendency": 0.9,
+    "constraints": [
+      "早上七点半前到校",
+      "与家人同住"
+    ]
+  },
+  "opening_complaint": "这阵子睡眠不太好，第二天提不起劲，有点影响生活。",
+  "clues": [
+    {
+      "reveal_topic": "schedule_regularity",
+      "supports": "P1",
+      "deny_first": false,
+      "content": "有时备课没弄完就拖很晚，空下来又早睡，作息一直不固定。",
+      "id": "B-028-c1"
+    },
+    {
+      "reveal_topic": "caffeine_alcohol",
+      "supports": "P1",
+      "deny_first": false,
+      "content": "下午还要忙备课，奶茶喝到四五点，晚上也不一定停。",
+      "id": "B-028-c2"
+    },
+    {
+      "reveal_topic": "daytime_sleepiness",
+      "supports": "P1",
+      "deny_first": false,
+      "content": "白天会补一觉，大约60分钟，到了晚上睡意又没了。",
+      "id": "B-028-c3"
+    },
+    {
+      "reveal_topic": "chronotype",
+      "supports": "P4",
+      "deny_first": false,
+      "content": "晚睡久了，现在休息日也会晚些才困，周一尤其难调回来。",
+      "id": "B-028-c4"
+    }
+  ],
+  "prefilled": []
+}

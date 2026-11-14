@@ -1,0 +1,212 @@
+{
+  "schema_version": "0.1.0",
+  "id": "A-037",
+  "split": "A",
+  "seed": 3393125810,
+  "main_path": "P4",
+  "secondary_path": "P1",
+  "referral": "R1",
+  "crisis": {
+    "level": "none",
+    "phq9_item9": 0,
+    "history": false
+  },
+  "contraindications": [
+    "untreated_osa",
+    "drowsy_driving_job"
+  ],
+  "indices": {
+    "isi": 22,
+    "phq9": 3,
+    "gad7": 4,
+    "stop_bang": 3,
+    "meq": null,
+    "dbas16": 5.5,
+    "psas": 33,
+    "screen_min_before_sleep": 10
+  },
+  "diary": [
+    {
+      "day": 1,
+      "bedtime": "08:40",
+      "lights_off": "08:55",
+      "sol_min": 27,
+      "waso_min": 27,
+      "final_wake": "14:20",
+      "risetime": "14:30",
+      "tst_min": 271,
+      "tib_min": 350,
+      "se": 0.7743,
+      "nap_min": 0,
+      "caffeine_after_14": true,
+      "alcohol": false,
+      "screen_in_bed_min": 10
+    },
+    {
+      "day": 2,
+      "bedtime": "08:30",
+      "lights_off": "08:45",
+      "sol_min": 20,
+      "waso_min": 22,
+      "final_wake": "14:20",
+      "risetime": "14:30",
+      "tst_min": 293,
+      "tib_min": 360,
+      "se": 0.8139,
+      "nap_min": 0,
+      "caffeine_after_14": true,
+      "alcohol": false,
+      "screen_in_bed_min": 10
+    },
+    {
+      "day": 3,
+      "bedtime": "08:20",
+      "lights_off": "08:35",
+      "sol_min": 27,
+      "waso_min": 22,
+      "final_wake": "14:20",
+      "risetime": "14:30",
+      "tst_min": 296,
+      "tib_min": 370,
+      "se": 0.8,
+      "nap_min": 0,
+      "caffeine_after_14": true,
+      "alcohol": false,
+      "screen_in_bed_min": 10
+    },
+    {
+      "day": 4,
+      "bedtime": "08:40",
+      "lights_off": "08:55",
+      "sol_min": 28,
+      "waso_min": 25,
+      "final_wake": "14:20",
+      "risetime": "14:30",
+      "tst_min": 272,
+      "tib_min": 350,
+      "se": 0.7771,
+      "nap_min": 0,
+      "caffeine_after_14": true,
+      "alcohol": false,
+      "screen_in_bed_min": 10
+    },
+    {
+      "day": 5,
+      "bedtime": "08:30",
+      "lights_off": "08:45",
+      "sol_min": 35,
+      "waso_min": 20,
+      "final_wake": "14:20",
+      "risetime": "14:30",
+      "tst_min": 280,
+      "tib_min": 360,
+      "se": 0.7778,
+      "nap_min": 0,
+      "caffeine_after_14": true,
+      "alcohol": false,
+      "screen_in_bed_min": 10
+    },
+    {
+      "day": 6,
+      "bedtime": "08:20",
+      "lights_off": "08:35",
+      "sol_min": 31,
+      "waso_min": 35,
+      "final_wake": "14:20",
+      "risetime": "14:30",
+      "tst_min": 279,
+      "tib_min": 370,
+      "se": 0.7541,
+      "nap_min": 0,
+      "caffeine_after_14": true,
+      "alcohol": false,
+      "screen_in_bed_min": 10
+    },
+    {
+      "day": 7,
+      "bedtime": "08:30",
+      "lights_off": "08:45",
+      "sol_min": 34,
+      "waso_min": 21,
+      "final_wake": "14:20",
+      "risetime": "14:30",
+      "tst_min": 280,
+      "tib_min": 360,
+      "se": 0.7778,
+      "nap_min": 0,
+      "caffeine_after_14": true,
+      "alcohol": false,
+      "screen_in_bed_min": 10
+    }
+  ],
+  "persona": {
+    "age": 35,
+    "gender": "male",
+    "occupation": "工厂叉车司机（三班倒）",
+    "expressiveness": "brief",
+    "defensiveness": "low",
+    "emotionality": "low",
+    "adherence_tendency": 0.81,
+    "constraints": [
+      "三班倒，上班需驾驶叉车",
+      "住处空间有限"
+    ]
+  },
+  "opening_complaint": "我想聊聊睡觉的事，最近醒来提不起劲，一直没缓过来。",
+  "clues": [
+    {
+      "reveal_topic": "shift_work",
+      "supports": "P4",
+      "deny_first": false,
+      "content": "排班一变就得换睡觉时间，做工厂叉车司机（三班倒）没法天天一个点睡。",
+      "id": "A-037-c1"
+    },
+    {
+      "reveal_topic": "chronotype",
+      "supports": "P4",
+      "deny_first": false,
+      "content": "下夜班天都亮了，上午补觉容易醒，晚上上班又犯困。",
+      "id": "A-037-c2"
+    },
+    {
+      "reveal_topic": "caffeine_alcohol",
+      "supports": "P1",
+      "deny_first": false,
+      "content": "下午犯困就续一杯浓茶，常常晚饭前还在喝。",
+      "id": "A-037-c3"
+    },
+    {
+      "reveal_topic": "snoring_breathing",
+      "supports": "R1",
+      "deny_first": true,
+      "content": "家里人说我鼾声大，中间呼吸还会停一下，我自己不大知道。",
+      "id": "A-037-c4"
+    },
+    {
+      "reveal_topic": "health_conditions",
+      "supports": "R1",
+      "deny_first": false,
+      "content": "睡眠检查说呼吸有暂停，但到现在还没接受相关处理。",
+      "id": "A-037-c5"
+    },
+    {
+      "reveal_topic": "life_constraints",
+      "supports": "R1",
+      "deny_first": false,
+      "content": "上班要驾驶叉车，睡不够容易犯困，这让我很不放心。",
+      "id": "A-037-c6"
+    }
+  ],
+  "prefilled": [
+    {
+      "scale": "isi",
+      "reported_score": 22,
+      "items": null
+    },
+    {
+      "scale": "stop_bang",
+      "reported_score": 3,
+      "items": null
+    }
+  ]
+}

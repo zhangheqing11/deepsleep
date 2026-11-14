@@ -1,0 +1,184 @@
+{
+  "schema_version": "0.1.0",
+  "id": "A-033",
+  "split": "A",
+  "seed": 652678669,
+  "main_path": "P4",
+  "secondary_path": "P1",
+  "referral": "R0",
+  "crisis": {
+    "level": "none",
+    "phq9_item9": 0,
+    "history": false
+  },
+  "contraindications": [],
+  "indices": {
+    "isi": 18,
+    "phq9": 6,
+    "gad7": 2,
+    "stop_bang": 1,
+    "meq": 27,
+    "dbas16": 5.2,
+    "psas": 31,
+    "screen_min_before_sleep": 15
+  },
+  "diary": [
+    {
+      "day": 1,
+      "bedtime": "01:00",
+      "lights_off": "01:20",
+      "sol_min": 87,
+      "waso_min": 8,
+      "final_wake": "07:50",
+      "risetime": "08:00",
+      "tst_min": 295,
+      "tib_min": 420,
+      "se": 0.7024,
+      "nap_min": 0,
+      "caffeine_after_14": true,
+      "alcohol": false,
+      "screen_in_bed_min": 15
+    },
+    {
+      "day": 2,
+      "bedtime": "01:05",
+      "lights_off": "01:25",
+      "sol_min": 86,
+      "waso_min": 9,
+      "final_wake": "07:50",
+      "risetime": "08:00",
+      "tst_min": 290,
+      "tib_min": 415,
+      "se": 0.6988,
+      "nap_min": 0,
+      "caffeine_after_14": true,
+      "alcohol": false,
+      "screen_in_bed_min": 15
+    },
+    {
+      "day": 3,
+      "bedtime": "01:00",
+      "lights_off": "01:20",
+      "sol_min": 89,
+      "waso_min": 8,
+      "final_wake": "07:50",
+      "risetime": "08:00",
+      "tst_min": 293,
+      "tib_min": 420,
+      "se": 0.6976,
+      "nap_min": 0,
+      "caffeine_after_14": true,
+      "alcohol": false,
+      "screen_in_bed_min": 15
+    },
+    {
+      "day": 4,
+      "bedtime": "00:55",
+      "lights_off": "01:15",
+      "sol_min": 82,
+      "waso_min": 8,
+      "final_wake": "07:50",
+      "risetime": "08:00",
+      "tst_min": 305,
+      "tib_min": 425,
+      "se": 0.7176,
+      "nap_min": 0,
+      "caffeine_after_14": true,
+      "alcohol": false,
+      "screen_in_bed_min": 15
+    },
+    {
+      "day": 5,
+      "bedtime": "01:00",
+      "lights_off": "01:20",
+      "sol_min": 89,
+      "waso_min": 6,
+      "final_wake": "07:50",
+      "risetime": "08:00",
+      "tst_min": 295,
+      "tib_min": 420,
+      "se": 0.7024,
+      "nap_min": 0,
+      "caffeine_after_14": true,
+      "alcohol": false,
+      "screen_in_bed_min": 15
+    },
+    {
+      "day": 6,
+      "bedtime": "01:25",
+      "lights_off": "01:45",
+      "sol_min": 90,
+      "waso_min": 12,
+      "final_wake": "10:50",
+      "risetime": "11:00",
+      "tst_min": 443,
+      "tib_min": 575,
+      "se": 0.7704,
+      "nap_min": 0,
+      "caffeine_after_14": true,
+      "alcohol": false,
+      "screen_in_bed_min": 15
+    },
+    {
+      "day": 7,
+      "bedtime": "01:20",
+      "lights_off": "01:40",
+      "sol_min": 86,
+      "waso_min": 5,
+      "final_wake": "10:50",
+      "risetime": "11:00",
+      "tst_min": 459,
+      "tib_min": 580,
+      "se": 0.7914,
+      "nap_min": 0,
+      "caffeine_after_14": true,
+      "alcohol": false,
+      "screen_in_bed_min": 15
+    }
+  ],
+  "persona": {
+    "age": 28,
+    "gender": "male",
+    "occupation": "研究生",
+    "expressiveness": "verbose",
+    "defensiveness": "low",
+    "emotionality": "high",
+    "adherence_tendency": 0.46,
+    "constraints": [
+      "上午要到实验室",
+      "与家人同住"
+    ]
+  },
+  "opening_complaint": "这阵子睡眠不太好，第二天觉得累，有点影响生活。",
+  "clues": [
+    {
+      "reveal_topic": "chronotype",
+      "supports": "P4",
+      "deny_first": false,
+      "content": "困意总要凌晨才来，休息日按自己的点睡，能安稳睡到快中午。",
+      "id": "A-033-c1"
+    },
+    {
+      "reveal_topic": "chronotype",
+      "supports": "P4",
+      "deny_first": false,
+      "content": "让我提前睡就是熬着，早晨又爬不起来，这习惯好多年了。",
+      "id": "A-033-c2"
+    },
+    {
+      "reveal_topic": "caffeine_alcohol",
+      "supports": "P1",
+      "deny_first": false,
+      "content": "下午犯困就续一杯奶茶，常常晚饭前还在喝。",
+      "id": "A-033-c3"
+    },
+    {
+      "reveal_topic": "leg_discomfort",
+      "supports": "R0",
+      "deny_first": false,
+      "content": "腿酸跟当天走得多有关，坐下歇歇就好，不是晚上躺着想动。",
+      "id": "A-033-c4"
+    }
+  ],
+  "prefilled": []
+}

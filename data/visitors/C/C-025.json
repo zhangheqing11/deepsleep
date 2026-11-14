@@ -1,0 +1,184 @@
+{
+  "schema_version": "0.1.0",
+  "id": "C-025",
+  "split": "C",
+  "seed": 750075067,
+  "main_path": "P4",
+  "secondary_path": "P1",
+  "referral": "R0",
+  "crisis": {
+    "level": "none",
+    "phq9_item9": 0,
+    "history": false
+  },
+  "contraindications": [],
+  "indices": {
+    "isi": 22,
+    "phq9": 4,
+    "gad7": 9,
+    "stop_bang": 1,
+    "meq": null,
+    "dbas16": 4.9,
+    "psas": 34,
+    "screen_min_before_sleep": 20
+  },
+  "diary": [
+    {
+      "day": 1,
+      "bedtime": "08:20",
+      "lights_off": "08:45",
+      "sol_min": 20,
+      "waso_min": 30,
+      "final_wake": "14:20",
+      "risetime": "14:30",
+      "tst_min": 285,
+      "tib_min": 370,
+      "se": 0.7703,
+      "nap_min": 60,
+      "caffeine_after_14": true,
+      "alcohol": false,
+      "screen_in_bed_min": 20
+    },
+    {
+      "day": 2,
+      "bedtime": "08:20",
+      "lights_off": "08:45",
+      "sol_min": 22,
+      "waso_min": 25,
+      "final_wake": "14:20",
+      "risetime": "14:30",
+      "tst_min": 288,
+      "tib_min": 370,
+      "se": 0.7784,
+      "nap_min": 60,
+      "caffeine_after_14": true,
+      "alcohol": false,
+      "screen_in_bed_min": 20
+    },
+    {
+      "day": 3,
+      "bedtime": "08:40",
+      "lights_off": "09:05",
+      "sol_min": 17,
+      "waso_min": 36,
+      "final_wake": "14:20",
+      "risetime": "14:30",
+      "tst_min": 262,
+      "tib_min": 350,
+      "se": 0.7486,
+      "nap_min": 60,
+      "caffeine_after_14": true,
+      "alcohol": false,
+      "screen_in_bed_min": 20
+    },
+    {
+      "day": 4,
+      "bedtime": "08:20",
+      "lights_off": "08:45",
+      "sol_min": 24,
+      "waso_min": 24,
+      "final_wake": "14:20",
+      "risetime": "14:30",
+      "tst_min": 287,
+      "tib_min": 370,
+      "se": 0.7757,
+      "nap_min": 60,
+      "caffeine_after_14": true,
+      "alcohol": false,
+      "screen_in_bed_min": 20
+    },
+    {
+      "day": 5,
+      "bedtime": "08:30",
+      "lights_off": "08:55",
+      "sol_min": 30,
+      "waso_min": 25,
+      "final_wake": "14:20",
+      "risetime": "14:30",
+      "tst_min": 270,
+      "tib_min": 360,
+      "se": 0.75,
+      "nap_min": 60,
+      "caffeine_after_14": true,
+      "alcohol": false,
+      "screen_in_bed_min": 20
+    },
+    {
+      "day": 6,
+      "bedtime": "08:40",
+      "lights_off": "09:05",
+      "sol_min": 19,
+      "waso_min": 39,
+      "final_wake": "14:20",
+      "risetime": "14:30",
+      "tst_min": 257,
+      "tib_min": 350,
+      "se": 0.7343,
+      "nap_min": 60,
+      "caffeine_after_14": true,
+      "alcohol": false,
+      "screen_in_bed_min": 20
+    },
+    {
+      "day": 7,
+      "bedtime": "08:40",
+      "lights_off": "09:05",
+      "sol_min": 30,
+      "waso_min": 28,
+      "final_wake": "14:20",
+      "risetime": "14:30",
+      "tst_min": 257,
+      "tib_min": 350,
+      "se": 0.7343,
+      "nap_min": 60,
+      "caffeine_after_14": true,
+      "alcohol": false,
+      "screen_in_bed_min": 20
+    }
+  ],
+  "persona": {
+    "age": 32,
+    "gender": "female",
+    "occupation": "机房值班员（轮班）",
+    "expressiveness": "brief",
+    "defensiveness": "high",
+    "emotionality": "high",
+    "adherence_tendency": 0.39,
+    "constraints": [
+      "按班表白夜班轮换",
+      "与家人同住"
+    ]
+  },
+  "opening_complaint": "我想聊聊睡觉的事，最近醒来注意力不太集中，一直没缓过来。",
+  "clues": [
+    {
+      "reveal_topic": "shift_work",
+      "supports": "P4",
+      "deny_first": false,
+      "content": "我做机房值班员（轮班），白班夜班轮着换，睡觉时间跟着班表跑。",
+      "id": "C-025-c1"
+    },
+    {
+      "reveal_topic": "chronotype",
+      "supports": "P4",
+      "deny_first": false,
+      "content": "下夜班天都亮了，上午补觉容易醒，晚上上班又犯困。",
+      "id": "C-025-c2"
+    },
+    {
+      "reveal_topic": "caffeine_alcohol",
+      "supports": "P1",
+      "deny_first": false,
+      "content": "下午犯困就续一杯浓茶，常常晚饭前还在喝。",
+      "id": "C-025-c3"
+    },
+    {
+      "reveal_topic": "daytime_sleepiness",
+      "supports": "P1",
+      "deny_first": false,
+      "content": "午后经常一躺就是60分钟，醒了还想赖一会儿。",
+      "id": "C-025-c4"
+    }
+  ],
+  "prefilled": []
+}

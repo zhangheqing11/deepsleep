@@ -1,0 +1,198 @@
+{
+  "schema_version": "0.1.0",
+  "id": "offline-016",
+  "split": "offline",
+  "seed": 2345599382,
+  "main_path": "P4",
+  "secondary_path": "P1",
+  "referral": "R2",
+  "crisis": {
+    "level": "none",
+    "phq9_item9": 0,
+    "history": false
+  },
+  "contraindications": [],
+  "indices": {
+    "isi": 17,
+    "phq9": 5,
+    "gad7": 7,
+    "stop_bang": 0,
+    "meq": null,
+    "dbas16": 3.7,
+    "psas": 27,
+    "screen_min_before_sleep": 15
+  },
+  "diary": [
+    {
+      "day": 1,
+      "bedtime": "08:20",
+      "lights_off": "08:40",
+      "sol_min": 16,
+      "waso_min": 28,
+      "final_wake": "14:20",
+      "risetime": "14:30",
+      "tst_min": 296,
+      "tib_min": 370,
+      "se": 0.8,
+      "nap_min": 0,
+      "caffeine_after_14": true,
+      "alcohol": false,
+      "screen_in_bed_min": 15
+    },
+    {
+      "day": 2,
+      "bedtime": "08:20",
+      "lights_off": "08:40",
+      "sol_min": 23,
+      "waso_min": 24,
+      "final_wake": "14:20",
+      "risetime": "14:30",
+      "tst_min": 293,
+      "tib_min": 370,
+      "se": 0.7919,
+      "nap_min": 0,
+      "caffeine_after_14": true,
+      "alcohol": false,
+      "screen_in_bed_min": 15
+    },
+    {
+      "day": 3,
+      "bedtime": "08:30",
+      "lights_off": "08:50",
+      "sol_min": 35,
+      "waso_min": 36,
+      "final_wake": "14:20",
+      "risetime": "14:30",
+      "tst_min": 259,
+      "tib_min": 360,
+      "se": 0.7194,
+      "nap_min": 0,
+      "caffeine_after_14": true,
+      "alcohol": false,
+      "screen_in_bed_min": 15
+    },
+    {
+      "day": 4,
+      "bedtime": "08:30",
+      "lights_off": "08:50",
+      "sol_min": 20,
+      "waso_min": 25,
+      "final_wake": "14:20",
+      "risetime": "14:30",
+      "tst_min": 285,
+      "tib_min": 360,
+      "se": 0.7917,
+      "nap_min": 0,
+      "caffeine_after_14": true,
+      "alcohol": false,
+      "screen_in_bed_min": 15
+    },
+    {
+      "day": 5,
+      "bedtime": "08:20",
+      "lights_off": "08:40",
+      "sol_min": 18,
+      "waso_min": 36,
+      "final_wake": "14:20",
+      "risetime": "14:30",
+      "tst_min": 286,
+      "tib_min": 370,
+      "se": 0.773,
+      "nap_min": 0,
+      "caffeine_after_14": true,
+      "alcohol": false,
+      "screen_in_bed_min": 15
+    },
+    {
+      "day": 6,
+      "bedtime": "08:40",
+      "lights_off": "09:00",
+      "sol_min": 34,
+      "waso_min": 26,
+      "final_wake": "14:20",
+      "risetime": "14:30",
+      "tst_min": 260,
+      "tib_min": 350,
+      "se": 0.7429,
+      "nap_min": 0,
+      "caffeine_after_14": true,
+      "alcohol": false,
+      "screen_in_bed_min": 15
+    },
+    {
+      "day": 7,
+      "bedtime": "08:30",
+      "lights_off": "08:50",
+      "sol_min": 23,
+      "waso_min": 30,
+      "final_wake": "14:20",
+      "risetime": "14:30",
+      "tst_min": 277,
+      "tib_min": 360,
+      "se": 0.7694,
+      "nap_min": 0,
+      "caffeine_after_14": true,
+      "alcohol": false,
+      "screen_in_bed_min": 15
+    }
+  ],
+  "persona": {
+    "age": 41,
+    "gender": "female",
+    "occupation": "工厂质检员（轮班）",
+    "expressiveness": "verbose",
+    "defensiveness": "mid",
+    "emotionality": "high",
+    "adherence_tendency": 0.63,
+    "constraints": [
+      "白班夜班轮换",
+      "与家人同住"
+    ]
+  },
+  "opening_complaint": "睡眠问题拖了一阵了，白天注意力不太集中，不知道先从哪儿改。",
+  "clues": [
+    {
+      "reveal_topic": "shift_work",
+      "supports": "P4",
+      "deny_first": false,
+      "content": "排班一变就得换睡觉时间，做工厂质检员（轮班）没法天天一个点睡。",
+      "id": "offline-016-c1"
+    },
+    {
+      "reveal_topic": "chronotype",
+      "supports": "P4",
+      "deny_first": false,
+      "content": "倒完夜班人很累，白天躺下睡一阵就醒，作息总接不上。",
+      "id": "offline-016-c2"
+    },
+    {
+      "reveal_topic": "caffeine_alcohol",
+      "supports": "P1",
+      "deny_first": false,
+      "content": "下午犯困就续一杯咖啡，常常晚饭前还在喝。",
+      "id": "offline-016-c3"
+    },
+    {
+      "reveal_topic": "leg_discomfort",
+      "supports": "R2",
+      "deny_first": true,
+      "content": "晚上静下来腿里像有东西爬，特别想动，躺着更明显。",
+      "id": "offline-016-c4"
+    },
+    {
+      "reveal_topic": "leg_discomfort",
+      "supports": "R2",
+      "deny_first": false,
+      "content": "活动腿的时候缓下来，重新坐好又不舒服。",
+      "id": "offline-016-c5"
+    },
+    {
+      "reveal_topic": "leg_discomfort",
+      "supports": "R2",
+      "deny_first": false,
+      "content": "白天坐着还好，入夜以后同样坐着就难受。",
+      "id": "offline-016-c6"
+    }
+  ],
+  "prefilled": []
+}

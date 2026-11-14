@@ -1,0 +1,191 @@
+{
+  "schema_version": "0.1.0",
+  "id": "B-033",
+  "split": "B",
+  "seed": 2922334872,
+  "main_path": "P4",
+  "secondary_path": "P1",
+  "referral": "R0",
+  "crisis": {
+    "level": "none",
+    "phq9_item9": 0,
+    "history": false
+  },
+  "contraindications": [],
+  "indices": {
+    "isi": 19,
+    "phq9": 7,
+    "gad7": 4,
+    "stop_bang": 2,
+    "meq": 32,
+    "dbas16": 5.3,
+    "psas": 34,
+    "screen_min_before_sleep": 10
+  },
+  "diary": [
+    {
+      "day": 1,
+      "bedtime": "01:00",
+      "lights_off": "01:15",
+      "sol_min": 87,
+      "waso_min": 8,
+      "final_wake": "07:50",
+      "risetime": "08:00",
+      "tst_min": 300,
+      "tib_min": 420,
+      "se": 0.7143,
+      "nap_min": 80,
+      "caffeine_after_14": true,
+      "alcohol": false,
+      "screen_in_bed_min": 10
+    },
+    {
+      "day": 2,
+      "bedtime": "00:55",
+      "lights_off": "01:10",
+      "sol_min": 82,
+      "waso_min": 5,
+      "final_wake": "07:50",
+      "risetime": "08:00",
+      "tst_min": 313,
+      "tib_min": 425,
+      "se": 0.7365,
+      "nap_min": 80,
+      "caffeine_after_14": true,
+      "alcohol": false,
+      "screen_in_bed_min": 10
+    },
+    {
+      "day": 3,
+      "bedtime": "00:55",
+      "lights_off": "01:10",
+      "sol_min": 84,
+      "waso_min": 7,
+      "final_wake": "07:50",
+      "risetime": "08:00",
+      "tst_min": 309,
+      "tib_min": 425,
+      "se": 0.7271,
+      "nap_min": 80,
+      "caffeine_after_14": true,
+      "alcohol": false,
+      "screen_in_bed_min": 10
+    },
+    {
+      "day": 4,
+      "bedtime": "00:55",
+      "lights_off": "01:10",
+      "sol_min": 88,
+      "waso_min": 12,
+      "final_wake": "07:50",
+      "risetime": "08:00",
+      "tst_min": 300,
+      "tib_min": 425,
+      "se": 0.7059,
+      "nap_min": 80,
+      "caffeine_after_14": true,
+      "alcohol": false,
+      "screen_in_bed_min": 10
+    },
+    {
+      "day": 5,
+      "bedtime": "01:05",
+      "lights_off": "01:20",
+      "sol_min": 88,
+      "waso_min": 14,
+      "final_wake": "07:50",
+      "risetime": "08:00",
+      "tst_min": 288,
+      "tib_min": 415,
+      "se": 0.694,
+      "nap_min": 80,
+      "caffeine_after_14": true,
+      "alcohol": false,
+      "screen_in_bed_min": 10
+    },
+    {
+      "day": 6,
+      "bedtime": "01:25",
+      "lights_off": "01:40",
+      "sol_min": 82,
+      "waso_min": 12,
+      "final_wake": "10:50",
+      "risetime": "11:00",
+      "tst_min": 456,
+      "tib_min": 575,
+      "se": 0.793,
+      "nap_min": 80,
+      "caffeine_after_14": true,
+      "alcohol": false,
+      "screen_in_bed_min": 10
+    },
+    {
+      "day": 7,
+      "bedtime": "01:25",
+      "lights_off": "01:40",
+      "sol_min": 88,
+      "waso_min": 15,
+      "final_wake": "10:50",
+      "risetime": "11:00",
+      "tst_min": 447,
+      "tib_min": 575,
+      "se": 0.7774,
+      "nap_min": 80,
+      "caffeine_after_14": true,
+      "alcohol": false,
+      "screen_in_bed_min": 10
+    }
+  ],
+  "persona": {
+    "age": 63,
+    "gender": "female",
+    "occupation": "退休职员",
+    "expressiveness": "brief",
+    "defensiveness": "high",
+    "emotionality": "low",
+    "adherence_tendency": 0.47,
+    "constraints": [
+      "白天常要帮家人办事",
+      "与家人同住"
+    ]
+  },
+  "opening_complaint": "最近晚上总睡不踏实，白天注意力不太集中，想看看能怎么调整。",
+  "clues": [
+    {
+      "reveal_topic": "chronotype",
+      "supports": "P4",
+      "deny_first": false,
+      "content": "困意总要凌晨才来，休息日按自己的点睡，能安稳睡到快中午。",
+      "id": "B-033-c1"
+    },
+    {
+      "reveal_topic": "chronotype",
+      "supports": "P4",
+      "deny_first": false,
+      "content": "让我提前睡就是熬着，早晨又爬不起来，这习惯好多年了。",
+      "id": "B-033-c2"
+    },
+    {
+      "reveal_topic": "caffeine_alcohol",
+      "supports": "P1",
+      "deny_first": false,
+      "content": "我靠浓茶撑下午的精神，有时候喝完已经挺晚了。",
+      "id": "B-033-c3"
+    },
+    {
+      "reveal_topic": "daytime_sleepiness",
+      "supports": "P1",
+      "deny_first": false,
+      "content": "中午得睡80分钟，不然下午没精神，晚上倒不太困。",
+      "id": "B-033-c4"
+    },
+    {
+      "reveal_topic": "snoring_breathing",
+      "supports": "R0",
+      "deny_first": false,
+      "content": "感冒堵鼻子时会响几声，平常没这事，也不会憋醒。",
+      "id": "B-033-c5"
+    }
+  ],
+  "prefilled": []
+}

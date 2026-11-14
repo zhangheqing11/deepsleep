@@ -1,0 +1,184 @@
+{
+  "schema_version": "0.1.0",
+  "id": "offline-024",
+  "split": "offline",
+  "seed": 2019445155,
+  "main_path": "P2",
+  "secondary_path": "P3",
+  "referral": "R0",
+  "crisis": {
+    "level": "none",
+    "phq9_item9": 0,
+    "history": false
+  },
+  "contraindications": [],
+  "indices": {
+    "isi": 14,
+    "phq9": 6,
+    "gad7": 8,
+    "stop_bang": 1,
+    "meq": 56,
+    "dbas16": 5.5,
+    "psas": 34,
+    "screen_min_before_sleep": 20
+  },
+  "diary": [
+    {
+      "day": 1,
+      "bedtime": "22:00",
+      "lights_off": "22:25",
+      "sol_min": 66,
+      "waso_min": 37,
+      "final_wake": "06:20",
+      "risetime": "06:30",
+      "tst_min": 372,
+      "tib_min": 510,
+      "se": 0.7294,
+      "nap_min": 0,
+      "caffeine_after_14": false,
+      "alcohol": false,
+      "screen_in_bed_min": 20
+    },
+    {
+      "day": 2,
+      "bedtime": "22:10",
+      "lights_off": "22:35",
+      "sol_min": 76,
+      "waso_min": 48,
+      "final_wake": "06:20",
+      "risetime": "06:30",
+      "tst_min": 341,
+      "tib_min": 500,
+      "se": 0.682,
+      "nap_min": 0,
+      "caffeine_after_14": false,
+      "alcohol": false,
+      "screen_in_bed_min": 20
+    },
+    {
+      "day": 3,
+      "bedtime": "22:10",
+      "lights_off": "22:35",
+      "sol_min": 69,
+      "waso_min": 40,
+      "final_wake": "06:20",
+      "risetime": "06:30",
+      "tst_min": 356,
+      "tib_min": 500,
+      "se": 0.712,
+      "nap_min": 0,
+      "caffeine_after_14": false,
+      "alcohol": false,
+      "screen_in_bed_min": 20
+    },
+    {
+      "day": 4,
+      "bedtime": "22:00",
+      "lights_off": "22:25",
+      "sol_min": 71,
+      "waso_min": 48,
+      "final_wake": "06:20",
+      "risetime": "06:30",
+      "tst_min": 356,
+      "tib_min": 510,
+      "se": 0.698,
+      "nap_min": 0,
+      "caffeine_after_14": false,
+      "alcohol": false,
+      "screen_in_bed_min": 20
+    },
+    {
+      "day": 5,
+      "bedtime": "22:10",
+      "lights_off": "22:35",
+      "sol_min": 73,
+      "waso_min": 31,
+      "final_wake": "06:20",
+      "risetime": "06:30",
+      "tst_min": 361,
+      "tib_min": 500,
+      "se": 0.722,
+      "nap_min": 0,
+      "caffeine_after_14": false,
+      "alcohol": false,
+      "screen_in_bed_min": 20
+    },
+    {
+      "day": 6,
+      "bedtime": "22:10",
+      "lights_off": "22:35",
+      "sol_min": 65,
+      "waso_min": 45,
+      "final_wake": "06:20",
+      "risetime": "06:30",
+      "tst_min": 355,
+      "tib_min": 500,
+      "se": 0.71,
+      "nap_min": 0,
+      "caffeine_after_14": false,
+      "alcohol": false,
+      "screen_in_bed_min": 20
+    },
+    {
+      "day": 7,
+      "bedtime": "22:00",
+      "lights_off": "22:25",
+      "sol_min": 71,
+      "waso_min": 44,
+      "final_wake": "06:20",
+      "risetime": "06:30",
+      "tst_min": 360,
+      "tib_min": 510,
+      "se": 0.7059,
+      "nap_min": 0,
+      "caffeine_after_14": false,
+      "alcohol": false,
+      "screen_in_bed_min": 20
+    }
+  ],
+  "persona": {
+    "age": 29,
+    "gender": "other",
+    "occupation": "软件工程师",
+    "expressiveness": "verbose",
+    "defensiveness": "high",
+    "emotionality": "mid",
+    "adherence_tendency": 0.6,
+    "constraints": [
+      "每周有两天要早起通勤",
+      "周末常有家务安排"
+    ]
+  },
+  "opening_complaint": "最近睡完也不舒服，白天觉得累，想试试调整作息。",
+  "clues": [
+    {
+      "reveal_topic": "bed_wakefulness",
+      "supports": "P2",
+      "deny_first": false,
+      "content": "改程序弄完还觉得困，关了灯躺上去反而醒了，起初也没什么心事。",
+      "id": "offline-024-c1"
+    },
+    {
+      "reveal_topic": "sleep_elsewhere",
+      "supports": "P2",
+      "deny_first": true,
+      "content": "挺奇怪，靠在沙发上容易睡，一躺床就精神。",
+      "id": "offline-024-c2"
+    },
+    {
+      "reveal_topic": "bed_wakefulness",
+      "supports": "P2",
+      "deny_first": false,
+      "content": "关灯后一直在床上熬，不想起来，结果大半天都没睡着。",
+      "id": "offline-024-c3"
+    },
+    {
+      "reveal_topic": "worry_rumination",
+      "supports": "P3",
+      "deny_first": false,
+      "content": "后来一想到要睡觉，就会盘算今晚还得熬多久。",
+      "id": "offline-024-c4"
+    }
+  ],
+  "prefilled": []
+}

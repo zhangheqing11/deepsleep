@@ -1,0 +1,212 @@
+{
+  "schema_version": "0.1.0",
+  "id": "offline-017",
+  "split": "offline",
+  "seed": 3772718073,
+  "main_path": "P5",
+  "secondary_path": "P1",
+  "referral": "R0",
+  "crisis": {
+    "level": "none",
+    "phq9_item9": 0,
+    "history": false
+  },
+  "contraindications": [],
+  "indices": {
+    "isi": 17,
+    "phq9": 5,
+    "gad7": 6,
+    "stop_bang": 1,
+    "meq": 45,
+    "dbas16": 3.7,
+    "psas": 22,
+    "screen_min_before_sleep": 120
+  },
+  "diary": [
+    {
+      "day": 1,
+      "bedtime": "22:50",
+      "lights_off": "00:55",
+      "sol_min": 21,
+      "waso_min": 20,
+      "final_wake": "06:20",
+      "risetime": "06:30",
+      "tst_min": 284,
+      "tib_min": 460,
+      "se": 0.6174,
+      "nap_min": 80,
+      "caffeine_after_14": true,
+      "alcohol": false,
+      "screen_in_bed_min": 120
+    },
+    {
+      "day": 2,
+      "bedtime": "23:10",
+      "lights_off": "01:15",
+      "sol_min": 28,
+      "waso_min": 21,
+      "final_wake": "06:20",
+      "risetime": "06:30",
+      "tst_min": 256,
+      "tib_min": 440,
+      "se": 0.5818,
+      "nap_min": 80,
+      "caffeine_after_14": true,
+      "alcohol": false,
+      "screen_in_bed_min": 120
+    },
+    {
+      "day": 3,
+      "bedtime": "23:10",
+      "lights_off": "01:15",
+      "sol_min": 32,
+      "waso_min": 27,
+      "final_wake": "06:20",
+      "risetime": "06:30",
+      "tst_min": 246,
+      "tib_min": 440,
+      "se": 0.5591,
+      "nap_min": 80,
+      "caffeine_after_14": true,
+      "alcohol": false,
+      "screen_in_bed_min": 120
+    },
+    {
+      "day": 4,
+      "bedtime": "23:10",
+      "lights_off": "01:15",
+      "sol_min": 20,
+      "waso_min": 29,
+      "final_wake": "06:20",
+      "risetime": "06:30",
+      "tst_min": 256,
+      "tib_min": 440,
+      "se": 0.5818,
+      "nap_min": 80,
+      "caffeine_after_14": true,
+      "alcohol": false,
+      "screen_in_bed_min": 120
+    },
+    {
+      "day": 5,
+      "bedtime": "22:50",
+      "lights_off": "00:55",
+      "sol_min": 26,
+      "waso_min": 20,
+      "final_wake": "06:20",
+      "risetime": "06:30",
+      "tst_min": 279,
+      "tib_min": 460,
+      "se": 0.6065,
+      "nap_min": 80,
+      "caffeine_after_14": true,
+      "alcohol": false,
+      "screen_in_bed_min": 120
+    },
+    {
+      "day": 6,
+      "bedtime": "23:00",
+      "lights_off": "01:05",
+      "sol_min": 21,
+      "waso_min": 13,
+      "final_wake": "06:20",
+      "risetime": "06:30",
+      "tst_min": 281,
+      "tib_min": 450,
+      "se": 0.6244,
+      "nap_min": 80,
+      "caffeine_after_14": true,
+      "alcohol": false,
+      "screen_in_bed_min": 120
+    },
+    {
+      "day": 7,
+      "bedtime": "22:50",
+      "lights_off": "00:55",
+      "sol_min": 34,
+      "waso_min": 12,
+      "final_wake": "06:20",
+      "risetime": "06:30",
+      "tst_min": 279,
+      "tib_min": 460,
+      "se": 0.6065,
+      "nap_min": 80,
+      "caffeine_after_14": true,
+      "alcohol": false,
+      "screen_in_bed_min": 120
+    }
+  ],
+  "persona": {
+    "age": 36,
+    "gender": "male",
+    "occupation": "保险内勤",
+    "expressiveness": "verbose",
+    "defensiveness": "high",
+    "emotionality": "mid",
+    "adherence_tendency": 0.88,
+    "constraints": [
+      "下班后还要准备家里的晚饭",
+      "周末常有家务安排"
+    ]
+  },
+  "opening_complaint": "这段时间睡得不太顺，起床后没精神，想找找原因。",
+  "clues": [
+    {
+      "reveal_topic": "screen_in_bed",
+      "supports": "P5",
+      "deny_first": true,
+      "content": "说是上床休息，实际拿着手机刷短视频，要花120分钟。",
+      "id": "offline-017-c1"
+    },
+    {
+      "reveal_topic": "revenge_bedtime",
+      "supports": "P5",
+      "deny_first": false,
+      "content": "忙完整理单据才觉得今天能歇一歇，哪怕困也想再玩会儿。",
+      "id": "offline-017-c2"
+    },
+    {
+      "reveal_topic": "revenge_bedtime",
+      "supports": "P5",
+      "deny_first": false,
+      "content": "原本说好看完就睡，结果总想着再看一个，越拖越晚。",
+      "id": "offline-017-c3"
+    },
+    {
+      "reveal_topic": "caffeine_alcohol",
+      "supports": "P1",
+      "deny_first": false,
+      "content": "我靠奶茶撑下午的精神，有时候喝完已经挺晚了。",
+      "id": "offline-017-c4"
+    },
+    {
+      "reveal_topic": "daytime_sleepiness",
+      "supports": "P1",
+      "deny_first": false,
+      "content": "白天会补一觉，大约80分钟，到了晚上睡意又没了。",
+      "id": "offline-017-c5"
+    }
+  ],
+  "prefilled": [
+    {
+      "scale": "isi",
+      "reported_score": 13,
+      "items": null
+    },
+    {
+      "scale": "phq9",
+      "reported_score": 2,
+      "items": [
+        1,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    }
+  ]
+}

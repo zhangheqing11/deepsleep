@@ -1,0 +1,177 @@
+{
+  "schema_version": "0.1.0",
+  "id": "A-036",
+  "split": "A",
+  "seed": 449901104,
+  "main_path": "P5",
+  "secondary_path": "P3",
+  "referral": "R0",
+  "crisis": {
+    "level": "none",
+    "phq9_item9": 0,
+    "history": false
+  },
+  "contraindications": [],
+  "indices": {
+    "isi": 20,
+    "phq9": 7,
+    "gad7": 9,
+    "stop_bang": 1,
+    "meq": 57,
+    "dbas16": 3.9,
+    "psas": 30,
+    "screen_min_before_sleep": 105
+  },
+  "diary": [
+    {
+      "day": 1,
+      "bedtime": "23:00",
+      "lights_off": "00:50",
+      "sol_min": 24,
+      "waso_min": 21,
+      "final_wake": "06:20",
+      "risetime": "06:30",
+      "tst_min": 285,
+      "tib_min": 450,
+      "se": 0.6333,
+      "nap_min": 0,
+      "caffeine_after_14": false,
+      "alcohol": false,
+      "screen_in_bed_min": 105
+    },
+    {
+      "day": 2,
+      "bedtime": "23:00",
+      "lights_off": "00:50",
+      "sol_min": 20,
+      "waso_min": 27,
+      "final_wake": "06:20",
+      "risetime": "06:30",
+      "tst_min": 283,
+      "tib_min": 450,
+      "se": 0.6289,
+      "nap_min": 0,
+      "caffeine_after_14": false,
+      "alcohol": false,
+      "screen_in_bed_min": 105
+    },
+    {
+      "day": 3,
+      "bedtime": "23:00",
+      "lights_off": "00:50",
+      "sol_min": 23,
+      "waso_min": 18,
+      "final_wake": "06:20",
+      "risetime": "06:30",
+      "tst_min": 289,
+      "tib_min": 450,
+      "se": 0.6422,
+      "nap_min": 0,
+      "caffeine_after_14": false,
+      "alcohol": false,
+      "screen_in_bed_min": 105
+    },
+    {
+      "day": 4,
+      "bedtime": "23:10",
+      "lights_off": "01:00",
+      "sol_min": 18,
+      "waso_min": 22,
+      "final_wake": "06:20",
+      "risetime": "06:30",
+      "tst_min": 280,
+      "tib_min": 440,
+      "se": 0.6364,
+      "nap_min": 0,
+      "caffeine_after_14": false,
+      "alcohol": false,
+      "screen_in_bed_min": 105
+    },
+    {
+      "day": 5,
+      "bedtime": "23:10",
+      "lights_off": "01:00",
+      "sol_min": 32,
+      "waso_min": 27,
+      "final_wake": "06:20",
+      "risetime": "06:30",
+      "tst_min": 261,
+      "tib_min": 440,
+      "se": 0.5932,
+      "nap_min": 0,
+      "caffeine_after_14": false,
+      "alcohol": false,
+      "screen_in_bed_min": 105
+    },
+    {
+      "day": 6,
+      "bedtime": "23:00",
+      "lights_off": "00:50",
+      "sol_min": 22,
+      "waso_min": 25,
+      "final_wake": "06:20",
+      "risetime": "06:30",
+      "tst_min": 283,
+      "tib_min": 450,
+      "se": 0.6289,
+      "nap_min": 0,
+      "caffeine_after_14": false,
+      "alcohol": false,
+      "screen_in_bed_min": 105
+    },
+    {
+      "day": 7,
+      "bedtime": "23:00",
+      "lights_off": "00:50",
+      "sol_min": 25,
+      "waso_min": 28,
+      "final_wake": "06:20",
+      "risetime": "06:30",
+      "tst_min": 277,
+      "tib_min": 450,
+      "se": 0.6156,
+      "nap_min": 0,
+      "caffeine_after_14": false,
+      "alcohol": false,
+      "screen_in_bed_min": 105
+    }
+  ],
+  "persona": {
+    "age": 46,
+    "gender": "male",
+    "occupation": "社区店员",
+    "expressiveness": "brief",
+    "defensiveness": "low",
+    "emotionality": "high",
+    "adherence_tendency": 0.65,
+    "constraints": [
+      "轮流负责开店",
+      "住处空间有限"
+    ]
+  },
+  "opening_complaint": "这阵子睡眠不太好，第二天提不起劲，有点影响生活。",
+  "clues": [
+    {
+      "reveal_topic": "screen_in_bed",
+      "supports": "P5",
+      "deny_first": true,
+      "content": "说是上床休息，实际拿着手机打游戏，要花105分钟。",
+      "id": "A-036-c1"
+    },
+    {
+      "reveal_topic": "revenge_bedtime",
+      "supports": "P5",
+      "deny_first": false,
+      "content": "一天都给了整理货架，睡前这点自由时间总想拉长。",
+      "id": "A-036-c2"
+    },
+    {
+      "reveal_topic": "worry_rumination",
+      "supports": "P3",
+      "deny_first": false,
+      "content": "拖得久了也开始担心，今晚会不会又睡不着。",
+      "id": "A-036-c3"
+    }
+  ],
+  "prefilled": []
+}

@@ -1,0 +1,205 @@
+{
+  "schema_version": "0.1.0",
+  "id": "A-029",
+  "split": "A",
+  "seed": 1261989947,
+  "main_path": "P2",
+  "secondary_path": "P3",
+  "referral": "R2",
+  "crisis": {
+    "level": "none",
+    "phq9_item9": 0,
+    "history": false
+  },
+  "contraindications": [],
+  "indices": {
+    "isi": 14,
+    "phq9": 3,
+    "gad7": 8,
+    "stop_bang": 2,
+    "meq": 53,
+    "dbas16": 5.5,
+    "psas": 22,
+    "screen_min_before_sleep": 25
+  },
+  "diary": [
+    {
+      "day": 1,
+      "bedtime": "22:10",
+      "lights_off": "22:40",
+      "sol_min": 65,
+      "waso_min": 35,
+      "final_wake": "06:20",
+      "risetime": "06:30",
+      "tst_min": 360,
+      "tib_min": 500,
+      "se": 0.72,
+      "nap_min": 0,
+      "caffeine_after_14": false,
+      "alcohol": false,
+      "screen_in_bed_min": 25
+    },
+    {
+      "day": 2,
+      "bedtime": "21:50",
+      "lights_off": "22:20",
+      "sol_min": 76,
+      "waso_min": 40,
+      "final_wake": "06:20",
+      "risetime": "06:30",
+      "tst_min": 364,
+      "tib_min": 520,
+      "se": 0.7,
+      "nap_min": 0,
+      "caffeine_after_14": false,
+      "alcohol": false,
+      "screen_in_bed_min": 25
+    },
+    {
+      "day": 3,
+      "bedtime": "22:00",
+      "lights_off": "22:30",
+      "sol_min": 70,
+      "waso_min": 44,
+      "final_wake": "06:20",
+      "risetime": "06:30",
+      "tst_min": 356,
+      "tib_min": 510,
+      "se": 0.698,
+      "nap_min": 0,
+      "caffeine_after_14": false,
+      "alcohol": false,
+      "screen_in_bed_min": 25
+    },
+    {
+      "day": 4,
+      "bedtime": "22:10",
+      "lights_off": "22:40",
+      "sol_min": 72,
+      "waso_min": 39,
+      "final_wake": "06:20",
+      "risetime": "06:30",
+      "tst_min": 349,
+      "tib_min": 500,
+      "se": 0.698,
+      "nap_min": 0,
+      "caffeine_after_14": false,
+      "alcohol": false,
+      "screen_in_bed_min": 25
+    },
+    {
+      "day": 5,
+      "bedtime": "22:00",
+      "lights_off": "22:30",
+      "sol_min": 79,
+      "waso_min": 31,
+      "final_wake": "06:20",
+      "risetime": "06:30",
+      "tst_min": 360,
+      "tib_min": 510,
+      "se": 0.7059,
+      "nap_min": 0,
+      "caffeine_after_14": false,
+      "alcohol": false,
+      "screen_in_bed_min": 25
+    },
+    {
+      "day": 6,
+      "bedtime": "21:50",
+      "lights_off": "22:20",
+      "sol_min": 61,
+      "waso_min": 46,
+      "final_wake": "06:20",
+      "risetime": "06:30",
+      "tst_min": 373,
+      "tib_min": 520,
+      "se": 0.7173,
+      "nap_min": 0,
+      "caffeine_after_14": false,
+      "alcohol": false,
+      "screen_in_bed_min": 25
+    },
+    {
+      "day": 7,
+      "bedtime": "22:00",
+      "lights_off": "22:30",
+      "sol_min": 79,
+      "waso_min": 41,
+      "final_wake": "06:20",
+      "risetime": "06:30",
+      "tst_min": 350,
+      "tib_min": 510,
+      "se": 0.6863,
+      "nap_min": 0,
+      "caffeine_after_14": false,
+      "alcohol": false,
+      "screen_in_bed_min": 25
+    }
+  ],
+  "persona": {
+    "age": 35,
+    "gender": "other",
+    "occupation": "中学老师",
+    "expressiveness": "verbose",
+    "defensiveness": "high",
+    "emotionality": "mid",
+    "adherence_tendency": 0.52,
+    "constraints": [
+      "早上七点半前到校",
+      "周末常有家务安排"
+    ]
+  },
+  "opening_complaint": "我想聊聊睡觉的事，最近醒来觉得累，一直没缓过来。",
+  "clues": [
+    {
+      "reveal_topic": "bed_wakefulness",
+      "supports": "P2",
+      "deny_first": false,
+      "content": "忙完备课去躺着，也没想什么，脑子却特别清醒，关灯很久都睡不着。",
+      "id": "A-029-c1"
+    },
+    {
+      "reveal_topic": "sleep_elsewhere",
+      "supports": "P2",
+      "deny_first": true,
+      "content": "挺奇怪，靠在沙发上容易睡，一躺床就精神。",
+      "id": "A-029-c2"
+    },
+    {
+      "reveal_topic": "bed_wakefulness",
+      "supports": "P2",
+      "deny_first": false,
+      "content": "醒着也不离开床，就等睡意自己来，越等越清醒。",
+      "id": "A-029-c3"
+    },
+    {
+      "reveal_topic": "worry_rumination",
+      "supports": "P3",
+      "deny_first": false,
+      "content": "拖得久了也开始担心，今晚会不会又睡不着。",
+      "id": "A-029-c4"
+    },
+    {
+      "reveal_topic": "leg_discomfort",
+      "supports": "R2",
+      "deny_first": true,
+      "content": "一躺下小腿里面就酸麻，非得动一下才受得了。",
+      "id": "A-029-c5"
+    },
+    {
+      "reveal_topic": "leg_discomfort",
+      "supports": "R2",
+      "deny_first": false,
+      "content": "只要在屋里走就会好一些，一停住又开始难受。",
+      "id": "A-029-c6"
+    },
+    {
+      "reveal_topic": "leg_discomfort",
+      "supports": "R2",
+      "deny_first": false,
+      "content": "白天坐着还好，入夜以后同样坐着就难受。",
+      "id": "A-029-c7"
+    }
+  ],
+  "prefilled": []
+}

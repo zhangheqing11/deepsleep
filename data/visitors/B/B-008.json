@@ -1,0 +1,197 @@
+{
+  "schema_version": "0.1.0",
+  "id": "B-008",
+  "split": "B",
+  "seed": 3144748454,
+  "main_path": "P1",
+  "secondary_path": "P4",
+  "referral": "R0",
+  "crisis": {
+    "level": "none",
+    "phq9_item9": 0,
+    "history": false
+  },
+  "contraindications": [],
+  "indices": {
+    "isi": 12,
+    "phq9": 7,
+    "gad7": 8,
+    "stop_bang": 0,
+    "meq": 55,
+    "dbas16": 5.8,
+    "psas": 30,
+    "screen_min_before_sleep": 20
+  },
+  "diary": [
+    {
+      "day": 1,
+      "bedtime": "22:30",
+      "lights_off": "22:55",
+      "sol_min": 19,
+      "waso_min": 1,
+      "final_wake": "06:20",
+      "risetime": "06:30",
+      "tst_min": 425,
+      "tib_min": 480,
+      "se": 0.8854,
+      "nap_min": 80,
+      "caffeine_after_14": true,
+      "alcohol": false,
+      "screen_in_bed_min": 20
+    },
+    {
+      "day": 2,
+      "bedtime": "23:30",
+      "lights_off": "23:55",
+      "sol_min": 5,
+      "waso_min": 0,
+      "final_wake": "06:20",
+      "risetime": "06:30",
+      "tst_min": 380,
+      "tib_min": 420,
+      "se": 0.9048,
+      "nap_min": 80,
+      "caffeine_after_14": true,
+      "alcohol": false,
+      "screen_in_bed_min": 20
+    },
+    {
+      "day": 3,
+      "bedtime": "23:30",
+      "lights_off": "23:55",
+      "sol_min": 13,
+      "waso_min": 0,
+      "final_wake": "06:20",
+      "risetime": "06:30",
+      "tst_min": 372,
+      "tib_min": 420,
+      "se": 0.8857,
+      "nap_min": 80,
+      "caffeine_after_14": true,
+      "alcohol": false,
+      "screen_in_bed_min": 20
+    },
+    {
+      "day": 4,
+      "bedtime": "23:00",
+      "lights_off": "23:25",
+      "sol_min": 37,
+      "waso_min": 0,
+      "final_wake": "06:20",
+      "risetime": "06:30",
+      "tst_min": 378,
+      "tib_min": 450,
+      "se": 0.84,
+      "nap_min": 80,
+      "caffeine_after_14": true,
+      "alcohol": false,
+      "screen_in_bed_min": 20
+    },
+    {
+      "day": 5,
+      "bedtime": "23:00",
+      "lights_off": "23:25",
+      "sol_min": 23,
+      "waso_min": 0,
+      "final_wake": "06:20",
+      "risetime": "06:30",
+      "tst_min": 392,
+      "tib_min": 450,
+      "se": 0.8711,
+      "nap_min": 80,
+      "caffeine_after_14": true,
+      "alcohol": false,
+      "screen_in_bed_min": 20
+    },
+    {
+      "day": 6,
+      "bedtime": "00:30",
+      "lights_off": "00:55",
+      "sol_min": 27,
+      "waso_min": 0,
+      "final_wake": "09:20",
+      "risetime": "09:30",
+      "tst_min": 478,
+      "tib_min": 540,
+      "se": 0.8852,
+      "nap_min": 80,
+      "caffeine_after_14": true,
+      "alcohol": false,
+      "screen_in_bed_min": 20
+    },
+    {
+      "day": 7,
+      "bedtime": "00:00",
+      "lights_off": "00:25",
+      "sol_min": 33,
+      "waso_min": 27,
+      "final_wake": "09:20",
+      "risetime": "09:30",
+      "tst_min": 475,
+      "tib_min": 570,
+      "se": 0.8333,
+      "nap_min": 80,
+      "caffeine_after_14": true,
+      "alcohol": false,
+      "screen_in_bed_min": 20
+    }
+  ],
+  "persona": {
+    "age": 34,
+    "gender": "other",
+    "occupation": "社区店员",
+    "expressiveness": "brief",
+    "defensiveness": "mid",
+    "emotionality": "low",
+    "adherence_tendency": 0.75,
+    "constraints": [
+      "轮流负责开店",
+      "与家人同住"
+    ]
+  },
+  "opening_complaint": "这阵子睡眠不太好，第二天注意力不太集中，有点影响生活。",
+  "clues": [
+    {
+      "reveal_topic": "schedule_regularity",
+      "supports": "P1",
+      "deny_first": false,
+      "content": "最近忙着整理货架，上床没个准点，早晚能差一个多小时。",
+      "id": "B-008-c1"
+    },
+    {
+      "reveal_topic": "caffeine_alcohol",
+      "supports": "P1",
+      "deny_first": false,
+      "content": "下午还要忙整理货架，咖啡喝到四五点，晚上也不一定停。",
+      "id": "B-008-c2"
+    },
+    {
+      "reveal_topic": "daytime_sleepiness",
+      "supports": "P1",
+      "deny_first": false,
+      "content": "白天会补一觉，大约80分钟，到了晚上睡意又没了。",
+      "id": "B-008-c3"
+    },
+    {
+      "reveal_topic": "chronotype",
+      "supports": "P4",
+      "deny_first": false,
+      "content": "最近休息日睡得晚，到了该早睡的那晚还没睡意。",
+      "id": "B-008-c4"
+    },
+    {
+      "reveal_topic": "mood",
+      "supports": "R0",
+      "deny_first": false,
+      "content": "碰到事情会烦几天，处理完就好了，平时还是愿意和朋友聊天。",
+      "id": "B-008-c5"
+    }
+  ],
+  "prefilled": [
+    {
+      "scale": "isi",
+      "reported_score": 10,
+      "items": null
+    }
+  ]
+}

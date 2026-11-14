@@ -1,0 +1,219 @@
+{
+  "schema_version": "0.1.0",
+  "id": "C-023",
+  "split": "C",
+  "seed": 3903838649,
+  "main_path": "P1",
+  "secondary_path": "P4",
+  "referral": "R3",
+  "crisis": {
+    "level": "passive",
+    "phq9_item9": 1,
+    "history": false
+  },
+  "contraindications": [],
+  "indices": {
+    "isi": 20,
+    "phq9": 18,
+    "gad7": 4,
+    "stop_bang": 2,
+    "meq": 54,
+    "dbas16": 5.3,
+    "psas": 36,
+    "screen_min_before_sleep": 15
+  },
+  "diary": [
+    {
+      "day": 1,
+      "bedtime": "23:30",
+      "lights_off": "23:50",
+      "sol_min": 5,
+      "waso_min": 9,
+      "final_wake": "06:20",
+      "risetime": "06:30",
+      "tst_min": 376,
+      "tib_min": 420,
+      "se": 0.8952,
+      "nap_min": 80,
+      "caffeine_after_14": true,
+      "alcohol": false,
+      "screen_in_bed_min": 15
+    },
+    {
+      "day": 2,
+      "bedtime": "23:00",
+      "lights_off": "23:20",
+      "sol_min": 25,
+      "waso_min": 1,
+      "final_wake": "06:20",
+      "risetime": "06:30",
+      "tst_min": 394,
+      "tib_min": 450,
+      "se": 0.8756,
+      "nap_min": 80,
+      "caffeine_after_14": true,
+      "alcohol": false,
+      "screen_in_bed_min": 15
+    },
+    {
+      "day": 3,
+      "bedtime": "22:30",
+      "lights_off": "22:50",
+      "sol_min": 43,
+      "waso_min": 23,
+      "final_wake": "06:20",
+      "risetime": "06:30",
+      "tst_min": 384,
+      "tib_min": 480,
+      "se": 0.8,
+      "nap_min": 80,
+      "caffeine_after_14": true,
+      "alcohol": false,
+      "screen_in_bed_min": 15
+    },
+    {
+      "day": 4,
+      "bedtime": "23:00",
+      "lights_off": "23:20",
+      "sol_min": 15,
+      "waso_min": 49,
+      "final_wake": "06:20",
+      "risetime": "06:30",
+      "tst_min": 356,
+      "tib_min": 450,
+      "se": 0.7911,
+      "nap_min": 80,
+      "caffeine_after_14": true,
+      "alcohol": false,
+      "screen_in_bed_min": 15
+    },
+    {
+      "day": 5,
+      "bedtime": "23:30",
+      "lights_off": "23:50",
+      "sol_min": 9,
+      "waso_min": 0,
+      "final_wake": "06:20",
+      "risetime": "06:30",
+      "tst_min": 381,
+      "tib_min": 420,
+      "se": 0.9071,
+      "nap_min": 80,
+      "caffeine_after_14": true,
+      "alcohol": false,
+      "screen_in_bed_min": 15
+    },
+    {
+      "day": 6,
+      "bedtime": "23:30",
+      "lights_off": "23:50",
+      "sol_min": 33,
+      "waso_min": 21,
+      "final_wake": "09:20",
+      "risetime": "09:30",
+      "tst_min": 516,
+      "tib_min": 600,
+      "se": 0.86,
+      "nap_min": 80,
+      "caffeine_after_14": true,
+      "alcohol": false,
+      "screen_in_bed_min": 15
+    },
+    {
+      "day": 7,
+      "bedtime": "23:30",
+      "lights_off": "23:50",
+      "sol_min": 38,
+      "waso_min": 14,
+      "final_wake": "09:20",
+      "risetime": "09:30",
+      "tst_min": 518,
+      "tib_min": 600,
+      "se": 0.8633,
+      "nap_min": 80,
+      "caffeine_after_14": true,
+      "alcohol": false,
+      "screen_in_bed_min": 15
+    }
+  ],
+  "persona": {
+    "age": 53,
+    "gender": "male",
+    "occupation": "社区店员",
+    "expressiveness": "brief",
+    "defensiveness": "mid",
+    "emotionality": "low",
+    "adherence_tendency": 0.73,
+    "constraints": [
+      "轮流负责开店",
+      "住处空间有限"
+    ]
+  },
+  "opening_complaint": "这阵子睡眠不太好，第二天觉得累，有点影响生活。",
+  "clues": [
+    {
+      "reveal_topic": "schedule_regularity",
+      "supports": "P1",
+      "deny_first": false,
+      "content": "最近忙着整理货架，上床没个准点，早晚能差一个多小时。",
+      "id": "C-023-c1"
+    },
+    {
+      "reveal_topic": "caffeine_alcohol",
+      "supports": "P1",
+      "deny_first": false,
+      "content": "我靠咖啡撑下午的精神，有时候喝完已经挺晚了。",
+      "id": "C-023-c2"
+    },
+    {
+      "reveal_topic": "daytime_sleepiness",
+      "supports": "P1",
+      "deny_first": false,
+      "content": "白天会补一觉，大约80分钟，到了晚上睡意又没了。",
+      "id": "C-023-c3"
+    },
+    {
+      "reveal_topic": "chronotype",
+      "supports": "P4",
+      "deny_first": false,
+      "content": "晚睡久了，现在休息日也会晚些才困，周一尤其难调回来。",
+      "id": "C-023-c4"
+    },
+    {
+      "reveal_topic": "mood",
+      "supports": "R3",
+      "deny_first": true,
+      "content": "这两个月白天心情也低，以前喜欢的画画都提不起兴趣。",
+      "id": "C-023-c5"
+    },
+    {
+      "reveal_topic": "self_harm",
+      "supports": "crisis",
+      "content": "有时候会想，要是一觉睡过去不再醒来也挺好的。",
+      "deny_first": true,
+      "id": "C-023-c6"
+    }
+  ],
+  "prefilled": [
+    {
+      "scale": "isi",
+      "reported_score": 18,
+      "items": null
+    },
+    {
+      "scale": "phq9",
+      "reported_score": 15,
+      "items": [
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        1,
+        0
+      ]
+    }
+  ]
+}

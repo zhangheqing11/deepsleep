@@ -1,0 +1,198 @@
+{
+  "schema_version": "0.1.0",
+  "id": "C-017",
+  "split": "C",
+  "seed": 1734445636,
+  "main_path": "P5",
+  "secondary_path": "P3",
+  "referral": "R3",
+  "crisis": {
+    "level": "active",
+    "phq9_item9": 2,
+    "history": false
+  },
+  "contraindications": [],
+  "indices": {
+    "isi": 16,
+    "phq9": 11,
+    "gad7": 3,
+    "stop_bang": 0,
+    "meq": 53,
+    "dbas16": 3.7,
+    "psas": 26,
+    "screen_min_before_sleep": 120
+  },
+  "diary": [
+    {
+      "day": 1,
+      "bedtime": "23:00",
+      "lights_off": "01:05",
+      "sol_min": 29,
+      "waso_min": 30,
+      "final_wake": "06:20",
+      "risetime": "06:30",
+      "tst_min": 256,
+      "tib_min": 450,
+      "se": 0.5689,
+      "nap_min": 0,
+      "caffeine_after_14": false,
+      "alcohol": false,
+      "screen_in_bed_min": 120
+    },
+    {
+      "day": 2,
+      "bedtime": "23:00",
+      "lights_off": "01:05",
+      "sol_min": 20,
+      "waso_min": 19,
+      "final_wake": "06:20",
+      "risetime": "06:30",
+      "tst_min": 276,
+      "tib_min": 450,
+      "se": 0.6133,
+      "nap_min": 0,
+      "caffeine_after_14": false,
+      "alcohol": false,
+      "screen_in_bed_min": 120
+    },
+    {
+      "day": 3,
+      "bedtime": "23:10",
+      "lights_off": "01:15",
+      "sol_min": 20,
+      "waso_min": 10,
+      "final_wake": "06:20",
+      "risetime": "06:30",
+      "tst_min": 275,
+      "tib_min": 440,
+      "se": 0.625,
+      "nap_min": 0,
+      "caffeine_after_14": false,
+      "alcohol": false,
+      "screen_in_bed_min": 120
+    },
+    {
+      "day": 4,
+      "bedtime": "23:00",
+      "lights_off": "01:05",
+      "sol_min": 35,
+      "waso_min": 23,
+      "final_wake": "06:20",
+      "risetime": "06:30",
+      "tst_min": 257,
+      "tib_min": 450,
+      "se": 0.5711,
+      "nap_min": 0,
+      "caffeine_after_14": false,
+      "alcohol": false,
+      "screen_in_bed_min": 120
+    },
+    {
+      "day": 5,
+      "bedtime": "23:10",
+      "lights_off": "01:15",
+      "sol_min": 31,
+      "waso_min": 12,
+      "final_wake": "06:20",
+      "risetime": "06:30",
+      "tst_min": 262,
+      "tib_min": 440,
+      "se": 0.5955,
+      "nap_min": 0,
+      "caffeine_after_14": false,
+      "alcohol": false,
+      "screen_in_bed_min": 120
+    },
+    {
+      "day": 6,
+      "bedtime": "23:00",
+      "lights_off": "01:05",
+      "sol_min": 17,
+      "waso_min": 11,
+      "final_wake": "06:20",
+      "risetime": "06:30",
+      "tst_min": 287,
+      "tib_min": 450,
+      "se": 0.6378,
+      "nap_min": 0,
+      "caffeine_after_14": false,
+      "alcohol": false,
+      "screen_in_bed_min": 120
+    },
+    {
+      "day": 7,
+      "bedtime": "23:00",
+      "lights_off": "01:05",
+      "sol_min": 22,
+      "waso_min": 26,
+      "final_wake": "06:20",
+      "risetime": "06:30",
+      "tst_min": 267,
+      "tib_min": 450,
+      "se": 0.5933,
+      "nap_min": 0,
+      "caffeine_after_14": false,
+      "alcohol": false,
+      "screen_in_bed_min": 120
+    }
+  ],
+  "persona": {
+    "age": 47,
+    "gender": "female",
+    "occupation": "行政助理",
+    "expressiveness": "verbose",
+    "defensiveness": "low",
+    "emotionality": "high",
+    "adherence_tendency": 0.45,
+    "constraints": [
+      "工作日需要早起坐公交",
+      "住处空间有限"
+    ]
+  },
+  "opening_complaint": "最近晚上总睡不踏实，白天提不起劲，想看看能怎么调整。",
+  "clues": [
+    {
+      "reveal_topic": "screen_in_bed",
+      "supports": "P5",
+      "deny_first": true,
+      "content": "说是上床休息，实际拿着手机刷短视频，要花120分钟。",
+      "id": "C-017-c1"
+    },
+    {
+      "reveal_topic": "revenge_bedtime",
+      "supports": "P5",
+      "deny_first": false,
+      "content": "忙完整理资料才觉得今天能歇一歇，哪怕困也想再玩会儿。",
+      "id": "C-017-c2"
+    },
+    {
+      "reveal_topic": "revenge_bedtime",
+      "supports": "P5",
+      "deny_first": false,
+      "content": "原本说好看完就睡，结果总想着再看一个，越拖越晚。",
+      "id": "C-017-c3"
+    },
+    {
+      "reveal_topic": "worry_rumination",
+      "supports": "P3",
+      "deny_first": false,
+      "content": "最近又添了件心事：每天到睡前都怕重演昨晚。",
+      "id": "C-017-c4"
+    },
+    {
+      "reveal_topic": "mood",
+      "supports": "R3",
+      "deny_first": true,
+      "content": "不只睡前难受，白天也低落了好几周，打球也不想去了。",
+      "id": "C-017-c5"
+    },
+    {
+      "reveal_topic": "self_harm",
+      "supports": "crisis",
+      "content": "这几周会冒出不想活的念头，还想过具体要怎么做。",
+      "deny_first": true,
+      "id": "C-017-c6"
+    }
+  ],
+  "prefilled": []
+}

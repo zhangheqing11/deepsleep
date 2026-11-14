@@ -1,0 +1,184 @@
+{
+  "schema_version": "0.1.0",
+  "id": "offline-009",
+  "split": "offline",
+  "seed": 4270005368,
+  "main_path": "P1",
+  "secondary_path": "P4",
+  "referral": "R0",
+  "crisis": {
+    "level": "none",
+    "phq9_item9": 0,
+    "history": false
+  },
+  "contraindications": [],
+  "indices": {
+    "isi": 21,
+    "phq9": 8,
+    "gad7": 5,
+    "stop_bang": 2,
+    "meq": 53,
+    "dbas16": 5.2,
+    "psas": 34,
+    "screen_min_before_sleep": 20
+  },
+  "diary": [
+    {
+      "day": 1,
+      "bedtime": "23:30",
+      "lights_off": "23:55",
+      "sol_min": 42,
+      "waso_min": 38,
+      "final_wake": "06:20",
+      "risetime": "06:30",
+      "tst_min": 305,
+      "tib_min": 420,
+      "se": 0.7262,
+      "nap_min": 60,
+      "caffeine_after_14": true,
+      "alcohol": false,
+      "screen_in_bed_min": 20
+    },
+    {
+      "day": 2,
+      "bedtime": "22:30",
+      "lights_off": "22:55",
+      "sol_min": 60,
+      "waso_min": 30,
+      "final_wake": "06:20",
+      "risetime": "06:30",
+      "tst_min": 355,
+      "tib_min": 480,
+      "se": 0.7396,
+      "nap_min": 60,
+      "caffeine_after_14": true,
+      "alcohol": false,
+      "screen_in_bed_min": 20
+    },
+    {
+      "day": 3,
+      "bedtime": "23:00",
+      "lights_off": "23:25",
+      "sol_min": 29,
+      "waso_min": 0,
+      "final_wake": "06:20",
+      "risetime": "06:30",
+      "tst_min": 386,
+      "tib_min": 450,
+      "se": 0.8578,
+      "nap_min": 60,
+      "caffeine_after_14": true,
+      "alcohol": false,
+      "screen_in_bed_min": 20
+    },
+    {
+      "day": 4,
+      "bedtime": "22:30",
+      "lights_off": "22:55",
+      "sol_min": 19,
+      "waso_min": 24,
+      "final_wake": "06:20",
+      "risetime": "06:30",
+      "tst_min": 402,
+      "tib_min": 480,
+      "se": 0.8375,
+      "nap_min": 60,
+      "caffeine_after_14": true,
+      "alcohol": false,
+      "screen_in_bed_min": 20
+    },
+    {
+      "day": 5,
+      "bedtime": "22:30",
+      "lights_off": "22:55",
+      "sol_min": 40,
+      "waso_min": 13,
+      "final_wake": "06:20",
+      "risetime": "06:30",
+      "tst_min": 392,
+      "tib_min": 480,
+      "se": 0.8167,
+      "nap_min": 60,
+      "caffeine_after_14": true,
+      "alcohol": false,
+      "screen_in_bed_min": 20
+    },
+    {
+      "day": 6,
+      "bedtime": "23:30",
+      "lights_off": "23:55",
+      "sol_min": 26,
+      "waso_min": 44,
+      "final_wake": "09:20",
+      "risetime": "09:30",
+      "tst_min": 495,
+      "tib_min": 600,
+      "se": 0.825,
+      "nap_min": 60,
+      "caffeine_after_14": true,
+      "alcohol": false,
+      "screen_in_bed_min": 20
+    },
+    {
+      "day": 7,
+      "bedtime": "23:30",
+      "lights_off": "23:55",
+      "sol_min": 17,
+      "waso_min": 28,
+      "final_wake": "09:20",
+      "risetime": "09:30",
+      "tst_min": 520,
+      "tib_min": 600,
+      "se": 0.8667,
+      "nap_min": 60,
+      "caffeine_after_14": true,
+      "alcohol": false,
+      "screen_in_bed_min": 20
+    }
+  ],
+  "persona": {
+    "age": 41,
+    "gender": "male",
+    "occupation": "仓库文员",
+    "expressiveness": "brief",
+    "defensiveness": "low",
+    "emotionality": "low",
+    "adherence_tendency": 0.52,
+    "constraints": [
+      "早上需要赶班车",
+      "与家人同住"
+    ]
+  },
+  "opening_complaint": "这阵子睡眠不太好，第二天提不起劲，有点影响生活。",
+  "clues": [
+    {
+      "reveal_topic": "schedule_regularity",
+      "supports": "P1",
+      "deny_first": false,
+      "content": "一天一个睡觉时间，主要看核对库存什么时候忙完。",
+      "id": "offline-009-c1"
+    },
+    {
+      "reveal_topic": "caffeine_alcohol",
+      "supports": "P1",
+      "deny_first": false,
+      "content": "我靠浓茶撑下午的精神，有时候喝完已经挺晚了。",
+      "id": "offline-009-c2"
+    },
+    {
+      "reveal_topic": "daytime_sleepiness",
+      "supports": "P1",
+      "deny_first": false,
+      "content": "中午得睡60分钟，不然下午没精神，晚上倒不太困。",
+      "id": "offline-009-c3"
+    },
+    {
+      "reveal_topic": "chronotype",
+      "supports": "P4",
+      "deny_first": false,
+      "content": "晚睡久了，现在休息日也会晚些才困，周一尤其难调回来。",
+      "id": "offline-009-c4"
+    }
+  ],
+  "prefilled": []
+}
