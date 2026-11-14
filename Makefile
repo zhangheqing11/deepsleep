@@ -1,6 +1,7 @@
 .PHONY: venv contracts smoke test safety-eval
 
 PROVIDER ?= rules
+EVAL_ARGS ?=
 
 venv: .venv/.requirements-installed
 
@@ -19,7 +20,7 @@ test: venv
 	.venv/bin/python -m pytest tests
 
 safety-eval: venv
-	.venv/bin/python -m safety.eval --provider $(PROVIDER)
+	.venv/bin/python -m safety.eval --provider $(PROVIDER) $(EVAL_ARGS)
 
 .PHONY: check-keys
 check-keys: venv

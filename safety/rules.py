@@ -33,6 +33,7 @@ class Rules:
         with open(path, encoding="utf-8") as stream:
             raw = yaml.safe_load(stream)
         self.entries = {}
+        self.context = {key: re.compile(value) for key, value in raw.get("explicit_context", {}).items()}
         seen = set()
         for tier in ("explicit", "ambiguous", "exclude", "past_time"):
             entries = []
@@ -51,7 +52,19 @@ class Rules:
             past = [entry["id"] for entry, pattern in self.entries["past_time"] if pattern.search(sentence)]
             for entry, pattern in self.entries["explicit"]:
                 for match in pattern.finditer(sentence):
-                    (routed if past else explicit).append((entry["id"], match.group()))
+                    # Subject is local to this risk clause, never borrowed from
+                    # a later "I am worried" clause. Uncertain evidence is routed,
+                    # not discarded, so judge failure still yields passive.
+                    prefix = re.split(r"[，,：:]", sentence[:match.end()])[-1]
+                    uncertain = False
+                    if entry.get("require_self_subject"):
+                        subjects = list(self.context["self_subject"].finditer(prefix))
+                        others = list(self.context["third_party"].finditer(prefix))
+                        uncertain = not subjects or bool(others and others[-1].start() > subjects[-1].start())
+                    if entry.get("route_denial"):
+                        suffix = re.split(r"[，,：:]", sentence[match.end():], maxsplit=1)[0]
+                        uncertain |= bool(self.context["denial"].search(prefix + suffix))
+                    (routed if past or uncertain else explicit).append((entry["id"], match.group()))
                     if past:
                         past_ids.extend(past)
             exclusions = [match.span() for entry, pattern in self.entries["exclude"]

@@ -15,6 +15,7 @@ from .rules import LEVEL_RANK, Rules
 class SessionSafetyState:
     highest_level: str = "none"
     safety_check_inserted: bool = False
+    safety_check_spoken: bool = False
     judge_failures: int = 0
     judge_results: list[JudgeResult] = field(default_factory=list)
     pending_history_check: bool = False
@@ -59,7 +60,8 @@ class SafetyLayer:
         if level == "active":
             action = "crisis_protocol"
             state.pending_history_check = False
-        elif level == "passive" and previous != "active" and not state.safety_check_inserted:
+        elif level == "passive" and (source == "scale_item9" or (
+                previous != "active" and not state.safety_check_inserted)):
             action = "safety_check"
             state.safety_check_inserted = True
         return SafetyEvent(round, turn, level, source, action,
@@ -121,7 +123,8 @@ class SafetyLayer:
             raise ValueError("PHQ-9 item 9 must be an integer from 0 to 3")
         if value <= self.config["phq9_item9_threshold"]:
             return None
-        return self._event("passive", "scale_item9", round, turn, state, matched="PHQ-9 item 9 > 0")
+        level = "active" if state.highest_level == "active" else "passive"
+        return self._event(level, "scale_item9", round, turn, state, matched="PHQ-9 item 9 > 0")
 
     def check_verification(self, agent_text: str) -> bool:
         """Check the next agent reply; the engine clears the per-session pending flag."""
@@ -137,3 +140,15 @@ class SafetyLayer:
             f"{entry['name']}：{entry['number']}" for entry in self.scripts["hotlines"]
         )
         return self.scripts[action].replace("{hotlines}", hotlines)
+
+    def script_for_event(self, event: SafetyEvent, state: SessionSafetyState) -> str:
+        """Deduplicate the spoken check, never the positive scale evidence.
+
+        Call once when inserting a fixed safety message. Persist the event even
+        when this returns an empty string. history_check remains engine-owned.
+        """
+        if event.action == "safety_check":
+            if state.safety_check_spoken or state.highest_level == "active":
+                return ""
+            state.safety_check_spoken = True
+        return self.script_for(event.action)

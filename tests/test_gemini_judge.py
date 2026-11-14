@@ -114,8 +114,9 @@ def test_gemini_http_errors(code):
 
 def test_gemini_missing_key():
     judge = make_judge({"judge_provider": "gemini_decision"})
-    assert isinstance(judge, MockJudge)
-    assert asyncio.run(judge.classify("模拟发言")).provider == "mock(fallback)"
+    assert not isinstance(judge, MockJudge)
+    assert asyncio.run(judge.classify("模拟发言")).status == "error"
+    assert judge.provider == "gemini_decision"
 
 
 def test_gemini_missing_sdk(monkeypatch):
@@ -124,7 +125,7 @@ def test_gemini_missing_sdk(monkeypatch):
     monkeypatch.setitem(sys.modules, "google", SimpleNamespace())
     with pytest.raises(ImportError, match="requirements-optional.txt"):
         GeminiDecisionJudge()
-    assert make_judge({"judge_provider": "gemini_decision"}).provider == "mock(fallback)"
+    assert asyncio.run(make_judge({"judge_provider": "gemini_decision"}).classify("普通发言")).status == "error"
 
 
 @pytest.mark.parametrize("key", ["GEMINI_API_KEY", "GOOGLE_API_KEY"])

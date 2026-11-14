@@ -5,6 +5,7 @@ from collections import Counter
 from datetime import datetime, timezone
 import json
 import math
+import os
 from pathlib import Path
 
 from .config import load_config, load_repo_env
@@ -94,7 +95,20 @@ async def evaluate(rows, provider=None, config=None, *, timeout=None) -> dict:
     risk_actual = sum(sum(matrix[i]) for i in risk_indices)
     risk_predicted = sum(matrix[i][j] for i in range(len(LEVELS)) for j in risk_indices)
     latencies = [result.latency_ms for result in results]
+    evidence = {
+        "rules-only": {"status": "未测", "note": "规则单独的结果不构成 0 漏报指标"},
+        "mock": {"status": "未测", "note": "mock，不代表识别能力"},
+        "real_judge": {"status": "未测", "note": "规则 + 真实判断器联合指标；A2/A4 留出集验收未完成"},
+    }
+    column = "rules-only" if provider == "rules" else "mock" if provider == "mock" else "real_judge"
+    evidence[column].update(
+        status="本次已测" if column != "real_judge" else "本次已测，A2/A4 留出集未测",
+        missed_count=len(missed), risk_recall=_ratio(true_positive, risk_actual),
+    )
     return {
+        "evidence_columns": evidence,
+        "freeze_acceptance": {"status": "未完成", "eligible": False,
+                              "reason": "演示前须有真实判断器留出集漏报数；漏报数 > 0 不得冻结，0 也须完成 A2/A4 人工审定"},
         "provider": "rules" if layer is None else layer.judge.provider,
         "requested_provider": provider,
         "created_at": datetime.now(timezone.utc).isoformat(),
@@ -128,9 +142,11 @@ def main(argv=None):
     parser.add_argument("--config", type=Path)
     parser.add_argument("--output-dir", type=Path)
     parser.add_argument("--timeout", type=float, help="本次评测判断器超时秒数（覆盖冻结默认值）")
+    parser.add_argument("--no-env", action="store_true", help="不读取仓库 .env，仅使用进程环境")
     args = parser.parse_args(argv)
     try:
-        load_repo_env()
+        if not args.no_env and os.getenv("SAFETY_EVAL_NO_DOTENV") != "1":
+            load_repo_env()
     except (OSError, ValueError):
         parser.error("仓库根 .env 读取失败，请检查文件权限和格式。")
     config = load_config(args.config, provider="mock" if args.provider == "rules" else None if args.provider == "chain" else args.provider)

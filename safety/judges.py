@@ -104,6 +104,17 @@ class _BoundedJudge:
         raise NotImplementedError
 
 
+class UnavailableJudge(_BoundedJudge):
+    """Preserve the requested provider and report failure without making requests."""
+
+    def __init__(self, config):
+        self.provider = config["judge_provider"]
+        super().__init__(config)
+
+    async def _predict(self, text):
+        raise RuntimeError("Judge configuration or SDK unavailable")
+
+
 class MockJudge(_BoundedJudge):
     """Deterministic one-hot keyword fixture, not a validated classifier."""
     provider = "mock"
@@ -340,7 +351,7 @@ def _make_single_judge(config, *, allow_fallback=True) -> Judge:
     if not any(os.getenv(key, "").strip() for key in keys):
         if not allow_fallback:
             raise ValueError(f"评测 {provider} 缺少 API key：请设置 {' 或 '.join(keys)}；未降级 mock。")
-        return MockJudge(config, provider="mock(fallback)")
+        return UnavailableJudge(config)
     try:
         if provider == "ds_flash":
             # Its adapter imports lazily at request time; check availability now
@@ -350,10 +361,10 @@ def _make_single_judge(config, *, allow_fallback=True) -> Judge:
         if provider == "startlux":
             return StartLuxJudge(config)
         return GeminiDecisionJudge(config) if provider == "gemini_decision" else JevJudge(config)
-    except ImportError:
+    except (ImportError, ValueError):
         if not allow_fallback:
-            raise ValueError(f"评测 {provider} 缺少所需 SDK，请安装可选依赖；未降级 mock。") from None
-        return MockJudge(config, provider="mock(fallback)")
+            raise ValueError(f"评测 {provider} 缺少所需 SDK 或配置；未降级 mock。") from None
+        return UnavailableJudge(config)
 
 
 def make_judge(config=None, *, allow_fallback=True, chain=None) -> Judge:

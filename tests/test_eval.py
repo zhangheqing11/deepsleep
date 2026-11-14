@@ -114,7 +114,7 @@ def test_explicit_real_provider_requires_key_and_engine_keeps_fallback(provider,
     monkeypatch.setenv("GOOGLE_API_KEY", "")
     with pytest.raises(ValueError, match=f"评测 {provider} 缺少 API key"):
         asyncio.run(evaluate([], provider))
-    assert make_judge({"judge_provider": provider}).provider == "mock(fallback)"
+    assert asyncio.run(make_judge({"judge_provider": provider}).classify("普通发言")).status == "error"
     result = subprocess.run(
         [sys.executable, "-m", "safety.eval", "--provider", provider,
          "--output-dir", str(tmp_path)], cwd=ROOT, env=os.environ.copy(),
@@ -186,6 +186,7 @@ def test_dotenv_preserves_environment_and_parses_check_keys_syntax(monkeypatch, 
 def test_cli_loads_root_env_before_config_and_accepts_timeout(monkeypatch, tmp_path, capsys):
     import safety.config as config_module
     from safety.eval import main
+    monkeypatch.delenv("SAFETY_EVAL_NO_DOTENV", raising=False)
     root = tmp_path / "repo"
     (root / "safety").mkdir(parents=True)
     (root / "safety/config.yaml").write_text((ROOT / "safety/config.yaml").read_text())

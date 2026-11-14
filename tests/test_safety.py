@@ -4,7 +4,7 @@ import json
 from pathlib import Path
 
 import pytest
-from jsonschema import Draft202012Validator, ValidationError
+from jsonschema import Draft202012Validator
 from referencing import Registry, Resource
 import yaml
 
@@ -111,11 +111,11 @@ def test_item9_and_monotonic_state():
     assert layer.assess_phq9_item9(0, 1, 0, state) is None
     event = layer.assess_phq9_item9(1, 1, 0, state)
     assert (event.level, event.source, event.action) == ("passive", "scale_item9", "safety_check")
-    assert layer.assess_phq9_item9(2, 1, 0, state).action == "none"
+    assert layer.assess_phq9_item9(2, 1, 0, state).action == "safety_check"
     assert assess(layer, "我现在想自杀", state).action == "crisis_protocol"
     judge.result = JudgeResult({"none": 0., "history": 0., "passive": 1., "active": 0.}, "ok", "stub", .1)
     assert assess(layer, "我希望睡过去不再醒来", state).action == "none"
-    assert layer.assess_phq9_item9(1, 2, 0, state).action == "none"
+    assert layer.assess_phq9_item9(1, 2, 0, state).action == "crisis_protocol"
     assert state.highest_level == "active"
     assert judge.calls == 1
     assert layer.assess_phq9_item9(1, 1, 0, SessionSafetyState()).action == "safety_check"
@@ -140,11 +140,8 @@ def test_event_matches_contract(kind):
         text = "我现在想自杀" if kind == "explicit" else "最近早醒" if kind in ("judge", "history") else "撑不下去了"
         event = assess(layer, text, state)
     if kind == "duplicate":
-        # The local no-action result must be filtered before session serialization.
-        assert event.action == "none"
-        with pytest.raises(ValidationError):
-            validator.validate(event.to_dict())
-        return
+        # Every positive scale result remains contract-valid evidence.
+        assert (event.source, event.level, event.action) == ("scale_item9", "passive", "safety_check")
     validator.validate(json.loads(json.dumps(event.to_dict())))
     assert event.to_dict() == asdict(event)
 

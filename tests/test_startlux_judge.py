@@ -175,7 +175,7 @@ def test_invalid_timeout_overrides_are_rejected(overrides):
 
 
 def test_factory_requires_key_and_accepts_env_provider(monkeypatch):
-    assert make_judge({"judge_provider": "startlux"}).provider == "mock(fallback)"
+    assert asyncio.run(make_judge({"judge_provider": "startlux"}).classify("普通发言")).status == "error"
     with pytest.raises(ValueError, match="STARTLUX_API_KEY"):
         StartLuxJudge()
     monkeypatch.setenv("STARTLUX_API_KEY", "offline-key")
