@@ -216,7 +216,8 @@ button:focus-visible, a:focus-visible { outline: 2px solid var(--accent); outlin
   .page { padding: 16px; }
   .foot { padding: 0 16px 16px; }
   .columns { grid-template-columns: minmax(0, 1fr); }
-  .topbar-status { margin-left: 0; }
+  .topbar-status { margin-left: 0; min-width: 0; }
+  .topbar-status .badge { white-space: normal; }
 }
 @media (prefers-reduced-motion: reduce) {
   * { transition: none !important; animation: none !important; }
@@ -225,3 +226,104 @@ button:focus-visible, a:focus-visible { outline: 2px solid var(--accent); outlin
   :root:not([data-theme='light']) { --role-run1: #a3ada8; --role-control: #9dbccb; }
 }
 :root[data-theme='dark'] { --role-run1: #a3ada8; --role-control: #9dbccb; }
+
+/* ---------- 总览：时间线 ---------- */
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.timeline-panel { padding: 14px 20px; }
+.timeline-head { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; margin-bottom: 10px; }
+.timeline-head h2 { font-size: 1.05rem; }
+.timeline-error { color: var(--danger); font-weight: 600; margin-bottom: 8px; }
+.timeline { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr) auto minmax(0, 2fr); gap: 10px; align-items: stretch; }
+.timeline .arrow { align-self: center; color: var(--muted); font-size: 1.3rem; }
+.pair { display: grid; gap: 4px; }
+.pair-list { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 10px; }
+.pair-note { text-align: center; }
+.node { border: 1px solid var(--border); border-left: 4px solid var(--border); border-radius: var(--radius); padding: 8px 12px; background: var(--surface); min-width: 0; }
+.node.role-run1 { border-left-color: var(--role-run1); }
+.node.role-control { border-left-color: var(--role-control); }
+.node.role-run2 { border-left-color: var(--role-run2); }
+.node-running { background: var(--info-soft); }
+.node-failed { background: var(--danger-soft); border-color: var(--danger); }
+.node-title { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.node-progress { display: grid; gap: 2px; margin-top: 4px; }
+.node-progress progress { width: 100%; height: 6px; accent-color: var(--accent); }
+.node-error, .error-text { color: var(--danger); overflow-wrap: anywhere; }
+
+/* ---------- ① 指标 ---------- */
+.headline { display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); gap: 12px; align-items: stretch; }
+.big { border-radius: var(--radius); padding: 10px 14px; background: var(--surface-2); border-top: 4px solid var(--border); min-width: 0; }
+.big.role-control { border-top-color: var(--role-control); }
+.big.role-run2 { border-top-color: var(--role-run2); background: var(--accent-soft); }
+.big-label { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 8px; }
+.big-value { font-size: 3.4rem; font-weight: 700; line-height: 1.15; font-variant-numeric: tabular-nums; letter-spacing: -0.01em; }
+.big-value.big-empty { font-size: 1.1rem; font-weight: 500; color: var(--muted); padding: 18px 0; line-height: 1.4; overflow-wrap: anywhere; }
+.delta { display: grid; align-content: center; justify-items: center; text-align: center; gap: 2px; padding: 0 4px; }
+.delta-value { font-size: 1.35rem; font-weight: 700; color: var(--accent); font-variant-numeric: tabular-nums; white-space: nowrap; }
+.background-run { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 4px 16px; align-items: center; margin: 10px 0; padding: 8px 12px; border-radius: var(--radius); border: 1px dashed var(--border); }
+.small-number { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0 8px; border-left: 4px solid var(--role-run1); padding-left: 10px; }
+.small-number-value { font-size: 1.5rem; font-weight: 700; font-variant-numeric: tabular-nums; }
+.metric-table { width: 100%; border-collapse: collapse; font-size: 0.92rem; font-variant-numeric: tabular-nums; }
+.metric-table th, .metric-table td { padding: 3px 8px; border-bottom: 1px solid var(--border); text-align: right; }
+.metric-table th[scope='row'] { text-align: left; font-weight: 500; color: var(--muted); }
+.metric-table thead th { font-size: 0.85rem; }
+.metric-table thead th.role-run1 { color: var(--role-run1); }
+.metric-table thead th.role-control { color: var(--role-control); }
+.metric-table thead th.role-run2 { color: var(--role-run2); }
+.redlines { margin-top: 10px; padding: 8px 12px; border-radius: var(--radius); background: var(--surface-2); }
+.redlines-fail { background: var(--danger-soft); border: 2px solid var(--danger); }
+.redlines-head { display: flex; flex-wrap: wrap; gap: 4px 10px; align-items: baseline; margin-bottom: 4px; }
+.redline-reason { color: var(--danger); margin-top: 6px; }
+.caliber { margin-top: 10px; }
+
+/* ---------- ② 学到了什么 ---------- */
+.learned { display: grid; gap: 10px; }
+.learned-head { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+.chip { display: inline-block; padding: 2px 10px; border-radius: 999px; background: var(--accent-soft); color: var(--accent); font-variant-numeric: tabular-nums; }
+.changes { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+.change { border: 1px solid var(--border); border-left: 4px solid var(--border); border-radius: var(--radius); padding: 8px 12px; }
+.change.crit-high { border-left-color: var(--danger); }
+.change.crit-medium { border-left-color: var(--warn); }
+.change-head { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; margin-bottom: 4px; }
+.change-text { overflow-wrap: anywhere; }
+.kept { padding: 12px 14px; border-radius: var(--radius); background: var(--ok-soft); color: var(--ok); display: grid; gap: 4px; }
+.kept p { color: var(--text); }
+.cand-reasons { margin: 0; padding-left: 18px; display: grid; gap: 6px; }
+.cand-reasons ul { margin: 2px 0 0; padding-left: 18px; }
+.learn-progress { display: grid; gap: 10px; }
+.steps { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+.step { display: grid; grid-template-columns: 14px minmax(0, 1fr); column-gap: 10px; row-gap: 2px; align-items: center; }
+.step > :not(.step-dot) { grid-column: 2; }
+.step-dot { width: 12px; height: 12px; border-radius: 50%; border: 2px solid var(--border); grid-row: 1; }
+.step-done .step-dot { background: var(--ok); border-color: var(--ok); }
+.step-running .step-dot { background: var(--info); border-color: var(--info); }
+.step-failed .step-dot { background: var(--danger); border-color: var(--danger); }
+.step-pending { color: var(--muted); }
+.cands { display: flex; flex-wrap: wrap; gap: 4px; }
+.review-line { padding: 8px 10px; border-radius: var(--radius); background: var(--surface-2); }
+
+/* ---------- ③ 回退 ---------- */
+.versions { display: flex; align-items: center; gap: 10px; font-size: 1.4rem; font-weight: 700; margin-bottom: 4px; }
+.version { padding: 2px 12px; border-radius: var(--radius); border: 1px solid var(--border); font-family: var(--mono); }
+.version-head { border-color: var(--accent); background: var(--accent-soft); color: var(--accent); display: inline-flex; align-items: baseline; gap: 6px; }
+.version small { font-size: 0.75rem; font-family: var(--font); font-weight: 500; }
+.guarantees { list-style: none; margin: 12px 0; padding: 0; display: grid; gap: 8px; font-size: 0.9rem; }
+.rollback { display: grid; gap: 6px; }
+.cmd { margin: 0; padding: 8px 12px; border-radius: var(--radius); background: var(--surface-2); font-family: var(--mono); font-size: 0.9rem; overflow-x: auto; white-space: pre-wrap; overflow-wrap: anywhere; }
+
+@media (min-width: 1800px) {
+  .big-value { font-size: 4rem; }
+}
+@media (max-width: 1100px) {
+  .timeline { grid-template-columns: minmax(0, 1fr); }
+  .timeline .arrow { display: none; }
+}
+@media (max-width: 560px) {
+  .pair-list { grid-template-columns: minmax(0, 1fr); }
+  .headline { grid-template-columns: minmax(0, 1fr); }
+  .delta { justify-items: start; text-align: left; }
+  .background-run { grid-template-columns: minmax(0, 1fr); }
+  .big-value { font-size: 2.8rem; }
+  .metric-table { font-size: 0.85rem; }
+  .metric-table th, .metric-table td { padding: 4px; }
+}
+.delta-value.delta-empty { color: var(--muted); font-weight: 500; }

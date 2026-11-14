@@ -63,6 +63,7 @@ const CODE_MESSAGES: Record<string, string> = {
   EVOLUTION_NOT_FOUND: '未找到该学习记录',
   NOT_READY: '尚未生成，稍后会自动重试',
   DATA_UNAVAILABLE: '后端读到的数据不完整或不合法，暂时无法显示',
+  NOT_FOUND: '后端没有找到这个接口或文件（HTTP 404）：只读接口可能尚未部署，或产物还没写出',
 };
 
 export function describeError(e: ApiError): string {

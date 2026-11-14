@@ -48,6 +48,16 @@ test('接口不存在（404 无信封）：http 错误，不当成“没有实�
   await assert.rejects(createHttpClient('', f.impl).getExperiment(signal), (e) => e.kind === 'http' && e.status === 404 && !e.code);
 });
 
+test('现有后端对未实现接口返回 404 NOT_FOUND：显示“接口可能尚未部署”', async () => {
+  const { describeError } = await loadModules();
+  const f = fakeFetch(() => json(404, { error: { code: 'NOT_FOUND', message: '接口或资源不存在。', request_id: 'req_x' } }));
+  await assert.rejects(createHttpClient('', f.impl).getExperiment(signal), (e) => {
+    assert.equal(e.code, 'NOT_FOUND');
+    assert.match(describeError(e), /尚未部署/);
+    return true;
+  });
+});
+
 test('无信封的 5xx（代理连不上后端）按网络问题处理', async () => {
   const f = fakeFetch(() => new Response('', { status: 502 }));
   await assert.rejects(createHttpClient('', f.impl).getExperiment(signal), (e) => e.kind === 'network');
