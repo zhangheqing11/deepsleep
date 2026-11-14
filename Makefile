@@ -50,3 +50,20 @@ demo-all:
 
 demo-mock:
 	$(DEMO_PYTHON) -m engine.demo all --mock --dev --visitors-dir sim/visitors --reset $(DEMO_ARGS)
+
+# 离线睡眠脱敏数据（privacy/data/）；复用已有 Python，不安装依赖。
+DEID_PYTHON ?= $(firstword $(wildcard .venv/bin/python ../deepsleep/.venv/bin/python))
+.PHONY: deid-data
+deid-data:
+	$(DEID_PYTHON) -m privacy.data.tools.build
+	$(DEID_PYTHON) -m privacy.data.tools.generate
+	$(DEID_PYTHON) -m privacy.data.tools.build_sft
+	$(DEID_PYTHON) -m privacy.data.tools.validate --json privacy/data/STATS.json
+	PYTHONDONTWRITEBYTECODE=1 $(DEID_PYTHON) -m pytest -q -p no:cacheprovider tests/test_privacy_data.py
+	$(DEID_PYTHON) -m privacy.data.tools.evaluate --gold gold/dev.jsonl --baseline rules --json privacy/data/baselines/dev_rules.json
+	$(DEID_PYTHON) -m privacy.data.tools.evaluate --gold gold/dev.jsonl --baseline naive --json privacy/data/baselines/dev_naive.json
+	$(DEID_PYTHON) -m privacy.data.tools.evaluate --gold gold/test.jsonl --baseline rules --json privacy/data/baselines/test_rules.json
+	$(DEID_PYTHON) -m privacy.data.tools.evaluate --gold gold/test.jsonl --baseline naive --json privacy/data/baselines/test_naive.json
+	$(DEID_PYTHON) -m privacy.data.tools.evaluate --sessions --baseline rules --json privacy/data/baselines/sessions_rules.json
+	$(DEID_PYTHON) -m privacy.data.tools.scan_v03
+	$(DEID_PYTHON) -m privacy.data.tools.report

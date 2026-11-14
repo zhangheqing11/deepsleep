@@ -1,0 +1,50 @@
+# 用途：只生成虚构号码；身份证 MOD 11-2、银行卡 Luhn 校验由 generate.py 计算。格式有效不代表号码未被分配，严禁拨打或查询。
+phone_styles:
+- '{n}'
+- +86 {n}
+- '{a} {b} {c}'
+- '{a}-{b}-{c}'
+- chinese
+- 022-{land}
+id_region_codes:
+- '110105'
+- '120104'
+- '310104'
+- '440106'
+- '510107'
+id_kinds:
+  身份证: checksum_mod11_2
+  护照: E{digits8}
+  病历号: BL{digits9}
+  住院号: ZY{digits9}
+  门诊号: MZ{digits9}
+  医保卡号: YB{digits9}
+  学号: XH{digits10}
+  工号: GH{digits7}
+account_styles:
+- sleep_{digits6}
+- '{letters}@example.invalid'
+- QQ:{digits9}
+- bank_luhn
+- 夜航_{digits5}
+plate_styles:
+- 津A·{digits5}
+- 京B{digits5}
+- 沪AD{digits5}
+regex:
+- label: PHONE
+  pattern: (?<![\d])(?:\+86[ -]?)?1[3-9]\d[ -]?\d{4}[ -]?\d{4}(?!\d)
+- label: PHONE
+  pattern: (?<!\d)0\d{2,3}[- ]\d{7,8}(?!\d)
+- label: PHONE
+  pattern: 一[三四五六七八九][零〇一二三四五六七八九]{9}
+- label: ID_NUM
+  pattern: (?<!\d)[1-9]\d{5}(?:19|20)\d{2}(?:0[1-9]|1[0-2])(?:0[1-9]|[12]\d|3[01])\d{3}[\dXx](?!\d)
+- label: ID_NUM
+  pattern: (?<![A-Za-z0-9])(?:MZ|BL|ZY|YB|XH|GH|E)\d{7,12}(?!\d)
+- label: ACCOUNT
+  pattern: '[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}'
+- label: ACCOUNT
+  pattern: (?:(?:微信(?:号)?|QQ(?:号)?|网名|银行卡(?:号)?)[：:是为 ]*)(?P<entity>[A-Za-z0-9_\u4e00-\u9fff]{5,24})(?=[，。；\s]|$)
+- label: PLATE
+  pattern: '[京津沪渝冀豫云辽黑湘皖鲁新苏浙赣鄂桂甘晋蒙陕吉闽贵粤青藏川宁琼][A-Z][· ]?(?:[DF][A-Z0-9]\d{4}|[A-Z0-9]{5})'
