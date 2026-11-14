@@ -1,22 +1,25 @@
-"""启动时读取配置；当前阶段仅支持 mock 模式。"""
+"""启动时选择只读产物或内存 Mock，不加载 .env。"""
 
 import os
 import math
 from dataclasses import dataclass
+from pathlib import Path
 from typing import Literal
 from urllib.parse import urlsplit
 
 
 @dataclass(frozen=True)
 class Settings:
-    execution_mode: Literal["mock"] = "mock"
+    data_source: Literal["files", "mock"] = "files"
+    data_root: Path = Path(__file__).resolve().parents[1]
+    serve_web: bool = False
     cors_origins: tuple[str, ...] = ()
     mock_step_delay_s: float = 0.5
     mock_report_delay_s: float = 3.0
 
     def __post_init__(self) -> None:
-        if self.execution_mode != "mock":
-            raise ValueError("当前服务骨架仅支持 mock 模式，真实引擎尚未接入。")
+        if self.data_source not in {"files", "mock"}:
+            raise ValueError("API_DATA_SOURCE 只能设为 files 或 mock。")
         for name, value, maximum in (
             ("mock_step_delay_s", self.mock_step_delay_s, 5),
             ("mock_report_delay_s", self.mock_report_delay_s, 10),
@@ -40,11 +43,17 @@ class Settings:
             # 访问 port 会校验端口格式和范围。
             parsed.port
 
+    @property
+    def execution_mode(self) -> Literal["real", "mock"]:
+        return "real" if self.data_source == "files" else "mock"
+
     @classmethod
     def from_env(cls) -> "Settings":
-        mode = os.getenv("API_EXECUTION_MODE", "mock").strip()
-        if mode != "mock":
-            raise ValueError("API_EXECUTION_MODE 当前只能设为 mock，真实引擎尚未接入。")
+        source = os.getenv("API_DATA_SOURCE", "files").strip()
+        # 兼容旧配置，但不允许其与数据源矛盾。
+        mode = os.getenv("API_EXECUTION_MODE")
+        if mode is not None and mode != ("real" if source == "files" else "mock"):
+            raise ValueError("API_EXECUTION_MODE 与 API_DATA_SOURCE 不一致。")
         origins = tuple(
             dict.fromkeys(
                 item.strip().rstrip("/")
@@ -53,7 +62,9 @@ class Settings:
             )
         )
         return cls(
-            execution_mode=mode, cors_origins=origins,
+            data_source=source, cors_origins=origins,
+            data_root=Path(os.getenv("API_DATA_ROOT", str(cls.data_root))),
+            serve_web=os.getenv("API_SERVE_WEB", "0") == "1",
             mock_step_delay_s=float(os.getenv("API_MOCK_STEP_DELAY_S", "0.5")),
             mock_report_delay_s=float(os.getenv("API_MOCK_REPORT_DELAY_S", "3")),
         )

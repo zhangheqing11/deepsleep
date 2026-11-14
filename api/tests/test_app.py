@@ -10,24 +10,24 @@ from api.main import create_app
 
 class ServiceTests(unittest.TestCase):
     def setUp(self):
-        self.app = create_app(Settings(cors_origins=("http://localhost:5173",)))
+        self.app = create_app(Settings(data_source="mock", cors_origins=("http://localhost:5173",)))
         self.client = TestClient(self.app)
         self.addCleanup(self.client.close)
 
     def test_health_and_docs_work_without_model_keys(self):
-        with patch.dict(os.environ, {}, clear=True):
+        with patch.dict(os.environ, {"API_DATA_SOURCE": "mock"}, clear=True):
             with TestClient(create_app()) as client:
                 response = client.get("/api/v1/health")
                 self.assertEqual(response.status_code, 200)
-                self.assertEqual(response.json(), {"status": "ok", "execution_mode": "mock"})
+                self.assertEqual(response.json(), {"status": "ok", "data_source": "mock", "execution_mode": "mock"})
                 self.assertTrue(response.headers["X-Request-ID"].startswith("req_"))
                 self.assertEqual(client.get("/docs").status_code, 200)
                 schema = client.get("/openapi.json").json()
-                self.assertEqual(set(schema["paths"]), {
+                self.assertTrue({
                     "/api/v1/health", "/api/v1/runs", "/api/v1/runs/{run_id}",
                     "/api/v1/runs/{run_id}/report", "/api/v1/runs/{run_id}/sessions",
                     "/api/v1/runs/{run_id}/sessions/{visitor_id}",
-                })
+                }.issubset(schema["paths"]))
 
     def test_not_found_and_wrong_method_have_error_envelope(self):
         for method, path, status, code in [
@@ -99,8 +99,8 @@ class SettingsTests(unittest.TestCase):
         with patch.dict(os.environ, {}, clear=True):
             self.assertEqual(Settings.from_env().cors_origins, ())
 
-    def test_real_mode_fails_instead_of_pretending_engine_is_ready(self):
-        with patch.dict(os.environ, {"API_EXECUTION_MODE": "real"}, clear=True):
+    def test_inconsistent_legacy_mode_fails(self):
+        with patch.dict(os.environ, {"API_DATA_SOURCE": "mock", "API_EXECUTION_MODE": "real"}, clear=True):
             with self.assertRaises(ValueError):
                 create_app()
 
@@ -112,7 +112,7 @@ class SettingsTests(unittest.TestCase):
         ]:
             with self.subTest(origin=origin):
                 with self.assertRaises(ValueError):
-                    Settings(cors_origins=(origin,))
+                    Settings(data_source="mock", cors_origins=(origin,))
 
 
 if __name__ == "__main__":

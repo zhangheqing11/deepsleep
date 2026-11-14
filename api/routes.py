@@ -5,6 +5,12 @@ from typing import Annotated
 from fastapi import APIRouter, Header, Request
 
 from api.run_models import ErrorResponse, MockScenario, RunAccepted, RunRequest, RunState, SessionList
+from api.read_routes import RunID, VisitorID
+
+
+def run_source(request: Request, run_id: str):
+    store = request.app.state.read_store
+    return store if run_id in store.run_ids else request.app.state.runs
 
 router = APIRouter(
     prefix="/api/v1/runs", tags=["Mock 运行"],
@@ -22,20 +28,20 @@ async def create_run(
 
 
 @router.get("/{run_id}")
-async def get_run(run_id: str, request: Request) -> RunState:
-    return request.app.state.runs.state(run_id)
+async def get_run(run_id: RunID, request: Request) -> RunState:
+    return run_source(request, run_id).state(run_id)
 
 
 @router.get("/{run_id}/report")
-async def get_report(run_id: str, request: Request) -> dict:
-    return request.app.state.runs.report(run_id)
+async def get_report(run_id: RunID, request: Request) -> dict:
+    return run_source(request, run_id).report(run_id)
 
 
 @router.get("/{run_id}/sessions")
-async def get_sessions(run_id: str, request: Request) -> SessionList:
-    return request.app.state.runs.sessions(run_id)
+async def get_sessions(run_id: RunID, request: Request) -> SessionList:
+    return run_source(request, run_id).sessions(run_id)
 
 
 @router.get("/{run_id}/sessions/{visitor_id}")
-async def get_session(run_id: str, visitor_id: str, request: Request) -> dict:
-    return request.app.state.runs.session(run_id, visitor_id)
+async def get_session(run_id: RunID, visitor_id: VisitorID, request: Request) -> dict:
+    return run_source(request, run_id).session(run_id, visitor_id)

@@ -1,3 +1,5 @@
+> **已被 files 数据源取代，仅保留历史。** 当前路演入口为 `api.main:app`，详见 [READ_API.md](READ_API.md)。`api/integration_app.py` 仍保留，显式使用 mock 配置；下文为旧离线快照流程。
+
 # 离线引擎集成（开发验收用）
 
 这个入口用于在没有真实模型调用、没有 API 费用的情况下，把固定版本的上游 engine、sim、scoring 和 safety 串起来验收。它不替代正式 A/B 评测，也不改变前端已经使用的 Mock API。

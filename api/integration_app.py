@@ -28,7 +28,7 @@ def create_integration_app(*, backend=None, database_path: Path | None = None,
     except Exception:
         store.close()
         raise
-    app = create_app(Settings())
+    app = create_app(Settings(data_source="mock"))
     app.title = "deepsleep 离线引擎集成（仅本地开发）"
     app.description = ("原 Mock 接口继续可用；integration 路由实际调用固定版本引擎与评分，"
                        "所有模型组件均为 Mock，数据为 sample，结果不作为正式评测证据。")
