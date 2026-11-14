@@ -91,6 +91,13 @@ export async function savePreferencesDemo(p: Preferences, opts: { fail?: boolean
   prefsStore.refresh();
 }
 
+/** 外观是本机即时设置，不走“保存”演示：立刻写入并生效。 */
+export function setThemeChoice(theme: ThemeChoice): void {
+  const p = prefsStore.get();
+  writeJson('local', PREFS_KEY, { ...p, appearance: { ...p.appearance, theme } });
+  prefsStore.refresh();
+}
+
 // ---------- 我记住的事 ----------
 
 export interface MemoryItem {

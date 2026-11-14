@@ -22,7 +22,7 @@ export function Moon({ size = 22 }: { size?: number }) {
   );
 }
 
-/** 控制台外壳：灰绿窄侧栏 + 一整块连续的白色工作区 */
+/** 控制台外壳：窄侧栏 + 一整块连续的白色工作区 */
 export function ConsoleLayout({
   route,
   adapter,
@@ -46,6 +46,9 @@ export function ConsoleLayout({
         <span className="small muted">开发者控制台</span>
         <div className="row">
           <HealthBar adapter={adapter} health={health} onRetry={onRetryHealth} />
+          <a className="quiet-link small" href={HREF.board}>
+            ← 进化看板
+          </a>
           <a className="quiet-link small" href={HREF.chat}>
             用户端演示 →
           </a>

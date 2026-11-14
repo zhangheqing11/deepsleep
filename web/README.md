@@ -1,10 +1,11 @@
 # web/ — deepsleep 前端
 
-React 18 + TypeScript + Vite。一个项目、两套界面：
+React 18 + TypeScript + Vite。一个项目、三套界面：
 
 | 地址 | 界面 | 内容 |
 |---|---|---|
-| `#/console`（默认） | 开发者控制台 | 运行与报告（含最近运行、对比）、模拟来访、进化记录、调试 |
+| `#/`（默认，未知地址也回到这里） | 进化看板 | 给评委看的一屏：阶段、主指标对比、学到了什么、怎么回退、安全线；只读，随实验自动更新 |
+| `#/console` | 开发者控制台 | 运行与报告（含最近运行、对比）、模拟来访、进化记录、调试 |
 | `#/app/chat`、`#/app/settings` | 用户端交互演示 | 聊一聊、我的；**固定示例内容，未连接模型** |
 
 旧链接 `#/runs/:run_id/sessions/:visitor_id` 仍可用。
@@ -55,7 +56,7 @@ npm run preview:lan   # 生产构建，终端里会显示局域网地址，如 h
 ```
 src/
 ├── config.ts              接口基础地址、适配器、轮询参数（唯一配置入口）
-├── App.tsx                路由分发：控制台 / 用户端
+├── App.tsx                路由分发：看板 / 控制台 / 用户端
 ├── api/
 │   ├── contractTypes.ts   run_report / session / evolution 类型，手写自 contracts v0.1.0
 │   ├── extensionTypes.ts  后端扩展，非契约（运行列表、实验、进化状态、版本等）
@@ -72,14 +73,18 @@ src/
 │   ├── useRunPoller.ts    1 秒串行轮询；终态停止；卸载 abort；网络失败退避
 │   ├── useCreateRun.ts    幂等提交：网络失败后重试复用同一个 key
 │   ├── useRunData.ts      health / 报告（409 重试）/ 会谈列表 / 单个会谈
+│   ├── useBoard.ts        看板读取循环：任何失败都不停止，失败期间保留上一份数据
 │   └── useResource.ts     可取消的一次性请求
-├── layouts/               ConsoleLayout（灰绿外框 + 左侧导航）、AppLayout（手机宽度 + 底部两项导航）
+├── layouts/               ConsoleLayout（外框 + 左侧导航）、AppLayout（手机宽度 + 底部两项导航）
+├── pages/board/           BoardPage（进化看板外壳：顶栏、数据来源与连接状态）
 ├── pages/console/         RunsPage、VisitorsPage、EvolutionPage（后端只读数据）、DebugPage
 ├── pages/app/             ChatPage、SettingsPage
 ├── components/            评测流程组件（RunLauncher、RunProgress、ReportView、SessionList、SessionView）与 console/ 子组件
-├── lib/                   存储、格式化、中文文案；userDemoStore.ts 是用户端演示的本机偏好与记忆
-├── styles.css             颜色变量（日间 / 夜间可手动切换）与基础组件
-└── shell.css              控制台外壳与用户端样式
+├── components/board/      看板的纯展示组件：只吃一份 BoardData，不发请求
+├── lib/                   存储、格式化、中文文案；board.ts 是看板的数据聚合与结论推导；userDemoStore.ts 是用户端演示的本机偏好与记忆
+├── styles.css             颜色变量（日间 / 夜间可手动切换）、内置字体与基础组件
+├── shell.css              控制台外壳与用户端样式
+└── board.css              进化看板样式
 ```
 
 ## 约定
@@ -113,6 +118,22 @@ src/
 
 运行 `npm run test:sw`（Node 20+，无需新依赖）。26 项 Node 回归测试执行实际 `public/sw.js`，用内存 CacheStorage 与受控网络验证隔离、白名单、错误响应、离线回退与缓存故障。它们不替代浏览器安装/升级和真机 PWA 验收。
 
+## 进化看板
+
+- 评委页，站着在一两米外读：字号随视口放大（同时受宽和高约束），1440×900 与 16:9 全屏下主要内容在一屏内。
+- 视觉约定：界面无彩色；唯一的色相 `--hue` 只用在运行 2（进化后的版本）的数据上，对照用灰。绿和红只表示变化的好坏与安全线状态。
+- 主对比是对照与运行 2（同一批 B 组来访）；运行 1 是另一批来访，缩小放在一旁，只作背景。
+- 来访点阵把对照与运行 2 按 `visitor_id` 逐个配对；两份报告的来访不一致时不配对，只比较占比。
+- 未生成的指标写“尚未生成”或“—”，不画成 0；总人数未知（`progress.total` 为 null）时只报已处理数，不画比例条。
+- “保留上一代”按正常结果呈现；反思器降级、模拟数据始终有可见标注（模拟来源取自每次运行的 `execution_mode`，不只看 health）。
+- 后端断开时保留最后一份数据并标注时间，恢复后自动接上；看板的轮询不会因 4xx 停止。
+- 字体随包内置（Geist，OFL-1.1，只打包拉丁子集），不请求外网；中文使用系统字体。
+- 回退命令只展示，不提供按钮：看板不做任何写操作。
+
+```bash
+npm run test:board     # 聚合缓存、结论推导、各阶段静态渲染；无浏览器或模型调用
+```
+
 交叉评审的其他待修项与给 Claude 的分批任务见 [reviews/CROSS_REVIEW_FIXES.md](reviews/CROSS_REVIEW_FIXES.md)。
 
 
@@ -127,5 +148,5 @@ src/
 
 ```bash
 npm run test:read-api  # 使用已有 Vite + Node test；适配器、轮询、静态渲染回归，无浏览器或模型调用
-npm run typecheck && npm run build && npm run test:sw
+npm run typecheck && npm run build && npm run test:sw && npm run test:board
 ```
