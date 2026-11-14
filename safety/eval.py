@@ -9,7 +9,7 @@ import os
 from pathlib import Path
 
 from .config import load_config, load_repo_env
-from .judges import LEVELS, MockJudge, make_judge
+from .judges import LEVELS, JudgeResult, MockJudge, make_judge
 from .layer import SafetyLayer, SessionSafetyState
 from .rules import Rules
 
@@ -50,13 +50,41 @@ def _percentile(values, percentile):
     return ordered[low] + (ordered[high] - ordered[low]) * (position - low)
 
 
-async def evaluate(rows, provider=None, config=None, *, timeout=None) -> dict:
+def _result_record(result, requested_provider):
+    attempts = result.attempts or (result,)
+    return {
+        "requested_provider": requested_provider,
+        "actual_provider": result.provider,
+        "status": result.status,
+        "fallback_used": len(attempts) > 1,
+        "attempts": [
+            {"provider": attempt.provider, "status": attempt.status,
+             "latency_ms": attempt.latency_ms}
+            for attempt in attempts
+        ],
+        "latency_ms": result.latency_ms,
+    }
+
+
+async def evaluate(rows, provider=None, config=None, *, timeout=None, concurrency=None,
+                   evaluation_timeout=None) -> dict:
     if provider is not None and provider not in ("rules", "mock", "ds_flash", "jev", "gemini_decision", "startlux", "chain"):
         raise ValueError("Unknown evaluation provider")
-    config = load_config(config, provider="mock" if provider == "rules" else None if provider == "chain" else provider)
+    # chain is a routing mode, not a model provider. Keep its primary
+    # provider deterministic (ds_flash) even when a stale JUDGE_PROVIDER
+    # environment variable is present; the configured fallback list is then
+    # constructed and reported explicitly.
+    config = load_config(config, provider="mock" if provider == "rules" else
+                         "ds_flash" if provider == "chain" else provider)
     provider = provider if provider is not None else config["judge_provider"]
     if timeout is not None:
         config = load_config({**config, "judge_timeout_s": timeout, "judge_timeout_overrides": {}})
+    if concurrency is not None and (type(concurrency) is not int or concurrency <= 0):
+        raise ValueError("concurrency must be a positive integer")
+    if (evaluation_timeout is not None and
+            (isinstance(evaluation_timeout, bool) or not isinstance(evaluation_timeout, (int, float))
+             or not math.isfinite(evaluation_timeout) or evaluation_timeout <= 0)):
+        raise ValueError("evaluation_timeout must be positive and finite")
     rules = Rules(config["lexicon_path"])
     layer = None
     if provider != "rules":
@@ -67,20 +95,77 @@ async def evaluate(rows, provider=None, config=None, *, timeout=None) -> dict:
             judge = MockJudge(config) if provider == "mock" else make_judge({**config, "judge_provider": provider}, allow_fallback=False)
         layer = SafetyLayer(config, judge=judge)
     matrix = [[0 for _ in LEVELS] for _ in LEVELS]
-    predictions, results, missed = [], [], []
+    predictions, results, judgement_records, missed = [], [], [], []
     history_missed, history_over_escalated = [], []
     risk_labels = ("passive", "active")
-    for row in rows:
+    async def assess(index, row):
         if layer is None:
-            hit = rules.match(row["text"])
-            predicted = hit.level
-        else:
-            state = SessionSafetyState()
-            event = await layer.assess_text(row["text"], 1, 1, state)
-            predicted = "history" if event and event.action == "history_check" else event.level if event else "none"
-            results.extend(state.judge_results)
+            return index, rules.match(row["text"]).level, [], None
+        state = SessionSafetyState()
+        event = await layer.assess_text(row["text"], 1, 1, state)
+        predicted = "history" if event and event.action == "history_check" else event.level if event else "none"
+        record = None
+        if state.judge_results:
+            attempts = tuple(state.judge_results)
+            final = attempts[-1]
+            # SafetyLayer stores every chain attempt. Rebuild the invocation
+            # record even when the final assessment produced no event (none).
+            if event is not None:
+                final = JudgeResult(event.judge_probs, event.judge_status,
+                                    event.judge_provider,
+                                    sum(a.latency_ms for a in attempts), attempts)
+            else:
+                final = JudgeResult(final.probs, final.status, final.provider,
+                                    sum(a.latency_ms for a in attempts), attempts)
+            record = _result_record(final, provider)
+        return index, predicted, list(state.judge_results), record
+
+    evaluation_status = "ok"
+    if layer is None:
+        assessed = [await assess(index, row) for index, row in enumerate(rows)]
+    else:
+        limit = concurrency if concurrency is not None else config.get("eval_concurrency", 4)
+        semaphore = asyncio.Semaphore(limit)
+
+        async def bounded(index, row):
+            async with semaphore:
+                return await assess(index, row)
+
+        try:
+            if evaluation_timeout is None:
+                assessed = await asyncio.gather(*(bounded(index, row) for index, row in enumerate(rows)))
+            else:
+                tasks = {asyncio.create_task(bounded(index, row)): index
+                         for index, row in enumerate(rows)}
+                done, pending = await asyncio.wait(tasks, timeout=evaluation_timeout)
+                assessed = [None] * len(rows)
+                for task in done:
+                    assessed[tasks[task]] = task.result()
+                if pending:
+                    evaluation_status = "timeout"
+                    for task in pending:
+                        task.cancel()
+                    await asyncio.gather(*pending, return_exceptions=True)
+                    for task in pending:
+                        index = tasks[task]
+                        cancelled = JudgeResult(None, "cancelled",
+                                                getattr(layer.judge, "provider", provider), 0.)
+                        assessed[index] = (index, "none", [cancelled],
+                                           _result_record(cancelled, provider))
+        finally:
+            close = getattr(layer.judge, "aclose", None)
+            if close is not None:
+                await close()
+
+    for index, row in enumerate(rows):
+        _, predicted, row_results, record = assessed[index]
+        results.extend(row_results)
+        if record is not None:
+            judgement_records.append(record)
         matrix[LEVELS.index(row["label"])][LEVELS.index(predicted)] += 1
         prediction = {"id": row["id"], "text": row["text"], "label": row["label"], "predicted": predicted}
+        if record is not None:
+            prediction["judgement"] = record
         predictions.append(prediction)
         if row["label"] in risk_labels and predicted not in risk_labels:
             missed.append(prediction)
@@ -95,6 +180,13 @@ async def evaluate(rows, provider=None, config=None, *, timeout=None) -> dict:
     risk_actual = sum(sum(matrix[i]) for i in risk_indices)
     risk_predicted = sum(matrix[i][j] for i in range(len(LEVELS)) for j in risk_indices)
     latencies = [result.latency_ms for result in results]
+    fallback_count = sum(record["fallback_used"] for record in judgement_records)
+    model_successes = sum(result.status == "ok" for result in results)
+    model_failures = sum(result.status != "ok" for result in results)
+    # Every failed model invocation is resolved by the fixed SafetyLayer
+    # decision (none/passive); count it explicitly rather than presenting it
+    # as a model success.
+    rule_fallback_count = sum(record["status"] != "ok" for record in judgement_records)
     evidence = {
         "rules-only": {"status": "未测", "note": "规则单独的结果不构成 0 漏报指标"},
         "mock": {"status": "未测", "note": "mock，不代表识别能力"},
@@ -111,6 +203,9 @@ async def evaluate(rows, provider=None, config=None, *, timeout=None) -> dict:
                               "reason": "演示前须有真实判断器留出集漏报数；漏报数 > 0 不得冻结，0 也须完成 A2/A4 人工审定"},
         "provider": "rules" if layer is None else layer.judge.provider,
         "requested_provider": provider,
+        "evaluation_status": evaluation_status,
+        "evaluation_timeout_s": evaluation_timeout,
+        "evaluation_concurrency": None if layer is None else (concurrency or config.get("eval_concurrency", 4)),
         "created_at": datetime.now(timezone.utc).isoformat(),
         "n": len(predictions),
         "labels": list(LEVELS),
@@ -130,7 +225,15 @@ async def evaluate(rows, provider=None, config=None, *, timeout=None) -> dict:
             "providers": dict(Counter(result.provider for result in results)),
             "p50_ms": _percentile(latencies, .50),
             "p95_ms": _percentile(latencies, .95),
+            "timeouts": sum(result.status == "timeout" for result in results),
+            "errors": sum(result.status == "error" for result in results),
+            "cancelled": sum(result.status == "cancelled" for result in results),
         },
+        "judge_fallbacks": fallback_count,
+        "rule_fallbacks": rule_fallback_count,
+        "model_successes": model_successes,
+        "model_failures": model_failures,
+        "judge_records": judgement_records,
         "predictions": predictions,
     }
 
@@ -142,6 +245,9 @@ def main(argv=None):
     parser.add_argument("--config", type=Path)
     parser.add_argument("--output-dir", type=Path)
     parser.add_argument("--timeout", type=float, help="本次评测判断器超时秒数（覆盖冻结默认值）")
+    parser.add_argument("--concurrency", type=int, help="真实判断器并发上限（覆盖配置）")
+    parser.add_argument("--evaluation-timeout", type=float,
+                        help="整次评测超时秒数；超出的样本标记为 cancelled")
     parser.add_argument("--no-env", action="store_true", help="不读取仓库 .env，仅使用进程环境")
     args = parser.parse_args(argv)
     try:
@@ -149,11 +255,14 @@ def main(argv=None):
             load_repo_env()
     except (OSError, ValueError):
         parser.error("仓库根 .env 读取失败，请检查文件权限和格式。")
-    config = load_config(args.config, provider="mock" if args.provider == "rules" else None if args.provider == "chain" else args.provider)
+    config = load_config(args.config, provider="mock" if args.provider == "rules" else
+                         "ds_flash" if args.provider == "chain" else args.provider)
     testset = args.testset or Path(config["testset_path"])
     rows = load_testset(testset)
     try:
-        report = asyncio.run(evaluate(rows, args.provider, config, timeout=args.timeout))
+        report = asyncio.run(evaluate(rows, args.provider, config,
+                                      timeout=args.timeout, concurrency=args.concurrency,
+                                      evaluation_timeout=args.evaluation_timeout))
     except ValueError as exc:
         parser.error(str(exc))
     report["testset"] = str(testset.resolve())

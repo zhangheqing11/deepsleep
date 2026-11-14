@@ -30,6 +30,7 @@ from .config import load_dotenv
 from .run import build_deps
 from .session import SessionRunner
 from .reporting import build_report
+from .file_lock import file_lock
 
 VISITOR = ContextVar("integ_visitor", default="unknown")
 COMPONENT = ContextVar("integ_component", default="unknown")
@@ -71,15 +72,17 @@ class RequestBudget:
         self.path.parent.mkdir(parents=True, exist_ok=True)
 
     def reserve(self):
-        import fcntl
-        with self.path.open("a+") as stream:
-            fcntl.flock(stream, fcntl.LOCK_EX)
-            stream.seek(0)
-            count = len(stream.readlines())
-            if count >= self.limit:
-                raise RequestBudgetExceeded("Global real-request budget exhausted")
-            stream.write("attempt\n")
-            stream.flush()
+        # Lock a sidecar file.  Locking the append-only budget file itself
+        # would require a sentinel byte on Windows and would corrupt its line
+        # count when the file starts empty.
+        with file_lock(self.path.with_name(self.path.name + ".lock")):
+            with self.path.open("a+") as stream:
+                stream.seek(0)
+                count = len(stream.readlines())
+                if count >= self.limit:
+                    raise RequestBudgetExceeded("Global real-request budget exhausted")
+                stream.write("attempt\n")
+                stream.flush()
 
 
 class Meter:

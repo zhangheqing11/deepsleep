@@ -57,10 +57,13 @@ class Rules:
                     # not discarded, so judge failure still yields passive.
                     prefix = re.split(r"[，,：:]", sentence[:match.end()])[-1]
                     uncertain = False
-                    if entry.get("require_self_subject"):
+                    if entry.get("require_self_subject") or entry.get("allow_implicit_self"):
                         subjects = list(self.context["self_subject"].finditer(prefix))
                         others = list(self.context["third_party"].finditer(prefix))
-                        uncertain = not subjects or bool(others and others[-1].start() > subjects[-1].start())
+                        if entry.get("allow_implicit_self") and not subjects and not others:
+                            uncertain = False
+                        else:
+                            uncertain = not subjects or bool(others and others[-1].start() > subjects[-1].start())
                     if entry.get("route_denial"):
                         suffix = re.split(r"[，,：:]", sentence[match.end():], maxsplit=1)[0]
                         uncertain |= bool(self.context["denial"].search(prefix + suffix))

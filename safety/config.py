@@ -34,6 +34,9 @@ def load_config(config=None, *, provider=None) -> dict:
         value = values[key]
         if isinstance(value, bool) or not isinstance(value, (int, float)) or not math.isfinite(value) or value <= 0:
             raise ValueError(f"{key} must be positive and finite")
+    concurrency = values.setdefault("eval_concurrency", 4)
+    if type(concurrency) is not int or concurrency <= 0:
+        raise ValueError("eval_concurrency must be a positive integer")
     fallbacks = values.setdefault("judge_fallbacks", [])
     if (not isinstance(fallbacks, list) or any(
             not isinstance(item, str) or item not in
@@ -80,7 +83,12 @@ def read_env(path):
             result[key] = value
         return result
     # Do not expand values from the shell; report only this file's configuration.
-    return dict(dotenv_values(path, interpolate=False))
+    values = dict(dotenv_values(path, interpolate=False))
+    # python-dotenv retains a bare inline comment after an empty assignment
+    # (KEY= # comment) on some versions; normalize that harmless case so
+    # loading a repository .env has the same semantics as our fallback parser.
+    return {key: "" if isinstance(value, str) and value.lstrip().startswith("#") else value
+            for key, value in values.items()}
 
 
 def load_repo_env(path=None):

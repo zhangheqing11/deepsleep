@@ -144,7 +144,12 @@ def test_real_adapter_constructor_uses_env_and_closes_fake_client(provider, monk
     else:
         monkeypatch.setattr(sys.modules["typesafe_sdk"], "AsyncTypeSafeClient", Client)
     judge = make_judge({"judge_provider": provider, "judge_timeout_s": .3})
-    assert asyncio.run(judge.classify("测试")).status == "ok"
+    async def run_once():
+        result = await judge.classify("测试")
+        await judge.aclose()
+        return result
+
+    assert asyncio.run(run_once()).status == "ok"
     assert seen["api_key"] == "offline-key"
     assert seen["timeout"] == .3
     assert seen["closed"] is True

@@ -28,6 +28,8 @@ class JudgeResult:
 class Judge(Protocol):
     async def classify(self, text: str) -> JudgeResult: ...
 
+    async def aclose(self) -> None: ...
+
 
 def validate_probs(probs, tolerance: float) -> dict[str, float]:
     if not isinstance(probs, dict) or set(probs) != set(LEVELS):
@@ -75,6 +77,19 @@ class ChainJudge:
                 break
         return replace(result, attempts=tuple(attempts))
 
+    async def aclose(self) -> None:
+        first_error = None
+        for judge in self.judges:
+            close = getattr(judge, "aclose", None)
+            if close is not None:
+                try:
+                    await close()
+                except Exception as exc:  # ensure every child gets a close attempt
+                    if first_error is None:
+                        first_error = exc
+        if first_error is not None:
+            raise first_error
+
 
 class _BoundedJudge:
     provider: str
@@ -102,6 +117,9 @@ class _BoundedJudge:
 
     async def _predict(self, text: str) -> dict[str, float]:
         raise NotImplementedError
+
+    async def aclose(self) -> None:
+        return None
 
 
 class UnavailableJudge(_BoundedJudge):
@@ -149,6 +167,12 @@ class DsFlashJudge(_BoundedJudge):
         super().__init__(config)
         self.prompt = Path(self.config["judge_prompt_path"]).read_text(encoding="utf-8")
         self.client = client
+        self._owned_client = None
+        self._owned_client_context = None
+        self._owned_client_entered = False
+        # Evaluation may call one judge concurrently. Guard lazy client
+        # creation so concurrent first requests share one connection.
+        self._client_init_lock = asyncio.Lock()
         self.model = os.getenv("DS_MODEL", "").strip()
         self.base_url = os.getenv("DS_BASE_URL", "").strip()
         self.api_key = os.getenv("DS_API_KEY", "").strip()
@@ -172,8 +196,37 @@ class DsFlashJudge(_BoundedJudge):
             return await self._request(self.client, text)
         from openai import AsyncOpenAI
 
-        async with AsyncOpenAI(api_key=self.api_key, base_url=self.base_url, timeout=self.timeout, max_retries=0) as client:
-            return await self._request(client, text)
+        if self._owned_client is None:
+            async with self._client_init_lock:
+                if self._owned_client is None:
+                    client = AsyncOpenAI(
+                        api_key=self.api_key, base_url=self.base_url,
+                        timeout=self.timeout, max_retries=0,
+                    )
+                    enter = getattr(client, "__aenter__", None)
+                    if enter is not None:
+                        entered = await enter()
+                        self._owned_client_context = client
+                        self._owned_client_entered = True
+                        client = entered
+                    self._owned_client = client
+        return await self._request(self._owned_client, text)
+
+    async def aclose(self) -> None:
+        client, self._owned_client = self._owned_client, None
+        context, self._owned_client_context = self._owned_client_context, None
+        if client is None:
+            return
+        if context is not None and self._owned_client_entered:
+            self._owned_client_entered = False
+            exit_ = getattr(context, "__aexit__", None)
+            result = exit_(None, None, None) if exit_ is not None else None
+        else:
+            close = getattr(client, "aclose", None) or getattr(client, "close", None)
+            result = close() if close is not None else None
+        if result is not None:
+            if asyncio.iscoroutine(result):
+                await result
 
 
 class JevJudge(_BoundedJudge):
