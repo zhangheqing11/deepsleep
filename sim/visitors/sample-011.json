@@ -1,0 +1,183 @@
+{
+  "schema_version": "0.1.0",
+  "id": "sample-011",
+  "split": "sample",
+  "seed": 90011,
+  "main_path": "P1",
+  "secondary_path": "P5",
+  "referral": "R0",
+  "crisis": {
+    "level": "none",
+    "phq9_item9": 0,
+    "history": false
+  },
+  "contraindications": [],
+  "indices": {
+    "isi": 12,
+    "phq9": 3,
+    "gad7": 4,
+    "stop_bang": 1,
+    "meq": 52,
+    "dbas16": 3.2,
+    "psas": 22,
+    "screen_min_before_sleep": 45
+  },
+  "diary": [
+    {
+      "day": 1,
+      "bedtime": "01:10",
+      "lights_off": "01:20",
+      "sol_min": 62,
+      "waso_min": 12,
+      "final_wake": "08:20",
+      "risetime": "08:30",
+      "tst_min": 346,
+      "tib_min": 440,
+      "se": 0.7864,
+      "nap_min": 70,
+      "caffeine_after_14": true,
+      "alcohol": false,
+      "screen_in_bed_min": 30
+    },
+    {
+      "day": 2,
+      "bedtime": "01:10",
+      "lights_off": "01:20",
+      "sol_min": 26,
+      "waso_min": 0,
+      "final_wake": "08:20",
+      "risetime": "08:30",
+      "tst_min": 394,
+      "tib_min": 440,
+      "se": 0.8955,
+      "nap_min": 70,
+      "caffeine_after_14": true,
+      "alcohol": false,
+      "screen_in_bed_min": 30
+    },
+    {
+      "day": 3,
+      "bedtime": "23:50",
+      "lights_off": "00:00",
+      "sol_min": 55,
+      "waso_min": 57,
+      "final_wake": "08:20",
+      "risetime": "08:30",
+      "tst_min": 388,
+      "tib_min": 520,
+      "se": 0.7462,
+      "nap_min": 70,
+      "caffeine_after_14": true,
+      "alcohol": false,
+      "screen_in_bed_min": 30
+    },
+    {
+      "day": 4,
+      "bedtime": "00:30",
+      "lights_off": "00:40",
+      "sol_min": 23,
+      "waso_min": 58,
+      "final_wake": "08:20",
+      "risetime": "08:30",
+      "tst_min": 379,
+      "tib_min": 480,
+      "se": 0.7896,
+      "nap_min": 70,
+      "caffeine_after_14": true,
+      "alcohol": false,
+      "screen_in_bed_min": 30
+    },
+    {
+      "day": 5,
+      "bedtime": "01:10",
+      "lights_off": "01:20",
+      "sol_min": 14,
+      "waso_min": 10,
+      "final_wake": "08:20",
+      "risetime": "08:30",
+      "tst_min": 396,
+      "tib_min": 440,
+      "se": 0.9,
+      "nap_min": 70,
+      "caffeine_after_14": true,
+      "alcohol": false,
+      "screen_in_bed_min": 30
+    },
+    {
+      "day": 6,
+      "bedtime": "01:10",
+      "lights_off": "01:20",
+      "sol_min": 74,
+      "waso_min": 50,
+      "final_wake": "08:20",
+      "risetime": "08:30",
+      "tst_min": 296,
+      "tib_min": 440,
+      "se": 0.6727,
+      "nap_min": 70,
+      "caffeine_after_14": true,
+      "alcohol": false,
+      "screen_in_bed_min": 30
+    },
+    {
+      "day": 7,
+      "bedtime": "00:30",
+      "lights_off": "00:40",
+      "sol_min": 6,
+      "waso_min": 22,
+      "final_wake": "08:20",
+      "risetime": "08:30",
+      "tst_min": 432,
+      "tib_min": 480,
+      "se": 0.9,
+      "nap_min": 70,
+      "caffeine_after_14": true,
+      "alcohol": false,
+      "screen_in_bed_min": 30
+    }
+  ],
+  "persona": {
+    "age": 26,
+    "gender": "other",
+    "occupation": "自由插画师",
+    "expressiveness": "verbose",
+    "defensiveness": "low",
+    "emotionality": "low",
+    "adherence_tendency": 0.65,
+    "constraints": [
+      "在家工作，没有固定上班时间"
+    ]
+  },
+  "prefilled": [],
+  "opening_complaint": "最近睡得不太稳，白天总是没精神，不知道该从哪儿调。",
+  "clues": [
+    {
+      "id": "sample-011-c1",
+      "content": "没有固定作息，赶稿就熬到三四点，不赶稿十一点就睡了。",
+      "reveal_topic": "schedule_regularity",
+      "deny_first": false,
+      "supports": "P1"
+    },
+    {
+      "id": "sample-011-c2",
+      "content": "中午要睡一个多小时，傍晚有时还会再眯一会儿。",
+      "reveal_topic": "daytime_sleepiness",
+      "deny_first": false,
+      "supports": "P1"
+    },
+    {
+      "id": "sample-011-c3",
+      "content": "画画的时候一杯接一杯喝咖啡，晚上八九点也喝。",
+      "reveal_topic": "caffeine_alcohol",
+      "deny_first": false,
+      "supports": "P1"
+    },
+    {
+      "id": "sample-011-c4",
+      "content": "睡前会在床上刷一会儿画师们的动态。",
+      "reveal_topic": "screen_in_bed",
+      "deny_first": false,
+      "supports": "P5"
+    }
+  ]
+}

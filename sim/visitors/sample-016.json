@@ -1,0 +1,191 @@
+{
+  "schema_version": "0.1.0",
+  "id": "sample-016",
+  "split": "sample",
+  "seed": 90016,
+  "main_path": "P1",
+  "secondary_path": null,
+  "referral": "R1",
+  "crisis": {
+    "level": "none",
+    "phq9_item9": 0,
+    "history": false
+  },
+  "contraindications": [
+    "untreated_osa"
+  ],
+  "indices": {
+    "isi": 15,
+    "phq9": 5,
+    "gad7": 6,
+    "stop_bang": 3,
+    "meq": 60,
+    "dbas16": 4.0,
+    "psas": 25,
+    "screen_min_before_sleep": 15
+  },
+  "diary": [
+    {
+      "day": 1,
+      "bedtime": "22:00",
+      "lights_off": "22:10",
+      "sol_min": 35,
+      "waso_min": 45,
+      "final_wake": "05:40",
+      "risetime": "05:50",
+      "tst_min": 370,
+      "tib_min": 470,
+      "se": 0.7872,
+      "nap_min": 70,
+      "caffeine_after_14": true,
+      "alcohol": false,
+      "screen_in_bed_min": 0
+    },
+    {
+      "day": 2,
+      "bedtime": "21:50",
+      "lights_off": "22:00",
+      "sol_min": 40,
+      "waso_min": 47,
+      "final_wake": "05:40",
+      "risetime": "05:50",
+      "tst_min": 373,
+      "tib_min": 480,
+      "se": 0.7771,
+      "nap_min": 70,
+      "caffeine_after_14": true,
+      "alcohol": false,
+      "screen_in_bed_min": 0
+    },
+    {
+      "day": 3,
+      "bedtime": "21:50",
+      "lights_off": "22:00",
+      "sol_min": 38,
+      "waso_min": 54,
+      "final_wake": "05:40",
+      "risetime": "05:50",
+      "tst_min": 368,
+      "tib_min": 480,
+      "se": 0.7667,
+      "nap_min": 70,
+      "caffeine_after_14": true,
+      "alcohol": false,
+      "screen_in_bed_min": 0
+    },
+    {
+      "day": 4,
+      "bedtime": "22:10",
+      "lights_off": "22:20",
+      "sol_min": 34,
+      "waso_min": 45,
+      "final_wake": "05:40",
+      "risetime": "05:50",
+      "tst_min": 361,
+      "tib_min": 460,
+      "se": 0.7848,
+      "nap_min": 70,
+      "caffeine_after_14": true,
+      "alcohol": false,
+      "screen_in_bed_min": 0
+    },
+    {
+      "day": 5,
+      "bedtime": "22:10",
+      "lights_off": "22:20",
+      "sol_min": 29,
+      "waso_min": 55,
+      "final_wake": "05:40",
+      "risetime": "05:50",
+      "tst_min": 356,
+      "tib_min": 460,
+      "se": 0.7739,
+      "nap_min": 70,
+      "caffeine_after_14": true,
+      "alcohol": false,
+      "screen_in_bed_min": 0
+    },
+    {
+      "day": 6,
+      "bedtime": "22:10",
+      "lights_off": "22:20",
+      "sol_min": 38,
+      "waso_min": 45,
+      "final_wake": "05:40",
+      "risetime": "05:50",
+      "tst_min": 357,
+      "tib_min": 460,
+      "se": 0.7761,
+      "nap_min": 70,
+      "caffeine_after_14": true,
+      "alcohol": false,
+      "screen_in_bed_min": 0
+    },
+    {
+      "day": 7,
+      "bedtime": "21:50",
+      "lights_off": "22:00",
+      "sol_min": 32,
+      "waso_min": 45,
+      "final_wake": "05:40",
+      "risetime": "05:50",
+      "tst_min": 383,
+      "tib_min": 480,
+      "se": 0.7979,
+      "nap_min": 70,
+      "caffeine_after_14": true,
+      "alcohol": false,
+      "screen_in_bed_min": 0
+    }
+  ],
+  "persona": {
+    "age": 58,
+    "gender": "female",
+    "occupation": "社区超市店长",
+    "expressiveness": "brief",
+    "defensiveness": "mid",
+    "emotionality": "low",
+    "adherence_tendency": 0.6,
+    "constraints": [
+      "早上六点半开店"
+    ]
+  },
+  "prefilled": [
+    {
+      "scale": "stop_bang",
+      "reported_score": 2,
+      "items": null
+    }
+  ],
+  "opening_complaint": "最近睡得不太稳，白天总是没精神，不知道该从哪儿调。",
+  "clues": [
+    {
+      "id": "sample-016-c1",
+      "content": "中午在店里要趴一个多小时，傍晚还会打个盹。",
+      "reveal_topic": "daytime_sleepiness",
+      "deny_first": false,
+      "supports": "P1"
+    },
+    {
+      "id": "sample-016-c2",
+      "content": "下午犯困就喝浓茶，晚上七八点也喝。",
+      "reveal_topic": "caffeine_alcohol",
+      "deny_first": false,
+      "supports": "P1"
+    },
+    {
+      "id": "sample-016-c3",
+      "content": "老公说我打呼噜很响，有时候中间会停一下。",
+      "reveal_topic": "snoring_breathing",
+      "deny_first": true,
+      "supports": "R1"
+    },
+    {
+      "id": "sample-016-c4",
+      "content": "我有高血压，一直在吃药。",
+      "reveal_topic": "health_conditions",
+      "deny_first": false,
+      "supports": "R1"
+    }
+  ]
+}

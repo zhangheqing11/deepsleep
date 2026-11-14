@@ -1,0 +1,189 @@
+{
+  "schema_version": "0.1.0",
+  "id": "sample-001",
+  "split": "sample",
+  "seed": 90001,
+  "main_path": "P1",
+  "secondary_path": "P4",
+  "referral": "R0",
+  "crisis": {
+    "level": "none",
+    "phq9_item9": 0,
+    "history": false
+  },
+  "contraindications": [],
+  "indices": {
+    "isi": 14,
+    "phq9": 4,
+    "gad7": 3,
+    "stop_bang": 1,
+    "meq": 48,
+    "dbas16": 4.1,
+    "psas": 24,
+    "screen_min_before_sleep": 20
+  },
+  "diary": [
+    {
+      "day": 1,
+      "bedtime": "00:30",
+      "lights_off": "00:40",
+      "sol_min": 38,
+      "waso_min": 24,
+      "final_wake": "06:50",
+      "risetime": "07:00",
+      "tst_min": 308,
+      "tib_min": 390,
+      "se": 0.7897,
+      "nap_min": 0,
+      "caffeine_after_14": true,
+      "alcohol": false,
+      "screen_in_bed_min": 15
+    },
+    {
+      "day": 2,
+      "bedtime": "00:30",
+      "lights_off": "00:40",
+      "sol_min": 40,
+      "waso_min": 25,
+      "final_wake": "06:50",
+      "risetime": "07:00",
+      "tst_min": 305,
+      "tib_min": 390,
+      "se": 0.7821,
+      "nap_min": 0,
+      "caffeine_after_14": true,
+      "alcohol": false,
+      "screen_in_bed_min": 15
+    },
+    {
+      "day": 3,
+      "bedtime": "00:20",
+      "lights_off": "00:30",
+      "sol_min": 34,
+      "waso_min": 26,
+      "final_wake": "06:50",
+      "risetime": "07:00",
+      "tst_min": 320,
+      "tib_min": 400,
+      "se": 0.8,
+      "nap_min": 0,
+      "caffeine_after_14": true,
+      "alcohol": false,
+      "screen_in_bed_min": 15
+    },
+    {
+      "day": 4,
+      "bedtime": "00:10",
+      "lights_off": "00:20",
+      "sol_min": 31,
+      "waso_min": 30,
+      "final_wake": "06:50",
+      "risetime": "07:00",
+      "tst_min": 329,
+      "tib_min": 410,
+      "se": 0.8024,
+      "nap_min": 0,
+      "caffeine_after_14": true,
+      "alcohol": false,
+      "screen_in_bed_min": 15
+    },
+    {
+      "day": 5,
+      "bedtime": "00:20",
+      "lights_off": "00:30",
+      "sol_min": 45,
+      "waso_min": 19,
+      "final_wake": "06:50",
+      "risetime": "07:00",
+      "tst_min": 316,
+      "tib_min": 400,
+      "se": 0.79,
+      "nap_min": 0,
+      "caffeine_after_14": true,
+      "alcohol": false,
+      "screen_in_bed_min": 15
+    },
+    {
+      "day": 6,
+      "bedtime": "01:40",
+      "lights_off": "01:50",
+      "sol_min": 40,
+      "waso_min": 29,
+      "final_wake": "11:10",
+      "risetime": "11:20",
+      "tst_min": 491,
+      "tib_min": 580,
+      "se": 0.8466,
+      "nap_min": 0,
+      "caffeine_after_14": true,
+      "alcohol": false,
+      "screen_in_bed_min": 15
+    },
+    {
+      "day": 7,
+      "bedtime": "02:00",
+      "lights_off": "02:10",
+      "sol_min": 30,
+      "waso_min": 29,
+      "final_wake": "11:10",
+      "risetime": "11:20",
+      "tst_min": 481,
+      "tib_min": 560,
+      "se": 0.8589,
+      "nap_min": 0,
+      "caffeine_after_14": true,
+      "alcohol": false,
+      "screen_in_bed_min": 15
+    }
+  ],
+  "persona": {
+    "age": 29,
+    "gender": "female",
+    "occupation": "广告公司策划",
+    "expressiveness": "verbose",
+    "defensiveness": "low",
+    "emotionality": "mid",
+    "adherence_tendency": 0.7,
+    "constraints": [
+      "周末常有朋友聚会"
+    ]
+  },
+  "prefilled": [
+    {
+      "scale": "isi",
+      "reported_score": 14,
+      "items": null
+    }
+  ],
+  "opening_complaint": "最近睡得不太稳，白天总是没精神，不知道该从哪儿调。",
+  "clues": [
+    {
+      "id": "sample-001-c1",
+      "content": "工作日一般十二点半睡、七点起，到了周末能一口气睡到十一点多。",
+      "reveal_topic": "weekend_catchup",
+      "deny_first": false,
+      "supports": "P1"
+    },
+    {
+      "id": "sample-001-c2",
+      "content": "下午三四点必须来一杯咖啡，晚饭后有时还会再点一杯奶茶。",
+      "reveal_topic": "caffeine_alcohol",
+      "deny_first": false,
+      "supports": "P1"
+    },
+    {
+      "id": "sample-001-c3",
+      "content": "其实每天几点睡说不准，有活动就晚，没活动就早。",
+      "reveal_topic": "schedule_regularity",
+      "deny_first": false,
+      "supports": "P1"
+    },
+    {
+      "id": "sample-001-c4",
+      "content": "周日晚上特别难睡着，躺到一两点还很清醒，周一早上最难受。",
+      "reveal_topic": "chronotype",
+      "deny_first": false,
+      "supports": "P4"
+    }
+  ]
+}

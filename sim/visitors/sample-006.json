@@ -1,0 +1,196 @@
+{
+  "schema_version": "0.1.0",
+  "id": "sample-006",
+  "split": "sample",
+  "seed": 90006,
+  "main_path": "P1",
+  "secondary_path": null,
+  "referral": "R3",
+  "crisis": {
+    "level": "none",
+    "phq9_item9": 0,
+    "history": false
+  },
+  "contraindications": [],
+  "indices": {
+    "isi": 13,
+    "phq9": 8,
+    "gad7": 11,
+    "stop_bang": 2,
+    "meq": 55,
+    "dbas16": 4.5,
+    "psas": 34,
+    "screen_min_before_sleep": 15
+  },
+  "diary": [
+    {
+      "day": 1,
+      "bedtime": "00:30",
+      "lights_off": "00:40",
+      "sol_min": 23,
+      "waso_min": 13,
+      "final_wake": "06:50",
+      "risetime": "07:00",
+      "tst_min": 334,
+      "tib_min": 390,
+      "se": 0.8564,
+      "nap_min": 0,
+      "caffeine_after_14": true,
+      "alcohol": true,
+      "screen_in_bed_min": 0
+    },
+    {
+      "day": 2,
+      "bedtime": "00:55",
+      "lights_off": "01:05",
+      "sol_min": 53,
+      "waso_min": 38,
+      "final_wake": "06:50",
+      "risetime": "07:00",
+      "tst_min": 254,
+      "tib_min": 365,
+      "se": 0.6959,
+      "nap_min": 0,
+      "caffeine_after_14": true,
+      "alcohol": true,
+      "screen_in_bed_min": 0
+    },
+    {
+      "day": 3,
+      "bedtime": "00:30",
+      "lights_off": "00:40",
+      "sol_min": 11,
+      "waso_min": 17,
+      "final_wake": "06:50",
+      "risetime": "07:00",
+      "tst_min": 342,
+      "tib_min": 390,
+      "se": 0.8769,
+      "nap_min": 0,
+      "caffeine_after_14": true,
+      "alcohol": true,
+      "screen_in_bed_min": 0
+    },
+    {
+      "day": 4,
+      "bedtime": "00:05",
+      "lights_off": "00:15",
+      "sol_min": 35,
+      "waso_min": 11,
+      "final_wake": "06:50",
+      "risetime": "07:00",
+      "tst_min": 349,
+      "tib_min": 415,
+      "se": 0.841,
+      "nap_min": 0,
+      "caffeine_after_14": true,
+      "alcohol": true,
+      "screen_in_bed_min": 0
+    },
+    {
+      "day": 5,
+      "bedtime": "00:55",
+      "lights_off": "01:05",
+      "sol_min": 24,
+      "waso_min": 27,
+      "final_wake": "06:50",
+      "risetime": "07:00",
+      "tst_min": 294,
+      "tib_min": 365,
+      "se": 0.8055,
+      "nap_min": 0,
+      "caffeine_after_14": true,
+      "alcohol": true,
+      "screen_in_bed_min": 0
+    },
+    {
+      "day": 6,
+      "bedtime": "01:25",
+      "lights_off": "01:35",
+      "sol_min": 18,
+      "waso_min": 21,
+      "final_wake": "08:50",
+      "risetime": "09:00",
+      "tst_min": 396,
+      "tib_min": 455,
+      "se": 0.8703,
+      "nap_min": 0,
+      "caffeine_after_14": true,
+      "alcohol": true,
+      "screen_in_bed_min": 0
+    },
+    {
+      "day": 7,
+      "bedtime": "01:00",
+      "lights_off": "01:10",
+      "sol_min": 28,
+      "waso_min": 18,
+      "final_wake": "08:50",
+      "risetime": "09:00",
+      "tst_min": 414,
+      "tib_min": 480,
+      "se": 0.8625,
+      "nap_min": 0,
+      "caffeine_after_14": true,
+      "alcohol": true,
+      "screen_in_bed_min": 0
+    }
+  ],
+  "persona": {
+    "age": 38,
+    "gender": "male",
+    "occupation": "外企项目经理",
+    "expressiveness": "brief",
+    "defensiveness": "high",
+    "emotionality": "low",
+    "adherence_tendency": 0.5,
+    "constraints": [
+      "经常出差、跨时区"
+    ]
+  },
+  "prefilled": [
+    {
+      "scale": "gad7",
+      "reported_score": 5,
+      "items": null
+    }
+  ],
+  "opening_complaint": "最近睡得不太稳，白天总是没精神，不知道该从哪儿调。",
+  "clues": [
+    {
+      "id": "sample-006-c1",
+      "content": "起床时间看行程，早的时候五点半，晚的时候九点多。",
+      "reveal_topic": "schedule_regularity",
+      "deny_first": false,
+      "supports": "P1"
+    },
+    {
+      "id": "sample-006-c2",
+      "content": "团队在海外，晚上十一点以后才开会，开完会人特别精神。",
+      "reveal_topic": "life_constraints",
+      "deny_first": false,
+      "supports": "P1"
+    },
+    {
+      "id": "sample-006-c3",
+      "content": "晚上喝两口才好入睡，不喝反而更睡不着。",
+      "reveal_topic": "caffeine_alcohol",
+      "deny_first": true,
+      "supports": "P1"
+    },
+    {
+      "id": "sample-006-c4",
+      "content": "白天也一直在担心项目出事，脑子停不下来。",
+      "reveal_topic": "anxiety",
+      "deny_first": true,
+      "supports": "R3"
+    },
+    {
+      "id": "sample-006-c5",
+      "content": "整个人绷得很紧，最近特别容易发火。",
+      "reveal_topic": "anxiety",
+      "deny_first": false,
+      "supports": "R3"
+    }
+  ]
+}
