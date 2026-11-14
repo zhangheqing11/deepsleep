@@ -1,0 +1,3 @@
+# Offline integration only; no model SDK is needed for this entrypoint.
+-r requirements-dev.txt
+PyYAML==6.0.3
