@@ -49,9 +49,15 @@ class DsFlashClient:
     async def complete_json(self, messages: list[dict], *, task: str, state: dict) -> dict:
         kwargs = dict(model=self.model, messages=messages, temperature=self.settings["temperature"],
                       top_p=self.settings["top_p"], max_tokens=state.get("_max_tokens", self.token_limit(task)))
+        mode = self.settings.get("thinking_by_task", {}).get(task, self.settings.get("thinking"))
+        if mode == "disabled":
+            kwargs["extra_body"] = {"thinking": {"type": "disabled"}}
+        elif mode in ("low", "high", "max"):
+            kwargs.update(reasoning_effort=mode, extra_body={"thinking": {"type": "enabled"}})
         row = CURRENT_CALL.get()
         if row is not None:
             row["max_tokens"] = kwargs["max_tokens"]
+            row["thinking"] = mode or "provider_default"
         if self.settings.get("response_format") == "json_object":
             kwargs["response_format"] = {"type": "json_object"}
         async with self._limit:

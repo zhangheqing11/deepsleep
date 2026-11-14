@@ -148,12 +148,13 @@ class DsFlashPathClassifier(_Bounded):
     provider = "ds_flash"
 
     def __init__(self, timeout_s: float, *, temperature: float = 0, client=None,
-                 limiter: asyncio.Semaphore | None = None):
+                 limiter: asyncio.Semaphore | None = None, thinking: str | None = None):
         super().__init__(timeout_s)
         self.limiter = limiter
         self.prompt = PROMPT_PATH.read_text(encoding="utf-8")
         self.model = os.getenv("DS_MODEL", "").strip()
         self.temperature = temperature
+        self.thinking = thinking
         if client is None:
             base_url, api_key = os.getenv("DS_BASE_URL", "").strip(), os.getenv("DS_API_KEY", "").strip()
             if not all((self.model, base_url, api_key)):
@@ -174,6 +175,7 @@ class DsFlashPathClassifier(_Bounded):
             row["request_started"] = True
         response = await self.client.chat.completions.create(
             model=self.model, temperature=self.temperature, response_format={"type": "json_object"},
+            **({"extra_body": {"thinking": {"type": self.thinking}}} if self.thinking else {}),
             messages=[{"role": "system", "content": self.prompt}, {"role": "user", "content": text or "（尚无对话）"}])
         annotate_response(response)
         if getattr(response.choices[0], "finish_reason", None) == "length":
@@ -206,6 +208,9 @@ class JevPathClassifier(_Bounded):
         self.api_key = os.getenv("TYPESAFE_API_KEY", "").strip()
         if client is None and not self.api_key:
             raise ValueError("JevPathClassifier requires TYPESAFE_API_KEY")
+        if client is None:
+            from typesafe_sdk import RetryPolicy
+            client = AsyncTypeSafeClient(api_key=self.api_key, timeout=timeout_s, retry=RetryPolicy(max_retries=0))
         self.client = client
         self.prompt = PROMPT_PATH.read_text(encoding="utf-8")
 
@@ -231,9 +236,45 @@ def make_classifier(settings: dict, *, limiter: asyncio.Semaphore | None = None)
         return MockPathClassifier(timeout)
     try:
         if provider == "ds_flash":
-            return DsFlashPathClassifier(timeout, temperature=settings.get("temperature", 0), limiter=limiter)
+            return DsFlashPathClassifier(timeout, temperature=settings.get("temperature", 0), limiter=limiter,
+                                         thinking=settings.get("thinking"))
         if provider == "jev":
-            return JevPathClassifier(timeout)
+            try:
+                fallback = DsFlashPathClassifier(timeout, limiter=limiter, thinking=settings.get("thinking"))
+            except (ValueError, ImportError):
+                fallback = None
+            try:
+                primary = JevPathClassifier(timeout)
+            except (ValueError, ImportError):
+                if fallback is not None:
+                    fallback.provider = "ds_flash(fallback:jev_unavailable)"
+                    return fallback
+                raise
+            return FallbackPathClassifier(primary, fallback) if fallback else primary
     except (ValueError, ImportError):
         return MockPathClassifier(timeout, provider="mock(fallback)")
     raise ValueError(f"unknown path classifier provider {provider}")
+
+
+class FallbackPathClassifier:
+    """Jev first; a failed call uses the real DS client, never a fabricated prediction."""
+    provider = "jev->ds_flash"
+
+    def __init__(self, primary, fallback):
+        self.primary, self.fallback = primary, fallback
+
+    async def classify(self, dialogue):
+        from dataclasses import replace
+        first = await self.primary.classify(dialogue)
+        if first.status == "ok":
+            return first
+        second = await self.fallback.classify(dialogue)
+        return replace(second, provider=f"ds_flash(fallback:jev_{first.status})",
+                       latency_ms=round(first.latency_ms + second.latency_ms, 1))
+
+    async def aclose(self):
+        for classifier in (self.primary, self.fallback):
+            client = getattr(classifier, "client", None)
+            close = getattr(client, "aclose", None) or getattr(client, "close", None)
+            if close:
+                await close()

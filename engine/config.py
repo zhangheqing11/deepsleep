@@ -48,8 +48,9 @@ def load_config(config=None) -> dict:
     values["round_turn_cap"] = caps
     if values["path_classifier"]["provider"] not in ("ds_flash", "jev", "mock"):
         raise ValueError("path_classifier.provider must be ds_flash, jev or mock")
-    if not isinstance(values["pipeline"]["merge_strategy_response"], bool):
-        raise ValueError("pipeline.merge_strategy_response must be boolean")
+    for key in ("merge_strategy_response", "merge_memory_plan"):
+        if not isinstance(values["pipeline"][key], bool):
+            raise ValueError(f"pipeline.{key} must be boolean")
     if values["agent_llm"]["provider"] not in ("ds_flash", "mock"):
         raise ValueError("agent_llm.provider must be ds_flash or mock")
     for key in PATH_KEYS:

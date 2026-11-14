@@ -89,3 +89,38 @@ async def run_session(visitor, sim, *, run_id, playbook_version):
                       safety=SafetyLayer(judge=MockJudge()) if mock else SafetyLayer())
     session, _ = await SessionRunner(deps, visitor, run_id).run()
     return session
+
+
+class S2RendererClient:
+    """Real S2 renderer with thinking disabled; S2 code and its content rules stay untouched."""
+    def __init__(self, config, timeout_s=15):
+        self.timeout_s = timeout_s
+        self.model = config.model
+        self.config = config
+        self.last_error = None
+        self._client = None
+
+    def _get_client(self):
+        if self._client is None:
+            from openai import AsyncOpenAI
+            self._client = AsyncOpenAI(base_url=self.config.base_url, api_key=self.config.api_key,
+                                       timeout=self.timeout_s, max_retries=0)
+        return self._client
+
+    async def complete(self, system, user, max_tokens=300):
+        self.last_error = None
+        try:
+            response = await self._get_client().chat.completions.create(
+                model=self.model, messages=[{'role':'system', 'content':system}, {'role':'user', 'content':user}],
+                temperature=0, max_tokens=max_tokens, extra_body={'thinking': {'type':'disabled'}})
+            if response.choices[0].finish_reason == 'length':
+                self.last_error = 'TruncatedOutput'
+                return None
+            text = (response.choices[0].message.content or '').strip()
+            if not text:
+                self.last_error = 'EmptyResponse'
+                return None
+            return text
+        except Exception as exc:
+            self.last_error = type(exc).__name__  # never log provider error bodies/credentials
+            return None

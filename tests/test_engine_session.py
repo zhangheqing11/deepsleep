@@ -116,7 +116,7 @@ class ScriptedLLM:
 
 def deps_for(*, llm=None, sim=None, judge=None, classifier=None, outcome=None, merged=False):
     config = {"agent_llm": {"provider": "mock"}, "path_classifier": {"provider": "mock"},
-              "pipeline": {"merge_strategy_response": merged}}
+              "pipeline": {"merge_strategy_response": merged, "merge_memory_plan": False}}
     return build_deps(config=config, llm=llm or ScriptedLLM(), sim=sim or ScriptedSim([]),
                       classifier=classifier, screening=IndexScreening(), outcome=outcome,
                       safety=SafetyLayer({"judge_provider": "mock"}, judge=judge or StubJudge(DEFAULT_LABELS)))
@@ -330,7 +330,8 @@ def test_passive_inserts_safety_check_and_discards_speculation():
     t = turns(session, 1)
     assert t[2] == ("visitor", PASSIVE_TEXT) and t[3] == ("safety", script) and t[4] == ("visitor", "没有具体计划。")
     assert [s for s, _ in t].count("safety") == 1
-    assert [e["action"] for e in session["safety_events"]] == ["safety_check"]
+    assert [e["action"] for e in session["safety_events"]] == ["safety_check", "safety_check"]
+    assert session["safety_events"][-1]["source"] == "scale_item9"
     assert session["rounds"][0]["crisis_level"] == "passive" and len(trace["ignored_events"]) == 1
     assert trace["speculation"]["discarded"] >= 1
     committed = [row["turn"] for row in trace["path_probs"] if not row["final"] and row["round"] == 1]
@@ -423,7 +424,7 @@ def test_screen_mood_counts_as_turn_and_item9_is_assessed():
 def test_turn_cap_holds_when_agent_only_calls_tools():
     v = visitor("A-002")
     session, _ = run(deps_for(llm=ScriptedLLM(lambda s, m: {"action": "tool", "tool": "screen_osa"})), v)
-    assert [sum(1 for c in session["tool_calls"] if c["round"] == r) for r in (1, 2)] == [CAPS[1], CAPS[2]]
+    assert [sum(1 for c in session["tool_calls"] if c["round"] == r) for r in (1, 2)] == [CAPS[1] + 1, CAPS[2]]
     assert_valid(session, v)
 
 
@@ -528,7 +529,8 @@ def test_mock_end_to_end_on_contract_examples(merged):
     visitors = load_visitors([EXAMPLES])
     assert {v["id"] for v in visitors} == {"A-001", "A-002", "A-003"}
     deps = build_deps(config={"agent_llm": {"provider": "mock"}, "path_classifier": {"provider": "mock"},
-                              "pipeline": {"merge_strategy_response": merged}},
+                              "round_turn_cap": {1: 5, 2: 4},
+                              "pipeline": {"merge_strategy_response": merged, "merge_memory_plan": False}},
                       safety=SafetyLayer({"judge_provider": "mock"}))
     results = asyncio.run(run_batch(visitors, deps, "mock-run"))
     by_id = {s["visitor_id"]: s for s, _ in results}
@@ -563,14 +565,13 @@ def test_missing_keys_fall_back_to_mock():
     assert deps.llm.model_name == "mock(fallback)" and deps.classifier.provider == "mock(fallback)"
 
 
-@pytest.mark.xfail(strict=True, reason="contract conflict (reported): repeated passive via screen_mood item 9 has "
-                   "action none, which session.safety_events forbids, yet validate.py requires a scale_item9 event")
 def test_repeated_passive_then_item9_contract_conflict():
     v = visitor("A-003")
     calls = iter([SAY, {"action": "tool", "tool": "screen_mood"}])
     llm = ScriptedLLM(lambda s, m: next(calls, SAY))
     session, trace = run(deps_for(llm=llm, sim=ScriptedSim(["最近很累。", PASSIVE_TEXT, "没有计划。"])), v)
-    assert trace["ignored_events"][0]["source"] == "scale_item9"
+    assert any(e["source"] == "scale_item9" and e["action"] == "safety_check" for e in session["safety_events"])
+    assert trace["ignored_events"] == []
     assert_valid(session, v)
 
 

@@ -1,11 +1,11 @@
 """Two-round consultation loop (TheraMind §3 dual loop, domain-specialised) -> contract `session`.
 
-Loop 1, every agent action (four sub-agents, each with its own prompt and harness):
+Loop 1, every agent action (sub-agents with frozen prompts and harness):
   PathClassifier (frozen)  -> {weights P1..P5, attitude, uncertainty}  on the accumulated dialogue
   strategy                 -> say | tool | end_round + strategy (playbook: questioning_strategy, path_discrimination)
   response                 -> text + acts                           (playbook: communication_style)
   (pipeline.merge_strategy_response = true runs strategy + response as one call)
-  memory update            -> once per round: summary for round 2 + referral (playbook: referral_rules)
+  memory update            -> round 1 combined with plan; round 2 separate referral/summary
 Round end: final classification -> path_pred (argmax) / path_confidence; plan (round 1 provisional, round 2 final;
   playbook: plan_rules, referral_rules) -> vetoes -> closing message -> visitor reply.
 Loop 2, start of round 2: f_eval = PlanOutcomeModel on the round-1 plan (4-week simulation),
@@ -21,6 +21,7 @@ While the crisis judge runs, the whole loop-1 pipeline for the next action runs 
 import asyncio
 from dataclasses import asdict, dataclass, field
 import json
+import re
 import time
 
 from domain.vetoes import check_plan, check_text
@@ -54,6 +55,7 @@ SECTIONS_FOR = {
     "turn": ("questioning_strategy", "path_discrimination", "communication_style"),
     "memory": ("referral_rules",),
     "plan": ("plan_rules", "referral_rules"),
+    "memory_plan": ("plan_rules", "referral_rules"),
     "select": ("plan_rules", "referral_rules"),
 }
 # Agent-facing only (never shown to the visitor); example sentence from BACKLOG A1.
@@ -127,10 +129,11 @@ class SessionRunner:
         self._scope_number = 0
         self._discarded_scopes: set[int] = set()
         self._cls_cache: tuple[int, PathState] | None = None
+        self._cls_skipped = False
         self.trace = {"visitor_id": visitor["id"], "pipeline": self._pipeline_name(),
                       "classifier": getattr(deps.classifier, "provider", type(deps.classifier).__name__),
                       "fallbacks": [], "llm_calls": [], "path_probs": [], "strategies": [], "history_checks": [], "vetoes": [],
-                      "plans": {}, "memory": {}, "round1_outcome": None, "selection": None,
+                      "plans": {}, "memory": {}, "round1_outcome": None, "selection": None, "forced_tool_calls": [],
                       "speculation": {"used": 0, "discarded": 0, "discarded_calls": 0}, "ignored_events": []}
 
     def _pipeline_name(self) -> str:
@@ -204,10 +207,16 @@ class SessionRunner:
             actions += 1
             if step["action"] == "tool":
                 await self._run_tool(step["tool"])
-                continue
-            prefetched = await self._agent_says(step, next_left=cap - actions)
+            else:
+                # Do not speculate across an imminent mandatory screening result.
+                next_left = 0 if number == 1 and actions == 2 and not self._mood_screened() else cap - actions
+                prefetched = await self._agent_says(step, next_left=next_left)
+            if number == 1 and actions >= 2 and not self.crisis:
+                await self._ensure_mood_screen(actions)
         if prefetched is not None:
             await self._discard(prefetched)
+        if number == 1 and not self.crisis:
+            await self._ensure_mood_screen(actions)  # covers early end_round and caps below two
         if not self.crisis:
             await self._flush_history_check()
         await self._close_round()
@@ -222,16 +231,17 @@ class SessionRunner:
                                          "path_pred": rnd.path_pred or "unknown",
                                          "prediction_source": "current" if rnd.path_state.status == "ok" else
                                          "previous_success" if effective else "unknown"})
-        memory = await self._ask("memory", self._messages("memory", self._snapshot(0)), self._state("memory"),
-                                 _valid_memory)
-        self.memory[rnd.number] = memory
-        self.trace["memory"][str(rnd.number)] = memory
-        rnd.referral = memory["referral"]
+        merged = rnd.number == 1 and self.deps.config["pipeline"].get("merge_memory_plan", False) and not self.crisis
+        if not merged:
+            memory = await self._ask("memory", self._messages("memory", self._snapshot(0)), self._state("memory"),
+                                     _valid_memory)
+            self._save_memory(memory)
         if self.crisis:
             return
-        await self._make_plan(rnd.number)
-        self._add("agent", self.plans[rnd.number]["closing_message"])
-        await self._visitor_speaks(speculate=False, record_topics=False)  # a statement, not a question
+        await self._make_plan(rnd.number, merged_memory=merged)
+        if self.plans[rnd.number]["closing_message"]:
+            self._add("agent", self.plans[rnd.number]["closing_message"])
+            await self._visitor_speaks(speculate=False, record_topics=False)  # a statement, not a question
         if not self.crisis:
             await self._flush_history_check()
 
@@ -290,26 +300,34 @@ class SessionRunner:
         if strategy.get("target_topic"):
             self.last_target = strategy["target_topic"]
 
-    async def _classify(self, entries) -> PathState:
+    async def _classify(self, entries, *, final: bool = False) -> PathState:
         key = len(entries)
         if self._cls_cache and self._cls_cache[0] == key:
             return self._cls_cache[1]
+        if (not final and self._cls_cache and not self._cls_skipped
+                and "fallback:jev" in self._cls_cache[1].provider):
+            self._cls_skipped = True
+            self.trace.setdefault("classifier_reuse", []).append(
+                {"round": self.current.number, "turn": self.turn, "reason": "jev_unavailable_alternate_action"})
+            return self._cls_cache[1]
+        self._cls_skipped = False
         with record_call(self.trace["llm_calls"], "classifier", "classify") as row:
             state = await self.deps.classifier.classify([dict(e) for e in entries])
-        row.update(ok=state.status == "ok", status=state.status)
+        row.update(ok=state.status == "ok", status=state.status, provider=state.provider)
         self._cls_cache = (key, state)
         if state.status == "ok":
             self._last_path = state
         return state
 
     async def _classify_current(self) -> PathState:
-        return await self._classify(tuple(self.entries))
+        return await self._classify(tuple(self.entries), final=True)
 
     async def _agent_says(self, step: dict, *, next_left: int):
         step = await self._vet_text(step)
-        for act in step.get("acts") or []:
-            self.behaviors[act] += 1
-        self._add("agent", step["text"])
+        if step["text"]:
+            for act in step.get("acts") or []:
+                self.behaviors[act] += 1
+            self._add("agent", step["text"])
         if self.safety_state.pending_history_check:
             verified = self.deps.safety.check_verification(step["text"])
             self.trace["history_checks"].append({"round": self.current.number, "turn": self.turn,
@@ -317,10 +335,12 @@ class SessionRunner:
             if not verified:
                 self._add("safety", self.deps.safety.script_for("history_check"))
             self.safety_state.pending_history_check = False
+        if not step["text"] and self.entries[-1]["speaker"] != "safety":
+            return None
         return await self._visitor_speaks(speculate=next_left > 0, next_left=next_left)
 
     async def _vet_text(self, step: dict) -> dict:
-        """Forbidden wording in an agent message: rewrite (response or merged call) with feedback, then keep and log."""
+        """Rewrite once, then remove offending user-facing sentences before display."""
         attempts = self.deps.config["veto_rewrite_attempts"]
         for attempt in range(attempts + 1):
             hard = [v for v in check_text(step["text"], config=self.deps.safety.config) if v.severity == "hard"]
@@ -329,7 +349,7 @@ class SessionRunner:
             self.trace["vetoes"].append({"stage": "turn", "round": self.current.number, "attempt": attempt,
                                          "violations": [v.__dict__ for v in hard]})
             if attempt == attempts:
-                return step
+                return {**step, "text": self._redact_text(step["text"], "turn")}
             feedback = "；".join(dict.fromkeys(v.message for v in hard))
             snap, cls = step["snapshot"], step["classification"]
             task = "turn" if self.deps.config["pipeline"]["merge_strategy_response"] else "response"
@@ -337,9 +357,27 @@ class SessionRunner:
             retry = await self._ask(task, self._messages(task, snap, cls, strategy=step["strategy"], feedback=feedback),
                                     self._state(task, snap, cls, strategy=step["strategy"]), validate)
             if task == "turn" and retry["action"] != "say":
-                return step
+                return {**step, "text": self._redact_text(step["text"], "turn")}
             step = {**step, "text": retry["text"], "acts": retry.get("acts", [])}
         return step
+
+    def _redact_text(self, text: str, field: str) -> str:
+        # Keep delimiters; an unpunctuated final sentence is checked too.
+        sentences = re.findall(r"[^。！？!?；;\n]+[。！？!?；;\n]*|[。！？!?；;\n]+", text)
+        removed, kept = [], []
+        for sentence in sentences:
+            hard = [v for v in check_text(sentence, context="user_facing", config=self.deps.safety.config)
+                    if v.severity == "hard"]
+            (removed if hard else kept).append(sentence)
+        clean = "".join(kept).strip()
+        # Normalisation can match across a newline; fail closed if sentence splitting missed it.
+        if any(v.severity == "hard" for v in check_text(clean, context="user_facing", config=self.deps.safety.config)):
+            removed.extend(kept)
+            clean = ""
+        if removed:
+            self.trace["vetoes"].append({"stage": "text_redacted", "round": self.current.number,
+                                         "field": field, "removed_sentences": removed})
+        return clean
 
     async def _flush_history_check(self) -> None:
         """History event not yet followed up in this round: the fixed script covers it."""
@@ -425,10 +463,22 @@ class SessionRunner:
         self.trace["legacy_safety_api"] = True
         return self.deps.safety.script_for(event.action)
 
-    async def _run_tool(self, tool: str) -> None:
+    def _mood_screened(self) -> bool:
+        return any(c["round"] == 1 and c["tool"] == "screen_mood" for c in self.tool_calls)
+
+    async def _ensure_mood_screen(self, actions: int) -> None:
+        if not self._mood_screened():
+            await self._run_tool("screen_mood", forced_after=actions)
+
+    async def _run_tool(self, tool: str, *, forced_after: int | None = None) -> None:
         result = self.deps.screening.screen(self.visitor, tool)
         self.turn += 1
         self.tool_calls.append({"round": self.current.number, "turn": self.turn, "tool": tool, "result": result})
+        # tool_calls/result are closed schemas: identify the exact existing call in trace.
+        if forced_after is not None:
+            self.trace["forced_tool_calls"].append({"round": self.current.number, "turn": self.turn,
+                "tool": tool, "tool_call_index": len(self.tool_calls) - 1, "forced": True,
+                "after_actions": forced_after, "counts_toward_cap": False})
         self.entries.append({"round": self.current.number, "turn": self.turn, "speaker": "tool", "tool": tool,
                              "result": result, "text": "", "revealed_clue_ids": []})
         if tool == "screen_mood":
@@ -438,13 +488,21 @@ class SessionRunner:
 
     # ------------------------------------------------------------------ plan
 
-    async def _make_plan(self, number: int) -> None:
+    def _save_memory(self, memory: dict) -> None:
+        self.memory[self.current.number] = memory
+        self.trace["memory"][str(self.current.number)] = memory
+        self.current.referral = memory["referral"]
+
+    async def _make_plan(self, number: int, *, merged_memory: bool = False) -> None:
         attempts = self.deps.config["veto_rewrite_attempts"]
         feedback, hard = None, []
         snap = self._snapshot(0)
+        task = "memory_plan" if merged_memory else "plan"
         for attempt in range(attempts + 1):
-            result = await self._ask("plan", self._messages("plan", snap, feedback=feedback), self._state("plan"),
-                                     _valid_plan)
+            result = await self._ask(task, self._messages(task, snap, feedback=feedback), self._state(task),
+                                     _valid_memory_plan if merged_memory else _valid_plan)
+            if merged_memory:
+                self._save_memory(result["memory"])
             plan, extras = self._plan_from(result)
             violations = self._plan_violations(plan, extras)
             hard = [v for v in violations if v.severity == "hard"]
@@ -455,6 +513,12 @@ class SessionRunner:
             feedback = "；".join(dict.fromkeys(v.message for v in hard))
         if hard:
             plan = self._remediate(plan, hard)
+            extras["closing_message"] = self._redact_text(extras["closing_message"], "closing_message")
+            plan["referral_advice"] = self._redact_text(plan["referral_advice"] or "", "referral_advice") or None
+            for card in plan["cards"]:
+                for field in ("title", "body"):
+                    card[field] = self._redact_text(card[field], f"cards.{field}")
+            plan["cards"] = [c for c in plan["cards"] if c["title"] and c["body"]]
             remaining = [v for v in self._plan_violations(plan, extras) if v.severity == "hard"]
             self.trace["vetoes"].append({"stage": "plan_remediated", "round": number,
                                          "violations": [v.__dict__ for v in remaining]})
@@ -510,6 +574,8 @@ class SessionRunner:
         if task == "turn":
             body = (prompts["strategy"] + "\n\n" + prompts["response"] + "\n\n# 输出格式（以此为准）\n"
                     + prompts["turn_merged"])
+        elif task == "memory_plan":
+            body = (prompts["memory"] + "\n\n" + prompts["plan"] + "\n\n" + prompts["memory_plan"])
         else:
             body = prompts[task]
         playbook = "\n\n".join(f"## {name}\n{strip_locks(self.deps.playbook.sections[name])}"
@@ -548,9 +614,9 @@ class SessionRunner:
             lines.append("待稍后追问的话题：" + ("、".join(snap.deferred) if snap.deferred else "无"))
         if strategy is not None and task == "response":
             lines.append("本步策略：" + json.dumps(strategy, ensure_ascii=False))
-        if task == "memory":
+        if task in ("memory", "memory_plan"):
             lines.append(f"本轮已问到的话题：{'、'.join(snap.asked) or '无'}")
-        if task == "plan":
+        if task in ("plan", "memory_plan"):
             rnd = self.current
             lines.append(f"路径分类器最终权重：{json.dumps(rnd.path_state.weights if rnd.path_state else {})}；"
                          f"本轮转介判断：{rnd.referral}")
@@ -616,11 +682,14 @@ class SessionRunner:
         if fallback_state["path_top"] == "unknown":
             fallback_state["path_top"] = "P1"  # generic plan only; never a classification
         result = await MockAgentLLM().complete_json(messages, task=task, state=fallback_state)
-        if task == "memory":
-            result["summary"] = "摘要生成失败；后续以原始会谈记录为准。"
-            result["referral_reason"] = "固定规则回退"
-            if result["referral"] == "R0":
-                result["referral"] = next((r.referral for r in reversed(self.rounds) if r.referral), "R0")
+        if task in ("memory", "memory_plan"):
+            memory = result["memory"] if task == "memory_plan" else result
+            memory["summary"] = "摘要生成失败；后续以原始会谈记录为准。"
+            memory["referral_reason"] = "固定规则回退"
+            if memory["referral"] == "R0":
+                memory["referral"] = next((r.referral for r in reversed(self.rounds) if r.referral), "R0")
+            if task == "memory_plan":
+                result.update(MockAgentLLM()._plan({**fallback_state, "referral": memory["referral"]}))
         validate(result)
         self.trace["fallbacks"].append({"round": state["round"], "task": task,
                                         "reason": "attempts_exhausted", "attempts": attempt + 1,
@@ -802,6 +871,13 @@ def _valid_plan(data: dict) -> None:
         data["age"] = None
     if not isinstance(data.get("closing_message"), str) or not data["closing_message"].strip():
         raise LLMError("closing_message required")
+
+
+def _valid_memory_plan(data: dict) -> None:
+    if not isinstance(data.get("memory"), dict):
+        raise LLMError("memory_plan requires a memory object")
+    _valid_memory(data["memory"])
+    _valid_plan(data)
 
 
 def _hhmm(value) -> None:

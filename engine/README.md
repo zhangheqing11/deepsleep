@@ -80,7 +80,28 @@ LLM 已解析输出、重试、否决记录、history 核验结果、被丢弃�
 - 最终分类超时/错误仍保留均匀权重和原状态用于诊断，但 path_pred 沿用本会谈最近成功分类。没有成功结果时 trace 的 final.path_pred=unknown、unknown_path_rounds 标记该轮。契约不能写 unknown，所以 session 保留兼容占位 P1、path_confidence=null，不能把它作为有效分类。
 - `engine.reporting.build_report` 是 S3 → S2 scorer 的统计入口：排除 error 和 unknown 会谈后才调用 scorer；n_visitors 是可评分人数。完整 attempted/completed/error/crisis_exit、完成率、评分覆盖率、排除名单、全样本危机漏报和所有调用统计写进必须一同读取的 summary。任何排除都会令 report.veto.passed=false（契约没有“评估不完整”原因枚举，原因写在 summary）。全部排除时不生成无定义的空样本 report；summary.report_unavailable 说明原因。原始 S2 score_run 直接接 session 的旧入口不会自动获得这些修复，应改接此适配函数。
 - 批量 CLI 总是写 summary.json；S2 可导入时加 `--scorer scoring.score:score_run` 生成报表。安全摘要覆盖全部尝试，即使某些会谈未进入可评分子集。
-- `engine.adapters_sim` 是可选 S2 薄适配：每会谈独立 simulator、跨轮保留 deny/reveal，按实际 agent/safety 发言标话题，环 2 只把第一轮交给 S2 状态模型。S2 不在本分支；模块延迟导入，使用时提供 S2 模块路径。
+- `engine.adapters_sim` 是可选 S2 薄适配：每会谈独立 simulator、跨轮保留 deny/reveal，按实际 agent/safety 发言标话题，环 2 只把第一轮交给 S2 状态模型。S2 已接入本分支；模块保持延迟导入，方便独立测试。
 - 安全事件优先调用新版 `script_for_event(event, state)`，空话术不添加空 transcript、不额外触发来访回复；事件仍保留。旧安全层兼容路径显式记 legacy_safety_api，不能据此宣称完成新版去重集成。
 
 真实验收采用 3 个 S2 来访、每轮 1 次动作、merged agent 为真实 ds flash，其余组件 mock，满足总共不超过 30 次真实请求的限制。它验证 JSON 与会谈执行，不替代默认 5/4 动作、全真实服务或 40–50 人并发验收。完整产物不提交到仓库，见本地 `var/s3-fix1/` 与外部任务总结。
+
+## S3 第二阶段：冻结筛查与低延迟配置
+
+- 第一轮前两个 agent 动作内未主动 `screen_mood`，则在第二个动作后强制调用；提前 `end_round` 也会在收尾前补筛。已进入 `crisis_exit` 的会谈不再继续筛查。强制调用不消耗动作预算；playbook 不变。session.tool_calls 保留正常结果，trace.forced_tool_calls 通过 round/turn/tool_call_index 标明来源（契约不允许增加字段）。
+- PHQ-9 第 9 题阳性事件均写入 session.safety_events；重复阳性可以有多个事件，但固定话术是否播报仍交给安全层的 `script_for_event` 去重。
+- 默认动作上限 4/3；策略与回复合并；第一轮 memory 与 plan 合并为 `memory_plan`，第二轮读取其记忆与转介。该调用与 plan 保留 high 思考，其他 agent 子任务关闭思考。参数使用 DeepSeek 官方 Chat Completions 的 `extra_body.thinking` 和 `reasoning_effort`。
+- 默认路径分类器 Jev，两道 Choice 同一次请求，复用客户端；失败自动尝试真实 ds flash。Jev 不可用时，后续隔一个动作复用分类结果，轮末刷新。失败双方均不能制造成功分类；unknown/错误排除口径仍由 engine.reporting 负责。危机判断器链及超时、阈值不变。
+- 用户可见文字经过 `check_text(context="user_facing")`；一次改写仍硬违规则删除整句，trace.vetoes 记录 text_redacted。普通发言、收尾话、就医建议、卡片标题和正文都覆盖。删空时不展示空消息、不凭空添加替代话术；卡片标题或正文为空则移除卡片。
+- `sim/` 与 `scoring/` 已在本分支。适配器继续维护跨轮状态和仅第一轮的状态模型输入；`S2RendererClient` 只在 engine 内为真实来访措辞关闭思考，不改 S2 的线索规则。
+
+全真实试跑（凭据只读取显式外部文件；没有 key 时拒绝试跑）：
+
+```bash
+/Users/zhangheqing/bohack/ds-safety/.venv/bin/python -m engine.integ_trial --n 3 --run-id unique-precheck
+/Users/zhangheqing/bohack/ds-safety/.venv/bin/python -m engine.integ_trial --n 10 --run-id unique-ten
+# 离线同一路径：加 --mock
+```
+
+每次 run-id 必须唯一，已有目录会拒绝重跑。`--config` 接受冻结配置覆盖 YAML，`--no-merged` 用于受控对照；默认全局真实请求上限 450，由 `var/s3-phase2/request-budget.log` 跨进程累计（HTTP send 前加锁预留，含失败与取消，非服务商账单）。不要删除账本来重复计费；提高 `--budget` 必须取得任务授权。
+
+产物为 `var/integ/<run-id>/` 的 manifest、sessions、trace、calls、summary 和可评分时的 run_report。计分必须同时读 summary.accounting，error 不进入准确率分母。来源摘要标明当前工作区代码，不能把未提交的工作区等同某个 Git 提交。模拟规则模型的 ISI 结果只用于联调，不证明实际干预有效。

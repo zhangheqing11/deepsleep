@@ -89,6 +89,10 @@ class MockAgentLLM:
         return {"summary": "mock 摘要", "facts": [], "open_questions": [], "referral": _referral(state),
                 "referral_reason": "mock"}
 
+    def _memory_plan(self, state: dict) -> dict:
+        memory = self._memory(state)
+        return {**self._plan({**state, "referral": memory["referral"]}), "memory": memory}
+
     def _plan(self, state: dict) -> dict:
         path = state["path_top"]
         components = list(COMPONENTS[path])

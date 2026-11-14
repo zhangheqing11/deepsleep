@@ -24,7 +24,7 @@ from .session import EngineDeps, SessionRunner
 from .reporting import build_report, summarize
 from .stubs import IndexScreening, MockVisitorSim, StubOutcomeModel
 
-PROMPTS = ("boundaries", "strategy", "response", "turn_merged", "memory", "plan", "select")
+PROMPTS = ("boundaries", "strategy", "response", "turn_merged", "memory", "plan", "memory_plan", "select")
 
 
 def build_deps(*, config=None, llm=None, classifier=None, sim=None, screening=None, outcome=None, safety=None,
