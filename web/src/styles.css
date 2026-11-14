@@ -854,3 +854,13 @@ a.session-item:hover {
   background: var(--warn-soft);
   color: var(--warn-ink);
 }
+
+/* 顶栏“退出登录”后面的账号称呼：窄屏时省掉 */
+.so-who {
+  opacity: 0.75;
+}
+@media (max-width: 900px) {
+  .so-who {
+    display: none;
+  }
+}

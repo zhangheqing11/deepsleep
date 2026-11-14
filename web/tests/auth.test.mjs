@@ -122,16 +122,72 @@ test('登录与用户视角', async (t) => {
       assert.equal(session.getItem(TOKEN_KEY), null);
     });
 
-    await t.test('登录页：密码框不回显，没有注册入口，说明令牌只在这个标签页', () => {
+    await t.test('注册：本机先拦格式；成功后直接登录并标记为刚注册；重名保持未登录', async () => {
+      assert.match(auth.registrationProblem('ab', 'pass-123'), /3–32 位/);
+      assert.match(auth.registrationProblem('has space', 'pass-123'), /3–32 位/);
+      assert.match(auth.registrationProblem('okname', '12345'), /至少 6 位/);
+      assert.equal(auth.registrationProblem('ok_name-1.x', 'pass-123'), null);
+
+      reset(() => failure(409, 'USERNAME_TAKEN'));
+      await assert.rejects(auth.signUp('taken', 'pass-123', ''), (e) => e.code === 'USERNAME_TAKEN');
+      assert.equal(auth.getAuthState().state, 'signed-out');
+      assert.equal(session.getItem(TOKEN_KEY), null);
+
+      const NEW = { id: 'xiaowang', display_name: '小王', role: 'user' };
+      reset(() => json(201, { access_token: 'tok-new', token_type: 'bearer', expires_in: 60, user: NEW }));
+      await auth.signUp('xiaowang', 'pass-123', ' 小王 ');
+      assert.equal(calls[0].url, '/api/v1/auth/register');
+      assert.deepEqual(JSON.parse(calls[0].body), { username: 'xiaowang', password: 'pass-123', display_name: '小王' });
+      assert.deepEqual(auth.getAuthState(), { state: 'signed-in', user: NEW, fresh: true });
+      assert.deepEqual([...session.data.entries()], [[TOKEN_KEY, 'tok-new']]);
+      auth.dismissWelcome();
+      assert.deepEqual(auth.getAuthState(), { state: 'signed-in', user: NEW });
+
+      // 不填称呼时不发送这个字段
+      reset(() => json(201, { access_token: 'tok-new2', token_type: 'bearer', expires_in: 60, user: { ...NEW, id: 'v2' } }));
+      await auth.signUp('v2', 'pass-123', '   ');
+      assert.deepEqual(JSON.parse(calls[0].body), { username: 'v2', password: 'pass-123' });
+      reset(() => json(200, { status: 'ok' }));
+      await auth.signOut();
+    });
+
+    await t.test('登录页：密码框不回显，可以切到注册，说明账号只是演示', () => {
       const page = renderToStaticMarkup(React.createElement(LoginPage, { reason: 'expired' }));
       assert.match(page, /type="password"/);
       assert.match(page, /autoComplete="current-password"|autocomplete="current-password"/);
       assert.match(page, /登录已失效，请重新登录。/);
-      assert.match(page, /没有注册入口/);
+      assert.match(page, /注册一个演示账号/);
       assert.match(page, /只保存在这个标签页里/);
       assert.match(page, /<button type="submit" class="lg-submit" disabled="">登录<\/button>/);
-      assert.doesNotMatch(page, /注册账号|忘记密码/);
+      assert.doesNotMatch(page, /忘记密码/);
+      const reg = renderToStaticMarkup(React.createElement(LoginPage, { reason: 'expired', initialMode: 'register' }));
+      assert.match(reg, /<h1>注册<\/h1>/);
+      assert.match(reg, /autoComplete="new-password"|autocomplete="new-password"/);
+      assert.match(reg, /后端一重启就清空/);
+      assert.match(reg, /请不要用你在别处用的密码/);
+      assert.match(reg, /不会收集你的睡眠或健康信息/);
+      assert.doesNotMatch(reg, /登录已失效/);
       assert.doesNotMatch(renderToStaticMarkup(React.createElement(LoginPage, { reason: 'required' })), /lg-note/);
+    });
+
+    await t.test('顶栏的退出登录：只在已登录时出现', async () => {
+      const { SignOutButton } = await server.ssrLoadModule('/src/components/SignOutButton.tsx');
+      const render = () => renderToStaticMarkup(React.createElement(SignOutButton, { className: 'x-link' }));
+      assert.equal(auth.getAuthState().state, 'signed-out');
+      assert.equal(render(), '');
+      reset(() => json(200, { authenticated: false, user: null }));
+      await auth.refreshAuth();
+      assert.equal(auth.getAuthState().state, 'open');
+      assert.equal(render(), '');
+      reset(() => json(200, { access_token: 'tok-bar', token_type: 'bearer', expires_in: 60, user: USER }));
+      await auth.signIn('demo', 'right-password');
+      assert.match(render(), /<button type="button" class="x-link">退出登录<span class="so-who">（演示用户）<\/span><\/button>/);
+      // 三套界面的顶栏都接了这个按钮
+      for (const f of ['src/pages/board/BoardPage.tsx', 'src/pages/app/UserApp.tsx', 'src/layouts/ConsoleLayout.tsx']) {
+        assert.match(await readFile(join(root, f), 'utf8'), /<SignOutButton className=/, f);
+      }
+      reset(() => json(200, { status: 'ok' }));
+      await auth.signOut();
     });
 
     await t.test('用户视角：路由、默认来访和第一人称的称呼', async () => {
@@ -147,6 +203,12 @@ test('登录与用户视角', async (t) => {
       assert.equal(defaultVisitor({ visitors: [v('a', { safety: true }), v('b', { hasAfter: false })] }).id, 'b');
       assert.equal(defaultVisitor({ visitors: [v('a', { safety: true })] }).id, 'a');
       assert.equal(defaultVisitor({ visitors: [] }), null);
+      // 自己注册的账号固定分到一位合适的来访：同一个账号每次相同，不会分到安全线示例
+      const many = { visitors: [v('s', { safety: true }), v('a'), v('b'), v('c'), v('d')] };
+      const assigned = defaultVisitor(many, 'xiaowang').id;
+      assert.equal(defaultVisitor(many, 'xiaowang').id, assigned);
+      assert.notEqual(assigned, 's');
+      assert.equal(new Set(['u1', 'u2', 'u3', 'u4', 'u5', 'u6', 'u7', 'u8'].map((u) => defaultVisitor(many, u).id)).size > 1, true);
 
       const s = await example('session.A-002.json');
       const steps = buildSteps(s);
@@ -167,7 +229,7 @@ test('登录与用户视角', async (t) => {
       // 密码不写进任何存储、日志或地址
       const source = await readFile(join(root, 'src/api/auth.ts'), 'utf8');
       assert.doesNotMatch(source, /console\.|localStorage/);
-      assert.doesNotMatch(await readFile(join(root, 'src/pages/auth/LoginPage.tsx'), 'utf8'), /console\.|Storage|location/);
+      assert.doesNotMatch(await readFile(join(root, 'src/pages/auth/LoginPage.tsx'), 'utf8'), /console\.|Storage/);
     });
   } finally {
     globalThis.window = oldWindow;

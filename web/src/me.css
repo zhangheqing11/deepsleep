@@ -174,3 +174,21 @@
     padding-top: 8px;
   }
 }
+
+/* 刚注册进来时的一次性说明 */
+.me-welcome {
+  display: grid;
+  gap: 4px;
+  justify-items: start;
+  padding: 12px 14px 6px;
+  border-radius: var(--radius-lg);
+  background: var(--panel-learned);
+  font-size: 0.9375rem;
+}
+.me-welcome b {
+  font-weight: 600;
+}
+.me-welcome .ua-link {
+  margin-left: -10px;
+  color: var(--link);
+}

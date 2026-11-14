@@ -1,5 +1,6 @@
 import { describeError } from '../../api/errors';
 import { EvolutionBoard } from '../../components/board/Board';
+import { SignOutButton } from '../../components/SignOutButton';
 import { useBoard } from '../../hooks/useBoard';
 import { HREF } from '../../hooks/useHashRoute';
 import { Moon } from '../../layouts/ConsoleLayout';
@@ -41,6 +42,7 @@ export function BoardPage() {
           <a className="bd-link" href={HREF.runs}>控制台</a>
           <a className="bd-link" href={HREF.app}>来访视角</a>
           <a className="bd-link" href={HREF.me}>用户视角</a>
+          <SignOutButton className="bd-link" />
         </div>
       </header>
       <main className="bd-main">

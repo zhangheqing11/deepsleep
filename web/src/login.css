@@ -113,3 +113,29 @@
   padding-top: 20px;
   text-align: center;
 }
+
+/* 登录 / 注册切换 */
+.lg-switch {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--muted);
+  font-size: 0.875rem;
+}
+.lg-switch button {
+  padding: 6px 2px;
+  border: 0;
+  background: none;
+  color: var(--link);
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+}
+.lg-switch button:focus-visible {
+  outline: 2px solid var(--link);
+  outline-offset: 2px;
+}
+.lg-hint {
+  color: var(--muted);
+  font-size: 0.75rem;
+}

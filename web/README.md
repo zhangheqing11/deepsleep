@@ -67,7 +67,7 @@ src/
 │   ├── mockClient.ts      前端本地模拟适配器
 │   ├── errors.ts          ApiError：network / http / invalid_response / aborted
 │   ├── requestLog.ts      调试页用的请求记录（仅内存）
-│   └── auth.ts            登录状态：/auth/me、/auth/login、/auth/logout；令牌只放 sessionStorage，不进请求记录
+│   └── auth.ts            登录状态：/auth/me、/auth/login、/auth/register、/auth/logout；令牌只放 sessionStorage，不进请求记录
 ├── hooks/
 │   ├── useConsoleRun.ts   控制台“当前运行”状态，切换控制台页面时轮询不中断
 │   ├── useRunPoller.ts    1 秒串行轮询；终态停止；卸载 abort；网络失败退避
@@ -81,7 +81,7 @@ src/
 ├── pages/console/         RunsPage、VisitorsPage、EvolutionPage（后端只读数据）、DebugPage
 ├── pages/app/             UserApp（来访列表、来访页：会谈 / 对比 / 自评）
 ├── pages/me/              MeApp（用户视角：今晚 / 对话 / 我的）
-├── pages/auth/            LoginPage
+├── pages/auth/            LoginPage（登录与注册）
 ├── components/            评测流程组件（RunLauncher、RunProgress、ReportView、SessionList、SessionView）与 console/ 子组件
 ├── components/board/      看板的纯展示组件：只吃一份 BoardData，不发请求
 ├── components/app/        用户端的纯展示组件：会谈记录、收尾、两场对比、自评
@@ -107,7 +107,7 @@ src/
 - 会谈记录里没有“哪一句出自哪条规则”，用户端只并列展示新规则与两场会谈的差别，不做逐句归因。
 - 自评页只展示模拟来访的作答。PHQ-9、GAD-7 用通行中文版题目；ISI、STOP-Bang 有版权，只概括每题看什么。题目与说明待按 BACKLOG B3 审定。
 - 外观偏好（深浅色）只保存在本机浏览器。
-- **登录**：进入页面时先问 `GET /auth/me`。后端没开登录（`API_AUTH_MODE=none`，默认）时不出现登录页；开启（`demo`）后三套界面都先登录，令牌放 `sessionStorage`，随每个请求以 `Authorization: Bearer` 发出；任何接口返回 `AUTH_REQUIRED` / `INVALID_TOKEN` / `TOKEN_EXPIRED` 都会清掉令牌回到登录页（后端重启后令牌失效属于这种情况）。账号由启动后端的人用环境变量设置，前端没有注册入口，账号密码不落盘、不进调试页的请求记录。前端本地模拟（mock 适配器）没有登录。
+- **登录**：进入页面时先问 `GET /auth/me`。后端没开登录（`API_AUTH_MODE=none`，默认）时不出现登录页；开启（`demo`）后三套界面都先登录，令牌放 `sessionStorage`，随每个请求以 `Authorization: Bearer` 发出；任何接口返回 `AUTH_REQUIRED` / `INVALID_TOKEN` / `TOKEN_EXPIRED` 都会清掉令牌回到登录页（后端重启后令牌失效属于这种情况）。除了启动后端时用环境变量设置的那个账号，登录页还可以自助注册一个演示账号（`POST /auth/register`）：账号只存在后端内存里，后端重启即清空；注册后直接进入用户视角，并按账号名固定分到一位模拟来访。账号密码不落盘、不进调试页的请求记录。登录后，进化看板、控制台、来访视角的顶栏和用户视角的“我的”里都有“退出登录”。前端本地模拟（mock 适配器）没有登录。
 - 用户视角与来访视角读的是同一份会谈：默认进入第一位没有触发安全线、和最新一版教练谈过的来访，页面顶部始终标明这是哪位模拟来访的数据。
 
 ## 进化后台入口
