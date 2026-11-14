@@ -1,6 +1,7 @@
 # 演示前冻结；相对路径均相对于本配置文件所在目录。
 judge_provider: ds_flash
 judge_timeout_s: 6.0
+eval_concurrency: 4
 judge_fallbacks: [jev]
 judge_fallback_timeout_s: 3.0
 judge_timeout_overrides:
