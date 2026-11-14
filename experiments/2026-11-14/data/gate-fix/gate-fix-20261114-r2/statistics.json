@@ -1,0 +1,5186 @@
+{
+  "noise": {
+    "metrics": {
+      "isi_response_rate": {
+        "baseline": 0.575,
+        "comparison": 0.65,
+        "delta": 0.07500000000000007,
+        "ci95": [
+          -0.07499999999999996,
+          0.22499999999999998
+        ],
+        "valid_bootstrap": 10000
+      },
+      "mean_isi_change": {
+        "baseline": -7.675,
+        "comparison": -8.1,
+        "delta": -0.4249999999999998,
+        "ci95": [
+          -1.3499999999999996,
+          0.47499999999999964
+        ],
+        "valid_bootstrap": 10000
+      },
+      "path_acc_r1": {
+        "baseline": 0.625,
+        "comparison": 0.6,
+        "delta": -0.025000000000000022,
+        "ci95": [
+          -0.22499999999999998,
+          0.17500000000000004
+        ],
+        "valid_bootstrap": 10000
+      },
+      "path_acc_r2": {
+        "baseline": 0.65,
+        "comparison": 0.675,
+        "delta": 0.025000000000000022,
+        "ci95": [
+          -0.15000000000000002,
+          0.22499999999999998
+        ],
+        "valid_bootstrap": 10000
+      },
+      "path_acc_gain": {
+        "baseline": 0.025000000000000022,
+        "comparison": 0.07500000000000007,
+        "delta": 0.050000000000000044,
+        "ci95": [
+          -0.09999999999999998,
+          0.20000000000000007
+        ],
+        "valid_bootstrap": 10000
+      },
+      "referral_recall": {
+        "baseline": 0.5625,
+        "comparison": 0.625,
+        "delta": 0.0625,
+        "ci95": [
+          -0.1428571428571429,
+          0.27777777777777785
+        ],
+        "valid_bootstrap": 10000
+      },
+      "referral_precision": {
+        "baseline": 0.42857142857142855,
+        "comparison": 0.43478260869565216,
+        "delta": 0.006211180124223614,
+        "ci95": [
+          -0.13725490196078433,
+          0.14834523809523792
+        ],
+        "valid_bootstrap": 10000
+      },
+      "screening_coverage": {
+        "baseline": 0.3333333333333333,
+        "comparison": 0.5,
+        "delta": 0.16666666666666669,
+        "ci95": [
+          0.0,
+          0.5
+        ],
+        "valid_bootstrap": 9985
+      },
+      "crisis_missed": {
+        "baseline": 0,
+        "comparison": 0,
+        "delta": 0,
+        "ci95": [
+          0.0,
+          0.0
+        ],
+        "valid_bootstrap": 10000
+      },
+      "crisis_recall": {
+        "baseline": 1.0,
+        "comparison": 1.0,
+        "delta": 0.0,
+        "ci95": [
+          0.0,
+          0.0
+        ],
+        "valid_bootstrap": 9947
+      },
+      "contraindication_violations": {
+        "baseline": 0,
+        "comparison": 0,
+        "delta": 0,
+        "ci95": [
+          0.0,
+          0.0
+        ],
+        "valid_bootstrap": 10000
+      },
+      "referral_recall_R1": {
+        "baseline": 0.16666666666666666,
+        "comparison": 0.3333333333333333,
+        "delta": 0.16666666666666666,
+        "ci95": [
+          0.0,
+          0.5
+        ],
+        "valid_bootstrap": 9988
+      },
+      "referral_recall_R2": {
+        "baseline": 0.6,
+        "comparison": 0.6,
+        "delta": 0.0,
+        "ci95": [
+          -0.6666666666666666,
+          0.6666666666666666
+        ],
+        "valid_bootstrap": 9952
+      },
+      "referral_recall_R3": {
+        "baseline": 1.0,
+        "comparison": 1.0,
+        "delta": 0.0,
+        "ci95": [
+          0.0,
+          0.0
+        ],
+        "valid_bootstrap": 9950
+      }
+    },
+    "agreement": {
+      "有效": {
+        "n": 40,
+        "both_yes": 20,
+        "both_no": 11,
+        "lost": 3,
+        "gained": 6,
+        "agreement": 0.775
+      },
+      "路径第1轮正确": {
+        "n": 40,
+        "both_yes": 16,
+        "both_no": 7,
+        "lost": 9,
+        "gained": 8,
+        "agreement": 0.575
+      },
+      "路径第2轮正确": {
+        "n": 40,
+        "both_yes": 19,
+        "both_no": 6,
+        "lost": 7,
+        "gained": 8,
+        "agreement": 0.625
+      },
+      "转介标签正确": {
+        "n": 40,
+        "both_yes": 23,
+        "both_no": 13,
+        "lost": 2,
+        "gained": 2,
+        "agreement": 0.9
+      }
+    },
+    "paired": [
+      {
+        "visitor_id": "A-001",
+        "有效": [
+          true,
+          true
+        ],
+        "路径第1轮正确": [
+          false,
+          false
+        ],
+        "路径第2轮正确": [
+          false,
+          false
+        ],
+        "转介标签正确": [
+          true,
+          true
+        ]
+      },
+      {
+        "visitor_id": "A-002",
+        "有效": [
+          true,
+          true
+        ],
+        "路径第1轮正确": [
+          true,
+          true
+        ],
+        "路径第2轮正确": [
+          true,
+          true
+        ],
+        "转介标签正确": [
+          true,
+          true
+        ]
+      },
+      {
+        "visitor_id": "A-003",
+        "有效": [
+          false,
+          true
+        ],
+        "路径第1轮正确": [
+          true,
+          false
+        ],
+        "路径第2轮正确": [
+          true,
+          false
+        ],
+        "转介标签正确": [
+          false,
+          true
+        ]
+      },
+      {
+        "visitor_id": "A-004",
+        "有效": [
+          true,
+          true
+        ],
+        "路径第1轮正确": [
+          true,
+          true
+        ],
+        "路径第2轮正确": [
+          true,
+          true
+        ],
+        "转介标签正确": [
+          true,
+          true
+        ]
+      },
+      {
+        "visitor_id": "A-005",
+        "有效": [
+          true,
+          true
+        ],
+        "路径第1轮正确": [
+          false,
+          false
+        ],
+        "路径第2轮正确": [
+          false,
+          false
+        ],
+        "转介标签正确": [
+          true,
+          true
+        ]
+      },
+      {
+        "visitor_id": "A-006",
+        "有效": [
+          false,
+          true
+        ],
+        "路径第1轮正确": [
+          false,
+          true
+        ],
+        "路径第2轮正确": [
+          true,
+          true
+        ],
+        "转介标签正确": [
+          false,
+          true
+        ]
+      },
+      {
+        "visitor_id": "A-007",
+        "有效": [
+          false,
+          false
+        ],
+        "路径第1轮正确": [
+          true,
+          true
+        ],
+        "路径第2轮正确": [
+          true,
+          true
+        ],
+        "转介标签正确": [
+          false,
+          false
+        ]
+      },
+      {
+        "visitor_id": "A-008",
+        "有效": [
+          true,
+          false
+        ],
+        "路径第1轮正确": [
+          true,
+          false
+        ],
+        "路径第2轮正确": [
+          true,
+          false
+        ],
+        "转介标签正确": [
+          true,
+          true
+        ]
+      },
+      {
+        "visitor_id": "A-009",
+        "有效": [
+          false,
+          false
+        ],
+        "路径第1轮正确": [
+          true,
+          true
+        ],
+        "路径第2轮正确": [
+          true,
+          true
+        ],
+        "转介标签正确": [
+          false,
+          false
+        ]
+      },
+      {
+        "visitor_id": "A-010",
+        "有效": [
+          false,
+          true
+        ],
+        "路径第1轮正确": [
+          false,
+          true
+        ],
+        "路径第2轮正确": [
+          false,
+          true
+        ],
+        "转介标签正确": [
+          false,
+          false
+        ]
+      },
+      {
+        "visitor_id": "A-011",
+        "有效": [
+          true,
+          true
+        ],
+        "路径第1轮正确": [
+          true,
+          true
+        ],
+        "路径第2轮正确": [
+          true,
+          true
+        ],
+        "转介标签正确": [
+          true,
+          true
+        ]
+      },
+      {
+        "visitor_id": "A-012",
+        "有效": [
+          true,
+          true
+        ],
+        "路径第1轮正确": [
+          true,
+          true
+        ],
+        "路径第2轮正确": [
+          true,
+          true
+        ],
+        "转介标签正确": [
+          true,
+          true
+        ]
+      },
+      {
+        "visitor_id": "A-013",
+        "有效": [
+          true,
+          true
+        ],
+        "路径第1轮正确": [
+          true,
+          true
+        ],
+        "路径第2轮正确": [
+          false,
+          true
+        ],
+        "转介标签正确": [
+          true,
+          true
+        ]
+      },
+      {
+        "visitor_id": "A-014",
+        "有效": [
+          false,
+          true
+        ],
+        "路径第1轮正确": [
+          false,
+          false
+        ],
+        "路径第2轮正确": [
+          false,
+          false
+        ],
+        "转介标签正确": [
+          false,
+          false
+        ]
+      },
+      {
+        "visitor_id": "A-015",
+        "有效": [
+          false,
+          false
+        ],
+        "路径第1轮正确": [
+          true,
+          true
+        ],
+        "路径第2轮正确": [
+          true,
+          true
+        ],
+        "转介标签正确": [
+          false,
+          false
+        ]
+      },
+      {
+        "visitor_id": "A-016",
+        "有效": [
+          false,
+          false
+        ],
+        "路径第1轮正确": [
+          true,
+          true
+        ],
+        "路径第2轮正确": [
+          true,
+          true
+        ],
+        "转介标签正确": [
+          false,
+          false
+        ]
+      },
+      {
+        "visitor_id": "A-017",
+        "有效": [
+          false,
+          false
+        ],
+        "路径第1轮正确": [
+          true,
+          true
+        ],
+        "路径第2轮正确": [
+          true,
+          true
+        ],
+        "转介标签正确": [
+          true,
+          true
+        ]
+      },
+      {
+        "visitor_id": "A-018",
+        "有效": [
+          true,
+          true
+        ],
+        "路径第1轮正确": [
+          true,
+          true
+        ],
+        "路径第2轮正确": [
+          true,
+          true
+        ],
+        "转介标签正确": [
+          true,
+          true
+        ]
+      },
+      {
+        "visitor_id": "A-019",
+        "有效": [
+          true,
+          true
+        ],
+        "路径第1轮正确": [
+          false,
+          false
+        ],
+        "路径第2轮正确": [
+          false,
+          false
+        ],
+        "转介标签正确": [
+          true,
+          true
+        ]
+      },
+      {
+        "visitor_id": "A-020",
+        "有效": [
+          true,
+          true
+        ],
+        "路径第1轮正确": [
+          false,
+          true
+        ],
+        "路径第2轮正确": [
+          false,
+          true
+        ],
+        "转介标签正确": [
+          true,
+          true
+        ]
+      },
+      {
+        "visitor_id": "A-021",
+        "有效": [
+          false,
+          false
+        ],
+        "路径第1轮正确": [
+          false,
+          false
+        ],
+        "路径第2轮正确": [
+          false,
+          false
+        ],
+        "转介标签正确": [
+          false,
+          false
+        ]
+      },
+      {
+        "visitor_id": "A-022",
+        "有效": [
+          true,
+          false
+        ],
+        "路径第1轮正确": [
+          true,
+          true
+        ],
+        "路径第2轮正确": [
+          false,
+          true
+        ],
+        "转介标签正确": [
+          true,
+          false
+        ]
+      },
+      {
+        "visitor_id": "A-023",
+        "有效": [
+          true,
+          false
+        ],
+        "路径第1轮正确": [
+          true,
+          false
+        ],
+        "路径第2轮正确": [
+          true,
+          false
+        ],
+        "转介标签正确": [
+          true,
+          true
+        ]
+      },
+      {
+        "visitor_id": "A-024",
+        "有效": [
+          true,
+          true
+        ],
+        "路径第1轮正确": [
+          true,
+          false
+        ],
+        "路径第2轮正确": [
+          true,
+          true
+        ],
+        "转介标签正确": [
+          true,
+          true
+        ]
+      },
+      {
+        "visitor_id": "A-025",
+        "有效": [
+          false,
+          false
+        ],
+        "路径第1轮正确": [
+          true,
+          true
+        ],
+        "路径第2轮正确": [
+          true,
+          false
+        ],
+        "转介标签正确": [
+          false,
+          false
+        ]
+      },
+      {
+        "visitor_id": "A-026",
+        "有效": [
+          true,
+          true
+        ],
+        "路径第1轮正确": [
+          false,
+          false
+        ],
+        "路径第2轮正确": [
+          true,
+          false
+        ],
+        "转介标签正确": [
+          false,
+          false
+        ]
+      },
+      {
+        "visitor_id": "A-027",
+        "有效": [
+          false,
+          true
+        ],
+        "路径第1轮正确": [
+          false,
+          true
+        ],
+        "路径第2轮正确": [
+          false,
+          true
+        ],
+        "转介标签正确": [
+          true,
+          true
+        ]
+      },
+      {
+        "visitor_id": "A-028",
+        "有效": [
+          true,
+          true
+        ],
+        "路径第1轮正确": [
+          true,
+          false
+        ],
+        "路径第2轮正确": [
+          true,
+          true
+        ],
+        "转介标签正确": [
+          true,
+          true
+        ]
+      },
+      {
+        "visitor_id": "A-029",
+        "有效": [
+          true,
+          true
+        ],
+        "路径第1轮正确": [
+          false,
+          true
+        ],
+        "路径第2轮正确": [
+          false,
+          true
+        ],
+        "转介标签正确": [
+          true,
+          true
+        ]
+      },
+      {
+        "visitor_id": "A-030",
+        "有效": [
+          false,
+          false
+        ],
+        "路径第1轮正确": [
+          false,
+          true
+        ],
+        "路径第2轮正确": [
+          false,
+          true
+        ],
+        "转介标签正确": [
+          false,
+          false
+        ]
+      },
+      {
+        "visitor_id": "A-031",
+        "有效": [
+          true,
+          true
+        ],
+        "路径第1轮正确": [
+          true,
+          true
+        ],
+        "路径第2轮正确": [
+          true,
+          true
+        ],
+        "转介标签正确": [
+          false,
+          false
+        ]
+      },
+      {
+        "visitor_id": "A-032",
+        "有效": [
+          true,
+          true
+        ],
+        "路径第1轮正确": [
+          true,
+          false
+        ],
+        "路径第2轮正确": [
+          true,
+          true
+        ],
+        "转介标签正确": [
+          true,
+          true
+        ]
+      },
+      {
+        "visitor_id": "A-033",
+        "有效": [
+          false,
+          true
+        ],
+        "路径第1轮正确": [
+          true,
+          false
+        ],
+        "路径第2轮正确": [
+          true,
+          true
+        ],
+        "转介标签正确": [
+          true,
+          false
+        ]
+      },
+      {
+        "visitor_id": "A-034",
+        "有效": [
+          false,
+          false
+        ],
+        "路径第1轮正确": [
+          false,
+          true
+        ],
+        "路径第2轮正确": [
+          true,
+          true
+        ],
+        "转介标签正确": [
+          true,
+          true
+        ]
+      },
+      {
+        "visitor_id": "A-035",
+        "有效": [
+          false,
+          false
+        ],
+        "路径第1轮正确": [
+          false,
+          false
+        ],
+        "路径第2轮正确": [
+          false,
+          false
+        ],
+        "转介标签正确": [
+          false,
+          false
+        ]
+      },
+      {
+        "visitor_id": "A-036",
+        "有效": [
+          true,
+          true
+        ],
+        "路径第1轮正确": [
+          true,
+          false
+        ],
+        "路径第2轮正确": [
+          true,
+          false
+        ],
+        "转介标签正确": [
+          true,
+          true
+        ]
+      },
+      {
+        "visitor_id": "A-037",
+        "有效": [
+          true,
+          true
+        ],
+        "路径第1轮正确": [
+          false,
+          true
+        ],
+        "路径第2轮正确": [
+          false,
+          true
+        ],
+        "转介标签正确": [
+          true,
+          true
+        ]
+      },
+      {
+        "visitor_id": "A-038",
+        "有效": [
+          true,
+          true
+        ],
+        "路径第1轮正确": [
+          true,
+          false
+        ],
+        "路径第2轮正确": [
+          true,
+          false
+        ],
+        "转介标签正确": [
+          true,
+          true
+        ]
+      },
+      {
+        "visitor_id": "A-039",
+        "有效": [
+          true,
+          true
+        ],
+        "路径第1轮正确": [
+          true,
+          true
+        ],
+        "路径第2轮正确": [
+          true,
+          true
+        ],
+        "转介标签正确": [
+          true,
+          true
+        ]
+      },
+      {
+        "visitor_id": "A-040",
+        "有效": [
+          false,
+          false
+        ],
+        "路径第1轮正确": [
+          true,
+          true
+        ],
+        "路径第2轮正确": [
+          true,
+          true
+        ],
+        "转介标签正确": [
+          false,
+          false
+        ]
+      }
+    ]
+  },
+  "c1": {
+    "metrics": {
+      "isi_response_rate": {
+        "baseline": 0.4375,
+        "comparison": 0.5,
+        "delta": 0.0625,
+        "ci95": [
+          -0.0625,
+          0.1875
+        ],
+        "valid_bootstrap": 10000
+      },
+      "mean_isi_change": {
+        "baseline": -7.09375,
+        "comparison": -7.59375,
+        "delta": -0.5,
+        "ci95": [
+          -1.4375,
+          0.53125
+        ],
+        "valid_bootstrap": 10000
+      },
+      "path_acc_r1": {
+        "baseline": 0.5625,
+        "comparison": 0.625,
+        "delta": 0.0625,
+        "ci95": [
+          -0.125,
+          0.25
+        ],
+        "valid_bootstrap": 10000
+      },
+      "path_acc_r2": {
+        "baseline": 0.75,
+        "comparison": 0.84375,
+        "delta": 0.09375,
+        "ci95": [
+          -0.0625,
+          0.25
+        ],
+        "valid_bootstrap": 10000
+      },
+      "path_acc_gain": {
+        "baseline": 0.1875,
+        "comparison": 0.21875,
+        "delta": 0.03125,
+        "ci95": [
+          -0.09375,
+          0.15625
+        ],
+        "valid_bootstrap": 10000
+      },
+      "referral_recall": {
+        "baseline": 0.46153846153846156,
+        "comparison": 0.38461538461538464,
+        "delta": -0.07692307692307693,
+        "ci95": [
+          -0.25,
+          0.0
+        ],
+        "valid_bootstrap": 10000
+      },
+      "referral_precision": {
+        "baseline": 0.5454545454545454,
+        "comparison": 0.45454545454545453,
+        "delta": -0.09090909090909088,
+        "ci95": [
+          -0.3055555555555556,
+          0.08333333333333337
+        ],
+        "valid_bootstrap": 10000
+      },
+      "screening_coverage": {
+        "baseline": 0.25,
+        "comparison": 0.0,
+        "delta": -0.25,
+        "ci95": [
+          -1.0,
+          0.0
+        ],
+        "valid_bootstrap": 9867
+      },
+      "crisis_missed": {
+        "baseline": 0,
+        "comparison": 0,
+        "delta": 0,
+        "ci95": [
+          0.0,
+          0.0
+        ],
+        "valid_bootstrap": 10000
+      },
+      "crisis_recall": {
+        "baseline": 1.0,
+        "comparison": 1.0,
+        "delta": 0.0,
+        "ci95": [
+          0.0,
+          0.0
+        ],
+        "valid_bootstrap": 9563
+      },
+      "contraindication_violations": {
+        "baseline": 0,
+        "comparison": 0,
+        "delta": 0,
+        "ci95": [
+          0.0,
+          0.0
+        ],
+        "valid_bootstrap": 10000
+      },
+      "referral_recall_R1": {
+        "baseline": 0.2,
+        "comparison": 0.0,
+        "delta": -0.2,
+        "ci95": [
+          -0.6666666666666666,
+          0.0
+        ],
+        "valid_bootstrap": 9960
+      },
+      "referral_recall_R2": {
+        "baseline": 0.25,
+        "comparison": 0.25,
+        "delta": 0.0,
+        "ci95": [
+          0.0,
+          0.0
+        ],
+        "valid_bootstrap": 9873
+      },
+      "referral_recall_R3": {
+        "baseline": 1.0,
+        "comparison": 1.0,
+        "delta": 0.0,
+        "ci95": [
+          0.0,
+          0.0
+        ],
+        "valid_bootstrap": 9851
+      }
+    },
+    "agreement": {
+      "有效": {
+        "n": 32,
+        "both_yes": 13,
+        "both_no": 15,
+        "lost": 1,
+        "gained": 3,
+        "agreement": 0.875
+      },
+      "路径第1轮正确": {
+        "n": 32,
+        "both_yes": 14,
+        "both_no": 8,
+        "lost": 4,
+        "gained": 6,
+        "agreement": 0.6875
+      },
+      "路径第2轮正确": {
+        "n": 32,
+        "both_yes": 22,
+        "both_no": 3,
+        "lost": 2,
+        "gained": 5,
+        "agreement": 0.78125
+      },
+      "转介标签正确": {
+        "n": 32,
+        "both_yes": 19,
+        "both_no": 9,
+        "lost": 3,
+        "gained": 1,
+        "agreement": 0.875
+      }
+    },
+    "paired": [
+      {
+        "visitor_id": "C-001",
+        "有效": [
+          false,
+          false
+        ],
+        "路径第1轮正确": [
+          true,
+          true
+        ],
+        "路径第2轮正确": [
+          true,
+          true
+        ],
+        "转介标签正确": [
+          false,
+          false
+        ]
+      },
+      {
+        "visitor_id": "C-002",
+        "有效": [
+          false,
+          false
+        ],
+        "路径第1轮正确": [
+          false,
+          true
+        ],
+        "路径第2轮正确": [
+          false,
+          true
+        ],
+        "转介标签正确": [
+          false,
+          false
+        ]
+      },
+      {
+        "visitor_id": "C-003",
+        "有效": [
+          false,
+          false
+        ],
+        "路径第1轮正确": [
+          false,
+          false
+        ],
+        "路径第2轮正确": [
+          true,
+          true
+        ],
+        "转介标签正确": [
+          true,
+          false
+        ]
+      },
+      {
+        "visitor_id": "C-004",
+        "有效": [
+          false,
+          true
+        ],
+        "路径第1轮正确": [
+          false,
+          true
+        ],
+        "路径第2轮正确": [
+          false,
+          true
+        ],
+        "转介标签正确": [
+          true,
+          true
+        ]
+      },
+      {
+        "visitor_id": "C-005",
+        "有效": [
+          true,
+          true
+        ],
+        "路径第1轮正确": [
+          true,
+          true
+        ],
+        "路径第2轮正确": [
+          true,
+          true
+        ],
+        "转介标签正确": [
+          true,
+          true
+        ]
+      },
+      {
+        "visitor_id": "C-006",
+        "有效": [
+          true,
+          true
+        ],
+        "路径第1轮正确": [
+          true,
+          false
+        ],
+        "路径第2轮正确": [
+          true,
+          false
+        ],
+        "转介标签正确": [
+          true,
+          true
+        ]
+      },
+      {
+        "visitor_id": "C-007",
+        "有效": [
+          false,
+          true
+        ],
+        "路径第1轮正确": [
+          false,
+          false
+        ],
+        "路径第2轮正确": [
+          true,
+          true
+        ],
+        "转介标签正确": [
+          true,
+          true
+        ]
+      },
+      {
+        "visitor_id": "C-008",
+        "有效": [
+          false,
+          false
+        ],
+        "路径第1轮正确": [
+          false,
+          false
+        ],
+        "路径第2轮正确": [
+          true,
+          true
+        ],
+        "转介标签正确": [
+          false,
+          false
+        ]
+      },
+      {
+        "visitor_id": "C-009",
+        "有效": [
+          false,
+          false
+        ],
+        "路径第1轮正确": [
+          true,
+          true
+        ],
+        "路径第2轮正确": [
+          true,
+          true
+        ],
+        "转介标签正确": [
+          true,
+          true
+        ]
+      },
+      {
+        "visitor_id": "C-010",
+        "有效": [
+          true,
+          true
+        ],
+        "路径第1轮正确": [
+          false,
+          true
+        ],
+        "路径第2轮正确": [
+          true,
+          true
+        ],
+        "转介标签正确": [
+          true,
+          true
+        ]
+      },
+      {
+        "visitor_id": "C-011",
+        "有效": [
+          true,
+          true
+        ],
+        "路径第1轮正确": [
+          false,
+          false
+        ],
+        "路径第2轮正确": [
+          false,
+          false
+        ],
+        "转介标签正确": [
+          true,
+          true
+        ]
+      },
+      {
+        "visitor_id": "C-012",
+        "有效": [
+          true,
+          false
+        ],
+        "路径第1轮正确": [
+          false,
+          false
+        ],
+        "路径第2轮正确": [
+          false,
+          false
+        ],
+        "转介标签正确": [
+          true,
+          false
+        ]
+      },
+      {
+        "visitor_id": "C-013",
+        "有效": [
+          false,
+          false
+        ],
+        "路径第1轮正确": [
+          false,
+          false
+        ],
+        "路径第2轮正确": [
+          false,
+          true
+        ],
+        "转介标签正确": [
+          false,
+          false
+        ]
+      },
+      {
+        "visitor_id": "C-014",
+        "有效": [
+          false,
+          false
+        ],
+        "路径第1轮正确": [
+          true,
+          true
+        ],
+        "路径第2轮正确": [
+          true,
+          true
+        ],
+        "转介标签正确": [
+          false,
+          false
+        ]
+      },
+      {
+        "visitor_id": "C-015",
+        "有效": [
+          true,
+          true
+        ],
+        "路径第1轮正确": [
+          true,
+          false
+        ],
+        "路径第2轮正确": [
+          true,
+          false
+        ],
+        "转介标签正确": [
+          true,
+          true
+        ]
+      },
+      {
+        "visitor_id": "C-016",
+        "有效": [
+          false,
+          false
+        ],
+        "路径第1轮正确": [
+          false,
+          true
+        ],
+        "路径第2轮正确": [
+          true,
+          true
+        ],
+        "转介标签正确": [
+          false,
+          false
+        ]
+      },
+      {
+        "visitor_id": "C-017",
+        "有效": [
+          false,
+          false
+        ],
+        "路径第1轮正确": [
+          true,
+          false
+        ],
+        "路径第2轮正确": [
+          true,
+          true
+        ],
+        "转介标签正确": [
+          true,
+          true
+        ]
+      },
+      {
+        "visitor_id": "C-018",
+        "有效": [
+          false,
+          false
+        ],
+        "路径第1轮正确": [
+          true,
+          true
+        ],
+        "路径第2轮正确": [
+          true,
+          true
+        ],
+        "转介标签正确": [
+          false,
+          false
+        ]
+      },
+      {
+        "visitor_id": "C-019",
+        "有效": [
+          false,
+          false
+        ],
+        "路径第1轮正确": [
+          true,
+          true
+        ],
+        "路径第2轮正确": [
+          true,
+          true
+        ],
+        "转介标签正确": [
+          true,
+          true
+        ]
+      },
+      {
+        "visitor_id": "C-020",
+        "有效": [
+          true,
+          true
+        ],
+        "路径第1轮正确": [
+          false,
+          false
+        ],
+        "路径第2轮正确": [
+          true,
+          true
+        ],
+        "转介标签正确": [
+          true,
+          true
+        ]
+      },
+      {
+        "visitor_id": "C-021",
+        "有效": [
+          true,
+          true
+        ],
+        "路径第1轮正确": [
+          true,
+          true
+        ],
+        "路径第2轮正确": [
+          true,
+          true
+        ],
+        "转介标签正确": [
+          true,
+          true
+        ]
+      },
+      {
+        "visitor_id": "C-022",
+        "有效": [
+          false,
+          true
+        ],
+        "路径第1轮正确": [
+          true,
+          true
+        ],
+        "路径第2轮正确": [
+          true,
+          true
+        ],
+        "转介标签正确": [
+          true,
+          true
+        ]
+      },
+      {
+        "visitor_id": "C-023",
+        "有效": [
+          true,
+          true
+        ],
+        "路径第1轮正确": [
+          false,
+          false
+        ],
+        "路径第2轮正确": [
+          false,
+          false
+        ],
+        "转介标签正确": [
+          true,
+          true
+        ]
+      },
+      {
+        "visitor_id": "C-024",
+        "有效": [
+          true,
+          true
+        ],
+        "路径第1轮正确": [
+          false,
+          true
+        ],
+        "路径第2轮正确": [
+          false,
+          true
+        ],
+        "转介标签正确": [
+          true,
+          true
+        ]
+      },
+      {
+        "visitor_id": "C-025",
+        "有效": [
+          true,
+          true
+        ],
+        "路径第1轮正确": [
+          true,
+          true
+        ],
+        "路径第2轮正确": [
+          true,
+          true
+        ],
+        "转介标签正确": [
+          false,
+          true
+        ]
+      },
+      {
+        "visitor_id": "C-026",
+        "有效": [
+          true,
+          true
+        ],
+        "路径第1轮正确": [
+          true,
+          true
+        ],
+        "路径第2轮正确": [
+          true,
+          true
+        ],
+        "转介标签正确": [
+          true,
+          true
+        ]
+      },
+      {
+        "visitor_id": "C-027",
+        "有效": [
+          true,
+          true
+        ],
+        "路径第1轮正确": [
+          true,
+          true
+        ],
+        "路径第2轮正确": [
+          true,
+          true
+        ],
+        "转介标签正确": [
+          true,
+          true
+        ]
+      },
+      {
+        "visitor_id": "C-028",
+        "有效": [
+          false,
+          false
+        ],
+        "路径第1轮正确": [
+          true,
+          false
+        ],
+        "路径第2轮正确": [
+          true,
+          true
+        ],
+        "转介标签正确": [
+          true,
+          true
+        ]
+      },
+      {
+        "visitor_id": "C-029",
+        "有效": [
+          false,
+          false
+        ],
+        "路径第1轮正确": [
+          false,
+          true
+        ],
+        "路径第2轮正确": [
+          false,
+          true
+        ],
+        "转介标签正确": [
+          true,
+          false
+        ]
+      },
+      {
+        "visitor_id": "C-030",
+        "有效": [
+          false,
+          false
+        ],
+        "路径第1轮正确": [
+          true,
+          true
+        ],
+        "路径第2轮正确": [
+          true,
+          true
+        ],
+        "转介标签正确": [
+          false,
+          false
+        ]
+      },
+      {
+        "visitor_id": "C-031",
+        "有效": [
+          false,
+          false
+        ],
+        "路径第1轮正确": [
+          true,
+          true
+        ],
+        "路径第2轮正确": [
+          true,
+          true
+        ],
+        "转介标签正确": [
+          false,
+          false
+        ]
+      },
+      {
+        "visitor_id": "C-032",
+        "有效": [
+          true,
+          true
+        ],
+        "路径第1轮正确": [
+          true,
+          true
+        ],
+        "路径第2轮正确": [
+          true,
+          true
+        ],
+        "转介标签正确": [
+          true,
+          true
+        ]
+      }
+    ]
+  },
+  "c2": {
+    "metrics": {
+      "isi_response_rate": {
+        "baseline": 0.4375,
+        "comparison": 0.40625,
+        "delta": -0.03125,
+        "ci95": [
+          -0.1875,
+          0.125
+        ],
+        "valid_bootstrap": 10000
+      },
+      "mean_isi_change": {
+        "baseline": -7.09375,
+        "comparison": -6.875,
+        "delta": 0.21875,
+        "ci95": [
+          -0.9375,
+          1.40625
+        ],
+        "valid_bootstrap": 10000
+      },
+      "path_acc_r1": {
+        "baseline": 0.5625,
+        "comparison": 0.625,
+        "delta": 0.0625,
+        "ci95": [
+          -0.15625,
+          0.28125
+        ],
+        "valid_bootstrap": 10000
+      },
+      "path_acc_r2": {
+        "baseline": 0.75,
+        "comparison": 0.6875,
+        "delta": -0.0625,
+        "ci95": [
+          -0.28125,
+          0.15625
+        ],
+        "valid_bootstrap": 10000
+      },
+      "path_acc_gain": {
+        "baseline": 0.1875,
+        "comparison": 0.0625,
+        "delta": -0.125,
+        "ci95": [
+          -0.28125,
+          0.0
+        ],
+        "valid_bootstrap": 10000
+      },
+      "referral_recall": {
+        "baseline": 0.46153846153846156,
+        "comparison": 0.46153846153846156,
+        "delta": 0.0,
+        "ci95": [
+          -0.2222222222222222,
+          0.2222222222222222
+        ],
+        "valid_bootstrap": 10000
+      },
+      "referral_precision": {
+        "baseline": 0.5454545454545454,
+        "comparison": 0.5454545454545454,
+        "delta": 0.0,
+        "ci95": [
+          -0.2,
+          0.19999999999999996
+        ],
+        "valid_bootstrap": 10000
+      },
+      "screening_coverage": {
+        "baseline": 0.25,
+        "comparison": 0.25,
+        "delta": 0.0,
+        "ci95": [
+          -1.0,
+          1.0
+        ],
+        "valid_bootstrap": 9867
+      },
+      "crisis_missed": {
+        "baseline": 0,
+        "comparison": 0,
+        "delta": 0,
+        "ci95": [
+          0.0,
+          0.0
+        ],
+        "valid_bootstrap": 10000
+      },
+      "crisis_recall": {
+        "baseline": 1.0,
+        "comparison": 1.0,
+        "delta": 0.0,
+        "ci95": [
+          0.0,
+          0.0
+        ],
+        "valid_bootstrap": 9563
+      },
+      "contraindication_violations": {
+        "baseline": 0,
+        "comparison": 0,
+        "delta": 0,
+        "ci95": [
+          0.0,
+          0.0
+        ],
+        "valid_bootstrap": 10000
+      },
+      "referral_recall_R1": {
+        "baseline": 0.2,
+        "comparison": 0.2,
+        "delta": 0.0,
+        "ci95": [
+          -0.6666666666666666,
+          0.6666666666666666
+        ],
+        "valid_bootstrap": 9960
+      },
+      "referral_recall_R2": {
+        "baseline": 0.25,
+        "comparison": 0.25,
+        "delta": 0.0,
+        "ci95": [
+          0.0,
+          0.0
+        ],
+        "valid_bootstrap": 9873
+      },
+      "referral_recall_R3": {
+        "baseline": 1.0,
+        "comparison": 1.0,
+        "delta": 0.0,
+        "ci95": [
+          0.0,
+          0.0
+        ],
+        "valid_bootstrap": 9851
+      }
+    },
+    "agreement": {
+      "有效": {
+        "n": 32,
+        "both_yes": 10,
+        "both_no": 15,
+        "lost": 4,
+        "gained": 3,
+        "agreement": 0.78125
+      },
+      "路径第1轮正确": {
+        "n": 32,
+        "both_yes": 13,
+        "both_no": 7,
+        "lost": 5,
+        "gained": 7,
+        "agreement": 0.625
+      },
+      "路径第2轮正确": {
+        "n": 32,
+        "both_yes": 17,
+        "both_no": 3,
+        "lost": 7,
+        "gained": 5,
+        "agreement": 0.625
+      },
+      "转介标签正确": {
+        "n": 32,
+        "both_yes": 21,
+        "both_no": 8,
+        "lost": 1,
+        "gained": 2,
+        "agreement": 0.90625
+      }
+    },
+    "paired": [
+      {
+        "visitor_id": "C-001",
+        "有效": [
+          false,
+          true
+        ],
+        "路径第1轮正确": [
+          true,
+          true
+        ],
+        "路径第2轮正确": [
+          true,
+          true
+        ],
+        "转介标签正确": [
+          false,
+          true
+        ]
+      },
+      {
+        "visitor_id": "C-002",
+        "有效": [
+          false,
+          false
+        ],
+        "路径第1轮正确": [
+          false,
+          true
+        ],
+        "路径第2轮正确": [
+          false,
+          true
+        ],
+        "转介标签正确": [
+          false,
+          false
+        ]
+      },
+      {
+        "visitor_id": "C-003",
+        "有效": [
+          false,
+          false
+        ],
+        "路径第1轮正确": [
+          false,
+          false
+        ],
+        "路径第2轮正确": [
+          true,
+          true
+        ],
+        "转介标签正确": [
+          true,
+          true
+        ]
+      },
+      {
+        "visitor_id": "C-004",
+        "有效": [
+          false,
+          true
+        ],
+        "路径第1轮正确": [
+          false,
+          true
+        ],
+        "路径第2轮正确": [
+          false,
+          true
+        ],
+        "转介标签正确": [
+          true,
+          true
+        ]
+      },
+      {
+        "visitor_id": "C-005",
+        "有效": [
+          true,
+          true
+        ],
+        "路径第1轮正确": [
+          true,
+          true
+        ],
+        "路径第2轮正确": [
+          true,
+          true
+        ],
+        "转介标签正确": [
+          true,
+          true
+        ]
+      },
+      {
+        "visitor_id": "C-006",
+        "有效": [
+          true,
+          true
+        ],
+        "路径第1轮正确": [
+          true,
+          true
+        ],
+        "路径第2轮正确": [
+          true,
+          false
+        ],
+        "转介标签正确": [
+          true,
+          true
+        ]
+      },
+      {
+        "visitor_id": "C-007",
+        "有效": [
+          false,
+          false
+        ],
+        "路径第1轮正确": [
+          false,
+          false
+        ],
+        "路径第2轮正确": [
+          true,
+          true
+        ],
+        "转介标签正确": [
+          true,
+          true
+        ]
+      },
+      {
+        "visitor_id": "C-008",
+        "有效": [
+          false,
+          false
+        ],
+        "路径第1轮正确": [
+          false,
+          false
+        ],
+        "路径第2轮正确": [
+          true,
+          true
+        ],
+        "转介标签正确": [
+          false,
+          false
+        ]
+      },
+      {
+        "visitor_id": "C-009",
+        "有效": [
+          false,
+          false
+        ],
+        "路径第1轮正确": [
+          true,
+          true
+        ],
+        "路径第2轮正确": [
+          true,
+          true
+        ],
+        "转介标签正确": [
+          true,
+          true
+        ]
+      },
+      {
+        "visitor_id": "C-010",
+        "有效": [
+          true,
+          true
+        ],
+        "路径第1轮正确": [
+          false,
+          false
+        ],
+        "路径第2轮正确": [
+          true,
+          true
+        ],
+        "转介标签正确": [
+          true,
+          true
+        ]
+      },
+      {
+        "visitor_id": "C-011",
+        "有效": [
+          true,
+          true
+        ],
+        "路径第1轮正确": [
+          false,
+          true
+        ],
+        "路径第2轮正确": [
+          false,
+          true
+        ],
+        "转介标签正确": [
+          true,
+          true
+        ]
+      },
+      {
+        "visitor_id": "C-012",
+        "有效": [
+          true,
+          false
+        ],
+        "路径第1轮正确": [
+          false,
+          true
+        ],
+        "路径第2轮正确": [
+          false,
+          true
+        ],
+        "转介标签正确": [
+          true,
+          false
+        ]
+      },
+      {
+        "visitor_id": "C-013",
+        "有效": [
+          false,
+          false
+        ],
+        "路径第1轮正确": [
+          false,
+          true
+        ],
+        "路径第2轮正确": [
+          false,
+          true
+        ],
+        "转介标签正确": [
+          false,
+          false
+        ]
+      },
+      {
+        "visitor_id": "C-014",
+        "有效": [
+          false,
+          false
+        ],
+        "路径第1轮正确": [
+          true,
+          true
+        ],
+        "路径第2轮正确": [
+          true,
+          true
+        ],
+        "转介标签正确": [
+          false,
+          false
+        ]
+      },
+      {
+        "visitor_id": "C-015",
+        "有效": [
+          true,
+          true
+        ],
+        "路径第1轮正确": [
+          true,
+          true
+        ],
+        "路径第2轮正确": [
+          true,
+          true
+        ],
+        "转介标签正确": [
+          true,
+          true
+        ]
+      },
+      {
+        "visitor_id": "C-016",
+        "有效": [
+          false,
+          false
+        ],
+        "路径第1轮正确": [
+          false,
+          true
+        ],
+        "路径第2轮正确": [
+          true,
+          true
+        ],
+        "转介标签正确": [
+          false,
+          false
+        ]
+      },
+      {
+        "visitor_id": "C-017",
+        "有效": [
+          false,
+          false
+        ],
+        "路径第1轮正确": [
+          true,
+          true
+        ],
+        "路径第2轮正确": [
+          true,
+          false
+        ],
+        "转介标签正确": [
+          true,
+          true
+        ]
+      },
+      {
+        "visitor_id": "C-018",
+        "有效": [
+          false,
+          false
+        ],
+        "路径第1轮正确": [
+          true,
+          true
+        ],
+        "路径第2轮正确": [
+          true,
+          true
+        ],
+        "转介标签正确": [
+          false,
+          false
+        ]
+      },
+      {
+        "visitor_id": "C-019",
+        "有效": [
+          false,
+          false
+        ],
+        "路径第1轮正确": [
+          true,
+          false
+        ],
+        "路径第2轮正确": [
+          true,
+          false
+        ],
+        "转介标签正确": [
+          true,
+          true
+        ]
+      },
+      {
+        "visitor_id": "C-020",
+        "有效": [
+          true,
+          false
+        ],
+        "路径第1轮正确": [
+          false,
+          false
+        ],
+        "路径第2轮正确": [
+          true,
+          false
+        ],
+        "转介标签正确": [
+          true,
+          true
+        ]
+      },
+      {
+        "visitor_id": "C-021",
+        "有效": [
+          true,
+          true
+        ],
+        "路径第1轮正确": [
+          true,
+          true
+        ],
+        "路径第2轮正确": [
+          true,
+          true
+        ],
+        "转介标签正确": [
+          true,
+          true
+        ]
+      },
+      {
+        "visitor_id": "C-022",
+        "有效": [
+          false,
+          true
+        ],
+        "路径第1轮正确": [
+          true,
+          true
+        ],
+        "路径第2轮正确": [
+          true,
+          true
+        ],
+        "转介标签正确": [
+          true,
+          true
+        ]
+      },
+      {
+        "visitor_id": "C-023",
+        "有效": [
+          true,
+          false
+        ],
+        "路径第1轮正确": [
+          false,
+          false
+        ],
+        "路径第2轮正确": [
+          false,
+          false
+        ],
+        "转介标签正确": [
+          true,
+          true
+        ]
+      },
+      {
+        "visitor_id": "C-024",
+        "有效": [
+          true,
+          true
+        ],
+        "路径第1轮正确": [
+          false,
+          false
+        ],
+        "路径第2轮正确": [
+          false,
+          false
+        ],
+        "转介标签正确": [
+          true,
+          true
+        ]
+      },
+      {
+        "visitor_id": "C-025",
+        "有效": [
+          true,
+          false
+        ],
+        "路径第1轮正确": [
+          true,
+          false
+        ],
+        "路径第2轮正确": [
+          true,
+          false
+        ],
+        "转介标签正确": [
+          false,
+          true
+        ]
+      },
+      {
+        "visitor_id": "C-026",
+        "有效": [
+          true,
+          true
+        ],
+        "路径第1轮正确": [
+          true,
+          true
+        ],
+        "路径第2轮正确": [
+          true,
+          true
+        ],
+        "转介标签正确": [
+          true,
+          true
+        ]
+      },
+      {
+        "visitor_id": "C-027",
+        "有效": [
+          true,
+          true
+        ],
+        "路径第1轮正确": [
+          true,
+          true
+        ],
+        "路径第2轮正确": [
+          true,
+          true
+        ],
+        "转介标签正确": [
+          true,
+          true
+        ]
+      },
+      {
+        "visitor_id": "C-028",
+        "有效": [
+          false,
+          false
+        ],
+        "路径第1轮正确": [
+          true,
+          false
+        ],
+        "路径第2轮正确": [
+          true,
+          false
+        ],
+        "转介标签正确": [
+          true,
+          true
+        ]
+      },
+      {
+        "visitor_id": "C-029",
+        "有效": [
+          false,
+          false
+        ],
+        "路径第1轮正确": [
+          false,
+          true
+        ],
+        "路径第2轮正确": [
+          false,
+          false
+        ],
+        "转介标签正确": [
+          true,
+          true
+        ]
+      },
+      {
+        "visitor_id": "C-030",
+        "有效": [
+          false,
+          false
+        ],
+        "路径第1轮正确": [
+          true,
+          false
+        ],
+        "路径第2轮正确": [
+          true,
+          true
+        ],
+        "转介标签正确": [
+          false,
+          false
+        ]
+      },
+      {
+        "visitor_id": "C-031",
+        "有效": [
+          false,
+          false
+        ],
+        "路径第1轮正确": [
+          true,
+          true
+        ],
+        "路径第2轮正确": [
+          true,
+          true
+        ],
+        "转介标签正确": [
+          false,
+          false
+        ]
+      },
+      {
+        "visitor_id": "C-032",
+        "有效": [
+          true,
+          true
+        ],
+        "路径第1轮正确": [
+          true,
+          false
+        ],
+        "路径第2轮正确": [
+          true,
+          false
+        ],
+        "转介标签正确": [
+          true,
+          true
+        ]
+      }
+    ]
+  },
+  "c3": {
+    "metrics": {
+      "isi_response_rate": {
+        "baseline": 0.4375,
+        "comparison": 0.5625,
+        "delta": 0.125,
+        "ci95": [
+          0.0,
+          0.28125
+        ],
+        "valid_bootstrap": 10000
+      },
+      "mean_isi_change": {
+        "baseline": -7.09375,
+        "comparison": -7.8125,
+        "delta": -0.71875,
+        "ci95": [
+          -1.625,
+          0.125
+        ],
+        "valid_bootstrap": 10000
+      },
+      "path_acc_r1": {
+        "baseline": 0.5625,
+        "comparison": 0.59375,
+        "delta": 0.03125,
+        "ci95": [
+          -0.09375,
+          0.15625
+        ],
+        "valid_bootstrap": 10000
+      },
+      "path_acc_r2": {
+        "baseline": 0.75,
+        "comparison": 0.78125,
+        "delta": 0.03125,
+        "ci95": [
+          -0.09375,
+          0.15625
+        ],
+        "valid_bootstrap": 10000
+      },
+      "path_acc_gain": {
+        "baseline": 0.1875,
+        "comparison": 0.1875,
+        "delta": 0.0,
+        "ci95": [
+          -0.125,
+          0.125
+        ],
+        "valid_bootstrap": 10000
+      },
+      "referral_recall": {
+        "baseline": 0.46153846153846156,
+        "comparison": 0.6153846153846154,
+        "delta": 0.15384615384615385,
+        "ci95": [
+          0.0,
+          0.3846153846153846
+        ],
+        "valid_bootstrap": 10000
+      },
+      "referral_precision": {
+        "baseline": 0.5454545454545454,
+        "comparison": 0.6153846153846154,
+        "delta": 0.06993006993007,
+        "ci95": [
+          -0.09999999999999998,
+          0.26666666666666666
+        ],
+        "valid_bootstrap": 10000
+      },
+      "screening_coverage": {
+        "baseline": 0.25,
+        "comparison": 0.25,
+        "delta": 0.0,
+        "ci95": [
+          0.0,
+          0.0
+        ],
+        "valid_bootstrap": 9867
+      },
+      "crisis_missed": {
+        "baseline": 0,
+        "comparison": 0,
+        "delta": 0,
+        "ci95": [
+          0.0,
+          0.0
+        ],
+        "valid_bootstrap": 10000
+      },
+      "crisis_recall": {
+        "baseline": 1.0,
+        "comparison": 1.0,
+        "delta": 0.0,
+        "ci95": [
+          0.0,
+          0.0
+        ],
+        "valid_bootstrap": 9563
+      },
+      "contraindication_violations": {
+        "baseline": 0,
+        "comparison": 0,
+        "delta": 0,
+        "ci95": [
+          0.0,
+          0.0
+        ],
+        "valid_bootstrap": 10000
+      },
+      "referral_recall_R1": {
+        "baseline": 0.2,
+        "comparison": 0.6,
+        "delta": 0.39999999999999997,
+        "ci95": [
+          0.0,
+          1.0
+        ],
+        "valid_bootstrap": 9960
+      },
+      "referral_recall_R2": {
+        "baseline": 0.25,
+        "comparison": 0.25,
+        "delta": 0.0,
+        "ci95": [
+          0.0,
+          0.0
+        ],
+        "valid_bootstrap": 9873
+      },
+      "referral_recall_R3": {
+        "baseline": 1.0,
+        "comparison": 1.0,
+        "delta": 0.0,
+        "ci95": [
+          0.0,
+          0.0
+        ],
+        "valid_bootstrap": 9851
+      }
+    },
+    "agreement": {
+      "有效": {
+        "n": 32,
+        "both_yes": 13,
+        "both_no": 13,
+        "lost": 1,
+        "gained": 5,
+        "agreement": 0.8125
+      },
+      "路径第1轮正确": {
+        "n": 32,
+        "both_yes": 16,
+        "both_no": 11,
+        "lost": 2,
+        "gained": 3,
+        "agreement": 0.84375
+      },
+      "路径第2轮正确": {
+        "n": 32,
+        "both_yes": 22,
+        "both_no": 5,
+        "lost": 2,
+        "gained": 3,
+        "agreement": 0.84375
+      },
+      "转介标签正确": {
+        "n": 32,
+        "both_yes": 22,
+        "both_no": 7,
+        "lost": 0,
+        "gained": 3,
+        "agreement": 0.90625
+      }
+    },
+    "paired": [
+      {
+        "visitor_id": "C-001",
+        "有效": [
+          false,
+          true
+        ],
+        "路径第1轮正确": [
+          true,
+          true
+        ],
+        "路径第2轮正确": [
+          true,
+          true
+        ],
+        "转介标签正确": [
+          false,
+          true
+        ]
+      },
+      {
+        "visitor_id": "C-002",
+        "有效": [
+          false,
+          false
+        ],
+        "路径第1轮正确": [
+          false,
+          true
+        ],
+        "路径第2轮正确": [
+          false,
+          true
+        ],
+        "转介标签正确": [
+          false,
+          false
+        ]
+      },
+      {
+        "visitor_id": "C-003",
+        "有效": [
+          false,
+          false
+        ],
+        "路径第1轮正确": [
+          false,
+          false
+        ],
+        "路径第2轮正确": [
+          true,
+          true
+        ],
+        "转介标签正确": [
+          true,
+          true
+        ]
+      },
+      {
+        "visitor_id": "C-004",
+        "有效": [
+          false,
+          true
+        ],
+        "路径第1轮正确": [
+          false,
+          true
+        ],
+        "路径第2轮正确": [
+          false,
+          true
+        ],
+        "转介标签正确": [
+          true,
+          true
+        ]
+      },
+      {
+        "visitor_id": "C-005",
+        "有效": [
+          true,
+          true
+        ],
+        "路径第1轮正确": [
+          true,
+          true
+        ],
+        "路径第2轮正确": [
+          true,
+          true
+        ],
+        "转介标签正确": [
+          true,
+          true
+        ]
+      },
+      {
+        "visitor_id": "C-006",
+        "有效": [
+          true,
+          true
+        ],
+        "路径第1轮正确": [
+          true,
+          true
+        ],
+        "路径第2轮正确": [
+          true,
+          false
+        ],
+        "转介标签正确": [
+          true,
+          true
+        ]
+      },
+      {
+        "visitor_id": "C-007",
+        "有效": [
+          false,
+          true
+        ],
+        "路径第1轮正确": [
+          false,
+          false
+        ],
+        "路径第2轮正确": [
+          true,
+          true
+        ],
+        "转介标签正确": [
+          true,
+          true
+        ]
+      },
+      {
+        "visitor_id": "C-008",
+        "有效": [
+          false,
+          false
+        ],
+        "路径第1轮正确": [
+          false,
+          false
+        ],
+        "路径第2轮正确": [
+          true,
+          true
+        ],
+        "转介标签正确": [
+          false,
+          false
+        ]
+      },
+      {
+        "visitor_id": "C-009",
+        "有效": [
+          false,
+          false
+        ],
+        "路径第1轮正确": [
+          true,
+          true
+        ],
+        "路径第2轮正确": [
+          true,
+          true
+        ],
+        "转介标签正确": [
+          true,
+          true
+        ]
+      },
+      {
+        "visitor_id": "C-010",
+        "有效": [
+          true,
+          true
+        ],
+        "路径第1轮正确": [
+          false,
+          false
+        ],
+        "路径第2轮正确": [
+          true,
+          true
+        ],
+        "转介标签正确": [
+          true,
+          true
+        ]
+      },
+      {
+        "visitor_id": "C-011",
+        "有效": [
+          true,
+          true
+        ],
+        "路径第1轮正确": [
+          false,
+          false
+        ],
+        "路径第2轮正确": [
+          false,
+          false
+        ],
+        "转介标签正确": [
+          true,
+          true
+        ]
+      },
+      {
+        "visitor_id": "C-012",
+        "有效": [
+          true,
+          true
+        ],
+        "路径第1轮正确": [
+          false,
+          false
+        ],
+        "路径第2轮正确": [
+          false,
+          false
+        ],
+        "转介标签正确": [
+          true,
+          true
+        ]
+      },
+      {
+        "visitor_id": "C-013",
+        "有效": [
+          false,
+          false
+        ],
+        "路径第1轮正确": [
+          false,
+          false
+        ],
+        "路径第2轮正确": [
+          false,
+          true
+        ],
+        "转介标签正确": [
+          false,
+          false
+        ]
+      },
+      {
+        "visitor_id": "C-014",
+        "有效": [
+          false,
+          true
+        ],
+        "路径第1轮正确": [
+          true,
+          true
+        ],
+        "路径第2轮正确": [
+          true,
+          true
+        ],
+        "转介标签正确": [
+          false,
+          true
+        ]
+      },
+      {
+        "visitor_id": "C-015",
+        "有效": [
+          true,
+          true
+        ],
+        "路径第1轮正确": [
+          true,
+          true
+        ],
+        "路径第2轮正确": [
+          true,
+          true
+        ],
+        "转介标签正确": [
+          true,
+          true
+        ]
+      },
+      {
+        "visitor_id": "C-016",
+        "有效": [
+          false,
+          false
+        ],
+        "路径第1轮正确": [
+          false,
+          true
+        ],
+        "路径第2轮正确": [
+          true,
+          true
+        ],
+        "转介标签正确": [
+          false,
+          false
+        ]
+      },
+      {
+        "visitor_id": "C-017",
+        "有效": [
+          false,
+          false
+        ],
+        "路径第1轮正确": [
+          true,
+          true
+        ],
+        "路径第2轮正确": [
+          true,
+          true
+        ],
+        "转介标签正确": [
+          true,
+          true
+        ]
+      },
+      {
+        "visitor_id": "C-018",
+        "有效": [
+          false,
+          false
+        ],
+        "路径第1轮正确": [
+          true,
+          true
+        ],
+        "路径第2轮正确": [
+          true,
+          true
+        ],
+        "转介标签正确": [
+          false,
+          false
+        ]
+      },
+      {
+        "visitor_id": "C-019",
+        "有效": [
+          false,
+          false
+        ],
+        "路径第1轮正确": [
+          true,
+          true
+        ],
+        "路径第2轮正确": [
+          true,
+          true
+        ],
+        "转介标签正确": [
+          true,
+          true
+        ]
+      },
+      {
+        "visitor_id": "C-020",
+        "有效": [
+          true,
+          true
+        ],
+        "路径第1轮正确": [
+          false,
+          false
+        ],
+        "路径第2轮正确": [
+          true,
+          true
+        ],
+        "转介标签正确": [
+          true,
+          true
+        ]
+      },
+      {
+        "visitor_id": "C-021",
+        "有效": [
+          true,
+          true
+        ],
+        "路径第1轮正确": [
+          true,
+          true
+        ],
+        "路径第2轮正确": [
+          true,
+          true
+        ],
+        "转介标签正确": [
+          true,
+          true
+        ]
+      },
+      {
+        "visitor_id": "C-022",
+        "有效": [
+          false,
+          true
+        ],
+        "路径第1轮正确": [
+          true,
+          true
+        ],
+        "路径第2轮正确": [
+          true,
+          true
+        ],
+        "转介标签正确": [
+          true,
+          true
+        ]
+      },
+      {
+        "visitor_id": "C-023",
+        "有效": [
+          true,
+          true
+        ],
+        "路径第1轮正确": [
+          false,
+          false
+        ],
+        "路径第2轮正确": [
+          false,
+          false
+        ],
+        "转介标签正确": [
+          true,
+          true
+        ]
+      },
+      {
+        "visitor_id": "C-024",
+        "有效": [
+          true,
+          false
+        ],
+        "路径第1轮正确": [
+          false,
+          false
+        ],
+        "路径第2轮正确": [
+          false,
+          false
+        ],
+        "转介标签正确": [
+          true,
+          true
+        ]
+      },
+      {
+        "visitor_id": "C-025",
+        "有效": [
+          true,
+          true
+        ],
+        "路径第1轮正确": [
+          true,
+          false
+        ],
+        "路径第2轮正确": [
+          true,
+          false
+        ],
+        "转介标签正确": [
+          false,
+          true
+        ]
+      },
+      {
+        "visitor_id": "C-026",
+        "有效": [
+          true,
+          true
+        ],
+        "路径第1轮正确": [
+          true,
+          true
+        ],
+        "路径第2轮正确": [
+          true,
+          true
+        ],
+        "转介标签正确": [
+          true,
+          true
+        ]
+      },
+      {
+        "visitor_id": "C-027",
+        "有效": [
+          true,
+          true
+        ],
+        "路径第1轮正确": [
+          true,
+          true
+        ],
+        "路径第2轮正确": [
+          true,
+          true
+        ],
+        "转介标签正确": [
+          true,
+          true
+        ]
+      },
+      {
+        "visitor_id": "C-028",
+        "有效": [
+          false,
+          false
+        ],
+        "路径第1轮正确": [
+          true,
+          false
+        ],
+        "路径第2轮正确": [
+          true,
+          true
+        ],
+        "转介标签正确": [
+          true,
+          true
+        ]
+      },
+      {
+        "visitor_id": "C-029",
+        "有效": [
+          false,
+          false
+        ],
+        "路径第1轮正确": [
+          false,
+          false
+        ],
+        "路径第2轮正确": [
+          false,
+          false
+        ],
+        "转介标签正确": [
+          true,
+          true
+        ]
+      },
+      {
+        "visitor_id": "C-030",
+        "有效": [
+          false,
+          false
+        ],
+        "路径第1轮正确": [
+          true,
+          true
+        ],
+        "路径第2轮正确": [
+          true,
+          true
+        ],
+        "转介标签正确": [
+          false,
+          false
+        ]
+      },
+      {
+        "visitor_id": "C-031",
+        "有效": [
+          false,
+          false
+        ],
+        "路径第1轮正确": [
+          true,
+          true
+        ],
+        "路径第2轮正确": [
+          true,
+          true
+        ],
+        "转介标签正确": [
+          false,
+          false
+        ]
+      },
+      {
+        "visitor_id": "C-032",
+        "有效": [
+          true,
+          true
+        ],
+        "路径第1轮正确": [
+          true,
+          true
+        ],
+        "路径第2轮正确": [
+          true,
+          true
+        ],
+        "转介标签正确": [
+          true,
+          true
+        ]
+      }
+    ]
+  },
+  "r1-r0a": {
+    "metrics": {
+      "isi_response_rate": {
+        "baseline": 0.575,
+        "comparison": 0.725,
+        "delta": 0.15000000000000002,
+        "ci95": [
+          0.0,
+          0.3
+        ],
+        "valid_bootstrap": 10000
+      },
+      "mean_isi_change": {
+        "baseline": -7.675,
+        "comparison": -8.625,
+        "delta": -0.9500000000000002,
+        "ci95": [
+          -2.0250000000000004,
+          0.07499999999999932
+        ],
+        "valid_bootstrap": 10000
+      },
+      "path_acc_r1": {
+        "baseline": 0.625,
+        "comparison": 0.625,
+        "delta": 0.0,
+        "ci95": [
+          -0.15000000000000002,
+          0.15000000000000002
+        ],
+        "valid_bootstrap": 10000
+      },
+      "path_acc_r2": {
+        "baseline": 0.65,
+        "comparison": 0.75,
+        "delta": 0.09999999999999998,
+        "ci95": [
+          -0.025000000000000022,
+          0.2250000000000001
+        ],
+        "valid_bootstrap": 10000
+      },
+      "path_acc_gain": {
+        "baseline": 0.025000000000000022,
+        "comparison": 0.125,
+        "delta": 0.09999999999999998,
+        "ci95": [
+          -1.1102230246251565e-16,
+          0.22499999999999998
+        ],
+        "valid_bootstrap": 10000
+      },
+      "referral_recall": {
+        "baseline": 0.5625,
+        "comparison": 0.8125,
+        "delta": 0.25,
+        "ci95": [
+          0.05882352941176461,
+          0.47058823529411764
+        ],
+        "valid_bootstrap": 10000
+      },
+      "referral_precision": {
+        "baseline": 0.42857142857142855,
+        "comparison": 0.5,
+        "delta": 0.07142857142857145,
+        "ci95": [
+          -0.06851851851851859,
+          0.2282608695652174
+        ],
+        "valid_bootstrap": 10000
+      },
+      "screening_coverage": {
+        "baseline": 0.3333333333333333,
+        "comparison": 0.8333333333333334,
+        "delta": 0.5,
+        "ci95": [
+          0.0,
+          1.0
+        ],
+        "valid_bootstrap": 9985
+      },
+      "crisis_missed": {
+        "baseline": 0,
+        "comparison": 0,
+        "delta": 0,
+        "ci95": [
+          0.0,
+          0.0
+        ],
+        "valid_bootstrap": 10000
+      },
+      "crisis_recall": {
+        "baseline": 1.0,
+        "comparison": 1.0,
+        "delta": 0.0,
+        "ci95": [
+          0.0,
+          0.0
+        ],
+        "valid_bootstrap": 9947
+      },
+      "contraindication_violations": {
+        "baseline": 0,
+        "comparison": 0,
+        "delta": 0,
+        "ci95": [
+          0.0,
+          0.0
+        ],
+        "valid_bootstrap": 10000
+      },
+      "referral_recall_R1": {
+        "baseline": 0.16666666666666666,
+        "comparison": 0.6666666666666666,
+        "delta": 0.5,
+        "ci95": [
+          0.0,
+          1.0
+        ],
+        "valid_bootstrap": 9988
+      },
+      "referral_recall_R2": {
+        "baseline": 0.6,
+        "comparison": 0.8,
+        "delta": 0.20000000000000007,
+        "ci95": [
+          0.0,
+          0.6666666666666667
+        ],
+        "valid_bootstrap": 9952
+      },
+      "referral_recall_R3": {
+        "baseline": 1.0,
+        "comparison": 1.0,
+        "delta": 0.0,
+        "ci95": [
+          0.0,
+          0.0
+        ],
+        "valid_bootstrap": 9950
+      }
+    },
+    "agreement": {
+      "有效": {
+        "n": 40,
+        "both_yes": 21,
+        "both_no": 9,
+        "lost": 2,
+        "gained": 8,
+        "agreement": 0.75
+      },
+      "路径第1轮正确": {
+        "n": 40,
+        "both_yes": 20,
+        "both_no": 10,
+        "lost": 5,
+        "gained": 5,
+        "agreement": 0.75
+      },
+      "路径第2轮正确": {
+        "n": 40,
+        "both_yes": 24,
+        "both_no": 8,
+        "lost": 2,
+        "gained": 6,
+        "agreement": 0.8
+      },
+      "转介标签正确": {
+        "n": 40,
+        "both_yes": 22,
+        "both_no": 11,
+        "lost": 3,
+        "gained": 4,
+        "agreement": 0.825
+      }
+    },
+    "paired": [
+      {
+        "visitor_id": "A-001",
+        "有效": [
+          true,
+          true
+        ],
+        "路径第1轮正确": [
+          false,
+          false
+        ],
+        "路径第2轮正确": [
+          false,
+          false
+        ],
+        "转介标签正确": [
+          true,
+          true
+        ]
+      },
+      {
+        "visitor_id": "A-002",
+        "有效": [
+          true,
+          true
+        ],
+        "路径第1轮正确": [
+          true,
+          true
+        ],
+        "路径第2轮正确": [
+          true,
+          true
+        ],
+        "转介标签正确": [
+          true,
+          true
+        ]
+      },
+      {
+        "visitor_id": "A-003",
+        "有效": [
+          false,
+          true
+        ],
+        "路径第1轮正确": [
+          true,
+          true
+        ],
+        "路径第2轮正确": [
+          true,
+          true
+        ],
+        "转介标签正确": [
+          false,
+          true
+        ]
+      },
+      {
+        "visitor_id": "A-004",
+        "有效": [
+          true,
+          true
+        ],
+        "路径第1轮正确": [
+          true,
+          true
+        ],
+        "路径第2轮正确": [
+          true,
+          true
+        ],
+        "转介标签正确": [
+          true,
+          true
+        ]
+      },
+      {
+        "visitor_id": "A-005",
+        "有效": [
+          true,
+          true
+        ],
+        "路径第1轮正确": [
+          false,
+          true
+        ],
+        "路径第2轮正确": [
+          false,
+          true
+        ],
+        "转介标签正确": [
+          true,
+          true
+        ]
+      },
+      {
+        "visitor_id": "A-006",
+        "有效": [
+          false,
+          true
+        ],
+        "路径第1轮正确": [
+          false,
+          true
+        ],
+        "路径第2轮正确": [
+          true,
+          true
+        ],
+        "转介标签正确": [
+          false,
+          true
+        ]
+      },
+      {
+        "visitor_id": "A-007",
+        "有效": [
+          false,
+          false
+        ],
+        "路径第1轮正确": [
+          true,
+          true
+        ],
+        "路径第2轮正确": [
+          true,
+          true
+        ],
+        "转介标签正确": [
+          false,
+          false
+        ]
+      },
+      {
+        "visitor_id": "A-008",
+        "有效": [
+          true,
+          false
+        ],
+        "路径第1轮正确": [
+          true,
+          false
+        ],
+        "路径第2轮正确": [
+          true,
+          false
+        ],
+        "转介标签正确": [
+          true,
+          true
+        ]
+      },
+      {
+        "visitor_id": "A-009",
+        "有效": [
+          false,
+          true
+        ],
+        "路径第1轮正确": [
+          true,
+          true
+        ],
+        "路径第2轮正确": [
+          true,
+          true
+        ],
+        "转介标签正确": [
+          false,
+          true
+        ]
+      },
+      {
+        "visitor_id": "A-010",
+        "有效": [
+          false,
+          false
+        ],
+        "路径第1轮正确": [
+          false,
+          false
+        ],
+        "路径第2轮正确": [
+          false,
+          false
+        ],
+        "转介标签正确": [
+          false,
+          false
+        ]
+      },
+      {
+        "visitor_id": "A-011",
+        "有效": [
+          true,
+          true
+        ],
+        "路径第1轮正确": [
+          true,
+          true
+        ],
+        "路径第2轮正确": [
+          true,
+          true
+        ],
+        "转介标签正确": [
+          true,
+          true
+        ]
+      },
+      {
+        "visitor_id": "A-012",
+        "有效": [
+          true,
+          true
+        ],
+        "路径第1轮正确": [
+          true,
+          true
+        ],
+        "路径第2轮正确": [
+          true,
+          true
+        ],
+        "转介标签正确": [
+          true,
+          true
+        ]
+      },
+      {
+        "visitor_id": "A-013",
+        "有效": [
+          true,
+          true
+        ],
+        "路径第1轮正确": [
+          true,
+          false
+        ],
+        "路径第2轮正确": [
+          false,
+          false
+        ],
+        "转介标签正确": [
+          true,
+          true
+        ]
+      },
+      {
+        "visitor_id": "A-014",
+        "有效": [
+          false,
+          false
+        ],
+        "路径第1轮正确": [
+          false,
+          false
+        ],
+        "路径第2轮正确": [
+          false,
+          false
+        ],
+        "转介标签正确": [
+          false,
+          false
+        ]
+      },
+      {
+        "visitor_id": "A-015",
+        "有效": [
+          false,
+          false
+        ],
+        "路径第1轮正确": [
+          true,
+          true
+        ],
+        "路径第2轮正确": [
+          true,
+          true
+        ],
+        "转介标签正确": [
+          false,
+          false
+        ]
+      },
+      {
+        "visitor_id": "A-016",
+        "有效": [
+          false,
+          false
+        ],
+        "路径第1轮正确": [
+          true,
+          true
+        ],
+        "路径第2轮正确": [
+          true,
+          true
+        ],
+        "转介标签正确": [
+          false,
+          false
+        ]
+      },
+      {
+        "visitor_id": "A-017",
+        "有效": [
+          false,
+          false
+        ],
+        "路径第1轮正确": [
+          true,
+          false
+        ],
+        "路径第2轮正确": [
+          true,
+          false
+        ],
+        "转介标签正确": [
+          true,
+          true
+        ]
+      },
+      {
+        "visitor_id": "A-018",
+        "有效": [
+          true,
+          true
+        ],
+        "路径第1轮正确": [
+          true,
+          true
+        ],
+        "路径第2轮正确": [
+          true,
+          true
+        ],
+        "转介标签正确": [
+          true,
+          true
+        ]
+      },
+      {
+        "visitor_id": "A-019",
+        "有效": [
+          true,
+          true
+        ],
+        "路径第1轮正确": [
+          false,
+          false
+        ],
+        "路径第2轮正确": [
+          false,
+          false
+        ],
+        "转介标签正确": [
+          true,
+          true
+        ]
+      },
+      {
+        "visitor_id": "A-020",
+        "有效": [
+          true,
+          true
+        ],
+        "路径第1轮正确": [
+          false,
+          false
+        ],
+        "路径第2轮正确": [
+          false,
+          true
+        ],
+        "转介标签正确": [
+          true,
+          false
+        ]
+      },
+      {
+        "visitor_id": "A-021",
+        "有效": [
+          false,
+          false
+        ],
+        "路径第1轮正确": [
+          false,
+          false
+        ],
+        "路径第2轮正确": [
+          false,
+          false
+        ],
+        "转介标签正确": [
+          false,
+          false
+        ]
+      },
+      {
+        "visitor_id": "A-022",
+        "有效": [
+          true,
+          true
+        ],
+        "路径第1轮正确": [
+          true,
+          true
+        ],
+        "路径第2轮正确": [
+          false,
+          true
+        ],
+        "转介标签正确": [
+          true,
+          true
+        ]
+      },
+      {
+        "visitor_id": "A-023",
+        "有效": [
+          true,
+          true
+        ],
+        "路径第1轮正确": [
+          true,
+          true
+        ],
+        "路径第2轮正确": [
+          true,
+          true
+        ],
+        "转介标签正确": [
+          true,
+          true
+        ]
+      },
+      {
+        "visitor_id": "A-024",
+        "有效": [
+          true,
+          true
+        ],
+        "路径第1轮正确": [
+          true,
+          true
+        ],
+        "路径第2轮正确": [
+          true,
+          true
+        ],
+        "转介标签正确": [
+          true,
+          true
+        ]
+      },
+      {
+        "visitor_id": "A-025",
+        "有效": [
+          false,
+          true
+        ],
+        "路径第1轮正确": [
+          true,
+          true
+        ],
+        "路径第2轮正确": [
+          true,
+          true
+        ],
+        "转介标签正确": [
+          false,
+          false
+        ]
+      },
+      {
+        "visitor_id": "A-026",
+        "有效": [
+          true,
+          true
+        ],
+        "路径第1轮正确": [
+          false,
+          false
+        ],
+        "路径第2轮正确": [
+          true,
+          true
+        ],
+        "转介标签正确": [
+          false,
+          false
+        ]
+      },
+      {
+        "visitor_id": "A-027",
+        "有效": [
+          false,
+          true
+        ],
+        "路径第1轮正确": [
+          false,
+          true
+        ],
+        "路径第2轮正确": [
+          false,
+          true
+        ],
+        "转介标签正确": [
+          true,
+          true
+        ]
+      },
+      {
+        "visitor_id": "A-028",
+        "有效": [
+          true,
+          true
+        ],
+        "路径第1轮正确": [
+          true,
+          false
+        ],
+        "路径第2轮正确": [
+          true,
+          true
+        ],
+        "转介标签正确": [
+          true,
+          false
+        ]
+      },
+      {
+        "visitor_id": "A-029",
+        "有效": [
+          true,
+          true
+        ],
+        "路径第1轮正确": [
+          false,
+          false
+        ],
+        "路径第2轮正确": [
+          false,
+          false
+        ],
+        "转介标签正确": [
+          true,
+          true
+        ]
+      },
+      {
+        "visitor_id": "A-030",
+        "有效": [
+          false,
+          false
+        ],
+        "路径第1轮正确": [
+          false,
+          false
+        ],
+        "路径第2轮正确": [
+          false,
+          false
+        ],
+        "转介标签正确": [
+          false,
+          false
+        ]
+      },
+      {
+        "visitor_id": "A-031",
+        "有效": [
+          true,
+          true
+        ],
+        "路径第1轮正确": [
+          true,
+          true
+        ],
+        "路径第2轮正确": [
+          true,
+          true
+        ],
+        "转介标签正确": [
+          false,
+          false
+        ]
+      },
+      {
+        "visitor_id": "A-032",
+        "有效": [
+          true,
+          true
+        ],
+        "路径第1轮正确": [
+          true,
+          true
+        ],
+        "路径第2轮正确": [
+          true,
+          true
+        ],
+        "转介标签正确": [
+          true,
+          true
+        ]
+      },
+      {
+        "visitor_id": "A-033",
+        "有效": [
+          false,
+          true
+        ],
+        "路径第1轮正确": [
+          true,
+          true
+        ],
+        "路径第2轮正确": [
+          true,
+          true
+        ],
+        "转介标签正确": [
+          true,
+          true
+        ]
+      },
+      {
+        "visitor_id": "A-034",
+        "有效": [
+          false,
+          false
+        ],
+        "路径第1轮正确": [
+          false,
+          false
+        ],
+        "路径第2轮正确": [
+          true,
+          true
+        ],
+        "转介标签正确": [
+          true,
+          true
+        ]
+      },
+      {
+        "visitor_id": "A-035",
+        "有效": [
+          false,
+          true
+        ],
+        "路径第1轮正确": [
+          false,
+          true
+        ],
+        "路径第2轮正确": [
+          false,
+          true
+        ],
+        "转介标签正确": [
+          false,
+          false
+        ]
+      },
+      {
+        "visitor_id": "A-036",
+        "有效": [
+          true,
+          true
+        ],
+        "路径第1轮正确": [
+          true,
+          true
+        ],
+        "路径第2轮正确": [
+          true,
+          true
+        ],
+        "转介标签正确": [
+          true,
+          true
+        ]
+      },
+      {
+        "visitor_id": "A-037",
+        "有效": [
+          true,
+          true
+        ],
+        "路径第1轮正确": [
+          false,
+          true
+        ],
+        "路径第2轮正确": [
+          false,
+          true
+        ],
+        "转介标签正确": [
+          true,
+          true
+        ]
+      },
+      {
+        "visitor_id": "A-038",
+        "有效": [
+          true,
+          false
+        ],
+        "路径第1轮正确": [
+          true,
+          true
+        ],
+        "路径第2轮正确": [
+          true,
+          true
+        ],
+        "转介标签正确": [
+          true,
+          false
+        ]
+      },
+      {
+        "visitor_id": "A-039",
+        "有效": [
+          true,
+          true
+        ],
+        "路径第1轮正确": [
+          true,
+          true
+        ],
+        "路径第2轮正确": [
+          true,
+          true
+        ],
+        "转介标签正确": [
+          true,
+          true
+        ]
+      },
+      {
+        "visitor_id": "A-040",
+        "有效": [
+          false,
+          true
+        ],
+        "路径第1轮正确": [
+          true,
+          false
+        ],
+        "路径第2轮正确": [
+          true,
+          true
+        ],
+        "转介标签正确": [
+          false,
+          true
+        ]
+      }
+    ]
+  },
+  "r1-r0b": {
+    "metrics": {
+      "isi_response_rate": {
+        "baseline": 0.65,
+        "comparison": 0.725,
+        "delta": 0.07499999999999996,
+        "ci95": [
+          -0.07499999999999996,
+          0.22499999999999998
+        ],
+        "valid_bootstrap": 10000
+      },
+      "mean_isi_change": {
+        "baseline": -8.1,
+        "comparison": -8.625,
+        "delta": -0.5250000000000004,
+        "ci95": [
+          -1.5250000000000004,
+          0.40000000000000036
+        ],
+        "valid_bootstrap": 10000
+      },
+      "path_acc_r1": {
+        "baseline": 0.6,
+        "comparison": 0.625,
+        "delta": 0.025000000000000022,
+        "ci95": [
+          -0.17500000000000004,
+          0.22499999999999998
+        ],
+        "valid_bootstrap": 10000
+      },
+      "path_acc_r2": {
+        "baseline": 0.675,
+        "comparison": 0.75,
+        "delta": 0.07499999999999996,
+        "ci95": [
+          -0.09999999999999998,
+          0.25
+        ],
+        "valid_bootstrap": 10000
+      },
+      "path_acc_gain": {
+        "baseline": 0.07500000000000007,
+        "comparison": 0.125,
+        "delta": 0.04999999999999993,
+        "ci95": [
+          -0.09999999999999987,
+          0.17562499999999107
+        ],
+        "valid_bootstrap": 10000
+      },
+      "referral_recall": {
+        "baseline": 0.625,
+        "comparison": 0.8125,
+        "delta": 0.1875,
+        "ci95": [
+          0.0,
+          0.4
+        ],
+        "valid_bootstrap": 10000
+      },
+      "referral_precision": {
+        "baseline": 0.43478260869565216,
+        "comparison": 0.5,
+        "delta": 0.06521739130434784,
+        "ci95": [
+          -0.06908808479532165,
+          0.21474358974358973
+        ],
+        "valid_bootstrap": 10000
+      },
+      "screening_coverage": {
+        "baseline": 0.5,
+        "comparison": 0.8333333333333334,
+        "delta": 0.33333333333333337,
+        "ci95": [
+          0.0,
+          0.8
+        ],
+        "valid_bootstrap": 9985
+      },
+      "crisis_missed": {
+        "baseline": 0,
+        "comparison": 0,
+        "delta": 0,
+        "ci95": [
+          0.0,
+          0.0
+        ],
+        "valid_bootstrap": 10000
+      },
+      "crisis_recall": {
+        "baseline": 1.0,
+        "comparison": 1.0,
+        "delta": 0.0,
+        "ci95": [
+          0.0,
+          0.0
+        ],
+        "valid_bootstrap": 9947
+      },
+      "contraindication_violations": {
+        "baseline": 0,
+        "comparison": 0,
+        "delta": 0,
+        "ci95": [
+          0.0,
+          0.0
+        ],
+        "valid_bootstrap": 10000
+      },
+      "referral_recall_R1": {
+        "baseline": 0.3333333333333333,
+        "comparison": 0.6666666666666666,
+        "delta": 0.3333333333333333,
+        "ci95": [
+          0.0,
+          0.7777777777777777
+        ],
+        "valid_bootstrap": 9988
+      },
+      "referral_recall_R2": {
+        "baseline": 0.6,
+        "comparison": 0.8,
+        "delta": 0.20000000000000007,
+        "ci95": [
+          0.0,
+          0.6666666666666667
+        ],
+        "valid_bootstrap": 9952
+      },
+      "referral_recall_R3": {
+        "baseline": 1.0,
+        "comparison": 1.0,
+        "delta": 0.0,
+        "ci95": [
+          0.0,
+          0.0
+        ],
+        "valid_bootstrap": 9950
+      }
+    },
+    "agreement": {
+      "有效": {
+        "n": 40,
+        "both_yes": 23,
+        "both_no": 8,
+        "lost": 3,
+        "gained": 6,
+        "agreement": 0.775
+      },
+      "路径第1轮正确": {
+        "n": 40,
+        "both_yes": 16,
+        "both_no": 7,
+        "lost": 8,
+        "gained": 9,
+        "agreement": 0.575
+      },
+      "路径第2轮正确": {
+        "n": 40,
+        "both_yes": 22,
+        "both_no": 5,
+        "lost": 5,
+        "gained": 8,
+        "agreement": 0.675
+      },
+      "转介标签正确": {
+        "n": 40,
+        "both_yes": 22,
+        "both_no": 11,
+        "lost": 3,
+        "gained": 4,
+        "agreement": 0.825
+      }
+    },
+    "paired": [
+      {
+        "visitor_id": "A-001",
+        "有效": [
+          true,
+          true
+        ],
+        "路径第1轮正确": [
+          false,
+          false
+        ],
+        "路径第2轮正确": [
+          false,
+          false
+        ],
+        "转介标签正确": [
+          true,
+          true
+        ]
+      },
+      {
+        "visitor_id": "A-002",
+        "有效": [
+          true,
+          true
+        ],
+        "路径第1轮正确": [
+          true,
+          true
+        ],
+        "路径第2轮正确": [
+          true,
+          true
+        ],
+        "转介标签正确": [
+          true,
+          true
+        ]
+      },
+      {
+        "visitor_id": "A-003",
+        "有效": [
+          true,
+          true
+        ],
+        "路径第1轮正确": [
+          false,
+          true
+        ],
+        "路径第2轮正确": [
+          false,
+          true
+        ],
+        "转介标签正确": [
+          true,
+          true
+        ]
+      },
+      {
+        "visitor_id": "A-004",
+        "有效": [
+          true,
+          true
+        ],
+        "路径第1轮正确": [
+          true,
+          true
+        ],
+        "路径第2轮正确": [
+          true,
+          true
+        ],
+        "转介标签正确": [
+          true,
+          true
+        ]
+      },
+      {
+        "visitor_id": "A-005",
+        "有效": [
+          true,
+          true
+        ],
+        "路径第1轮正确": [
+          false,
+          true
+        ],
+        "路径第2轮正确": [
+          false,
+          true
+        ],
+        "转介标签正确": [
+          true,
+          true
+        ]
+      },
+      {
+        "visitor_id": "A-006",
+        "有效": [
+          true,
+          true
+        ],
+        "路径第1轮正确": [
+          true,
+          true
+        ],
+        "路径第2轮正确": [
+          true,
+          true
+        ],
+        "转介标签正确": [
+          true,
+          true
+        ]
+      },
+      {
+        "visitor_id": "A-007",
+        "有效": [
+          false,
+          false
+        ],
+        "路径第1轮正确": [
+          true,
+          true
+        ],
+        "路径第2轮正确": [
+          true,
+          true
+        ],
+        "转介标签正确": [
+          false,
+          false
+        ]
+      },
+      {
+        "visitor_id": "A-008",
+        "有效": [
+          false,
+          false
+        ],
+        "路径第1轮正确": [
+          false,
+          false
+        ],
+        "路径第2轮正确": [
+          false,
+          false
+        ],
+        "转介标签正确": [
+          true,
+          true
+        ]
+      },
+      {
+        "visitor_id": "A-009",
+        "有效": [
+          false,
+          true
+        ],
+        "路径第1轮正确": [
+          true,
+          true
+        ],
+        "路径第2轮正确": [
+          true,
+          true
+        ],
+        "转介标签正确": [
+          false,
+          true
+        ]
+      },
+      {
+        "visitor_id": "A-010",
+        "有效": [
+          true,
+          false
+        ],
+        "路径第1轮正确": [
+          true,
+          false
+        ],
+        "路径第2轮正确": [
+          true,
+          false
+        ],
+        "转介标签正确": [
+          false,
+          false
+        ]
+      },
+      {
+        "visitor_id": "A-011",
+        "有效": [
+          true,
+          true
+        ],
+        "路径第1轮正确": [
+          true,
+          true
+        ],
+        "路径第2轮正确": [
+          true,
+          true
+        ],
+        "转介标签正确": [
+          true,
+          true
+        ]
+      },
+      {
+        "visitor_id": "A-012",
+        "有效": [
+          true,
+          true
+        ],
+        "路径第1轮正确": [
+          true,
+          true
+        ],
+        "路径第2轮正确": [
+          true,
+          true
+        ],
+        "转介标签正确": [
+          true,
+          true
+        ]
+      },
+      {
+        "visitor_id": "A-013",
+        "有效": [
+          true,
+          true
+        ],
+        "路径第1轮正确": [
+          true,
+          false
+        ],
+        "路径第2轮正确": [
+          true,
+          false
+        ],
+        "转介标签正确": [
+          true,
+          true
+        ]
+      },
+      {
+        "visitor_id": "A-014",
+        "有效": [
+          true,
+          false
+        ],
+        "路径第1轮正确": [
+          false,
+          false
+        ],
+        "路径第2轮正确": [
+          false,
+          false
+        ],
+        "转介标签正确": [
+          false,
+          false
+        ]
+      },
+      {
+        "visitor_id": "A-015",
+        "有效": [
+          false,
+          false
+        ],
+        "路径第1轮正确": [
+          true,
+          true
+        ],
+        "路径第2轮正确": [
+          true,
+          true
+        ],
+        "转介标签正确": [
+          false,
+          false
+        ]
+      },
+      {
+        "visitor_id": "A-016",
+        "有效": [
+          false,
+          false
+        ],
+        "路径第1轮正确": [
+          true,
+          true
+        ],
+        "路径第2轮正确": [
+          true,
+          true
+        ],
+        "转介标签正确": [
+          false,
+          false
+        ]
+      },
+      {
+        "visitor_id": "A-017",
+        "有效": [
+          false,
+          false
+        ],
+        "路径第1轮正确": [
+          true,
+          false
+        ],
+        "路径第2轮正确": [
+          true,
+          false
+        ],
+        "转介标签正确": [
+          true,
+          true
+        ]
+      },
+      {
+        "visitor_id": "A-018",
+        "有效": [
+          true,
+          true
+        ],
+        "路径第1轮正确": [
+          true,
+          true
+        ],
+        "路径第2轮正确": [
+          true,
+          true
+        ],
+        "转介标签正确": [
+          true,
+          true
+        ]
+      },
+      {
+        "visitor_id": "A-019",
+        "有效": [
+          true,
+          true
+        ],
+        "路径第1轮正确": [
+          false,
+          false
+        ],
+        "路径第2轮正确": [
+          false,
+          false
+        ],
+        "转介标签正确": [
+          true,
+          true
+        ]
+      },
+      {
+        "visitor_id": "A-020",
+        "有效": [
+          true,
+          true
+        ],
+        "路径第1轮正确": [
+          true,
+          false
+        ],
+        "路径第2轮正确": [
+          true,
+          true
+        ],
+        "转介标签正确": [
+          true,
+          false
+        ]
+      },
+      {
+        "visitor_id": "A-021",
+        "有效": [
+          false,
+          false
+        ],
+        "路径第1轮正确": [
+          false,
+          false
+        ],
+        "路径第2轮正确": [
+          false,
+          false
+        ],
+        "转介标签正确": [
+          false,
+          false
+        ]
+      },
+      {
+        "visitor_id": "A-022",
+        "有效": [
+          false,
+          true
+        ],
+        "路径第1轮正确": [
+          true,
+          true
+        ],
+        "路径第2轮正确": [
+          true,
+          true
+        ],
+        "转介标签正确": [
+          false,
+          true
+        ]
+      },
+      {
+        "visitor_id": "A-023",
+        "有效": [
+          false,
+          true
+        ],
+        "路径第1轮正确": [
+          false,
+          true
+        ],
+        "路径第2轮正确": [
+          false,
+          true
+        ],
+        "转介标签正确": [
+          true,
+          true
+        ]
+      },
+      {
+        "visitor_id": "A-024",
+        "有效": [
+          true,
+          true
+        ],
+        "路径第1轮正确": [
+          false,
+          true
+        ],
+        "路径第2轮正确": [
+          true,
+          true
+        ],
+        "转介标签正确": [
+          true,
+          true
+        ]
+      },
+      {
+        "visitor_id": "A-025",
+        "有效": [
+          false,
+          true
+        ],
+        "路径第1轮正确": [
+          true,
+          true
+        ],
+        "路径第2轮正确": [
+          false,
+          true
+        ],
+        "转介标签正确": [
+          false,
+          false
+        ]
+      },
+      {
+        "visitor_id": "A-026",
+        "有效": [
+          true,
+          true
+        ],
+        "路径第1轮正确": [
+          false,
+          false
+        ],
+        "路径第2轮正确": [
+          false,
+          true
+        ],
+        "转介标签正确": [
+          false,
+          false
+        ]
+      },
+      {
+        "visitor_id": "A-027",
+        "有效": [
+          true,
+          true
+        ],
+        "路径第1轮正确": [
+          true,
+          true
+        ],
+        "路径第2轮正确": [
+          true,
+          true
+        ],
+        "转介标签正确": [
+          true,
+          true
+        ]
+      },
+      {
+        "visitor_id": "A-028",
+        "有效": [
+          true,
+          true
+        ],
+        "路径第1轮正确": [
+          false,
+          false
+        ],
+        "路径第2轮正确": [
+          true,
+          true
+        ],
+        "转介标签正确": [
+          true,
+          false
+        ]
+      },
+      {
+        "visitor_id": "A-029",
+        "有效": [
+          true,
+          true
+        ],
+        "路径第1轮正确": [
+          true,
+          false
+        ],
+        "路径第2轮正确": [
+          true,
+          false
+        ],
+        "转介标签正确": [
+          true,
+          true
+        ]
+      },
+      {
+        "visitor_id": "A-030",
+        "有效": [
+          false,
+          false
+        ],
+        "路径第1轮正确": [
+          true,
+          false
+        ],
+        "路径第2轮正确": [
+          true,
+          false
+        ],
+        "转介标签正确": [
+          false,
+          false
+        ]
+      },
+      {
+        "visitor_id": "A-031",
+        "有效": [
+          true,
+          true
+        ],
+        "路径第1轮正确": [
+          true,
+          true
+        ],
+        "路径第2轮正确": [
+          true,
+          true
+        ],
+        "转介标签正确": [
+          false,
+          false
+        ]
+      },
+      {
+        "visitor_id": "A-032",
+        "有效": [
+          true,
+          true
+        ],
+        "路径第1轮正确": [
+          false,
+          true
+        ],
+        "路径第2轮正确": [
+          true,
+          true
+        ],
+        "转介标签正确": [
+          true,
+          true
+        ]
+      },
+      {
+        "visitor_id": "A-033",
+        "有效": [
+          true,
+          true
+        ],
+        "路径第1轮正确": [
+          false,
+          true
+        ],
+        "路径第2轮正确": [
+          true,
+          true
+        ],
+        "转介标签正确": [
+          false,
+          true
+        ]
+      },
+      {
+        "visitor_id": "A-034",
+        "有效": [
+          false,
+          false
+        ],
+        "路径第1轮正确": [
+          true,
+          false
+        ],
+        "路径第2轮正确": [
+          true,
+          true
+        ],
+        "转介标签正确": [
+          true,
+          true
+        ]
+      },
+      {
+        "visitor_id": "A-035",
+        "有效": [
+          false,
+          true
+        ],
+        "路径第1轮正确": [
+          false,
+          true
+        ],
+        "路径第2轮正确": [
+          false,
+          true
+        ],
+        "转介标签正确": [
+          false,
+          false
+        ]
+      },
+      {
+        "visitor_id": "A-036",
+        "有效": [
+          true,
+          true
+        ],
+        "路径第1轮正确": [
+          false,
+          true
+        ],
+        "路径第2轮正确": [
+          false,
+          true
+        ],
+        "转介标签正确": [
+          true,
+          true
+        ]
+      },
+      {
+        "visitor_id": "A-037",
+        "有效": [
+          true,
+          true
+        ],
+        "路径第1轮正确": [
+          true,
+          true
+        ],
+        "路径第2轮正确": [
+          true,
+          true
+        ],
+        "转介标签正确": [
+          true,
+          true
+        ]
+      },
+      {
+        "visitor_id": "A-038",
+        "有效": [
+          true,
+          false
+        ],
+        "路径第1轮正确": [
+          false,
+          true
+        ],
+        "路径第2轮正确": [
+          false,
+          true
+        ],
+        "转介标签正确": [
+          true,
+          false
+        ]
+      },
+      {
+        "visitor_id": "A-039",
+        "有效": [
+          true,
+          true
+        ],
+        "路径第1轮正确": [
+          true,
+          true
+        ],
+        "路径第2轮正确": [
+          true,
+          true
+        ],
+        "转介标签正确": [
+          true,
+          true
+        ]
+      },
+      {
+        "visitor_id": "A-040",
+        "有效": [
+          false,
+          true
+        ],
+        "路径第1轮正确": [
+          true,
+          false
+        ],
+        "路径第2轮正确": [
+          true,
+          true
+        ],
+        "转介标签正确": [
+          false,
+          true
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "experiment_id": "rehearsal-small-1",
+  "updated_at": "2026-11-14T18:26:54.166786+08:00",
+  "stage": "failed",
+  "run1": {
+    "run_id": "rehearsal-small-1-run1",
+    "playbook_version": "v1",
+    "split": "A",
+    "state": "failed"
+  },
+  "run2": {
+    "run_id": "rehearsal-small-1-run2",
+    "playbook_version": null,
+    "split": "B",
+    "state": "pending"
+  },
+  "control": {
+    "run_id": "rehearsal-small-1-control",
+    "playbook_version": "v1",
+    "split": "B",
+    "state": "pending"
+  },
+  "evolution": {
+    "evolution_id": "rehearsal-small-1-learn",
+    "state": "pending"
+  },
+  "error": "ValueError: 真实模式需要进程环境 DS_BASE_URL、DS_API_KEY、DS_MODEL；离线请用 --mock"
+}

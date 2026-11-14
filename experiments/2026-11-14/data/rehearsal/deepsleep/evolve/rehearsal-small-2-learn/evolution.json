@@ -1,0 +1,279 @@
+{
+  "schema_version": "0.1.0",
+  "evolution_id": "rehearsal-small-2-learn",
+  "created_at": "2026-11-14T18:30:49+08:00",
+  "from_version": "v1",
+  "to_version": null,
+  "outcome": "kept_previous",
+  "source_run_id": "rehearsal-small-2-run1",
+  "val_split": "C",
+  "baseline_val_metrics": {
+    "isi_response_rate": 0.6,
+    "mean_isi_change": -9.6,
+    "path_acc_r1": 0.8,
+    "path_acc_r2": 1.0,
+    "path_acc_gain": 0.19999999999999996,
+    "referral_recall": 0.5,
+    "referral_precision": 0.5,
+    "referral_recall_by_label": {
+      "R1": 0.0,
+      "R2": null,
+      "R3": 1.0
+    },
+    "crisis_recall": null,
+    "crisis_missed": 0,
+    "contraindication_violations": 0,
+    "screening_coverage": 1.0
+  },
+  "reflector": {
+    "model": "gpt-6-astra",
+    "fell_back": false,
+    "fallback_reason": null
+  },
+  "failures_used": [
+    {
+      "visitor_id": "A-004",
+      "failure_tags": [
+        "path_wrong_r1",
+        "path_wrong_r2",
+        "no_isi_response"
+      ]
+    },
+    {
+      "visitor_id": "A-005",
+      "failure_tags": [
+        "path_wrong_r1",
+        "path_wrong_r2",
+        "no_isi_response"
+      ]
+    },
+    {
+      "visitor_id": "A-001",
+      "failure_tags": [
+        "path_wrong_r2"
+      ]
+    },
+    {
+      "visitor_id": "A-003",
+      "failure_tags": [
+        "path_wrong_r1",
+        "no_isi_response"
+      ]
+    },
+    {
+      "visitor_id": "A-002",
+      "failure_tags": [
+        "path_wrong_r1",
+        "path_wrong_r2"
+      ]
+    }
+  ],
+  "human_feedback": [],
+  "candidates": [
+    {
+      "id": "c1",
+      "summary": "前移节律与数字娱乐线索提问，并避免弱床情境线索覆盖明确反刍证据",
+      "changes": [
+        {
+          "id": "c1-questioning_strategy-1",
+          "op": "add",
+          "section": "questioning_strategy",
+          "before": null,
+          "after": "第1轮报出作息后立即核对上午或晚上；白天睡或睡点变化时下一问问最近是否轮班，迟睡但自述固定时下一问问“不用赶早的休息日，你通常几点自然犯困”，随后再问按这个时点睡是否顺畅，不把钟点固定当作排除P4的依据。",
+          "reason": "自然困点未问、轮班线索出现过晚，使正确路径权重长期接近均匀水平。",
+          "criticality_rule": "low",
+          "criticality_self": "medium",
+          "criticality": "medium"
+        },
+        {
+          "id": "c1-questioning_strategy-2",
+          "op": "add",
+          "section": "questioning_strategy",
+          "before": null,
+          "after": "第1轮尚无明确主路径时，在追问“身体还是脑子清醒”前，问“昨晚上床后到真正闭眼尝试睡觉前，你在做什么”，若提到数字娱乐，再逐次问停用时间、是否已困仍继续及放下后是否仍难睡，不把睡不着后才用屏自动归为P5。",
+          "reason": "反复询问床上感受却未问实际行为，数字娱乐关键线索始终缺失。",
+          "criticality_rule": "low",
+          "criticality_self": "medium",
+          "criticality": "medium"
+        },
+        {
+          "id": "c1-path_discrimination-3",
+          "op": "modify",
+          "section": "path_discrimination",
+          "before": "- P2 与 P3 主要看躺下后脑子里有没有内容，换地方是否好转只作辅助。",
+          "after": "- 区分P2/P3时，围绕最近一次睡不着，分次问反复思考何时开始、床外是否真正有困意或更快睡着、回床是否转清醒；仅“离床松一点”不足以覆盖具体反刍线索，后续含糊回答记为未知，证据冲突时补问而不按最后一句换路。",
+          "reason": "具体反刍曾使正确权重升至0.55，随后被床外放松的弱线索覆盖而降至0.30。",
+          "criticality_rule": "medium",
+          "criticality_self": "medium",
+          "criticality": "medium"
+        }
+      ],
+      "hard_rule_violations": [],
+      "val_metrics": {
+        "isi_response_rate": 0.6,
+        "mean_isi_change": -9.8,
+        "path_acc_r1": 0.6,
+        "path_acc_r2": 0.6,
+        "path_acc_gain": 0.0,
+        "referral_recall": 0.5,
+        "referral_precision": 0.3333333333333333,
+        "referral_recall_by_label": {
+          "R1": 0.0,
+          "R2": null,
+          "R3": 1.0
+        },
+        "crisis_recall": null,
+        "crisis_missed": 0,
+        "contraindication_violations": 0,
+        "screening_coverage": 1.0
+      },
+      "veto": {
+        "passed": false,
+        "reasons": [
+          {
+            "code": "referral_precision_floor",
+            "message": "转介精确率低于下限 0.5。"
+          }
+        ]
+      },
+      "passed": false
+    },
+    {
+      "id": "c2",
+      "summary": "将含糊回答转为低负担行为回忆，并核对概括否认与具体经历的差异",
+      "changes": [
+        {
+          "id": "c2-questioning_strategy-1",
+          "op": "add",
+          "section": "questioning_strategy",
+          "before": null,
+          "after": "首次听到“没什么特别”或“说不清”时，简短接纳并说明可答大概，再问最近一晚的一个动作或时点，如“昨晚躺下后最先做了什么”，不重复“身体还是脑子清醒”二选一，也不连用安慰替代提问；仍含糊则记为未知并换到尚未核实的话题，明确拒答则暂停该话题。",
+          "reason": "防御型来访同盟较高却仍误分，多轮抽象追问和纯安慰未带来新线索。",
+          "criticality_rule": "low",
+          "criticality_self": "low",
+          "criticality": "low"
+        },
+        {
+          "id": "c2-questioning_strategy-2",
+          "op": "add",
+          "section": "questioning_strategy",
+          "before": null,
+          "after": "当“平时很固定／没有变化”与先前“忙完才睡、轮着来”等描述不一致时，中性复述差异，下一问只核对最近一晚的实际时点，再另问最近一次例外；保留习惯与实际两类记录，不将概括否认或重复习惯时刻当作排除作息波动的依据。",
+          "reason": "习惯时刻的重复陈述覆盖了已经出现的作息波动线索，导致第二轮错误换路。",
+          "criticality_rule": "low",
+          "criticality_self": "medium",
+          "criticality": "medium"
+        }
+      ],
+      "hard_rule_violations": [],
+      "val_metrics": {
+        "isi_response_rate": 0.6,
+        "mean_isi_change": -9.6,
+        "path_acc_r1": 0.4,
+        "path_acc_r2": 0.8,
+        "path_acc_gain": 0.4,
+        "referral_recall": 0.5,
+        "referral_precision": 0.5,
+        "referral_recall_by_label": {
+          "R1": 0.0,
+          "R2": null,
+          "R3": 1.0
+        },
+        "crisis_recall": null,
+        "crisis_missed": 0,
+        "contraindication_violations": 0,
+        "screening_coverage": 1.0
+      },
+      "veto": {
+        "passed": true,
+        "reasons": []
+      },
+      "passed": false
+    },
+    {
+      "id": "c3",
+      "summary": "先核实生活约束，再给少量可执行建议，避免轮班套用统一钟点与多组件堆叠",
+      "changes": [
+        {
+          "id": "c3-questioning_strategy-1",
+          "op": "add",
+          "section": "questioning_strategy",
+          "before": null,
+          "after": "第1轮记录睡眠钟点后先问“接下来一周，哪些时段必须工作或照护”，若有轮班，再逐次核实班次、通勤和各班段可睡窗口，给作息建议前用一句话请来访确认这些约束。",
+          "reason": "生活约束问得过晚，既延迟轮班线索出现，也使起床安排与实际生活错配。",
+          "criticality_rule": "low",
+          "criticality_self": "low",
+          "criticality": "low"
+        },
+        {
+          "id": "c3-plan_rules-2",
+          "op": "add",
+          "section": "plan_rules",
+          "before": null,
+          "after": "轮班作息建议按已核实的各班次可睡窗口分别协商，在可稳定的班段内设起床锚点并保留足够睡眠机会，不要求所有班次和休息日同一时刻起床；排班未清不硬定新钟点，也不凭白天睡就安排光照时点或作息前移。",
+          "reason": "统一起床时刻无法适配轮班转换，可能增加执行负担并削弱建议效果。",
+          "criticality_rule": "high",
+          "criticality_self": "high",
+          "criticality": "high"
+        },
+        {
+          "id": "c3-plan_rules-3",
+          "op": "add",
+          "section": "plan_rules",
+          "before": null,
+          "after": "每轮除必要转介外，与来访只选1–2个有明确线索支持且愿意尝试的组件，说明对应线索与具体动作；第2轮先问最近一晚如何执行、主要卡在哪里，再决定保留或替换组件，不把含糊认可当作已执行，也不因未改善就叠加更多组件。",
+          "reason": "低依从来访仍收到多组件套用方案，需先核实执行过程而非继续加码。",
+          "criticality_rule": "high",
+          "criticality_self": "high",
+          "criticality": "high"
+        }
+      ],
+      "hard_rule_violations": [],
+      "val_metrics": {
+        "isi_response_rate": 0.4,
+        "mean_isi_change": -6.6,
+        "path_acc_r1": 0.8,
+        "path_acc_r2": 0.6,
+        "path_acc_gain": -0.20000000000000007,
+        "referral_recall": 0.5,
+        "referral_precision": 0.3333333333333333,
+        "referral_recall_by_label": {
+          "R1": 0.0,
+          "R2": null,
+          "R3": 1.0
+        },
+        "crisis_recall": null,
+        "crisis_missed": 0,
+        "contraindication_violations": 0,
+        "screening_coverage": 1.0
+      },
+      "veto": {
+        "passed": false,
+        "reasons": [
+          {
+            "code": "referral_precision_floor",
+            "message": "转介精确率低于下限 0.5。"
+          }
+        ]
+      },
+      "passed": false
+    }
+  ],
+  "human_review": [
+    {
+      "change_id": "c3-plan_rules-2",
+      "decision": "timeout",
+      "scores": null,
+      "comment": null
+    },
+    {
+      "change_id": "c3-plan_rules-3",
+      "decision": "timeout",
+      "scores": null,
+      "comment": null
+    }
+  ],
+  "chosen": null,
+  "commit": null,
+  "diff": null
+}

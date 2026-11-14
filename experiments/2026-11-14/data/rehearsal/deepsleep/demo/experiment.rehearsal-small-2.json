@@ -1,0 +1,28 @@
+{
+  "experiment_id": "rehearsal-small-2",
+  "updated_at": "2026-11-14T18:37:40.381193+08:00",
+  "stage": "done",
+  "run1": {
+    "run_id": "rehearsal-small-2-run1",
+    "playbook_version": "v1",
+    "split": "A",
+    "state": "done"
+  },
+  "run2": {
+    "run_id": "rehearsal-small-2-run2",
+    "playbook_version": "v1",
+    "split": "B",
+    "state": "done"
+  },
+  "control": {
+    "run_id": "rehearsal-small-2-control",
+    "playbook_version": "v1",
+    "split": "B",
+    "state": "done"
+  },
+  "evolution": {
+    "evolution_id": "rehearsal-small-2-learn",
+    "state": "done"
+  },
+  "error": null
+}

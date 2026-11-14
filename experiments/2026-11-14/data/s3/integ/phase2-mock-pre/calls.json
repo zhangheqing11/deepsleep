@@ -1,0 +1,551 @@
+{
+  "logical": [
+    {
+      "visitor_id": "sample-001",
+      "component": "judge.mock",
+      "status": "ok",
+      "ms": 0.035
+    },
+    {
+      "visitor_id": "sample-002",
+      "component": "judge.mock",
+      "status": "ok",
+      "ms": 0.009
+    },
+    {
+      "visitor_id": "sample-003",
+      "component": "judge.mock",
+      "status": "ok",
+      "ms": 0.005
+    },
+    {
+      "visitor_id": "sample-001",
+      "component": "classifier",
+      "status": "ok",
+      "ms": 0.03
+    },
+    {
+      "visitor_id": "sample-001",
+      "component": "turn",
+      "status": "ok",
+      "ms": 0.132
+    },
+    {
+      "visitor_id": "sample-002",
+      "component": "classifier",
+      "status": "ok",
+      "ms": 0.018
+    },
+    {
+      "visitor_id": "sample-002",
+      "component": "turn",
+      "status": "ok",
+      "ms": 0.005
+    },
+    {
+      "visitor_id": "sample-003",
+      "component": "classifier",
+      "status": "ok",
+      "ms": 0.013
+    },
+    {
+      "visitor_id": "sample-003",
+      "component": "turn",
+      "status": "ok",
+      "ms": 0.004
+    },
+    {
+      "visitor_id": "sample-001",
+      "component": "classifier",
+      "status": "ok",
+      "ms": 0.013
+    },
+    {
+      "visitor_id": "sample-001",
+      "component": "turn",
+      "status": "ok",
+      "ms": 0.004
+    },
+    {
+      "visitor_id": "sample-001",
+      "component": "judge.mock",
+      "status": "ok",
+      "ms": 0.007
+    },
+    {
+      "visitor_id": "sample-002",
+      "component": "classifier",
+      "status": "ok",
+      "ms": 0.012
+    },
+    {
+      "visitor_id": "sample-002",
+      "component": "turn",
+      "status": "ok",
+      "ms": 0.003
+    },
+    {
+      "visitor_id": "sample-002",
+      "component": "judge.mock",
+      "status": "ok",
+      "ms": 0.005
+    },
+    {
+      "visitor_id": "sample-003",
+      "component": "classifier",
+      "status": "ok",
+      "ms": 0.01
+    },
+    {
+      "visitor_id": "sample-003",
+      "component": "turn",
+      "status": "ok",
+      "ms": 0.003
+    },
+    {
+      "visitor_id": "sample-003",
+      "component": "judge.mock",
+      "status": "ok",
+      "ms": 0.005
+    },
+    {
+      "visitor_id": "sample-001",
+      "component": "judge.mock",
+      "status": "ok",
+      "ms": 0.006
+    },
+    {
+      "visitor_id": "sample-002",
+      "component": "judge.mock",
+      "status": "ok",
+      "ms": 0.006
+    },
+    {
+      "visitor_id": "sample-003",
+      "component": "judge.mock",
+      "status": "ok",
+      "ms": 0.004
+    },
+    {
+      "visitor_id": "sample-001",
+      "component": "classifier",
+      "status": "ok",
+      "ms": 0.014
+    },
+    {
+      "visitor_id": "sample-001",
+      "component": "turn",
+      "status": "ok",
+      "ms": 0.004
+    },
+    {
+      "visitor_id": "sample-002",
+      "component": "classifier",
+      "status": "ok",
+      "ms": 0.013
+    },
+    {
+      "visitor_id": "sample-002",
+      "component": "turn",
+      "status": "ok",
+      "ms": 0.003
+    },
+    {
+      "visitor_id": "sample-001",
+      "component": "classifier",
+      "status": "ok",
+      "ms": 0.015
+    },
+    {
+      "visitor_id": "sample-001",
+      "component": "turn",
+      "status": "ok",
+      "ms": 0.004
+    },
+    {
+      "visitor_id": "sample-001",
+      "component": "judge.mock",
+      "status": "ok",
+      "ms": 0.006
+    },
+    {
+      "visitor_id": "sample-002",
+      "component": "classifier",
+      "status": "ok",
+      "ms": 0.012
+    },
+    {
+      "visitor_id": "sample-002",
+      "component": "turn",
+      "status": "ok",
+      "ms": 0.003
+    },
+    {
+      "visitor_id": "sample-002",
+      "component": "judge.mock",
+      "status": "ok",
+      "ms": 0.005
+    },
+    {
+      "visitor_id": "sample-003",
+      "component": "judge.mock",
+      "status": "ok",
+      "ms": 0.004
+    },
+    {
+      "visitor_id": "sample-003",
+      "component": "classifier",
+      "status": "ok",
+      "ms": 0.013
+    },
+    {
+      "visitor_id": "sample-003",
+      "component": "turn",
+      "status": "ok",
+      "ms": 0.003
+    },
+    {
+      "visitor_id": "sample-001",
+      "component": "judge.mock",
+      "status": "ok",
+      "ms": 0.005
+    },
+    {
+      "visitor_id": "sample-002",
+      "component": "judge.mock",
+      "status": "ok",
+      "ms": 0.004
+    },
+    {
+      "visitor_id": "sample-003",
+      "component": "classifier",
+      "status": "ok",
+      "ms": 0.013
+    },
+    {
+      "visitor_id": "sample-003",
+      "component": "turn",
+      "status": "ok",
+      "ms": 0.004
+    },
+    {
+      "visitor_id": "sample-003",
+      "component": "judge.mock",
+      "status": "ok",
+      "ms": 0.004
+    },
+    {
+      "visitor_id": "sample-001",
+      "component": "classifier",
+      "status": "ok",
+      "ms": 0.013
+    },
+    {
+      "visitor_id": "sample-001",
+      "component": "memory_plan",
+      "status": "ok",
+      "ms": 0.028
+    },
+    {
+      "visitor_id": "sample-002",
+      "component": "classifier",
+      "status": "ok",
+      "ms": 0.015
+    },
+    {
+      "visitor_id": "sample-002",
+      "component": "memory_plan",
+      "status": "ok",
+      "ms": 0.111
+    },
+    {
+      "visitor_id": "sample-001",
+      "component": "judge.mock",
+      "status": "ok",
+      "ms": 0.006
+    },
+    {
+      "visitor_id": "sample-002",
+      "component": "judge.mock",
+      "status": "ok",
+      "ms": 0.004
+    },
+    {
+      "visitor_id": "sample-003",
+      "component": "judge.mock",
+      "status": "ok",
+      "ms": 0.005
+    },
+    {
+      "visitor_id": "sample-001",
+      "component": "select",
+      "status": "ok",
+      "ms": 0.001
+    },
+    {
+      "visitor_id": "sample-001",
+      "component": "classifier",
+      "status": "ok",
+      "ms": 0.018
+    },
+    {
+      "visitor_id": "sample-001",
+      "component": "turn",
+      "status": "ok",
+      "ms": 0.004
+    },
+    {
+      "visitor_id": "sample-002",
+      "component": "select",
+      "status": "ok",
+      "ms": 0.001
+    },
+    {
+      "visitor_id": "sample-002",
+      "component": "classifier",
+      "status": "ok",
+      "ms": 0.016
+    },
+    {
+      "visitor_id": "sample-002",
+      "component": "turn",
+      "status": "ok",
+      "ms": 0.003
+    },
+    {
+      "visitor_id": "sample-003",
+      "component": "classifier",
+      "status": "ok",
+      "ms": 0.016
+    },
+    {
+      "visitor_id": "sample-003",
+      "component": "memory_plan",
+      "status": "ok",
+      "ms": 0.002
+    },
+    {
+      "visitor_id": "sample-001",
+      "component": "classifier",
+      "status": "ok",
+      "ms": 0.017
+    },
+    {
+      "visitor_id": "sample-001",
+      "component": "turn",
+      "status": "ok",
+      "ms": 0.004
+    },
+    {
+      "visitor_id": "sample-001",
+      "component": "judge.mock",
+      "status": "ok",
+      "ms": 0.006
+    },
+    {
+      "visitor_id": "sample-002",
+      "component": "classifier",
+      "status": "ok",
+      "ms": 0.015
+    },
+    {
+      "visitor_id": "sample-002",
+      "component": "turn",
+      "status": "ok",
+      "ms": 0.003
+    },
+    {
+      "visitor_id": "sample-002",
+      "component": "judge.mock",
+      "status": "ok",
+      "ms": 0.006
+    },
+    {
+      "visitor_id": "sample-003",
+      "component": "judge.mock",
+      "status": "ok",
+      "ms": 0.004
+    },
+    {
+      "visitor_id": "sample-003",
+      "component": "select",
+      "status": "ok",
+      "ms": 0.001
+    },
+    {
+      "visitor_id": "sample-003",
+      "component": "classifier",
+      "status": "ok",
+      "ms": 0.016
+    },
+    {
+      "visitor_id": "sample-003",
+      "component": "turn",
+      "status": "ok",
+      "ms": 0.004
+    },
+    {
+      "visitor_id": "sample-001",
+      "component": "classifier",
+      "status": "ok",
+      "ms": 0.016
+    },
+    {
+      "visitor_id": "sample-001",
+      "component": "turn",
+      "status": "ok",
+      "ms": 0.004
+    },
+    {
+      "visitor_id": "sample-001",
+      "component": "judge.mock",
+      "status": "ok",
+      "ms": 0.006
+    },
+    {
+      "visitor_id": "sample-002",
+      "component": "classifier",
+      "status": "ok",
+      "ms": 0.015
+    },
+    {
+      "visitor_id": "sample-002",
+      "component": "turn",
+      "status": "ok",
+      "ms": 0.004
+    },
+    {
+      "visitor_id": "sample-002",
+      "component": "judge.mock",
+      "status": "ok",
+      "ms": 0.005
+    },
+    {
+      "visitor_id": "sample-003",
+      "component": "classifier",
+      "status": "ok",
+      "ms": 0.014
+    },
+    {
+      "visitor_id": "sample-003",
+      "component": "turn",
+      "status": "ok",
+      "ms": 0.003
+    },
+    {
+      "visitor_id": "sample-003",
+      "component": "judge.mock",
+      "status": "ok",
+      "ms": 0.005
+    },
+    {
+      "visitor_id": "sample-001",
+      "component": "judge.mock",
+      "status": "ok",
+      "ms": 0.005
+    },
+    {
+      "visitor_id": "sample-002",
+      "component": "judge.mock",
+      "status": "ok",
+      "ms": 0.004
+    },
+    {
+      "visitor_id": "sample-003",
+      "component": "classifier",
+      "status": "ok",
+      "ms": 0.016
+    },
+    {
+      "visitor_id": "sample-003",
+      "component": "turn",
+      "status": "ok",
+      "ms": 0.004
+    },
+    {
+      "visitor_id": "sample-003",
+      "component": "judge.mock",
+      "status": "ok",
+      "ms": 0.006
+    },
+    {
+      "visitor_id": "sample-001",
+      "component": "classifier",
+      "status": "ok",
+      "ms": 0.017
+    },
+    {
+      "visitor_id": "sample-001",
+      "component": "memory",
+      "status": "ok",
+      "ms": 0.002
+    },
+    {
+      "visitor_id": "sample-001",
+      "component": "plan",
+      "status": "ok",
+      "ms": 0.001
+    },
+    {
+      "visitor_id": "sample-002",
+      "component": "classifier",
+      "status": "ok",
+      "ms": 0.017
+    },
+    {
+      "visitor_id": "sample-002",
+      "component": "memory",
+      "status": "ok",
+      "ms": 0.002
+    },
+    {
+      "visitor_id": "sample-002",
+      "component": "plan",
+      "status": "ok",
+      "ms": 0.001
+    },
+    {
+      "visitor_id": "sample-001",
+      "component": "judge.mock",
+      "status": "ok",
+      "ms": 0.006
+    },
+    {
+      "visitor_id": "sample-002",
+      "component": "judge.mock",
+      "status": "ok",
+      "ms": 0.004
+    },
+    {
+      "visitor_id": "sample-003",
+      "component": "judge.mock",
+      "status": "ok",
+      "ms": 0.004
+    },
+    {
+      "visitor_id": "sample-003",
+      "component": "classifier",
+      "status": "ok",
+      "ms": 0.024
+    },
+    {
+      "visitor_id": "sample-003",
+      "component": "memory",
+      "status": "ok",
+      "ms": 0.001
+    },
+    {
+      "visitor_id": "sample-003",
+      "component": "plan",
+      "status": "ok",
+      "ms": 0.001
+    },
+    {
+      "visitor_id": "sample-003",
+      "component": "judge.mock",
+      "status": "ok",
+      "ms": 0.007
+    }
+  ],
+  "http": []
+}

@@ -1,0 +1,81 @@
+{
+  "run_id": "integ-real-merged",
+  "mode": "merged",
+  "mock": false,
+  "n": 10,
+  "max_concurrent_sessions": 10,
+  "models": {
+    "agent": "deepseek-flash",
+    "visitor": "deepseek-flash",
+    "judge": "chain"
+  },
+  "config": {
+    "schema_version": "0.1.0",
+    "playbook_path": "/Users/zhangheqing/bohack/ds-integ/engine/playbook_v0.md",
+    "prompts_dir": "/Users/zhangheqing/bohack/ds-integ/engine/prompts",
+    "agent_llm": {
+      "provider": "ds_flash",
+      "temperature": 0,
+      "top_p": 1,
+      "max_tokens": 800,
+      "response_format": "json_object",
+      "timeout_s": 20,
+      "max_retries": 1,
+      "max_inflight": 32
+    },
+    "path_classifier": {
+      "provider": "ds_flash",
+      "timeout_s": 6,
+      "temperature": 0
+    },
+    "pipeline": {
+      "merge_strategy_response": true
+    },
+    "round_turn_cap": {
+      "1": 5,
+      "2": 4
+    },
+    "concurrency": {
+      "max_sessions": 50
+    },
+    "veto_rewrite_attempts": 1
+  },
+  "safety_config": {
+    "judge_provider": "ds_flash",
+    "judge_timeout_s": 6.0,
+    "judge_fallbacks": [
+      "jev"
+    ],
+    "judge_fallback_timeout_s": 3.0,
+    "judge_timeout_overrides": {
+      "startlux": 8.0
+    },
+    "probability_sum_tolerance": 1e-06,
+    "tau_flag": 0.2,
+    "tau_active": 0.5,
+    "phq9_item9_threshold": 0,
+    "min_tib_minutes": 330,
+    "lexicon_path": "/Users/zhangheqing/bohack/ds-integ/safety/lexicon.yaml",
+    "scripts_path": "/Users/zhangheqing/bohack/ds-integ/safety/scripts.yaml",
+    "judge_prompt_path": "/Users/zhangheqing/bohack/ds-integ/safety/prompts/judge_zh.md",
+    "testset_path": "/Users/zhangheqing/bohack/ds-integ/safety/testset.jsonl",
+    "eval_output_dir": "/Users/zhangheqing/bohack/ds-integ/var/safety-eval",
+    "veto_rules_path": "/Users/zhangheqing/bohack/ds-integ/domain/veto_rules.yaml",
+    "mock_keywords": {
+      "active": [
+        "自杀",
+        "自伤",
+        "结束生命"
+      ],
+      "passive": [
+        "不再醒来",
+        "不想活",
+        "撑不下去"
+      ]
+    }
+  },
+  "params_sha256": "61a2db9e5bd13df1f26b5cf15720fa3c9c38de93421fe0932ee23569dc85c5b4",
+  "git_commit": "0d87de8356ee6a97c08454934da6768fc46c34d8",
+  "note": "Worktree files may be uncommitted; source digest identifies tested code.",
+  "source_sha256": "18f4466b910bcf36e2211610d626668abf3d0b10a51138a6a3c44bb75b5ae551"
+}

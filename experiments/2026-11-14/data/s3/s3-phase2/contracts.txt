@@ -1,0 +1,11 @@
+.venv/bin/python contracts/validate.py
+OK contracts/examples/evolution.v1-v2.json
+OK contracts/examples/run_report.control.json
+OK contracts/examples/run_report.run1.json
+OK contracts/examples/run_report.run2.json
+OK contracts/examples/session.A-001.json
+OK contracts/examples/session.A-002.json
+OK contracts/examples/session.A-003.json
+OK contracts/examples/visitor.A-001.json
+OK contracts/examples/visitor.A-002.json
+OK contracts/examples/visitor.A-003.json

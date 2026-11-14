@@ -1,0 +1,300 @@
+{
+  "schema_version": "0.1.0",
+  "evolution_id": "g1",
+  "created_at": "2026-11-14T18:13:13+08:00",
+  "from_version": "v0",
+  "to_version": null,
+  "outcome": "kept_previous",
+  "source_run_id": "evo-20261114-jev-r0",
+  "val_split": "C",
+  "baseline_val_metrics": {
+    "isi_response_rate": 0.875,
+    "mean_isi_change": -9.0,
+    "path_acc_r1": 0.875,
+    "path_acc_r2": 0.875,
+    "path_acc_gain": 0.0,
+    "referral_recall": 0.6666666666666666,
+    "referral_precision": 1.0,
+    "referral_recall_by_label": {
+      "R1": 1.0,
+      "R2": 0.0,
+      "R3": 1.0
+    },
+    "crisis_recall": null,
+    "crisis_missed": 0,
+    "contraindication_violations": 0,
+    "screening_coverage": null
+  },
+  "reflector": {
+    "model": "gpt-6-astra",
+    "fell_back": false,
+    "fallback_reason": null
+  },
+  "failures_used": [
+    {
+      "visitor_id": "sample-009",
+      "failure_tags": [
+        "path_wrong_r1",
+        "path_wrong_r2",
+        "referral_missed",
+        "no_isi_response",
+        "screen_missed"
+      ]
+    },
+    {
+      "visitor_id": "sample-002",
+      "failure_tags": [
+        "referral_missed",
+        "no_isi_response",
+        "screen_missed"
+      ]
+    },
+    {
+      "visitor_id": "sample-005",
+      "failure_tags": [
+        "path_wrong_r1",
+        "referral_missed",
+        "no_isi_response"
+      ]
+    },
+    {
+      "visitor_id": "sample-010",
+      "failure_tags": [
+        "path_wrong_r1",
+        "path_wrong_r2",
+        "no_isi_response"
+      ]
+    },
+    {
+      "visitor_id": "sample-006",
+      "failure_tags": [
+        "path_wrong_r1",
+        "path_wrong_r2"
+      ]
+    }
+  ],
+  "human_feedback": [],
+  "candidates": [
+    {
+      "id": "c1",
+      "summary": "首轮优先核实时段、班次和睡前活动，减少P1、P4、P5混淆",
+      "changes": [
+        {
+          "id": "c1-questioning_strategy-1",
+          "op": "add",
+          "section": "questioning_strategy",
+          "before": null,
+          "after": "- 遇到时段含糊、白天起床或异常长的卧床区间，首轮先用24小时制核对上床和起床时点及是否跨日，下一问核实这段睡眠是否跟随夜班或轮班，未核实前不按普通夜间睡眠解释。",
+          "reason": "时段歧义未澄清，班次线索始终缺失，并出现卧床时长误算。",
+          "criticality_rule": "low",
+          "criticality_self": "low",
+          "criticality": "low"
+        },
+        {
+          "id": "c1-questioning_strategy-2",
+          "op": "add",
+          "section": "questioning_strategy",
+          "before": null,
+          "after": "- 首轮听到晚睡或睡不够时，记录作息后优先问昨晚从打算睡觉到真正停止活动、开始尝试睡觉之间在做什么，若涉及视频、游戏或社交，再分次核实原定与实际停止时间以及停止后是否仍清醒，不因作息固定就跳过这段行为。",
+          "reason": "数字娱乐线索迟至后轮才出现，P5权重此前接近零。",
+          "criticality_rule": "low",
+          "criticality_self": "low",
+          "criticality": "low"
+        },
+        {
+          "id": "c1-path_discrimination-3",
+          "op": "add",
+          "section": "path_discrimination",
+          "before": null,
+          "after": "- 鉴别P1与P4时，请来访回忆最近无晚间工作且不用早起的一天，再分次问自然困意和自然醒时间，以反复晚困晚醒且自由作息时睡得较好、或明确轮班经历支持P4，晚间开会或起床随行程变化本身不足以区分P1与P4。",
+          "reason": "晚间工作被过度解释为节律线索，早期正确路径权重随后下降。",
+          "criticality_rule": "medium",
+          "criticality_self": "medium",
+          "criticality": "medium"
+        }
+      ],
+      "hard_rule_violations": [],
+      "val_metrics": {
+        "isi_response_rate": 0.625,
+        "mean_isi_change": -7.625,
+        "path_acc_r1": 0.625,
+        "path_acc_r2": 0.75,
+        "path_acc_gain": 0.125,
+        "referral_recall": 0.3333333333333333,
+        "referral_precision": 0.5,
+        "referral_recall_by_label": {
+          "R1": 0.0,
+          "R2": 0.0,
+          "R3": 1.0
+        },
+        "crisis_recall": null,
+        "crisis_missed": 0,
+        "contraindication_violations": 0,
+        "screening_coverage": null
+      },
+      "veto": {
+        "passed": false,
+        "reasons": [
+          {
+            "code": "referral_recall_regressed",
+            "message": "转介召回率低于上一代。"
+          }
+        ]
+      },
+      "passed": false
+    },
+    {
+      "id": "c2",
+      "summary": "建立呼吸与腿部症状的独立筛查入口，补足R1、R2转介证据",
+      "changes": [
+        {
+          "id": "c2-questioning_strategy-1",
+          "op": "add",
+          "section": "questioning_strategy",
+          "before": null,
+          "after": "- 首轮出现白天明显疲累、睡不解乏、打鼾或憋醒时调用screen_osa，并分次核实白天是乏力还是会不由自主打盹、是否有旁人观察到呼吸停顿，缺少旁人观察记为未知，不以screen_mood替代呼吸筛查。",
+          "reason": "疲累线索出现后仍只调用情绪筛查，呼吸筛查与转介均遗漏。",
+          "criticality_rule": "low",
+          "criticality_self": "medium",
+          "criticality": "medium"
+        },
+        {
+          "id": "c2-questioning_strategy-2",
+          "op": "add",
+          "section": "questioning_strategy",
+          "before": null,
+          "after": "- 首轮形成转介意见前，单独问安静坐着或躺着时腿部是否难受或忍不住想动，若有线索则分次追问是否静止时加重、傍晚或夜间更明显、走动后缓解，不因已有明确的睡眠行为线索就略过这一话题。",
+          "reason": "腿部相关表现未被询问，已有行为路径掩盖了独立转介线索。",
+          "criticality_rule": "low",
+          "criticality_self": "medium",
+          "criticality": "medium"
+        },
+        {
+          "id": "c2-referral_rules-3",
+          "op": "add",
+          "section": "referral_rules",
+          "before": null,
+          "after": "- 转介证据独立于P1–P5核对，有旁人观察到呼吸停顿、反复憋醒或screen_osa提示需评估时考虑R1，有腿部想动且静息加重、夜间明显、活动缓解时考虑R2，不以情绪量表结果或已找到睡眠行为原因排除这些线索，仍遵守单一转介及既定就医措辞。",
+          "reason": "R1、R2均漏报，需要让躯体证据独立进入转介判断。",
+          "criticality_rule": "high",
+          "criticality_self": "high",
+          "criticality": "high"
+        }
+      ],
+      "hard_rule_violations": [],
+      "val_metrics": {
+        "isi_response_rate": 0.75,
+        "mean_isi_change": -8.5,
+        "path_acc_r1": 1.0,
+        "path_acc_r2": 1.0,
+        "path_acc_gain": 0.0,
+        "referral_recall": 0.3333333333333333,
+        "referral_precision": 1.0,
+        "referral_recall_by_label": {
+          "R1": 0.0,
+          "R2": 0.0,
+          "R3": 1.0
+        },
+        "crisis_recall": null,
+        "crisis_missed": 0,
+        "contraindication_violations": 0,
+        "screening_coverage": null
+      },
+      "veto": {
+        "passed": false,
+        "reasons": [
+          {
+            "code": "referral_recall_regressed",
+            "message": "转介召回率低于上一代。"
+          }
+        ]
+      },
+      "passed": false
+    },
+    {
+      "id": "c3",
+      "summary": "用征得同意的具体核实替代重复安慰，并协商一个可执行的起步建议",
+      "changes": [
+        {
+          "id": "c3-communication_style-1",
+          "op": "add",
+          "section": "communication_style",
+          "before": null,
+          "after": "- 来访重复作息、简短否认或说“没什么”时，简短回应感受后说明补问一项可避免建议不合用并征求同意，允许答“不清楚”或暂不谈，不推测其动机或宣称信息已够，仅在愿意继续时进入具体问题。",
+          "reason": "重复回答后常转为连续安慰，关系虽维持但关键线索不再增加。",
+          "criticality_rule": "low",
+          "criticality_self": "low",
+          "criticality": "low"
+        },
+        {
+          "id": "c3-questioning_strategy-2",
+          "op": "add",
+          "section": "questioning_strategy",
+          "before": null,
+          "after": "- 当回答含糊、重复作息或与先前矛盾时，保留已明确的事实并把尚未回答的内容记为未知，获同意后只选一个缺失线索，用最近一晚的场景和含“其他／不清楚”的回答选项核实，第2轮优先补此项，不把“都差不多”扩写为路径证据。",
+          "reason": "含糊回答曾被改述为持续晚困，既制造误导证据又错过补问机会。",
+          "criticality_rule": "low",
+          "criticality_self": "medium",
+          "criticality": "medium"
+        },
+        {
+          "id": "c3-plan_rules-3",
+          "op": "add",
+          "section": "plan_rules",
+          "before": null,
+          "after": "- 来访表示建议不适用或尚未承诺尝试时，先协商一个基于已明确线索、愿意尝试且不压缩卧床的现有组件，说明理由并约定一个可观察的行为变化；具体时段须依据已核实作息和生活约束，第2轮先问是否尝试及具体阻碍，再决定保留、替换或增加组件。",
+          "reason": "同盟较高但依从一般，未经协商的定时与多组件建议难贴合实际。",
+          "criticality_rule": "high",
+          "criticality_self": "high",
+          "criticality": "high"
+        }
+      ],
+      "hard_rule_violations": [],
+      "val_metrics": {
+        "isi_response_rate": 0.5,
+        "mean_isi_change": -6.75,
+        "path_acc_r1": 0.875,
+        "path_acc_r2": 0.875,
+        "path_acc_gain": 0.0,
+        "referral_recall": 0.3333333333333333,
+        "referral_precision": 1.0,
+        "referral_recall_by_label": {
+          "R1": 0.0,
+          "R2": 0.0,
+          "R3": 1.0
+        },
+        "crisis_recall": null,
+        "crisis_missed": 0,
+        "contraindication_violations": 0,
+        "screening_coverage": null
+      },
+      "veto": {
+        "passed": false,
+        "reasons": [
+          {
+            "code": "referral_recall_regressed",
+            "message": "转介召回率低于上一代。"
+          }
+        ]
+      },
+      "passed": false
+    }
+  ],
+  "human_review": [
+    {
+      "change_id": "c2-referral_rules-3",
+      "decision": "timeout",
+      "scores": null,
+      "comment": null
+    },
+    {
+      "change_id": "c3-plan_rules-3",
+      "decision": "timeout",
+      "scores": null,
+      "comment": null
+    }
+  ],
+  "chosen": null,
+  "commit": null,
+  "diff": null
+}

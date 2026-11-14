@@ -1,0 +1,18 @@
+ 40M	experiments/2026-11-14
+1.5M	experiments/2026-11-14/MANIFEST.json
+ 28K	experiments/2026-11-14/README.md
+148K	experiments/2026-11-14/RUN_INDEX.json
+ 16K	experiments/2026-11-14/RUN_INDEX.md
+ 37M	experiments/2026-11-14/data
+344K	experiments/2026-11-14/reports
+300K	experiments/2026-11-14/scripts
+ 24K	experiments/2026-11-14/validation
+224K	experiments/2026-11-14/data/accept-ten
+1.6M	experiments/2026-11-14/data/astra-light
+ 12M	experiments/2026-11-14/data/evo-trial
+8.7M	experiments/2026-11-14/data/evo40
+ 13M	experiments/2026-11-14/data/gate-fix
+392K	experiments/2026-11-14/data/initial-integration
+848K	experiments/2026-11-14/data/rehearsal
+400K	experiments/2026-11-14/data/s3
+ 80K	experiments/2026-11-14/data/safety-eval

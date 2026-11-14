@@ -1,0 +1,25 @@
+{
+  "evolution_id": "rehearsal-small-2-learn",
+  "deadline_epoch": 1794652539.3289988,
+  "timeout_policy": "pass",
+  "changes": [
+    {
+      "candidate_id": "c3",
+      "change_id": "c3-plan_rules-2",
+      "section": "plan_rules",
+      "op": "add",
+      "before": null,
+      "after": "轮班作息建议按已核实的各班次可睡窗口分别协商，在可稳定的班段内设起床锚点并保留足够睡眠机会，不要求所有班次和休息日同一时刻起床；排班未清不硬定新钟点，也不凭白天睡就安排光照时点或作息前移。",
+      "reason": "统一起床时刻无法适配轮班转换，可能增加执行负担并削弱建议效果。"
+    },
+    {
+      "candidate_id": "c3",
+      "change_id": "c3-plan_rules-3",
+      "section": "plan_rules",
+      "op": "add",
+      "before": null,
+      "after": "每轮除必要转介外，与来访只选1–2个有明确线索支持且愿意尝试的组件，说明对应线索与具体动作；第2轮先问最近一晚如何执行、主要卡在哪里，再决定保留或替换组件，不把含糊认可当作已执行，也不因未改善就叠加更多组件。",
+      "reason": "低依从来访仍收到多组件套用方案，需先核实执行过程而非继续加码。"
+    }
+  ]
+}

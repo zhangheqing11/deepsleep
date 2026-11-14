@@ -1,0 +1,291 @@
+{
+  "schema_version": "0.1.0",
+  "evolution_id": "g1",
+  "created_at": "2026-11-14T17:55:57+08:00",
+  "from_version": "v0",
+  "to_version": null,
+  "outcome": "kept_previous",
+  "source_run_id": "evo-20261114-jev-r0",
+  "val_split": "C",
+  "baseline_val_metrics": {
+    "isi_response_rate": 0.75,
+    "mean_isi_change": -8.5,
+    "path_acc_r1": 1.0,
+    "path_acc_r2": 1.0,
+    "path_acc_gain": 0.0,
+    "referral_recall": 0.3333333333333333,
+    "referral_precision": 1.0,
+    "referral_recall_by_label": {
+      "R1": 0.0,
+      "R2": 0.0,
+      "R3": 1.0
+    },
+    "crisis_recall": null,
+    "crisis_missed": 0,
+    "contraindication_violations": 0,
+    "screening_coverage": null
+  },
+  "reflector": {
+    "model": "deepseek-flash",
+    "fell_back": true,
+    "fallback_reason": "[REDACTED: credential/header pattern]"
+  },
+  "failures_used": [
+    {
+      "visitor_id": "sample-009",
+      "failure_tags": [
+        "path_wrong_r1",
+        "path_wrong_r2",
+        "referral_missed",
+        "no_isi_response",
+        "screen_missed"
+      ]
+    },
+    {
+      "visitor_id": "sample-002",
+      "failure_tags": [
+        "referral_missed",
+        "no_isi_response",
+        "screen_missed"
+      ]
+    },
+    {
+      "visitor_id": "sample-005",
+      "failure_tags": [
+        "path_wrong_r1",
+        "referral_missed",
+        "no_isi_response"
+      ]
+    },
+    {
+      "visitor_id": "sample-010",
+      "failure_tags": [
+        "path_wrong_r1",
+        "path_wrong_r2",
+        "no_isi_response"
+      ]
+    },
+    {
+      "visitor_id": "sample-006",
+      "failure_tags": [
+        "path_wrong_r1",
+        "path_wrong_r2"
+      ]
+    }
+  ],
+  "human_feedback": [],
+  "candidates": [
+    {
+      "id": "c1",
+      "summary": "把'睡得晚'拆开看：第 1 轮直接问睡前刷手机，按自由日与外部约束区分 P4 与 P1，并把上床时间、入睡耗时、醒来时间分开记录。",
+      "changes": [
+        {
+          "id": "c1-path_discrimination-1",
+          "op": "add",
+          "section": "path_discrimination",
+          "before": null,
+          "after": "第 1 轮就直接问：'上床以后你会不会刷手机、看视频或打游戏？一般刷多久？'——'睡得晚、时间不够'最常见的成因是睡前数字娱乐（P5），不要等到第二、三轮才问。",
+          "reason": "两例真实 P5 的来访第 1 轮被判成 P2/P1，因为一直围绕作息时间打转，直到第 6 个回合才问出床上刷视频；把这条问句前移能让正确路径权重更早上升。",
+          "criticality_rule": "medium",
+          "criticality_self": "medium",
+          "criticality": "medium"
+        },
+        {
+          "id": "c1-path_discrimination-2",
+          "op": "add",
+          "section": "path_discrimination",
+          "before": null,
+          "after": "判 P4 要同时满足：没有闹钟和工作安排的自由日，自然入睡与起床都比平日推后 2 小时以上，且早躺也睡不着；若晚睡是被夜间会议、加班、带娃等外部安排拖着、起床时间随行程大幅波动，优先判 P1 作息不规律。",
+          "reason": "一例真实 P4 被判 P1、一例真实 P1 被判 P4，说明 agent 把'几点上床'当成唯一线索；补上自由日对比与外部约束这两条判别条件可减少互换错误。",
+          "criticality_rule": "medium",
+          "criticality_self": "medium",
+          "criticality": "medium"
+        },
+        {
+          "id": "c1-questioning_strategy-3",
+          "op": "add",
+          "section": "questioning_strategy",
+          "before": null,
+          "after": "问作息时把三件事分开记：几点上床、大约多久真正睡着、早上几点醒；若算出的躺床时间超过 10 小时（例如晚上八点半上床、下午两点半起），要追问中间是否补觉、白天卧床或轮班，再判断是作息乱还是昼夜节律问题。",
+          "reason": "有来访报告极端作息时 agent 只是复述并继续原问题，没发现关键线索，正确路径权重一直在 0.4 徘徊、关键线索始终未问出。",
+          "criticality_rule": "low",
+          "criticality_self": "medium",
+          "criticality": "medium"
+        }
+      ],
+      "hard_rule_violations": [],
+      "val_metrics": {
+        "isi_response_rate": 0.625,
+        "mean_isi_change": -8.375,
+        "path_acc_r1": 0.75,
+        "path_acc_r2": 0.75,
+        "path_acc_gain": 0.0,
+        "referral_recall": 0.3333333333333333,
+        "referral_precision": 1.0,
+        "referral_recall_by_label": {
+          "R1": 0.0,
+          "R2": 0.0,
+          "R3": 1.0
+        },
+        "crisis_recall": null,
+        "crisis_missed": 0,
+        "contraindication_violations": 0,
+        "screening_coverage": null
+      },
+      "veto": {
+        "passed": true,
+        "reasons": []
+      },
+      "passed": false
+    },
+    {
+      "id": "c2",
+      "summary": "把 OSA 与不宁腿的问询变成第 1 轮固定动作，两个筛查工具都用上，并在判 R0 前补齐三类症状核对。",
+      "changes": [
+        {
+          "id": "c2-questioning_strategy-1",
+          "op": "add",
+          "section": "questioning_strategy",
+          "before": null,
+          "after": "第 1 轮固定问三句：'有人说过你打鼾、睡觉时呼吸停顿或被憋醒吗？''白天会不会困到必须补觉、开会打瞌睡？''晚上躺下时腿有没有说不清的不舒服、想动，走一走会好些？'",
+          "reason": "两例真实 R1、一例真实 R2 都被判 R0，会谈里从未问过打鼾、憋醒或腿部不适；把这些问句变成第 1 轮固定动作，转介判断才有依据。",
+          "criticality_rule": "low",
+          "criticality_self": "high",
+          "criticality": "high"
+        },
+        {
+          "id": "c2-questioning_strategy-2",
+          "op": "add",
+          "section": "questioning_strategy",
+          "before": null,
+          "after": "两个筛查工具都要用：除了 screen_mood，只要出现打鼾、被观察到呼吸停顿、憋醒或白天嗜睡任一项，就调用 screen_osa；只测过情绪不能算筛查完成。",
+          "reason": "筛查覆盖只有 0.33，五例失败案例里 agent 都只调了 screen_mood，从没调过 screen_osa，呼吸相关问题没有任何结构化信息。",
+          "criticality_rule": "low",
+          "criticality_self": "medium",
+          "criticality": "medium"
+        },
+        {
+          "id": "c2-referral_rules-3",
+          "op": "add",
+          "section": "referral_rules",
+          "before": null,
+          "after": "给出 R0 之前先确认三类症状都问过：打鼾/呼吸停顿/憋醒、夜间腿部不适想动、情绪低落或持续担心；只要有一类没问到或回答含糊，就先补问再判，情绪量表正常也不排除 R1、R2。",
+          "reason": "转介精确率 1.0 但召回只有 0.5，R1/R2 全部漏判，说明问题出在'没问就判 R0'，需要在 R0 出口加一道症状核对。",
+          "criticality_rule": "high",
+          "criticality_self": "high",
+          "criticality": "high"
+        }
+      ],
+      "hard_rule_violations": [],
+      "val_metrics": {
+        "isi_response_rate": 0.75,
+        "mean_isi_change": -8.5,
+        "path_acc_r1": 0.875,
+        "path_acc_r2": 1.0,
+        "path_acc_gain": 0.125,
+        "referral_recall": 0.6666666666666666,
+        "referral_precision": 0.5,
+        "referral_recall_by_label": {
+          "R1": 1.0,
+          "R2": 0.0,
+          "R3": 1.0
+        },
+        "crisis_recall": null,
+        "crisis_missed": 0,
+        "contraindication_violations": 0,
+        "screening_coverage": null
+      },
+      "veto": {
+        "passed": true,
+        "reasons": []
+      },
+      "passed": false
+    },
+    {
+      "id": "c3",
+      "summary": "来访用短句回避时换问法而不是停问，也不整轮放弃方案；方案收尾必须留下可复测的自评，卧床窗口按实际睡着时长来定。",
+      "changes": [
+        {
+          "id": "c3-questioning_strategy-1",
+          "op": "add",
+          "section": "questioning_strategy",
+          "before": null,
+          "after": "来访连续两次给出同一句或极短回答（'没啥特别的''就那样'）时，不要重复原问题也不要停止提问，换成二选一或具体场景缩小范围，例如'是躺下后脑子停不下来，还是身体不困？''是上床前就在刷，还是躺下才刷？'",
+          "reason": "多例抗拒来访连续复述同一句作息，agent 要么原样再问、要么整轮退成闲聊，关键线索始终没问出；换问法比追问和退让都更能拿到信息。",
+          "criticality_rule": "low",
+          "criticality_self": "medium",
+          "criticality": "medium"
+        },
+        {
+          "id": "c3-communication_style-2",
+          "op": "add",
+          "section": "communication_style",
+          "before": null,
+          "after": "来访回避时先正常化（'这些细节问起来确实有点烦'），再说'那我们这轮只聊一件'，然后仍然给出一个最小方案：固定起床时间加一个睡眠卫生项，并说明下次只跟进这一件。",
+          "reason": "有来访同盟分不低却依从 0、整轮没有方案；也有来访第 2 轮完全停止评估，导致后面没有复测数据。回避不等于放弃干预。",
+          "criticality_rule": "low",
+          "criticality_self": "medium",
+          "criticality": "medium"
+        },
+        {
+          "id": "c3-plan_rules-3",
+          "op": "add",
+          "section": "plan_rules",
+          "before": null,
+          "after": "方案收尾固定做两件事：和来访约定一个可复查的自评（ISI 或 0–10 分打分），当场记基线、第 4 周复测，不愿填量表就用一句打分；卧床窗口按实际睡着时长来定，不直接照搬报告的躺床时间。",
+          "reason": "四例失败案例都没有第 4 周 ISI 数据；另有来访报告 18 小时躺床，方案直接照搬成 1080 分钟卧床窗口。测量与窗口口径需要写死。",
+          "criticality_rule": "high",
+          "criticality_self": "high",
+          "criticality": "high"
+        }
+      ],
+      "hard_rule_violations": [],
+      "val_metrics": {
+        "isi_response_rate": 0.75,
+        "mean_isi_change": -9.25,
+        "path_acc_r1": 1.0,
+        "path_acc_r2": 1.0,
+        "path_acc_gain": 0.0,
+        "referral_recall": 0.6666666666666666,
+        "referral_precision": 1.0,
+        "referral_recall_by_label": {
+          "R1": 0.0,
+          "R2": 1.0,
+          "R3": 1.0
+        },
+        "crisis_recall": null,
+        "crisis_missed": 0,
+        "contraindication_violations": 0,
+        "screening_coverage": null
+      },
+      "veto": {
+        "passed": true,
+        "reasons": []
+      },
+      "passed": false
+    }
+  ],
+  "human_review": [
+    {
+      "change_id": "c2-questioning_strategy-1",
+      "decision": "timeout",
+      "scores": null,
+      "comment": null
+    },
+    {
+      "change_id": "c2-referral_rules-3",
+      "decision": "timeout",
+      "scores": null,
+      "comment": null
+    },
+    {
+      "change_id": "c3-plan_rules-3",
+      "decision": "timeout",
+      "scores": null,
+      "comment": null
+    }
+  ],
+  "chosen": null,
+  "commit": null,
+  "diff": null
+}

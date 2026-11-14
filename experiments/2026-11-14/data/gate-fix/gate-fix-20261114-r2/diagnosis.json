@@ -1,0 +1,170 @@
+{
+  "source": "/Users/zhangheqing/bohack/ds-accept/var/evo40/evo40-20261114",
+  "host_recorded": false,
+  "timestamp_precision_s": 1,
+  "inflight_method": "floor-start-time point approximation, not measured concurrency",
+  "errors": [
+    {
+      "component": "classifier.jev",
+      "error": "ConnectError",
+      "count": 89
+    },
+    {
+      "component": "turn",
+      "error": "ConnectError",
+      "count": 234
+    },
+    {
+      "component": "visitor",
+      "error": "ConnectError",
+      "count": 93
+    },
+    {
+      "component": "judge.ds_flash",
+      "error": "ConnectError",
+      "count": 480
+    },
+    {
+      "component": "memory",
+      "error": "ConnectError",
+      "count": 5
+    },
+    {
+      "component": "classifier.ds_flash",
+      "error": "ConnectError",
+      "count": 81
+    },
+    {
+      "component": "visitor",
+      "error": "ReadTimeout",
+      "count": 2
+    },
+    {
+      "component": "memory_plan",
+      "error": "ConnectError",
+      "count": 6
+    }
+  ],
+  "stages": [
+    {
+      "stage": "r0a",
+      "attempts": 1655,
+      "errors": 100,
+      "approx_inflight_median": 55,
+      "approx_inflight_max": 100,
+      "errors_by_component": {
+        "classifier.jev": 1,
+        "turn": 2,
+        "visitor": 13,
+        "judge.ds_flash": 82,
+        "memory": 2
+      }
+    },
+    {
+      "stage": "r0b",
+      "attempts": 1642,
+      "errors": 134,
+      "approx_inflight_median": 60,
+      "approx_inflight_max": 80,
+      "errors_by_component": {
+        "judge.ds_flash": 78,
+        "classifier.jev": 22,
+        "turn": 9,
+        "visitor": 5,
+        "classifier.ds_flash": 18,
+        "memory": 2
+      }
+    },
+    {
+      "stage": "reflector",
+      "attempts": 1,
+      "errors": 0,
+      "approx_inflight_median": 2,
+      "approx_inflight_max": 2,
+      "errors_by_component": {}
+    },
+    {
+      "stage": "C-v0+c1",
+      "attempts": 1402,
+      "errors": 106,
+      "approx_inflight_median": 43,
+      "approx_inflight_max": 74,
+      "errors_by_component": {
+        "turn": 20,
+        "visitor": 11,
+        "judge.ds_flash": 68,
+        "classifier.ds_flash": 5,
+        "classifier.jev": 2
+      }
+    },
+    {
+      "stage": "C-v0+c2",
+      "attempts": 1526,
+      "errors": 401,
+      "approx_inflight_median": 44,
+      "approx_inflight_max": 107,
+      "errors_by_component": {
+        "judge.ds_flash": 126,
+        "classifier.jev": 31,
+        "turn": 168,
+        "classifier.ds_flash": 30,
+        "visitor": 46
+      }
+    },
+    {
+      "stage": "C-v0+c3",
+      "attempts": 1416,
+      "errors": 183,
+      "approx_inflight_median": 41,
+      "approx_inflight_max": 68,
+      "errors_by_component": {
+        "judge.ds_flash": 84,
+        "classifier.jev": 33,
+        "turn": 25,
+        "classifier.ds_flash": 28,
+        "visitor": 13
+      }
+    },
+    {
+      "stage": "C-v0",
+      "attempts": 1312,
+      "errors": 66,
+      "approx_inflight_median": 46,
+      "approx_inflight_max": 61,
+      "errors_by_component": {
+        "turn": 10,
+        "visitor": 7,
+        "judge.ds_flash": 42,
+        "memory_plan": 6,
+        "memory": 1
+      }
+    }
+  ],
+  "bins": [
+    {
+      "range": "0-16",
+      "attempts": 203,
+      "errors": 7
+    },
+    {
+      "range": "17-32",
+      "attempts": 565,
+      "errors": 70
+    },
+    {
+      "range": "33-48",
+      "attempts": 4267,
+      "errors": 418
+    },
+    {
+      "range": "49-64",
+      "attempts": 2859,
+      "errors": 307
+    },
+    {
+      "range": "65-1000",
+      "attempts": 1060,
+      "errors": 188
+    }
+  ]
+}

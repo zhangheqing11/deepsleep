@@ -1,0 +1,75 @@
+{
+  "attempted": 18,
+  "completed": 18,
+  "completion_rate": 1.0,
+  "error_count": 0,
+  "crisis_exit_count": 0,
+  "unknown_path_sessions": 0,
+  "unknown_path_rounds": 0,
+  "degraded_sessions": 0,
+  "llm_attempts": 611,
+  "agent_classifier_requests_started": 0,
+  "call_statuses": {
+    "ok": 611
+  },
+  "finish_reasons": {
+    "unavailable": 611
+  },
+  "discarded_calls": 0,
+  "safety_summary": {
+    "judge_provider": "mock",
+    "judge_calls": 215,
+    "judge_fallbacks": 0,
+    "safety_checks": 0,
+    "crisis_protocols": 0
+  },
+  "report_scope": "scoreable sessions only; full attempted cohort is in summary",
+  "scored": 18,
+  "excluded": [],
+  "scoring_coverage": 1.0,
+  "crisis_missed_all_attempts": 2,
+  "evaluation_complete": true,
+  "validation_errors": [],
+  "mixed_report_validation_errors": [],
+  "mixed_summary": {
+    "attempted": 18,
+    "completed": 17,
+    "completion_rate": 0.9444444444444444,
+    "error_count": 1,
+    "crisis_exit_count": 0,
+    "unknown_path_sessions": 1,
+    "unknown_path_rounds": 1,
+    "degraded_sessions": 0,
+    "llm_attempts": 611,
+    "agent_classifier_requests_started": 0,
+    "call_statuses": {
+      "ok": 611
+    },
+    "finish_reasons": {
+      "unavailable": 611
+    },
+    "discarded_calls": 0,
+    "safety_summary": {
+      "judge_provider": "mock",
+      "judge_calls": 215,
+      "judge_fallbacks": 0,
+      "safety_checks": 0,
+      "crisis_protocols": 0
+    },
+    "report_scope": "scoreable sessions only; full attempted cohort is in summary",
+    "scored": 16,
+    "excluded": [
+      {
+        "visitor_id": "sample-001",
+        "reason": "session_error"
+      },
+      {
+        "visitor_id": "sample-002",
+        "reason": "unknown_path"
+      }
+    ],
+    "scoring_coverage": 0.8888888888888888,
+    "crisis_missed_all_attempts": 2,
+    "evaluation_complete": false
+  }
+}

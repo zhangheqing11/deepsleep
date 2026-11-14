@@ -1,0 +1,25 @@
+{
+  "evolution_id": "g1",
+  "deadline_epoch": 1794651539.4137201,
+  "timeout_policy": "pass",
+  "changes": [
+    {
+      "candidate_id": "c2",
+      "change_id": "c2-referral_rules-3",
+      "section": "referral_rules",
+      "op": "add",
+      "before": null,
+      "after": "- 转介证据独立于P1–P5核对，有旁人观察到呼吸停顿、反复憋醒或screen_osa提示需评估时考虑R1，有腿部想动且静息加重、夜间明显、活动缓解时考虑R2，不以情绪量表结果或已找到睡眠行为原因排除这些线索，仍遵守单一转介及既定就医措辞。",
+      "reason": "R1、R2均漏报，需要让躯体证据独立进入转介判断。"
+    },
+    {
+      "candidate_id": "c3",
+      "change_id": "c3-plan_rules-3",
+      "section": "plan_rules",
+      "op": "add",
+      "before": null,
+      "after": "- 来访表示建议不适用或尚未承诺尝试时，先协商一个基于已明确线索、愿意尝试且不压缩卧床的现有组件，说明理由并约定一个可观察的行为变化；具体时段须依据已核实作息和生活约束，第2轮先问是否尝试及具体阻碍，再决定保留、替换或增加组件。",
+      "reason": "同盟较高但依从一般，未经协商的定时与多组件建议难贴合实际。"
+    }
+  ]
+}

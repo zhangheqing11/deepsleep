@@ -1,0 +1,7 @@
+{
+  "errors": [
+    "c2: high 改动 c2-referral_rules-1 被 timeout，passed 必须为 false",
+    "c2: high 改动 c2-referral_rules-2 被 timeout，passed 必须为 false",
+    "c2: high 改动 c2-referral_rules-3 被 timeout，passed 必须为 false"
+  ]
+}

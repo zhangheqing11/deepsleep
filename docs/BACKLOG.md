@@ -177,3 +177,4 @@
 | 2026-11-14 | 前后端分工更新（崔秀净后端、王译旋前端并行） | [PR #3](https://github.com/zhangheqing11/deepsleep/pull/3) |
 | 2026-11-14 | 临床内容定稿（线索表、处方否决、转介判据、审核结论） | [PR #7](https://github.com/zhangheqing11/deepsleep/pull/7) |
 | 2026-11-14 | 并行开发计划（S1–S4） | [PR #8](https://github.com/zhangheqing11/deepsleep/pull/8) |
+| 2026-11-14 | [当日实测归档](../experiments/2026-11-14/README.md)：报告、70 份运行索引、会谈/trace 压缩包、复现入口与安全扫描；补齐临时 SFT 测试前置后 1227 passed，契约 10/10 | 本地完成，zhq/experiments-1114；未提交、无 PR |

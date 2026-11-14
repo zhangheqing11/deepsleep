@@ -1,0 +1,15 @@
+--- evaluated/engine/run.py
++++ final/engine/run.py
+@@ -102,7 +102,11 @@
+     if args.merged:
+         overrides["pipeline"] = {"merge_strategy_response": True}
+     playbook = load_playbook(args.playbook, args.playbook_version) if args.playbook else None
+-    deps = build_deps(config=overrides, sim=_factory(args.sim) if args.sim else None,
++    sim = _factory(args.sim) if args.sim else None
++    if sim is None and args.visitor_renderer:
++        from .adapters_sim import make_s2_sim
++        sim = make_s2_sim(load_config(overrides), mock=args.mock)
++    deps = build_deps(config=overrides, sim=sim,
+                       screening=_factory(args.screening) if args.screening else None,
+                       outcome=_factory(args.outcome) if args.outcome else None,
+                       playbook=playbook, playbook_version=args.playbook_version)

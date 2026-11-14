@@ -1,0 +1,6 @@
+{
+  "finished_at": "2026-11-14T18:20:11+08:00",
+  "r1_run": false,
+  "recovered_local_validation": true,
+  "note": "C gate completed; corrected local validator invocation, no additional API calls"
+}

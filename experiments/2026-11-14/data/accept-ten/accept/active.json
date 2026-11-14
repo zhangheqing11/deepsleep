@@ -1,0 +1,24 @@
+{
+  "run_id": "accept-ten-20261114-165333",
+  "command": [
+    "/Users/zhangheqing/bohack/ds-safety/.venv/bin/python",
+    "-m",
+    "engine.integ_trial",
+    "--n",
+    "10",
+    "--run-id",
+    "accept-ten-20261114-165333",
+    "--budget",
+    "600",
+    "--budget-file",
+    "var/accept/accept-ten-20261114-165333-budget.log",
+    "--env-file",
+    "/Users/zhangheqing/bohack/ds-safety/.env"
+  ],
+  "start": "2026-11-14T16:53:33.567043+08:00",
+  "budget_file": "var/accept/accept-ten-20261114-165333-budget.log",
+  "threshold_stop": false,
+  "exit_code": 0,
+  "process_wall_s": 78.1933822920546,
+  "end": "2026-11-14T16:54:51.759993+08:00"
+}

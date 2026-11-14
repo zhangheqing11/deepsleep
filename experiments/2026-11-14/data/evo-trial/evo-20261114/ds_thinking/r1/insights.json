@@ -1,0 +1,879 @@
+{
+  "summary": {
+    "n_visitors": 10,
+    "n_with_path_probs": 10,
+    "by_step": [
+      {
+        "round": 1,
+        "step": 1,
+        "n": 10,
+        "mean_p_true": 0.202,
+        "mean_entropy": 2.3213
+      },
+      {
+        "round": 1,
+        "step": 2,
+        "n": 10,
+        "mean_p_true": 0.269,
+        "mean_entropy": 2.2026
+      },
+      {
+        "round": 1,
+        "step": 3,
+        "n": 10,
+        "mean_p_true": 0.43,
+        "mean_entropy": 1.9771
+      },
+      {
+        "round": 1,
+        "step": 4,
+        "n": 9,
+        "mean_p_true": 0.4889,
+        "mean_entropy": 1.8453
+      },
+      {
+        "round": 2,
+        "step": 1,
+        "n": 9,
+        "mean_p_true": 0.5267,
+        "mean_entropy": 1.6994
+      },
+      {
+        "round": 2,
+        "step": 2,
+        "n": 8,
+        "mean_p_true": 0.4575,
+        "mean_entropy": 1.8028
+      },
+      {
+        "round": 2,
+        "step": 3,
+        "n": 4,
+        "mean_p_true": 0.71,
+        "mean_entropy": 1.3591
+      }
+    ],
+    "d1_p_true": [
+      0.067,
+      0.161,
+      0.0589,
+      0.0378,
+      -0.0692,
+      0.2525
+    ],
+    "d2_p_true": [
+      0.094,
+      -0.1021,
+      -0.0211,
+      -0.107,
+      0.3217
+    ],
+    "d1_entropy": [
+      -0.1187,
+      -0.2255,
+      -0.1318,
+      -0.1459,
+      0.1034,
+      -0.4437
+    ],
+    "r1_end_p_true": 0.489,
+    "r2_end_p_true": 0.5244,
+    "classifier_failures": 13,
+    "resistant_step_rate": 0.2167,
+    "key_clue_rate": 0.7,
+    "mean_key_clue_agent_turn": 1.5714,
+    "mean_first_correct_agent_turn": 1.4286
+  },
+  "visitors": {
+    "sample-001": {
+      "visitor_id": "sample-001",
+      "main_path": "P1",
+      "curve": [
+        {
+          "round": 1,
+          "turn": 1,
+          "agent_turn": 0,
+          "p_true": 0.2,
+          "entropy": 2.3219,
+          "correct": true,
+          "attitude": "cooperative"
+        },
+        {
+          "round": 1,
+          "turn": 3,
+          "agent_turn": 1,
+          "p_true": 0.6,
+          "entropy": 1.771,
+          "correct": true,
+          "attitude": "cooperative"
+        },
+        {
+          "round": 1,
+          "turn": 5,
+          "agent_turn": 2,
+          "p_true": 0.45,
+          "entropy": 2.0822,
+          "correct": true,
+          "attitude": "cooperative"
+        },
+        {
+          "round": 1,
+          "turn": 8,
+          "agent_turn": 3,
+          "p_true": 0.6,
+          "entropy": 1.7332,
+          "correct": true,
+          "attitude": "resistant"
+        },
+        {
+          "round": 2,
+          "turn": 0,
+          "agent_turn": 5,
+          "p_true": 0.72,
+          "entropy": 1.3693,
+          "correct": true,
+          "attitude": "cooperative"
+        },
+        {
+          "round": 2,
+          "turn": 2,
+          "agent_turn": 6,
+          "p_true": 0.5,
+          "entropy": 2.0,
+          "correct": true,
+          "attitude": "cooperative"
+        },
+        {
+          "round": 2,
+          "turn": 4,
+          "agent_turn": 7,
+          "p_true": 0.72,
+          "entropy": 1.3529,
+          "correct": true,
+          "attitude": "cooperative"
+        }
+      ],
+      "finals": {
+        "1": {
+          "p_true": 0.72,
+          "entropy": 1.3693,
+          "correct": true
+        }
+      },
+      "classifier_failures": 1,
+      "resistant_steps": 1,
+      "key_clue": {
+        "round": 1,
+        "turn": 3,
+        "agent_turn": 1
+      },
+      "key_clue_known": true,
+      "first_correct": {
+        "round": 1,
+        "turn": 1,
+        "agent_turn": 0
+      }
+    },
+    "sample-002": {
+      "visitor_id": "sample-002",
+      "main_path": "P2",
+      "curve": [
+        {
+          "round": 1,
+          "turn": 1,
+          "agent_turn": 0,
+          "p_true": 0.2,
+          "entropy": 2.3219,
+          "correct": false,
+          "attitude": "cooperative"
+        },
+        {
+          "round": 1,
+          "turn": 3,
+          "agent_turn": 1,
+          "p_true": 0.35,
+          "entropy": 1.9516,
+          "correct": false,
+          "attitude": "cooperative"
+        },
+        {
+          "round": 1,
+          "turn": 5,
+          "agent_turn": 2,
+          "p_true": 0.65,
+          "entropy": 1.4652,
+          "correct": true,
+          "attitude": "cooperative"
+        },
+        {
+          "round": 1,
+          "turn": 8,
+          "agent_turn": 3,
+          "p_true": 0.7,
+          "entropy": 1.4436,
+          "correct": true,
+          "attitude": "cooperative"
+        },
+        {
+          "round": 2,
+          "turn": 0,
+          "agent_turn": 5,
+          "p_true": 0.65,
+          "entropy": 1.5931,
+          "correct": true,
+          "attitude": "cooperative"
+        },
+        {
+          "round": 2,
+          "turn": 2,
+          "agent_turn": 6,
+          "p_true": 0.68,
+          "entropy": 1.4792,
+          "correct": true,
+          "attitude": "cooperative"
+        },
+        {
+          "round": 2,
+          "turn": 4,
+          "agent_turn": 7,
+          "p_true": 0.7,
+          "entropy": 1.4568,
+          "correct": true,
+          "attitude": "resistant"
+        }
+      ],
+      "finals": {
+        "1": {
+          "p_true": 0.65,
+          "entropy": 1.5931,
+          "correct": true
+        }
+      },
+      "classifier_failures": 1,
+      "resistant_steps": 1,
+      "key_clue": {
+        "round": 1,
+        "turn": 3,
+        "agent_turn": 1
+      },
+      "key_clue_known": true,
+      "first_correct": {
+        "round": 1,
+        "turn": 5,
+        "agent_turn": 2
+      }
+    },
+    "sample-003": {
+      "visitor_id": "sample-003",
+      "main_path": "P3",
+      "curve": [
+        {
+          "round": 1,
+          "turn": 1,
+          "agent_turn": 0,
+          "p_true": 0.2,
+          "entropy": 2.3219,
+          "correct": false,
+          "attitude": "cooperative"
+        },
+        {
+          "round": 1,
+          "turn": 3,
+          "agent_turn": 1,
+          "p_true": 0.2,
+          "entropy": 2.3219,
+          "correct": false,
+          "attitude": "cooperative"
+        },
+        {
+          "round": 1,
+          "turn": 8,
+          "agent_turn": 2,
+          "p_true": 0.55,
+          "entropy": 1.8192,
+          "correct": true,
+          "attitude": "resistant"
+        },
+        {
+          "round": 1,
+          "turn": 10,
+          "agent_turn": 3,
+          "p_true": 0.6,
+          "entropy": 1.7455,
+          "correct": true,
+          "attitude": "resistant"
+        },
+        {
+          "round": 2,
+          "turn": 2,
+          "agent_turn": 6,
+          "p_true": 0.65,
+          "entropy": 1.5789,
+          "correct": true,
+          "attitude": "cooperative"
+        },
+        {
+          "round": 2,
+          "turn": 4,
+          "agent_turn": 7,
+          "p_true": 0.65,
+          "entropy": 1.5859,
+          "correct": true,
+          "attitude": "cooperative"
+        }
+      ],
+      "finals": {},
+      "classifier_failures": 3,
+      "resistant_steps": 2,
+      "key_clue": {
+        "round": 1,
+        "turn": 5,
+        "agent_turn": 2
+      },
+      "key_clue_known": true,
+      "first_correct": {
+        "round": 1,
+        "turn": 8,
+        "agent_turn": 2
+      }
+    },
+    "sample-004": {
+      "visitor_id": "sample-004",
+      "main_path": "P4",
+      "curve": [
+        {
+          "round": 1,
+          "turn": 3,
+          "agent_turn": 1,
+          "p_true": 0.22,
+          "entropy": 2.3161,
+          "correct": false,
+          "attitude": "cooperative"
+        },
+        {
+          "round": 1,
+          "turn": 5,
+          "agent_turn": 2,
+          "p_true": 0.2,
+          "entropy": 2.2348,
+          "correct": false,
+          "attitude": "cooperative"
+        },
+        {
+          "round": 1,
+          "turn": 8,
+          "agent_turn": 3,
+          "p_true": 0.18,
+          "entropy": 2.2554,
+          "correct": false,
+          "attitude": "cooperative"
+        },
+        {
+          "round": 2,
+          "turn": 0,
+          "agent_turn": 5,
+          "p_true": 0.18,
+          "entropy": 2.2671,
+          "correct": false,
+          "attitude": "cooperative"
+        },
+        {
+          "round": 2,
+          "turn": 2,
+          "agent_turn": 6,
+          "p_true": 0.2,
+          "entropy": 2.2282,
+          "correct": false,
+          "attitude": "resistant"
+        }
+      ],
+      "finals": {
+        "1": {
+          "p_true": 0.18,
+          "entropy": 2.2671,
+          "correct": false
+        }
+      },
+      "classifier_failures": 3,
+      "resistant_steps": 1,
+      "key_clue": null,
+      "key_clue_known": true,
+      "first_correct": null
+    },
+    "sample-005": {
+      "visitor_id": "sample-005",
+      "main_path": "P5",
+      "curve": [
+        {
+          "round": 1,
+          "turn": 1,
+          "agent_turn": 0,
+          "p_true": 0.2,
+          "entropy": 2.3219,
+          "correct": false,
+          "attitude": "cooperative"
+        },
+        {
+          "round": 1,
+          "turn": 3,
+          "agent_turn": 1,
+          "p_true": 0.2,
+          "entropy": 2.3219,
+          "correct": false,
+          "attitude": "cooperative"
+        },
+        {
+          "round": 1,
+          "turn": 5,
+          "agent_turn": 2,
+          "p_true": 0.2,
+          "entropy": 2.319,
+          "correct": false,
+          "attitude": "cooperative"
+        },
+        {
+          "round": 1,
+          "turn": 8,
+          "agent_turn": 3,
+          "p_true": 0.2,
+          "entropy": 2.3219,
+          "correct": false,
+          "attitude": "cooperative"
+        },
+        {
+          "round": 2,
+          "turn": 0,
+          "agent_turn": 5,
+          "p_true": 0.1,
+          "entropy": 1.7332,
+          "correct": false,
+          "attitude": "cooperative"
+        },
+        {
+          "round": 2,
+          "turn": 2,
+          "agent_turn": 6,
+          "p_true": 0.05,
+          "entropy": 1.7332,
+          "correct": false,
+          "attitude": "resistant"
+        }
+      ],
+      "finals": {
+        "1": {
+          "p_true": 0.1,
+          "entropy": 1.7332,
+          "correct": false
+        },
+        "2": {
+          "p_true": 0.02,
+          "entropy": 1.444,
+          "correct": false
+        }
+      },
+      "classifier_failures": 1,
+      "resistant_steps": 1,
+      "key_clue": null,
+      "key_clue_known": true,
+      "first_correct": null
+    },
+    "sample-006": {
+      "visitor_id": "sample-006",
+      "main_path": "P1",
+      "curve": [
+        {
+          "round": 1,
+          "turn": 1,
+          "agent_turn": 0,
+          "p_true": 0.2,
+          "entropy": 2.3219,
+          "correct": true,
+          "attitude": "cooperative"
+        },
+        {
+          "round": 1,
+          "turn": 3,
+          "agent_turn": 1,
+          "p_true": 0.35,
+          "entropy": 2.232,
+          "correct": true,
+          "attitude": "cooperative"
+        },
+        {
+          "round": 1,
+          "turn": 5,
+          "agent_turn": 2,
+          "p_true": 0.3,
+          "entropy": 2.2775,
+          "correct": true,
+          "attitude": "resistant"
+        },
+        {
+          "round": 1,
+          "turn": 8,
+          "agent_turn": 3,
+          "p_true": 0.3,
+          "entropy": 2.2593,
+          "correct": true,
+          "attitude": "resistant"
+        },
+        {
+          "round": 2,
+          "turn": 0,
+          "agent_turn": 5,
+          "p_true": 0.55,
+          "entropy": 1.8683,
+          "correct": true,
+          "attitude": "cooperative"
+        },
+        {
+          "round": 2,
+          "turn": 4,
+          "agent_turn": 7,
+          "p_true": 0.28,
+          "entropy": 2.2852,
+          "correct": true,
+          "attitude": "resistant"
+        }
+      ],
+      "finals": {
+        "1": {
+          "p_true": 0.55,
+          "entropy": 1.8683,
+          "correct": true
+        }
+      },
+      "classifier_failures": 2,
+      "resistant_steps": 3,
+      "key_clue": {
+        "round": 1,
+        "turn": 3,
+        "agent_turn": 1
+      },
+      "key_clue_known": true,
+      "first_correct": {
+        "round": 1,
+        "turn": 1,
+        "agent_turn": 0
+      }
+    },
+    "sample-007": {
+      "visitor_id": "sample-007",
+      "main_path": "P2",
+      "curve": [
+        {
+          "round": 1,
+          "turn": 1,
+          "agent_turn": 0,
+          "p_true": 0.2,
+          "entropy": 2.3219,
+          "correct": false,
+          "attitude": "cooperative"
+        },
+        {
+          "round": 1,
+          "turn": 3,
+          "agent_turn": 1,
+          "p_true": 0.2,
+          "entropy": 2.3219,
+          "correct": false,
+          "attitude": "cooperative"
+        },
+        {
+          "round": 1,
+          "turn": 5,
+          "agent_turn": 2,
+          "p_true": 0.72,
+          "entropy": 1.4016,
+          "correct": true,
+          "attitude": "cooperative"
+        },
+        {
+          "round": 1,
+          "turn": 8,
+          "agent_turn": 3,
+          "p_true": 0.7,
+          "entropy": 1.4568,
+          "correct": true,
+          "attitude": "cooperative"
+        },
+        {
+          "round": 2,
+          "turn": 0,
+          "agent_turn": 4,
+          "p_true": 0.64,
+          "entropy": 1.6464,
+          "correct": true,
+          "attitude": "cooperative"
+        },
+        {
+          "round": 2,
+          "turn": 2,
+          "agent_turn": 5,
+          "p_true": 0.55,
+          "entropy": 1.8192,
+          "correct": true,
+          "attitude": "cooperative"
+        },
+        {
+          "round": 2,
+          "turn": 4,
+          "agent_turn": 6,
+          "p_true": 0.7,
+          "entropy": 1.3053,
+          "correct": true,
+          "attitude": "cooperative"
+        }
+      ],
+      "finals": {
+        "1": {
+          "p_true": 0.64,
+          "entropy": 1.6464,
+          "correct": true
+        },
+        "2": {
+          "p_true": 0.7,
+          "entropy": 1.4686,
+          "correct": true
+        }
+      },
+      "classifier_failures": 0,
+      "resistant_steps": 0,
+      "key_clue": {
+        "round": 1,
+        "turn": 5,
+        "agent_turn": 2
+      },
+      "key_clue_known": true,
+      "first_correct": {
+        "round": 1,
+        "turn": 5,
+        "agent_turn": 2
+      }
+    },
+    "sample-008": {
+      "visitor_id": "sample-008",
+      "main_path": "P3",
+      "curve": [
+        {
+          "round": 1,
+          "turn": 1,
+          "agent_turn": 0,
+          "p_true": 0.2,
+          "entropy": 2.3219,
+          "correct": false,
+          "attitude": "cooperative"
+        },
+        {
+          "round": 1,
+          "turn": 3,
+          "agent_turn": 1,
+          "p_true": 0.2,
+          "entropy": 2.3219,
+          "correct": false,
+          "attitude": "cooperative"
+        },
+        {
+          "round": 1,
+          "turn": 5,
+          "agent_turn": 2,
+          "p_true": 0.6,
+          "entropy": 1.771,
+          "correct": true,
+          "attitude": "cooperative"
+        },
+        {
+          "round": 1,
+          "turn": 8,
+          "agent_turn": 3,
+          "p_true": 0.55,
+          "entropy": 1.7529,
+          "correct": true,
+          "attitude": "cooperative"
+        },
+        {
+          "round": 2,
+          "turn": 0,
+          "agent_turn": 5,
+          "p_true": 0.55,
+          "entropy": 1.8192,
+          "correct": true,
+          "attitude": "cooperative"
+        }
+      ],
+      "finals": {
+        "1": {
+          "p_true": 0.55,
+          "entropy": 1.8192,
+          "correct": true
+        },
+        "2": {
+          "p_true": 0.65,
+          "entropy": 1.5789,
+          "correct": true
+        }
+      },
+      "classifier_failures": 2,
+      "resistant_steps": 0,
+      "key_clue": {
+        "round": 1,
+        "turn": 5,
+        "agent_turn": 2
+      },
+      "key_clue_known": true,
+      "first_correct": {
+        "round": 1,
+        "turn": 5,
+        "agent_turn": 2
+      }
+    },
+    "sample-009": {
+      "visitor_id": "sample-009",
+      "main_path": "P4",
+      "curve": [
+        {
+          "round": 1,
+          "turn": 1,
+          "agent_turn": 0,
+          "p_true": 0.2,
+          "entropy": 2.3219,
+          "correct": false,
+          "attitude": "cooperative"
+        },
+        {
+          "round": 1,
+          "turn": 3,
+          "agent_turn": 1,
+          "p_true": 0.24,
+          "entropy": 2.2958,
+          "correct": false,
+          "attitude": "cooperative"
+        },
+        {
+          "round": 1,
+          "turn": 5,
+          "agent_turn": 2,
+          "p_true": 0.45,
+          "entropy": 2.0577,
+          "correct": true,
+          "attitude": "cooperative"
+        },
+        {
+          "round": 1,
+          "turn": 8,
+          "agent_turn": 3,
+          "p_true": 0.6,
+          "entropy": 1.5905,
+          "correct": true,
+          "attitude": "cooperative"
+        },
+        {
+          "round": 2,
+          "turn": 0,
+          "agent_turn": 5,
+          "p_true": 0.7,
+          "entropy": 1.419,
+          "correct": true,
+          "attitude": "cooperative"
+        },
+        {
+          "round": 2,
+          "turn": 2,
+          "agent_turn": 6,
+          "p_true": 0.75,
+          "entropy": 1.2918,
+          "correct": true,
+          "attitude": "resistant"
+        },
+        {
+          "round": 2,
+          "turn": 4,
+          "agent_turn": 7,
+          "p_true": 0.72,
+          "entropy": 1.3215,
+          "correct": true,
+          "attitude": "resistant"
+        }
+      ],
+      "finals": {
+        "1": {
+          "p_true": 0.7,
+          "entropy": 1.419,
+          "correct": true
+        },
+        "2": {
+          "p_true": 0.8,
+          "entropy": 0.9603,
+          "correct": true
+        }
+      },
+      "classifier_failures": 0,
+      "resistant_steps": 2,
+      "key_clue": {
+        "round": 1,
+        "turn": 5,
+        "agent_turn": 2
+      },
+      "key_clue_known": true,
+      "first_correct": {
+        "round": 1,
+        "turn": 5,
+        "agent_turn": 2
+      }
+    },
+    "sample-010": {
+      "visitor_id": "sample-010",
+      "main_path": "P5",
+      "curve": [
+        {
+          "round": 1,
+          "turn": 1,
+          "agent_turn": 0,
+          "p_true": 0.2,
+          "entropy": 2.3219,
+          "correct": false,
+          "attitude": "cooperative"
+        },
+        {
+          "round": 1,
+          "turn": 3,
+          "agent_turn": 1,
+          "p_true": 0.15,
+          "entropy": 2.2527,
+          "correct": false,
+          "attitude": "cooperative"
+        },
+        {
+          "round": 1,
+          "turn": 8,
+          "agent_turn": 2,
+          "p_true": 0.2,
+          "entropy": 2.3219,
+          "correct": false,
+          "attitude": "resistant"
+        },
+        {
+          "round": 1,
+          "turn": 10,
+          "agent_turn": 3,
+          "p_true": 0.15,
+          "entropy": 2.3037,
+          "correct": false,
+          "attitude": "resistant"
+        }
+      ],
+      "finals": {
+        "1": {
+          "p_true": 0.2,
+          "entropy": 2.3219,
+          "correct": false
+        }
+      },
+      "classifier_failures": 0,
+      "resistant_steps": 2,
+      "key_clue": null,
+      "key_clue_known": true,
+      "first_correct": null
+    }
+  }
+}

@@ -1,0 +1,295 @@
+{
+  "schema_version": "0.1.0",
+  "evolution_id": "g2",
+  "created_at": "2026-11-14T17:50:29+08:00",
+  "from_version": "v0",
+  "to_version": "v1",
+  "outcome": "committed",
+  "source_run_id": "evo-20261114-ds_nothink-r1",
+  "val_split": "C",
+  "baseline_val_metrics": {
+    "isi_response_rate": 0.625,
+    "mean_isi_change": -7.75,
+    "path_acc_r1": 0.75,
+    "path_acc_r2": 0.875,
+    "path_acc_gain": 0.125,
+    "referral_recall": 0.3333333333333333,
+    "referral_precision": 0.5,
+    "referral_recall_by_label": {
+      "R1": 0.0,
+      "R2": 0.0,
+      "R3": 1.0
+    },
+    "crisis_recall": null,
+    "crisis_missed": 0,
+    "contraindication_violations": 0,
+    "screening_coverage": null
+  },
+  "reflector": {
+    "model": "deepseek-flash",
+    "fell_back": true,
+    "fallback_reason": "[REDACTED: credential/header pattern]"
+  },
+  "failures_used": [
+    {
+      "visitor_id": "sample-005",
+      "failure_tags": [
+        "path_wrong_r1",
+        "path_wrong_r2",
+        "referral_missed",
+        "no_isi_response"
+      ]
+    },
+    {
+      "visitor_id": "sample-002",
+      "failure_tags": [
+        "referral_missed",
+        "no_isi_response",
+        "screen_missed"
+      ]
+    },
+    {
+      "visitor_id": "sample-010",
+      "failure_tags": [
+        "path_wrong_r1",
+        "path_wrong_r2",
+        "no_isi_response"
+      ]
+    },
+    {
+      "visitor_id": "sample-003",
+      "failure_tags": [
+        "referral_missed",
+        "referral_false_alarm",
+        "no_isi_response"
+      ]
+    },
+    {
+      "visitor_id": "sample-009",
+      "failure_tags": [
+        "path_wrong_r1",
+        "path_wrong_r2"
+      ]
+    }
+  ],
+  "human_feedback": [],
+  "candidates": [
+    {
+      "id": "c1",
+      "summary": "提问策略：打破来访复读同一句作息的循环、第 1 轮补齐腿部与打鼾筛查、含糊回答改二选一提问",
+      "changes": [
+        {
+          "id": "c1-questioning_strategy-1",
+          "op": "add",
+          "section": "questioning_strategy",
+          "before": null,
+          "after": "来访第二次给出几乎相同的回答（如重复同一句作息）时，不要重复同一个问题，改问最近一次的具体事实：昨晚几点上床、大约几点真正睡着、夜里醒几次、几点起床。",
+          "reason": "多例来访反复复读同一作息，agent 就重复追问同一个问题，浪费轮次，关键线索始终没问出来。",
+          "criticality_rule": "low",
+          "criticality_self": "medium",
+          "criticality": "medium"
+        },
+        {
+          "id": "c1-questioning_strategy-2",
+          "op": "add",
+          "section": "questioning_strategy",
+          "before": null,
+          "after": "第 1 轮问完作息后，固定再各问一句：夜里或睡前腿部有没有说不清的不适、想动、起来走走就缓解；有没有人说过你打鼾或被憋醒。",
+          "reason": "R2 召回为 0、R1 召回只有 0.5，腿部和呼吸线索常拖到第 2 轮甚至始终没问，导致转介漏判。",
+          "criticality_rule": "low",
+          "criticality_self": "medium",
+          "criticality": "medium"
+        },
+        {
+          "id": "c1-questioning_strategy-3",
+          "op": "add",
+          "section": "questioning_strategy",
+          "before": null,
+          "after": "来访说「没什么特别的」「就那样」时，改成一个二选一或具体场景的问题（是脑子停不下来，还是身体不舒服），不要继续用开放式追问。",
+          "reason": "含糊回答后继续开放式追问会强化防御，改成二选一更容易拿到可判别的信息。",
+          "criticality_rule": "low",
+          "criticality_self": "low",
+          "criticality": "low"
+        }
+      ],
+      "hard_rule_violations": [],
+      "val_metrics": {
+        "isi_response_rate": 0.75,
+        "mean_isi_change": -8.375,
+        "path_acc_r1": 1.0,
+        "path_acc_r2": 1.0,
+        "path_acc_gain": 0.0,
+        "referral_recall": 0.3333333333333333,
+        "referral_precision": 0.5,
+        "referral_recall_by_label": {
+          "R1": 0.0,
+          "R2": 0.0,
+          "R3": 1.0
+        },
+        "crisis_recall": null,
+        "crisis_missed": 0,
+        "contraindication_violations": 0,
+        "screening_coverage": null
+      },
+      "veto": {
+        "passed": true,
+        "reasons": []
+      },
+      "passed": true
+    },
+    {
+      "id": "c2",
+      "summary": "转介规则：给 R1/R2 设定证据门槛，R3 不因模糊的「白天累」被降级",
+      "changes": [
+        {
+          "id": "c2-referral_rules-1",
+          "op": "add",
+          "section": "referral_rules",
+          "before": null,
+          "after": "来访描述「起来走几步就好、一躺回去又来、晚上更明显」这类腿部模式时，按疑似不宁腿给 R2，即使此前说过腿没问题，也再确认一次睡前和夜里的感觉。",
+          "reason": "有来访先否认腿部问题、随后自己描述出典型的不宁腿模式，agent 仍判 R0，R2 召回为 0。",
+          "criticality_rule": "high",
+          "criticality_self": "medium",
+          "criticality": "high"
+        },
+        {
+          "id": "c2-referral_rules-2",
+          "op": "add",
+          "section": "referral_rules",
+          "before": null,
+          "after": "只有来访明确提到有人观察到打鼾、呼吸停顿，或被憋醒，才考虑 R1；只有白天累、睡得久不足以给 R1。",
+          "reason": "有来访因「白天累」被误报 R1，而真正提到憋醒的来访反而判了 R0，说明 R1 缺证据门槛。",
+          "criticality_rule": "high",
+          "criticality_self": "medium",
+          "criticality": "high"
+        },
+        {
+          "id": "c2-referral_rules-3",
+          "op": "add",
+          "section": "referral_rules",
+          "before": null,
+          "after": "已根据情绪量表或低落、兴趣减退给出 R3 后，不要因为「白天累或作息长」改成 R1；两类线索都出现时，保留有量表或明确情绪描述支持的那一个。",
+          "reason": "有来访第 1 轮判 R3 是正确的，第 2 轮却凭模糊的呼吸描述改成 R1，造成误报。",
+          "criticality_rule": "high",
+          "criticality_self": "high",
+          "criticality": "high"
+        }
+      ],
+      "hard_rule_violations": [],
+      "val_metrics": {
+        "isi_response_rate": 0.75,
+        "mean_isi_change": -8.5,
+        "path_acc_r1": 0.75,
+        "path_acc_r2": 0.75,
+        "path_acc_gain": 0.0,
+        "referral_recall": 0.3333333333333333,
+        "referral_precision": 1.0,
+        "referral_recall_by_label": {
+          "R1": 0.0,
+          "R2": 0.0,
+          "R3": 1.0
+        },
+        "crisis_recall": null,
+        "crisis_missed": 0,
+        "contraindication_violations": 0,
+        "screening_coverage": null
+      },
+      "veto": {
+        "passed": true,
+        "reasons": []
+      },
+      "passed": true
+    },
+    {
+      "id": "c3",
+      "summary": "路径鉴别：补 P4/P5 与倒班的关键区分问句，并要求第 2 轮用新线索复核路径",
+      "changes": [
+        {
+          "id": "c3-path_discrimination-1",
+          "op": "add",
+          "section": "path_discrimination",
+          "before": null,
+          "after": "区分 P4 与 P5 时问一句：是明明困了还舍不得放下手机、追剧，还是根本不困、要拖到很晚才有困意；前者归 P5，后者归 P4。",
+          "reason": "两例真实 P5 被判成 P4、P1 或 P2，缺的正是「困了但舍不得睡」这个关键区分。",
+          "criticality_rule": "medium",
+          "criticality_self": "medium",
+          "criticality": "medium"
+        },
+        {
+          "id": "c3-path_discrimination-2",
+          "op": "add",
+          "section": "path_discrimination",
+          "before": null,
+          "after": "来访报出的作息本身不寻常（如晚上八九点就上床、下午才起床）时，先考虑倒班或节律问题 P4，不要直接归为作息不规律 P1。",
+          "reason": "有来访作息是 20:30 上床、14:30 起床，agent 判 P1 并给出 18 小时卧床方案，真实为 P4。",
+          "criticality_rule": "medium",
+          "criticality_self": "medium",
+          "criticality": "medium"
+        },
+        {
+          "id": "c3-path_discrimination-3",
+          "op": "add",
+          "section": "path_discrimination",
+          "before": null,
+          "after": "第 2 轮必须用本轮新问到的线索重新判一次路径；若第 1 轮没问到关键区分线索，第 2 轮先补问再定，不沿用第 1 轮结论。",
+          "reason": "path_acc 两轮都是 0.7、增益为 0，说明第 2 轮并没有真正复核路径，只是延续第 1 轮。",
+          "criticality_rule": "medium",
+          "criticality_self": "medium",
+          "criticality": "medium"
+        }
+      ],
+      "hard_rule_violations": [],
+      "val_metrics": {
+        "isi_response_rate": 0.75,
+        "mean_isi_change": -8.5,
+        "path_acc_r1": 0.75,
+        "path_acc_r2": 0.875,
+        "path_acc_gain": 0.125,
+        "referral_recall": 0.3333333333333333,
+        "referral_precision": 1.0,
+        "referral_recall_by_label": {
+          "R1": 0.0,
+          "R2": 0.0,
+          "R3": 1.0
+        },
+        "crisis_recall": null,
+        "crisis_missed": 0,
+        "contraindication_violations": 0,
+        "screening_coverage": null
+      },
+      "veto": {
+        "passed": true,
+        "reasons": []
+      },
+      "passed": true
+    }
+  ],
+  "human_review": [
+    {
+      "change_id": "c2-referral_rules-1",
+      "decision": "timeout",
+      "scores": null,
+      "comment": null
+    },
+    {
+      "change_id": "c2-referral_rules-2",
+      "decision": "timeout",
+      "scores": null,
+      "comment": null
+    },
+    {
+      "change_id": "c2-referral_rules-3",
+      "decision": "timeout",
+      "scores": null,
+      "comment": null
+    }
+  ],
+  "chosen": "c3",
+  "commit": {
+    "repo": "var/playbook-repo",
+    "sha": "13ae7bab56501d2f9644ea268c81953b2e413434dcdee0e79bb70f2c8b181d58",
+    "author": "deepsleep-agent",
+    "message": "v1: 路径鉴别：补 P4/P5 与倒班的关键区分问句，并要求第 2 轮用新线索复核路径 [file snapshot; SHA256, no git commit]"
+  },
+  "diff": "--- a/playbook.md\n+++ b/playbook.md\n@@ -28,6 +28,9 @@\n - P5 睡前数字娱乐依赖：上床后长时间刷手机、追剧、打游戏，舍不得睡。\n - P2 与 P3 主要看躺下后脑子里有没有内容，换地方是否好转只作辅助。\n - 第 1 轮信息不足时，可以先按最可能的路径试行，第 2 轮再修正。\n+- 区分 P4 与 P5 时问一句：是明明困了还舍不得放下手机、追剧，还是根本不困、要拖到很晚才有困意；前者归 P5，后者归 P4。\n+- 来访报出的作息本身不寻常（如晚上八九点就上床、下午才起床）时，先考虑倒班或节律问题 P4，不要直接归为作息不规律 P1。\n+- 第 2 轮必须用本轮新问到的线索重新判一次路径；若第 1 轮没问到关键区分线索，第 2 轮先补问再定，不沿用第 1 轮结论。\n \n ## plan_rules\n \n"
+}

@@ -1,0 +1,12 @@
+--- evaluated/engine/demo.py
++++ final/engine/demo.py
+@@ -157,6 +157,9 @@
+ 
+ def make_deps(options):
+     mock = options["mock"]
++    # Template removes visitor calls, not the real agent's credential requirement.
++    if not mock and not all(os.getenv(k, "").strip() for k in ("DS_BASE_URL", "DS_API_KEY", "DS_MODEL")):
++        raise ValueError("真实模式需要进程环境 DS_BASE_URL、DS_API_KEY、DS_MODEL；离线请用 --mock")
+     config = load_config({"visitor_renderer": options.get("visitor_renderer") or "llm"})
+     if mock:
+         config["agent_llm"]["provider"] = "mock"

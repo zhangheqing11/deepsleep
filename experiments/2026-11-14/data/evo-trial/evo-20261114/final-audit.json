@@ -1,0 +1,35 @@
+{
+  "complete": true,
+  "source_digest_matches": true,
+  "http_attempts": 10398,
+  "http_starts": 10398,
+  "http_results": 10398,
+  "budget_blocked": 0,
+  "batch_count": 30,
+  "session_count": 258,
+  "candidate_slots": 18,
+  "empty_candidates": 2,
+  "hard_blocked_candidates": 1,
+  "adopted_generations": 1,
+  "evolution_validation_errors": {
+    "ds_nothink/g2": [
+      "c2: high 改动 c2-referral_rules-1 被 timeout，passed 必须为 false",
+      "c2: high 改动 c2-referral_rules-2 被 timeout，passed 必须为 false",
+      "c2: high 改动 c2-referral_rules-3 被 timeout，passed 必须为 false"
+    ]
+  },
+  "secret_value_matches": 0,
+  "snapshot_repos_contain_git": false,
+  "playbook_and_S4_evidence_checks": "passed",
+  "metric_and_derivative_recomputation": "passed",
+  "http_per_track": {
+    "ds_thinking": 3843,
+    "ds_nothink": 3194,
+    "jev": 3361
+  },
+  "http_statuses": {
+    "ok": 9795,
+    "cancelled": 249,
+    "error": 354
+  }
+}
