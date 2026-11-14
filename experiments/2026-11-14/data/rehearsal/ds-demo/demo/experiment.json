@@ -1,0 +1,28 @@
+{
+  "experiment_id": "exp-20261114-182130-1e061933",
+  "updated_at": "2026-11-14T18:21:30.391195+08:00",
+  "stage": "done",
+  "run1": {
+    "run_id": "exp-20261114-182130-1e061933-run1",
+    "playbook_version": "v1",
+    "split": "A",
+    "state": "done"
+  },
+  "run2": {
+    "run_id": "exp-20261114-182130-1e061933-run2",
+    "playbook_version": "v1",
+    "split": "B",
+    "state": "done"
+  },
+  "control": {
+    "run_id": "exp-20261114-182130-1e061933-control",
+    "playbook_version": "v1",
+    "split": "B",
+    "state": "done"
+  },
+  "evolution": {
+    "evolution_id": "exp-20261114-182130-1e061933-learn",
+    "state": "done"
+  },
+  "error": null
+}

@@ -1,0 +1,178 @@
+{
+  "schema_version": "0.1.0",
+  "evolution_id": "exp-20261114-182130-1e061933-learn",
+  "created_at": "2026-11-14T18:21:30+08:00",
+  "from_version": "v1",
+  "to_version": null,
+  "outcome": "kept_previous",
+  "source_run_id": "exp-20261114-182130-1e061933-run1",
+  "val_split": "C",
+  "baseline_val_metrics": {
+    "isi_response_rate": 0.3333333333333333,
+    "mean_isi_change": -5.833333333333333,
+    "path_acc_r1": 0.5,
+    "path_acc_r2": 0.6666666666666666,
+    "path_acc_gain": 0.16666666666666663,
+    "referral_recall": 0.5,
+    "referral_precision": 1.0,
+    "referral_recall_by_label": {
+      "R1": 0.0,
+      "R2": 0.0,
+      "R3": 1.0
+    },
+    "crisis_recall": 1.0,
+    "crisis_missed": 0,
+    "contraindication_violations": 0,
+    "screening_coverage": 0.0
+  },
+  "reflector": {
+    "model": "mock-reflector",
+    "fell_back": false,
+    "fallback_reason": null
+  },
+  "failures_used": [
+    {
+      "visitor_id": "sample-016",
+      "failure_tags": [
+        "referral_missed",
+        "no_isi_response"
+      ]
+    },
+    {
+      "visitor_id": "sample-010",
+      "failure_tags": [
+        "no_isi_response"
+      ]
+    }
+  ],
+  "human_feedback": [],
+  "candidates": [
+    {
+      "id": "c1",
+      "summary": "先确认来访最希望改善的睡眠困扰。",
+      "changes": [
+        {
+          "id": "c1-communication_style-1",
+          "op": "add",
+          "section": "communication_style",
+          "before": null,
+          "after": "先确认来访最希望改善的睡眠困扰。",
+          "reason": "离线编排验证",
+          "criticality_rule": "low",
+          "criticality_self": "low",
+          "criticality": "low"
+        }
+      ],
+      "hard_rule_violations": [],
+      "val_metrics": {
+        "isi_response_rate": 0.3333333333333333,
+        "mean_isi_change": -5.833333333333333,
+        "path_acc_r1": 0.5,
+        "path_acc_r2": 0.6666666666666666,
+        "path_acc_gain": 0.16666666666666663,
+        "referral_recall": 0.5,
+        "referral_precision": 1.0,
+        "referral_recall_by_label": {
+          "R1": 0.0,
+          "R2": 0.0,
+          "R3": 1.0
+        },
+        "crisis_recall": 1.0,
+        "crisis_missed": 0,
+        "contraindication_violations": 0,
+        "screening_coverage": 0.0
+      },
+      "veto": {
+        "passed": true,
+        "reasons": []
+      },
+      "passed": false
+    },
+    {
+      "id": "c2",
+      "summary": "每次只问一个具体问题。",
+      "changes": [
+        {
+          "id": "c2-communication_style-1",
+          "op": "add",
+          "section": "communication_style",
+          "before": null,
+          "after": "每次只问一个具体问题。",
+          "reason": "离线编排验证",
+          "criticality_rule": "low",
+          "criticality_self": "low",
+          "criticality": "low"
+        }
+      ],
+      "hard_rule_violations": [],
+      "val_metrics": {
+        "isi_response_rate": 0.3333333333333333,
+        "mean_isi_change": -5.833333333333333,
+        "path_acc_r1": 0.5,
+        "path_acc_r2": 0.6666666666666666,
+        "path_acc_gain": 0.16666666666666663,
+        "referral_recall": 0.5,
+        "referral_precision": 1.0,
+        "referral_recall_by_label": {
+          "R1": 0.0,
+          "R2": 0.0,
+          "R3": 1.0
+        },
+        "crisis_recall": 1.0,
+        "crisis_missed": 0,
+        "contraindication_violations": 0,
+        "screening_coverage": 0.0
+      },
+      "veto": {
+        "passed": true,
+        "reasons": []
+      },
+      "passed": false
+    },
+    {
+      "id": "c3",
+      "summary": "用简短的复述确认已经听到的信息。",
+      "changes": [
+        {
+          "id": "c3-communication_style-1",
+          "op": "add",
+          "section": "communication_style",
+          "before": null,
+          "after": "用简短的复述确认已经听到的信息。",
+          "reason": "离线编排验证",
+          "criticality_rule": "low",
+          "criticality_self": "low",
+          "criticality": "low"
+        }
+      ],
+      "hard_rule_violations": [],
+      "val_metrics": {
+        "isi_response_rate": 0.3333333333333333,
+        "mean_isi_change": -5.833333333333333,
+        "path_acc_r1": 0.5,
+        "path_acc_r2": 0.6666666666666666,
+        "path_acc_gain": 0.16666666666666663,
+        "referral_recall": 0.5,
+        "referral_precision": 1.0,
+        "referral_recall_by_label": {
+          "R1": 0.0,
+          "R2": 0.0,
+          "R3": 1.0
+        },
+        "crisis_recall": 1.0,
+        "crisis_missed": 0,
+        "contraindication_violations": 0,
+        "screening_coverage": 0.0
+      },
+      "veto": {
+        "passed": true,
+        "reasons": []
+      },
+      "passed": false
+    }
+  ],
+  "human_review": [],
+  "chosen": null,
+  "commit": null,
+  "diff": null
+}

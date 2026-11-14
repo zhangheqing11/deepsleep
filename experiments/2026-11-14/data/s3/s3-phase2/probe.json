@@ -1,0 +1,77 @@
+[
+  {
+    "mode": "default",
+    "finish_reason": "stop",
+    "usage": {
+      "completion_tokens": 102,
+      "prompt_tokens": 287,
+      "total_tokens": 389,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": null,
+        "audio_tokens": null,
+        "reasoning_tokens": 46,
+        "rejected_prediction_tokens": null,
+        "text_tokens": null
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": null,
+        "cache_write_tokens": null,
+        "cached_tokens": 0,
+        "image_tokens": null,
+        "text_tokens": null
+      },
+      "prompt_cache_hit_tokens": 0,
+      "prompt_cache_miss_tokens": 287
+    },
+    "json_ok": true,
+    "seconds": 2.315158000215888
+  },
+  {
+    "mode": "disabled",
+    "finish_reason": "stop",
+    "usage": {
+      "completion_tokens": 43,
+      "prompt_tokens": 262,
+      "total_tokens": 305,
+      "completion_tokens_details": null,
+      "prompt_tokens_details": {
+        "audio_tokens": null,
+        "cache_write_tokens": null,
+        "cached_tokens": 0,
+        "image_tokens": null,
+        "text_tokens": null
+      },
+      "prompt_cache_hit_tokens": 0,
+      "prompt_cache_miss_tokens": 262
+    },
+    "json_ok": true,
+    "seconds": 1.4408292919397354
+  },
+  {
+    "mode": "low",
+    "finish_reason": "stop",
+    "usage": {
+      "completion_tokens": 173,
+      "prompt_tokens": 287,
+      "total_tokens": 460,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": null,
+        "audio_tokens": null,
+        "reasoning_tokens": 132,
+        "rejected_prediction_tokens": null,
+        "text_tokens": null
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": null,
+        "cache_write_tokens": null,
+        "cached_tokens": 0,
+        "image_tokens": null,
+        "text_tokens": null
+      },
+      "prompt_cache_hit_tokens": 0,
+      "prompt_cache_miss_tokens": 287
+    },
+    "json_ok": true,
+    "seconds": 2.154199708253145
+  }
+]

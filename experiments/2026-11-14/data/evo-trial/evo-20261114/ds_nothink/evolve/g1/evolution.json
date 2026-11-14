@@ -1,0 +1,168 @@
+{
+  "schema_version": "0.1.0",
+  "evolution_id": "g1",
+  "created_at": "2026-11-14T17:47:04+08:00",
+  "from_version": "v0",
+  "to_version": null,
+  "outcome": "kept_previous",
+  "source_run_id": "evo-20261114-ds_nothink-r0",
+  "val_split": "C",
+  "baseline_val_metrics": {
+    "isi_response_rate": 0.75,
+    "mean_isi_change": -8.375,
+    "path_acc_r1": 0.625,
+    "path_acc_r2": 0.75,
+    "path_acc_gain": 0.125,
+    "referral_recall": 0.3333333333333333,
+    "referral_precision": 0.5,
+    "referral_recall_by_label": {
+      "R1": 0.0,
+      "R2": 0.0,
+      "R3": 1.0
+    },
+    "crisis_recall": null,
+    "crisis_missed": 0,
+    "contraindication_violations": 0,
+    "screening_coverage": null
+  },
+  "reflector": {
+    "model": "deepseek-flash",
+    "fell_back": true,
+    "fallback_reason": "[REDACTED: credential/header pattern]"
+  },
+  "failures_used": [
+    {
+      "visitor_id": "sample-009",
+      "failure_tags": [
+        "path_wrong_r1",
+        "path_wrong_r2",
+        "referral_missed",
+        "no_isi_response",
+        "screen_missed"
+      ]
+    },
+    {
+      "visitor_id": "sample-005",
+      "failure_tags": [
+        "referral_missed",
+        "no_isi_response"
+      ]
+    },
+    {
+      "visitor_id": "sample-004",
+      "failure_tags": [
+        "path_wrong_r1",
+        "path_wrong_r2",
+        "no_isi_response"
+      ]
+    },
+    {
+      "visitor_id": "sample-010",
+      "failure_tags": [
+        "path_wrong_r1",
+        "path_wrong_r2",
+        "no_isi_response"
+      ]
+    },
+    {
+      "visitor_id": "sample-003",
+      "failure_tags": [
+        "path_wrong_r1"
+      ]
+    }
+  ],
+  "human_feedback": [],
+  "candidates": [
+    {
+      "id": "c1",
+      "summary": "把'作息时间明显异常/轮班'和'反复含糊'识别为路径线索，先分清 P1 与 P4，避免把极晚睡或极早睡一律判成作息不规律。",
+      "changes": [
+        {
+          "id": "c1-path_discrimination-1",
+          "op": "add",
+          "section": "path_discrimination",
+          "before": null,
+          "after": "来访报的上床、起床时间明显偏离常规（例如起床在中午或下午、卧床时间远多于实际睡着时长），或提到夜班、轮班、倒班时，优先考虑 P4；追问不赶时间的日子自然几点困、几点醒，以及上班上课时间是否固定在白天。",
+          "reason": "失败案例里出现'八点半上床、下午两点半起'、'一点半上床八点起'这类明显偏离常规的作息，agent 全判成 P1，正确路径权重一直停在 0.20、熵几乎不降。",
+          "criticality_rule": "medium",
+          "criticality_self": "medium",
+          "criticality": "medium"
+        },
+        {
+          "id": "c1-path_discrimination-2",
+          "op": "add",
+          "section": "path_discrimination",
+          "before": null,
+          "after": "区分 P1 与 P4 时问一句：如果某一晚特意提前到十点或十一点上床，你能睡着，还是要躺很久才有困意？提前就能睡着、只是常拖着不睡，偏向 P1；不管几点上床都要很久才困，偏向 P4。",
+          "reason": "P1 与 P4 混淆是路径失败的主因；这一个问题能直接拉开两者的权重差，让正确路径权重在第 1 轮就上升。",
+          "criticality_rule": "medium",
+          "criticality_self": "medium",
+          "criticality": "medium"
+        },
+        {
+          "id": "c1-path_discrimination-3",
+          "op": "add",
+          "section": "path_discrimination",
+          "before": null,
+          "after": "来访连续两次给出同一句作息回答，或反复说'没什么特别的''就那样'时，不要再重复问作息，改问三件事：躺下后脑子里有没有在转（P3）、换到沙发或外地是否更容易睡（P2）、睡觉时有没有人说过打呼噜或呼吸停顿（R1 线索）。",
+          "reason": "多个案例中 agent 重复追问同一句作息，出现空转回合，关键线索始终未问出，分类器熵不下降；换提问角度才能让线索冒出来。",
+          "criticality_rule": "medium",
+          "criticality_self": "medium",
+          "criticality": "medium"
+        }
+      ],
+      "hard_rule_violations": [],
+      "val_metrics": {
+        "isi_response_rate": 0.5,
+        "mean_isi_change": -7.5,
+        "path_acc_r1": 0.75,
+        "path_acc_r2": 0.875,
+        "path_acc_gain": 0.125,
+        "referral_recall": 0.3333333333333333,
+        "referral_precision": 1.0,
+        "referral_recall_by_label": {
+          "R1": 0.0,
+          "R2": 0.0,
+          "R3": 1.0
+        },
+        "crisis_recall": null,
+        "crisis_missed": 0,
+        "contraindication_violations": 0,
+        "screening_coverage": null
+      },
+      "veto": {
+        "passed": true,
+        "reasons": []
+      },
+      "passed": false
+    },
+    {
+      "id": "c2",
+      "summary": "反思器未产出有效候选（占位，不参与验证）。",
+      "changes": [],
+      "hard_rule_violations": [],
+      "val_metrics": null,
+      "veto": {
+        "passed": true,
+        "reasons": []
+      },
+      "passed": false
+    },
+    {
+      "id": "c3",
+      "summary": "反思器未产出有效候选（占位，不参与验证）。",
+      "changes": [],
+      "hard_rule_violations": [],
+      "val_metrics": null,
+      "veto": {
+        "passed": true,
+        "reasons": []
+      },
+      "passed": false
+    }
+  ],
+  "human_review": [],
+  "chosen": null,
+  "commit": null,
+  "diff": null
+}

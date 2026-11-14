@@ -1,0 +1,333 @@
+{
+  "schema_version": "0.1.0",
+  "evolution_id": "g1",
+  "created_at": "2026-11-14T18:28:11+08:00",
+  "from_version": "v0",
+  "to_version": null,
+  "outcome": "kept_previous",
+  "source_run_id": "r0a",
+  "val_split": "C",
+  "baseline_val_metrics": {
+    "isi_response_rate": 0.46875,
+    "mean_isi_change": -7.25,
+    "path_acc_r1": 0.78125,
+    "path_acc_r2": 0.8125,
+    "path_acc_gain": 0.03125,
+    "referral_recall": 0.46153846153846156,
+    "referral_precision": 0.5,
+    "referral_recall_by_label": {
+      "R1": 0.2,
+      "R2": 0.25,
+      "R3": 1.0
+    },
+    "crisis_recall": 1.0,
+    "crisis_missed": 0,
+    "contraindication_violations": 1,
+    "screening_coverage": 0.0
+  },
+  "reflector": {
+    "model": "gpt-6-astra",
+    "fell_back": false,
+    "fallback_reason": null
+  },
+  "failures_used": [
+    {
+      "visitor_id": "A-003",
+      "failure_tags": [
+        "path_wrong_r1",
+        "path_wrong_r2",
+        "referral_missed",
+        "referral_false_alarm",
+        "no_isi_response",
+        "screen_missed"
+      ]
+    },
+    {
+      "visitor_id": "A-007",
+      "failure_tags": [
+        "path_wrong_r1",
+        "referral_missed",
+        "referral_false_alarm",
+        "no_isi_response",
+        "screen_missed"
+      ]
+    },
+    {
+      "visitor_id": "A-030",
+      "failure_tags": [
+        "path_wrong_r1",
+        "path_wrong_r2",
+        "referral_missed",
+        "referral_false_alarm",
+        "no_isi_response"
+      ]
+    },
+    {
+      "visitor_id": "A-021",
+      "failure_tags": [
+        "referral_missed",
+        "no_isi_response"
+      ]
+    },
+    {
+      "visitor_id": "A-001",
+      "failure_tags": [
+        "path_wrong_r1",
+        "path_wrong_r2",
+        "no_isi_response"
+      ]
+    },
+    {
+      "visitor_id": "A-014",
+      "failure_tags": [
+        "path_wrong_r1",
+        "path_wrong_r2",
+        "referral_false_alarm"
+      ]
+    },
+    {
+      "visitor_id": "A-008",
+      "failure_tags": [
+        "path_wrong_r1",
+        "path_wrong_r2",
+        "no_isi_response"
+      ]
+    },
+    {
+      "visitor_id": "A-026",
+      "failure_tags": [
+        "path_wrong_r1",
+        "path_wrong_r2",
+        "referral_false_alarm"
+      ]
+    }
+  ],
+  "human_feedback": [],
+  "candidates": [
+    {
+      "id": "c1",
+      "summary": "用入睡过程和对照场景提前区分路径，避免按规律作息或情绪线索过早锚定。",
+      "changes": [
+        {
+          "id": "c1-questioning_strategy-1",
+          "op": "add",
+          "section": "questioning_strategy",
+          "before": null,
+          "after": "首轮记下常规作息后，下一问用“昨晚上床后没睡着的那段时间，你主要在做什么或想什么？”，再按回答一次追问一个路径对照场景，不把上床时间当睡着时间，也不凭笼统晚睡就归入 P1。",
+          "reason": "反复确认作息挤占了关键提问，入睡前行为与思绪缺失时，正确路径权重持续偏低。",
+          "criticality_rule": "low",
+          "criticality_self": "medium",
+          "criticality": "medium"
+        },
+        {
+          "id": "c1-path_discrimination-2",
+          "op": "modify",
+          "section": "path_discrimination",
+          "before": "P2 与 P3 主要看躺下后脑子里有没有内容，换地方是否好转只作辅助。",
+          "after": "区分 P2 与 P3 时，分次追问困着上床后是否反而清醒、以往同一晚换到床外是否更易睡着，以及清醒时念头的内容与出现先后，地点相关的清醒支持 P2、持续复盘或担忧妨碍入睡支持 P3，不因脑中有内容就排除 P2。",
+          "reason": "仅凭有无思绪容易误分，床内外困意和念头出现先后的对照能补足鉴别证据。",
+          "criticality_rule": "medium",
+          "criticality_self": "medium",
+          "criticality": "medium"
+        },
+        {
+          "id": "c1-path_discrimination-3",
+          "op": "add",
+          "section": "path_discrimination",
+          "before": null,
+          "after": "晚睡原因未明时，先问最近不用手机的一晚是否仍到很晚才困，若停屏后易睡则追问平日刷屏是否推迟睡觉以核实 P5，若仍晚困或没有该对照经历则分次询问自由作息下能否睡好及是否轮班以核实 P4，未经历的情境记为未知且不以情绪线索替代路径证据。",
+          "reason": "数字娱乐线索出现偏晚，节律线索常未问出，需要主动获取能纠正初始判断的对照。",
+          "criticality_rule": "medium",
+          "criticality_self": "medium",
+          "criticality": "medium"
+        }
+      ],
+      "hard_rule_violations": [],
+      "val_metrics": {
+        "isi_response_rate": 0.40625,
+        "mean_isi_change": -6.90625,
+        "path_acc_r1": 0.71875,
+        "path_acc_r2": 0.65625,
+        "path_acc_gain": -0.0625,
+        "referral_recall": 0.38461538461538464,
+        "referral_precision": 0.5,
+        "referral_recall_by_label": {
+          "R1": 0.0,
+          "R2": 0.25,
+          "R3": 1.0
+        },
+        "crisis_recall": 1.0,
+        "crisis_missed": 0,
+        "contraindication_violations": 0,
+        "screening_coverage": 0.0
+      },
+      "veto": {
+        "passed": false,
+        "reasons": [
+          {
+            "code": "referral_recall_regressed",
+            "message": "转介召回率低于上一代。"
+          }
+        ]
+      },
+      "passed": false
+    },
+    {
+      "id": "c2",
+      "summary": "补齐呼吸与腿部筛查，并以具体证据校准转介，减少身体线索漏报和情绪类误报。",
+      "changes": [
+        {
+          "id": "c2-questioning_strategy-1",
+          "op": "add",
+          "section": "questioning_strategy",
+          "before": null,
+          "after": "首轮收束前读取已有自评及工具实际结果，将呼吸、夜间腿部不适和白天情绪分别标为已核实或待问，对缺项逐回合按单一话题补问，出现鼾声、憋醒、嗜睡、高血压或 STOP-Bang 风险提示时优先核实呼吸并在筛查结果缺失时调用 screen_osa，不以 screen_mood 替代或把未知记为否定。",
+          "reason": "筛查集中于情绪，已有自评和呼吸风险未被充分利用，导致覆盖不足。",
+          "criticality_rule": "low",
+          "criticality_self": "medium",
+          "criticality": "medium"
+        },
+        {
+          "id": "c2-questioning_strategy-2",
+          "op": "add",
+          "section": "questioning_strategy",
+          "before": null,
+          "after": "核实身体线索时，将“白天没精神”具体问成是否会不由自主打盹，笼统否认打鼾憋气时另问同住者是否观察到呼吸停顿或喘气并将无人观察记为未知，出现腿部不适则逐次核实静坐或躺下时想动、活动后缓解及夜间更重。",
+          "reason": "笼统否认与疲乏描述不足以排除呼吸问题，腿部线索也需要完整场景才能支持转介。",
+          "criticality_rule": "low",
+          "criticality_self": "medium",
+          "criticality": "medium"
+        },
+        {
+          "id": "c2-referral_rules-3",
+          "op": "add",
+          "section": "referral_rules",
+          "before": null,
+          "after": "选择转介时注明具体支持线索及来源，疲劳、睡前复盘或情绪量表总分偏高不能单独决定 R3，需分次核实白天是否持续情绪低落、兴趣减退或难控担心及其持续时间和功能影响，并与 R1/R2 的证据一并比较后只给最需进一步评估的一项，资料不足不表述为已排除。",
+          "reason": "情绪筛查被过度用于决定转介，既造成误报，也遮蔽了呼吸与腿部相关需求。",
+          "criticality_rule": "high",
+          "criticality_self": "high",
+          "criticality": "high"
+        }
+      ],
+      "hard_rule_violations": [],
+      "val_metrics": {
+        "isi_response_rate": 0.4375,
+        "mean_isi_change": -7.1875,
+        "path_acc_r1": 0.75,
+        "path_acc_r2": 0.75,
+        "path_acc_gain": 0.0,
+        "referral_recall": 0.3076923076923077,
+        "referral_precision": 0.4444444444444444,
+        "referral_recall_by_label": {
+          "R1": 0.2,
+          "R2": 0.25,
+          "R3": 0.5
+        },
+        "crisis_recall": 1.0,
+        "crisis_missed": 0,
+        "contraindication_violations": 0,
+        "screening_coverage": 0.25
+      },
+      "veto": {
+        "passed": false,
+        "reasons": [
+          {
+            "code": "referral_recall_regressed",
+            "message": "转介召回率低于上一代。"
+          },
+          {
+            "code": "referral_precision_floor",
+            "message": "转介精确率低于下限 0.5。"
+          }
+        ]
+      },
+      "passed": false
+    },
+    {
+      "id": "c3",
+      "summary": "以低负担场景提问打破泛答循环，并用小步试行和具体复盘替代无证据续用方案。",
+      "changes": [
+        {
+          "id": "c3-communication_style-1",
+          "op": "add",
+          "section": "communication_style",
+          "before": null,
+          "after": "遇到“没什么特别”或重复作息时，只简短确认已听到的内容，不推断来访不愿讲或有所隐瞒，随后提出一个可只答选项且允许“不确定／跳过”的中性场景问题，若明确拒答则尊重其暂停或换题的选择。",
+          "reason": "同盟较高仍可能没有新增线索，反复安慰和猜测动机会延长泛答循环。",
+          "criticality_rule": "low",
+          "criticality_self": "low",
+          "criticality": "low"
+        },
+        {
+          "id": "c3-questioning_strategy-2",
+          "op": "add",
+          "section": "questioning_strategy",
+          "before": null,
+          "after": "对仍愿意交流但泛答的来访，同一话题一次未获实质回答后就改问最近一晚的可观察动作，例如“上床后先继续看东西、闭眼等睡，还是做别的？”，下一回合只追问所选动作的一项细节，如停屏时点或闭眼时脑中内容，仍无信息则标记待核实并换一个鉴别话题。",
+          "reason": "重复作息问题和泛问感受耗尽回合，动作选项能降低回答负担并更早引出关键线索。",
+          "criticality_rule": "low",
+          "criticality_self": "medium",
+          "criticality": "medium"
+        },
+        {
+          "id": "c3-plan_rules-3",
+          "op": "add",
+          "section": "plan_rules",
+          "before": null,
+          "after": "资料不足时，先依据已确认线索与现实约束共同选一至两项来访愿意尝试的建议，不凭默认值设定作息或卧床时长，第二轮用最近一次实际尝试区分未执行、执行受阻和执行后无效，并补核一个尚缺的路径线索后再决定保留或替换，不因含糊的“没变化”直接加码。",
+          "reason": "信息不足时仍堆叠建议、猜定时点或原样延续方案，削弱了可执行性和跨轮纠偏机会。",
+          "criticality_rule": "high",
+          "criticality_self": "high",
+          "criticality": "high"
+        }
+      ],
+      "hard_rule_violations": [],
+      "val_metrics": {
+        "isi_response_rate": 0.375,
+        "mean_isi_change": -5.90625,
+        "path_acc_r1": 0.625,
+        "path_acc_r2": 0.625,
+        "path_acc_gain": 0.0,
+        "referral_recall": 0.38461538461538464,
+        "referral_precision": 0.5,
+        "referral_recall_by_label": {
+          "R1": 0.0,
+          "R2": 0.25,
+          "R3": 1.0
+        },
+        "crisis_recall": 1.0,
+        "crisis_missed": 0,
+        "contraindication_violations": 0,
+        "screening_coverage": 0.0
+      },
+      "veto": {
+        "passed": false,
+        "reasons": [
+          {
+            "code": "referral_recall_regressed",
+            "message": "转介召回率低于上一代。"
+          }
+        ]
+      },
+      "passed": false
+    }
+  ],
+  "human_review": [
+    {
+      "change_id": "c2-referral_rules-3",
+      "decision": "timeout",
+      "scores": null,
+      "comment": null
+    },
+    {
+      "change_id": "c3-plan_rules-3",
+      "decision": "timeout",
+      "scores": null,
+      "comment": null
+    }
+  ],
+  "chosen": null,
+  "commit": null,
+  "diff": null
+}

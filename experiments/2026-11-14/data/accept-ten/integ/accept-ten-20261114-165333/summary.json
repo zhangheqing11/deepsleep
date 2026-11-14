@@ -1,0 +1,222 @@
+{
+  "wall_s": 77.30912720784545,
+  "session_s": {
+    "n": 10,
+    "total": 638.207,
+    "mean": 63.821,
+    "p50": 66.123,
+    "p95": 77.307,
+    "max": 77.307
+  },
+  "statuses": {
+    "completed": 9,
+    "crisis_exit": 1
+  },
+  "validation_errors": {},
+  "metrics": {
+    "isi_response_rate": 0.7,
+    "mean_isi_change": -7.0,
+    "path_acc_r1": 0.7,
+    "path_acc_r2": 0.7,
+    "path_acc_gain": 0.0,
+    "referral_recall": 0.6666666666666666,
+    "referral_precision": 0.8,
+    "referral_recall_by_label": {
+      "R1": 0.5,
+      "R2": 0.0,
+      "R3": 1.0
+    },
+    "crisis_recall": 1.0,
+    "crisis_missed": 0,
+    "contraindication_violations": 0,
+    "screening_coverage": 0.6666666666666666
+  },
+  "veto": {
+    "passed": true,
+    "reasons": []
+  },
+  "accounting": {
+    "attempted": 10,
+    "completed": 9,
+    "completion_rate": 0.9,
+    "error_count": 0,
+    "crisis_exit_count": 1,
+    "unknown_path_sessions": 0,
+    "unknown_path_rounds": 0,
+    "degraded_sessions": 0,
+    "llm_attempts": 189,
+    "agent_classifier_requests_started": 106,
+    "call_statuses": {
+      "ok": 188,
+      "error": 1
+    },
+    "finish_reasons": {
+      "stop": 106,
+      "unavailable": 83
+    },
+    "discarded_calls": 0,
+    "safety_summary": {
+      "judge_provider": "ds_flash+jev",
+      "judge_calls": 104,
+      "judge_fallbacks": 7,
+      "safety_checks": 4,
+      "crisis_protocols": 1
+    },
+    "report_scope": "scoreable sessions only; full attempted cohort is in summary",
+    "scored": 10,
+    "excluded": [],
+    "scoring_coverage": 1.0,
+    "crisis_missed_all_attempts": 0,
+    "evaluation_complete": true
+  },
+  "components": {
+    "classifier": {
+      "n": 84,
+      "total": 36791.1,
+      "mean": 437.989,
+      "p50": 278.696,
+      "p95": 956.611,
+      "max": 6705.576,
+      "statuses": {
+        "ok": 84
+      },
+      "http_attempts": 0
+    },
+    "classifier.ds_flash": {
+      "n": 1,
+      "total": 1699.916,
+      "mean": 1699.916,
+      "p50": 1699.916,
+      "p95": 1699.916,
+      "max": 1699.916,
+      "statuses": {
+        "ok": 1
+      },
+      "http_attempts": 1
+    },
+    "classifier.jev": {
+      "n": 84,
+      "total": 35089.566,
+      "mean": 417.733,
+      "p50": 278.683,
+      "p95": 956.596,
+      "max": 5005.624,
+      "statuses": {
+        "ok": 83,
+        "error": 1
+      },
+      "http_attempts": 84
+    },
+    "judge.ds_flash": {
+      "n": 97,
+      "total": 245784.633,
+      "mean": 2533.862,
+      "p50": 2267.485,
+      "p95": 5013.095,
+      "max": 6001.859,
+      "statuses": {
+        "ok": 90,
+        "error": 5,
+        "cancelled": 2
+      },
+      "http_attempts": 97
+    },
+    "judge.jev": {
+      "n": 7,
+      "total": 2765.096,
+      "mean": 395.014,
+      "p50": 277.118,
+      "p95": 1078.172,
+      "max": 1078.172,
+      "statuses": {
+        "ok": 7
+      },
+      "http_attempts": 7
+    },
+    "memory": {
+      "n": 10,
+      "total": 23546.111,
+      "mean": 2354.611,
+      "p50": 2189.377,
+      "p95": 3074.584,
+      "max": 3074.584,
+      "statuses": {
+        "ok": 10
+      },
+      "http_attempts": 10
+    },
+    "memory_plan": {
+      "n": 10,
+      "total": 76819.192,
+      "mean": 7681.919,
+      "p50": 7382.136,
+      "p95": 10878.176,
+      "max": 10878.176,
+      "statuses": {
+        "ok": 10
+      },
+      "http_attempts": 10
+    },
+    "plan": {
+      "n": 9,
+      "total": 72542.953,
+      "mean": 8060.328,
+      "p50": 6680.632,
+      "p95": 12566.475,
+      "max": 12566.475,
+      "statuses": {
+        "ok": 9
+      },
+      "http_attempts": 9
+    },
+    "select": {
+      "n": 9,
+      "total": 18296.17,
+      "mean": 2032.908,
+      "p50": 1952.235,
+      "p95": 2704.043,
+      "max": 2704.043,
+      "statuses": {
+        "ok": 9
+      },
+      "http_attempts": 9
+    },
+    "turn": {
+      "n": 67,
+      "total": 120761.939,
+      "mean": 1802.417,
+      "p50": 1745.38,
+      "p95": 2402.879,
+      "max": 2695.183,
+      "statuses": {
+        "ok": 67
+      },
+      "http_attempts": 67
+    },
+    "visitor": {
+      "n": 87,
+      "total": 113373.246,
+      "mean": 1303.141,
+      "p50": 1188.972,
+      "p95": 2053.57,
+      "max": 2951.627,
+      "statuses": {
+        "ok": 87
+      },
+      "http_attempts": 87
+    }
+  },
+  "http_attempts": 381,
+  "budget_blocked": 0,
+  "http_statuses": {
+    "ok": 373,
+    "error": 6,
+    "cancelled": 2
+  },
+  "logical_calls": 465,
+  "logical_statuses": {
+    "ok": 457,
+    "error": 6,
+    "cancelled": 2
+  }
+}

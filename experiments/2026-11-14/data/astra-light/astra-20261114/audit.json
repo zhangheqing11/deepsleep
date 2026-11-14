@@ -1,0 +1,29 @@
+{
+  "ledger_starts_results": [
+    1461,
+    1461,
+    1461
+  ],
+  "http_statuses": {
+    "ok": 1100,
+    "error": 173,
+    "cancelled": 188
+  },
+  "http_components": {
+    "reflector": 1,
+    "judge.ds_flash": 314,
+    "classifier.jev": 289,
+    "judge.jev": 148,
+    "turn": 255,
+    "classifier.ds_flash": 29,
+    "visitor": 282,
+    "memory_plan": 40,
+    "select": 32,
+    "memory": 32,
+    "plan": 39
+  },
+  "metric_session_report_validation_errors": [],
+  "hard_rules_and_gate_recomputed": true,
+  "secret_value_matching_files": 0,
+  "runtime_git_dirs": []
+}

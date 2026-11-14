@@ -1,0 +1,33 @@
+{
+  "calls": 1,
+  "model": "deepseek-flash",
+  "wall_s": 6.323,
+  "max_tokens": 800,
+  "json_mode": true,
+  "finish_reason": "length",
+  "content_chars": 856,
+  "reasoning_chars": 1562,
+  "parsed": false,
+  "usage": {
+    "completion_tokens": 800,
+    "prompt_tokens": 981,
+    "total_tokens": 1781,
+    "completion_tokens_details": {
+      "accepted_prediction_tokens": null,
+      "audio_tokens": null,
+      "reasoning_tokens": 376,
+      "rejected_prediction_tokens": null,
+      "text_tokens": null
+    },
+    "prompt_tokens_details": {
+      "audio_tokens": null,
+      "cache_write_tokens": null,
+      "cached_tokens": 768,
+      "image_tokens": null,
+      "text_tokens": null
+    },
+    "prompt_cache_hit_tokens": 768,
+    "prompt_cache_miss_tokens": 213
+  },
+  "content": "{\"plan\": {\"bedtime\": \"23:30\", \"risetime\": \"07:00\", \"tib_minutes\": 450, \"components\": [\"fixed_risetime\", \"stimulus_control\", \"sleep_hygiene\", \"digital_curfew\", \"worry_time\", \"relaxation\"], \"rationale_given\": true, \"referral_advice\": null, \"cards\": [{\"type\": \"reminder\", \"title\": \"固定起床 07:00\", \"body\": \"不管前一晚睡得怎么样，早上 7 点起床、拉开窗帘见光。周末也尽量不超过 1 小时的偏差。这是先把生物钟的参照点固定下来。\"}, {\"type\": \"entertainment_control\", \"title\": \"睡前 30 分钟离开屏幕\", \"body\": \"23:00 起把手机、平板、视频放到卧室外或够不到的地方，换成洗漱、拉伸、听点安静的东西。让床和清醒活动分开。\"}]}, \"contraindications_identified\": [], \"age\": null, \"closing_message\": \"这一轮我先给你一个试行两周的方案，不用做到完美，先看趋势。第一，起床时间固定在北京时间 7:00，不管夜里睡得怎么样都按这个点起，周末最多晚一小时——把起床点钉住，身体才有稳定的参照，晚上困意才会准时来。第二，卧床时间先给到 23:30 到 7:00，一共约 7 个半小时，这个长度是按你说的白天没精神来定的，先不压缩，等你作息稳一些我们再根据你真实睡着的时长来微调。第三，床只用来睡觉：睡不着超过二十来分钟就起来到客厅坐坐，等困了再回床上，别在床上刷手机、想事情，这样床才会重新和睡意挂上钩。第四，睡前 30 分钟把屏幕放下，手机放远一点，这段时间用来洗漱、放松，做几分钟慢呼吸或者从"
+}

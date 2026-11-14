@@ -1,0 +1,16 @@
+{
+  "evolution_id": "g1",
+  "deadline_epoch": 1794655314.0321732,
+  "timeout_policy": "pass",
+  "changes": [
+    {
+      "candidate_id": "c2",
+      "change_id": "c2-referral_rules-3",
+      "section": "referral_rules",
+      "op": "add",
+      "before": null,
+      "after": "每轮转介前核对量表实际结果与访谈证据，R3先逐回合核实情绪或担忧是否超出睡前情境、持续多久及日间影响，不凭睡眠担忧、疲乏或仅有工具调用记录定为R3，缺项不得宣称筛查正常，呼吸或腿部特征不能被轻度情绪分数覆盖，再按最明确且需优先评估的证据给出单一转介。",
+      "reason": "情绪转介误报与呼吸、腿部转介漏报并存，需要校正证据来源而非增加默认转介。"
+    }
+  ]
+}

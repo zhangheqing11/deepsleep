@@ -1,0 +1,5 @@
+{
+  "reason": "OpenAI SDK uses httpx2 exception classes; retry implementation corrected before complete fresh rerun",
+  "requests": 2293,
+  "excluded_from_final_noise_comparison": true
+}

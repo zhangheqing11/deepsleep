@@ -1,0 +1,34 @@
+{
+  "evolution_id": "g1",
+  "deadline_epoch": 1794650317.273404,
+  "timeout_policy": "pass",
+  "changes": [
+    {
+      "candidate_id": "c2",
+      "change_id": "c2-questioning_strategy-1",
+      "section": "questioning_strategy",
+      "op": "add",
+      "before": null,
+      "after": "第 1 轮固定问三句：'有人说过你打鼾、睡觉时呼吸停顿或被憋醒吗？''白天会不会困到必须补觉、开会打瞌睡？''晚上躺下时腿有没有说不清的不舒服、想动，走一走会好些？'",
+      "reason": "两例真实 R1、一例真实 R2 都被判 R0，会谈里从未问过打鼾、憋醒或腿部不适；把这些问句变成第 1 轮固定动作，转介判断才有依据。"
+    },
+    {
+      "candidate_id": "c2",
+      "change_id": "c2-referral_rules-3",
+      "section": "referral_rules",
+      "op": "add",
+      "before": null,
+      "after": "给出 R0 之前先确认三类症状都问过：打鼾/呼吸停顿/憋醒、夜间腿部不适想动、情绪低落或持续担心；只要有一类没问到或回答含糊，就先补问再判，情绪量表正常也不排除 R1、R2。",
+      "reason": "转介精确率 1.0 但召回只有 0.5，R1/R2 全部漏判，说明问题出在'没问就判 R0'，需要在 R0 出口加一道症状核对。"
+    },
+    {
+      "candidate_id": "c3",
+      "change_id": "c3-plan_rules-3",
+      "section": "plan_rules",
+      "op": "add",
+      "before": null,
+      "after": "方案收尾固定做两件事：和来访约定一个可复查的自评（ISI 或 0–10 分打分），当场记基线、第 4 周复测，不愿填量表就用一句打分；卧床窗口按实际睡着时长来定，不直接照搬报告的躺床时间。",
+      "reason": "四例失败案例都没有第 4 周 ISI 数据；另有来访报告 18 小时躺床，方案直接照搬成 1080 分钟卧床窗口。测量与窗口口径需要写死。"
+    }
+  ]
+}

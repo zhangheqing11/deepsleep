@@ -1,0 +1,12 @@
+{
+  "at": "2026-11-14T19:15:58+08:00",
+  "reason": "reflector timed out; fallback JSON invalid; no C evaluation started",
+  "primary_timeout_s_before": 300,
+  "primary_timeout_s_after": 600,
+  "reused_batches": [
+    "r0a",
+    "r0b"
+  ],
+  "same_model_effort_prompts_and_inputs": true,
+  "budget_used_before": 4854
+}

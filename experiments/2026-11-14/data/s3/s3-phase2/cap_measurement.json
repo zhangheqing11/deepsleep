@@ -1,0 +1,54 @@
+[
+  {
+    "stage": "3a",
+    "n": 10,
+    "statuses": {
+      "completed": 10
+    },
+    "calls": {
+      "classifier": 110,
+      "turn": 90,
+      "memory": 20,
+      "plan": 20,
+      "select": 10
+    },
+    "forced_screens": 10,
+    "actions": 90,
+    "safety_events": 2
+  },
+  {
+    "stage": "3b",
+    "n": 10,
+    "statuses": {
+      "completed": 10
+    },
+    "calls": {
+      "classifier": 90,
+      "turn": 70,
+      "memory": 20,
+      "plan": 20,
+      "select": 10
+    },
+    "forced_screens": 10,
+    "actions": 70,
+    "safety_events": 2
+  },
+  {
+    "stage": "3c",
+    "n": 10,
+    "statuses": {
+      "completed": 10
+    },
+    "calls": {
+      "classifier": 90,
+      "turn": 70,
+      "memory_plan": 10,
+      "select": 10,
+      "memory": 10,
+      "plan": 10
+    },
+    "forced_screens": 10,
+    "actions": 70,
+    "safety_events": 2
+  }
+]

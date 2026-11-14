@@ -1,0 +1,2753 @@
+{
+  "logical": [
+    {
+      "visitor_id": "sample-001",
+      "component": "judge.mock",
+      "status": "ok",
+      "ms": 0.034
+    },
+    {
+      "visitor_id": "sample-002",
+      "component": "judge.mock",
+      "status": "ok",
+      "ms": 0.008
+    },
+    {
+      "visitor_id": "sample-003",
+      "component": "judge.mock",
+      "status": "ok",
+      "ms": 0.005
+    },
+    {
+      "visitor_id": "sample-004",
+      "component": "judge.mock",
+      "status": "ok",
+      "ms": 0.004
+    },
+    {
+      "visitor_id": "sample-005",
+      "component": "judge.mock",
+      "status": "ok",
+      "ms": 0.004
+    },
+    {
+      "visitor_id": "sample-006",
+      "component": "judge.mock",
+      "status": "ok",
+      "ms": 0.004
+    },
+    {
+      "visitor_id": "sample-007",
+      "component": "judge.mock",
+      "status": "ok",
+      "ms": 0.004
+    },
+    {
+      "visitor_id": "sample-008",
+      "component": "judge.mock",
+      "status": "ok",
+      "ms": 0.004
+    },
+    {
+      "visitor_id": "sample-009",
+      "component": "judge.mock",
+      "status": "ok",
+      "ms": 0.004
+    },
+    {
+      "visitor_id": "sample-010",
+      "component": "judge.mock",
+      "status": "ok",
+      "ms": 0.003
+    },
+    {
+      "visitor_id": "sample-001",
+      "component": "classifier",
+      "status": "ok",
+      "ms": 0.029
+    },
+    {
+      "visitor_id": "sample-001",
+      "component": "strategy",
+      "status": "ok",
+      "ms": 0.139
+    },
+    {
+      "visitor_id": "sample-001",
+      "component": "response",
+      "status": "ok",
+      "ms": 0.002
+    },
+    {
+      "visitor_id": "sample-002",
+      "component": "classifier",
+      "status": "ok",
+      "ms": 0.033
+    },
+    {
+      "visitor_id": "sample-002",
+      "component": "strategy",
+      "status": "ok",
+      "ms": 0.006
+    },
+    {
+      "visitor_id": "sample-002",
+      "component": "response",
+      "status": "ok",
+      "ms": 0.001
+    },
+    {
+      "visitor_id": "sample-003",
+      "component": "classifier",
+      "status": "ok",
+      "ms": 0.013
+    },
+    {
+      "visitor_id": "sample-003",
+      "component": "strategy",
+      "status": "ok",
+      "ms": 0.006
+    },
+    {
+      "visitor_id": "sample-003",
+      "component": "response",
+      "status": "ok",
+      "ms": 0.002
+    },
+    {
+      "visitor_id": "sample-004",
+      "component": "classifier",
+      "status": "ok",
+      "ms": 0.02
+    },
+    {
+      "visitor_id": "sample-004",
+      "component": "strategy",
+      "status": "ok",
+      "ms": 0.004
+    },
+    {
+      "visitor_id": "sample-004",
+      "component": "response",
+      "status": "ok",
+      "ms": 0.001
+    },
+    {
+      "visitor_id": "sample-005",
+      "component": "classifier",
+      "status": "ok",
+      "ms": 0.013
+    },
+    {
+      "visitor_id": "sample-005",
+      "component": "strategy",
+      "status": "ok",
+      "ms": 0.002
+    },
+    {
+      "visitor_id": "sample-005",
+      "component": "response",
+      "status": "ok",
+      "ms": 0.001
+    },
+    {
+      "visitor_id": "sample-006",
+      "component": "classifier",
+      "status": "ok",
+      "ms": 0.011
+    },
+    {
+      "visitor_id": "sample-006",
+      "component": "strategy",
+      "status": "ok",
+      "ms": 0.002
+    },
+    {
+      "visitor_id": "sample-006",
+      "component": "response",
+      "status": "ok",
+      "ms": 0.001
+    },
+    {
+      "visitor_id": "sample-007",
+      "component": "classifier",
+      "status": "ok",
+      "ms": 0.012
+    },
+    {
+      "visitor_id": "sample-007",
+      "component": "strategy",
+      "status": "ok",
+      "ms": 0.002
+    },
+    {
+      "visitor_id": "sample-007",
+      "component": "response",
+      "status": "ok",
+      "ms": 0.001
+    },
+    {
+      "visitor_id": "sample-008",
+      "component": "classifier",
+      "status": "ok",
+      "ms": 0.01
+    },
+    {
+      "visitor_id": "sample-008",
+      "component": "strategy",
+      "status": "ok",
+      "ms": 0.002
+    },
+    {
+      "visitor_id": "sample-008",
+      "component": "response",
+      "status": "ok",
+      "ms": 0.001
+    },
+    {
+      "visitor_id": "sample-009",
+      "component": "classifier",
+      "status": "ok",
+      "ms": 0.01
+    },
+    {
+      "visitor_id": "sample-009",
+      "component": "strategy",
+      "status": "ok",
+      "ms": 0.002
+    },
+    {
+      "visitor_id": "sample-009",
+      "component": "response",
+      "status": "ok",
+      "ms": 0.001
+    },
+    {
+      "visitor_id": "sample-010",
+      "component": "classifier",
+      "status": "ok",
+      "ms": 0.01
+    },
+    {
+      "visitor_id": "sample-010",
+      "component": "strategy",
+      "status": "ok",
+      "ms": 0.002
+    },
+    {
+      "visitor_id": "sample-010",
+      "component": "response",
+      "status": "ok",
+      "ms": 0.001
+    },
+    {
+      "visitor_id": "sample-001",
+      "component": "classifier",
+      "status": "ok",
+      "ms": 0.013
+    },
+    {
+      "visitor_id": "sample-001",
+      "component": "strategy",
+      "status": "ok",
+      "ms": 0.003
+    },
+    {
+      "visitor_id": "sample-001",
+      "component": "response",
+      "status": "ok",
+      "ms": 0.001
+    },
+    {
+      "visitor_id": "sample-001",
+      "component": "judge.mock",
+      "status": "ok",
+      "ms": 0.009
+    },
+    {
+      "visitor_id": "sample-002",
+      "component": "classifier",
+      "status": "ok",
+      "ms": 0.013
+    },
+    {
+      "visitor_id": "sample-002",
+      "component": "strategy",
+      "status": "ok",
+      "ms": 0.003
+    },
+    {
+      "visitor_id": "sample-002",
+      "component": "response",
+      "status": "ok",
+      "ms": 0.001
+    },
+    {
+      "visitor_id": "sample-002",
+      "component": "judge.mock",
+      "status": "ok",
+      "ms": 0.005
+    },
+    {
+      "visitor_id": "sample-003",
+      "component": "classifier",
+      "status": "ok",
+      "ms": 0.01
+    },
+    {
+      "visitor_id": "sample-003",
+      "component": "strategy",
+      "status": "ok",
+      "ms": 0.002
+    },
+    {
+      "visitor_id": "sample-003",
+      "component": "response",
+      "status": "ok",
+      "ms": 0.001
+    },
+    {
+      "visitor_id": "sample-003",
+      "component": "judge.mock",
+      "status": "ok",
+      "ms": 0.005
+    },
+    {
+      "visitor_id": "sample-004",
+      "component": "classifier",
+      "status": "ok",
+      "ms": 0.01
+    },
+    {
+      "visitor_id": "sample-004",
+      "component": "strategy",
+      "status": "ok",
+      "ms": 0.002
+    },
+    {
+      "visitor_id": "sample-004",
+      "component": "response",
+      "status": "ok",
+      "ms": 0.001
+    },
+    {
+      "visitor_id": "sample-004",
+      "component": "judge.mock",
+      "status": "ok",
+      "ms": 0.005
+    },
+    {
+      "visitor_id": "sample-005",
+      "component": "classifier",
+      "status": "ok",
+      "ms": 0.009
+    },
+    {
+      "visitor_id": "sample-005",
+      "component": "strategy",
+      "status": "ok",
+      "ms": 0.002
+    },
+    {
+      "visitor_id": "sample-005",
+      "component": "response",
+      "status": "ok",
+      "ms": 0.001
+    },
+    {
+      "visitor_id": "sample-005",
+      "component": "judge.mock",
+      "status": "ok",
+      "ms": 0.004
+    },
+    {
+      "visitor_id": "sample-006",
+      "component": "classifier",
+      "status": "ok",
+      "ms": 0.01
+    },
+    {
+      "visitor_id": "sample-006",
+      "component": "strategy",
+      "status": "ok",
+      "ms": 0.003
+    },
+    {
+      "visitor_id": "sample-006",
+      "component": "response",
+      "status": "ok",
+      "ms": 0.001
+    },
+    {
+      "visitor_id": "sample-006",
+      "component": "judge.mock",
+      "status": "ok",
+      "ms": 0.004
+    },
+    {
+      "visitor_id": "sample-007",
+      "component": "classifier",
+      "status": "ok",
+      "ms": 0.009
+    },
+    {
+      "visitor_id": "sample-007",
+      "component": "strategy",
+      "status": "ok",
+      "ms": 0.002
+    },
+    {
+      "visitor_id": "sample-007",
+      "component": "response",
+      "status": "ok",
+      "ms": 0.001
+    },
+    {
+      "visitor_id": "sample-007",
+      "component": "judge.mock",
+      "status": "ok",
+      "ms": 0.005
+    },
+    {
+      "visitor_id": "sample-008",
+      "component": "classifier",
+      "status": "ok",
+      "ms": 0.009
+    },
+    {
+      "visitor_id": "sample-008",
+      "component": "strategy",
+      "status": "ok",
+      "ms": 0.002
+    },
+    {
+      "visitor_id": "sample-008",
+      "component": "response",
+      "status": "ok",
+      "ms": 0.001
+    },
+    {
+      "visitor_id": "sample-008",
+      "component": "judge.mock",
+      "status": "ok",
+      "ms": 0.004
+    },
+    {
+      "visitor_id": "sample-009",
+      "component": "classifier",
+      "status": "ok",
+      "ms": 0.009
+    },
+    {
+      "visitor_id": "sample-009",
+      "component": "strategy",
+      "status": "ok",
+      "ms": 0.004
+    },
+    {
+      "visitor_id": "sample-009",
+      "component": "response",
+      "status": "ok",
+      "ms": 0.001
+    },
+    {
+      "visitor_id": "sample-009",
+      "component": "judge.mock",
+      "status": "ok",
+      "ms": 0.005
+    },
+    {
+      "visitor_id": "sample-010",
+      "component": "classifier",
+      "status": "ok",
+      "ms": 0.009
+    },
+    {
+      "visitor_id": "sample-010",
+      "component": "strategy",
+      "status": "ok",
+      "ms": 0.002
+    },
+    {
+      "visitor_id": "sample-010",
+      "component": "response",
+      "status": "ok",
+      "ms": 0.001
+    },
+    {
+      "visitor_id": "sample-010",
+      "component": "judge.mock",
+      "status": "ok",
+      "ms": 0.006
+    },
+    {
+      "visitor_id": "sample-001",
+      "component": "classifier",
+      "status": "ok",
+      "ms": 0.014
+    },
+    {
+      "visitor_id": "sample-001",
+      "component": "strategy",
+      "status": "ok",
+      "ms": 0.003
+    },
+    {
+      "visitor_id": "sample-001",
+      "component": "response",
+      "status": "ok",
+      "ms": 0.001
+    },
+    {
+      "visitor_id": "sample-001",
+      "component": "judge.mock",
+      "status": "ok",
+      "ms": 0.011
+    },
+    {
+      "visitor_id": "sample-002",
+      "component": "classifier",
+      "status": "ok",
+      "ms": 0.018
+    },
+    {
+      "visitor_id": "sample-002",
+      "component": "strategy",
+      "status": "ok",
+      "ms": 0.005
+    },
+    {
+      "visitor_id": "sample-002",
+      "component": "response",
+      "status": "ok",
+      "ms": 0.001
+    },
+    {
+      "visitor_id": "sample-002",
+      "component": "judge.mock",
+      "status": "ok",
+      "ms": 0.006
+    },
+    {
+      "visitor_id": "sample-003",
+      "component": "classifier",
+      "status": "ok",
+      "ms": 0.015
+    },
+    {
+      "visitor_id": "sample-003",
+      "component": "strategy",
+      "status": "ok",
+      "ms": 0.003
+    },
+    {
+      "visitor_id": "sample-003",
+      "component": "response",
+      "status": "ok",
+      "ms": 0.001
+    },
+    {
+      "visitor_id": "sample-003",
+      "component": "judge.mock",
+      "status": "ok",
+      "ms": 0.005
+    },
+    {
+      "visitor_id": "sample-004",
+      "component": "classifier",
+      "status": "ok",
+      "ms": 0.011
+    },
+    {
+      "visitor_id": "sample-004",
+      "component": "strategy",
+      "status": "ok",
+      "ms": 0.003
+    },
+    {
+      "visitor_id": "sample-004",
+      "component": "response",
+      "status": "ok",
+      "ms": 0.001
+    },
+    {
+      "visitor_id": "sample-004",
+      "component": "judge.mock",
+      "status": "ok",
+      "ms": 0.005
+    },
+    {
+      "visitor_id": "sample-005",
+      "component": "classifier",
+      "status": "ok",
+      "ms": 0.011
+    },
+    {
+      "visitor_id": "sample-005",
+      "component": "strategy",
+      "status": "ok",
+      "ms": 0.002
+    },
+    {
+      "visitor_id": "sample-005",
+      "component": "response",
+      "status": "ok",
+      "ms": 0.001
+    },
+    {
+      "visitor_id": "sample-005",
+      "component": "judge.mock",
+      "status": "ok",
+      "ms": 0.005
+    },
+    {
+      "visitor_id": "sample-006",
+      "component": "classifier",
+      "status": "ok",
+      "ms": 0.012
+    },
+    {
+      "visitor_id": "sample-006",
+      "component": "strategy",
+      "status": "ok",
+      "ms": 0.003
+    },
+    {
+      "visitor_id": "sample-006",
+      "component": "response",
+      "status": "ok",
+      "ms": 0.001
+    },
+    {
+      "visitor_id": "sample-006",
+      "component": "judge.mock",
+      "status": "ok",
+      "ms": 0.004
+    },
+    {
+      "visitor_id": "sample-007",
+      "component": "classifier",
+      "status": "ok",
+      "ms": 0.011
+    },
+    {
+      "visitor_id": "sample-007",
+      "component": "strategy",
+      "status": "ok",
+      "ms": 0.003
+    },
+    {
+      "visitor_id": "sample-007",
+      "component": "response",
+      "status": "ok",
+      "ms": 0.001
+    },
+    {
+      "visitor_id": "sample-007",
+      "component": "judge.mock",
+      "status": "ok",
+      "ms": 0.005
+    },
+    {
+      "visitor_id": "sample-008",
+      "component": "classifier",
+      "status": "ok",
+      "ms": 0.01
+    },
+    {
+      "visitor_id": "sample-008",
+      "component": "strategy",
+      "status": "ok",
+      "ms": 0.003
+    },
+    {
+      "visitor_id": "sample-008",
+      "component": "response",
+      "status": "ok",
+      "ms": 0.001
+    },
+    {
+      "visitor_id": "sample-008",
+      "component": "judge.mock",
+      "status": "ok",
+      "ms": 0.005
+    },
+    {
+      "visitor_id": "sample-009",
+      "component": "classifier",
+      "status": "ok",
+      "ms": 0.009
+    },
+    {
+      "visitor_id": "sample-009",
+      "component": "strategy",
+      "status": "ok",
+      "ms": 0.002
+    },
+    {
+      "visitor_id": "sample-009",
+      "component": "response",
+      "status": "ok",
+      "ms": 0.001
+    },
+    {
+      "visitor_id": "sample-009",
+      "component": "judge.mock",
+      "status": "ok",
+      "ms": 0.004
+    },
+    {
+      "visitor_id": "sample-010",
+      "component": "classifier",
+      "status": "ok",
+      "ms": 0.01
+    },
+    {
+      "visitor_id": "sample-010",
+      "component": "strategy",
+      "status": "ok",
+      "ms": 0.002
+    },
+    {
+      "visitor_id": "sample-010",
+      "component": "response",
+      "status": "ok",
+      "ms": 0.001
+    },
+    {
+      "visitor_id": "sample-010",
+      "component": "judge.mock",
+      "status": "ok",
+      "ms": 0.004
+    },
+    {
+      "visitor_id": "sample-001",
+      "component": "classifier",
+      "status": "ok",
+      "ms": 0.025
+    },
+    {
+      "visitor_id": "sample-001",
+      "component": "strategy",
+      "status": "ok",
+      "ms": 0.005
+    },
+    {
+      "visitor_id": "sample-001",
+      "component": "response",
+      "status": "ok",
+      "ms": 0.001
+    },
+    {
+      "visitor_id": "sample-001",
+      "component": "judge.mock",
+      "status": "ok",
+      "ms": 0.009
+    },
+    {
+      "visitor_id": "sample-002",
+      "component": "classifier",
+      "status": "ok",
+      "ms": 0.017
+    },
+    {
+      "visitor_id": "sample-002",
+      "component": "strategy",
+      "status": "ok",
+      "ms": 0.004
+    },
+    {
+      "visitor_id": "sample-002",
+      "component": "response",
+      "status": "ok",
+      "ms": 0.001
+    },
+    {
+      "visitor_id": "sample-002",
+      "component": "judge.mock",
+      "status": "ok",
+      "ms": 0.006
+    },
+    {
+      "visitor_id": "sample-003",
+      "component": "classifier",
+      "status": "ok",
+      "ms": 0.015
+    },
+    {
+      "visitor_id": "sample-003",
+      "component": "strategy",
+      "status": "ok",
+      "ms": 0.003
+    },
+    {
+      "visitor_id": "sample-003",
+      "component": "response",
+      "status": "ok",
+      "ms": 0.001
+    },
+    {
+      "visitor_id": "sample-003",
+      "component": "judge.mock",
+      "status": "ok",
+      "ms": 0.005
+    },
+    {
+      "visitor_id": "sample-004",
+      "component": "classifier",
+      "status": "ok",
+      "ms": 0.013
+    },
+    {
+      "visitor_id": "sample-004",
+      "component": "strategy",
+      "status": "ok",
+      "ms": 0.003
+    },
+    {
+      "visitor_id": "sample-004",
+      "component": "response",
+      "status": "ok",
+      "ms": 0.001
+    },
+    {
+      "visitor_id": "sample-004",
+      "component": "judge.mock",
+      "status": "ok",
+      "ms": 0.01
+    },
+    {
+      "visitor_id": "sample-005",
+      "component": "classifier",
+      "status": "ok",
+      "ms": 0.017
+    },
+    {
+      "visitor_id": "sample-005",
+      "component": "strategy",
+      "status": "ok",
+      "ms": 0.005
+    },
+    {
+      "visitor_id": "sample-005",
+      "component": "response",
+      "status": "ok",
+      "ms": 0.001
+    },
+    {
+      "visitor_id": "sample-005",
+      "component": "judge.mock",
+      "status": "ok",
+      "ms": 0.006
+    },
+    {
+      "visitor_id": "sample-006",
+      "component": "classifier",
+      "status": "ok",
+      "ms": 0.015
+    },
+    {
+      "visitor_id": "sample-006",
+      "component": "strategy",
+      "status": "ok",
+      "ms": 0.003
+    },
+    {
+      "visitor_id": "sample-006",
+      "component": "response",
+      "status": "ok",
+      "ms": 0.001
+    },
+    {
+      "visitor_id": "sample-006",
+      "component": "judge.mock",
+      "status": "ok",
+      "ms": 0.005
+    },
+    {
+      "visitor_id": "sample-007",
+      "component": "classifier",
+      "status": "ok",
+      "ms": 0.035
+    },
+    {
+      "visitor_id": "sample-007",
+      "component": "strategy",
+      "status": "ok",
+      "ms": 0.003
+    },
+    {
+      "visitor_id": "sample-007",
+      "component": "response",
+      "status": "ok",
+      "ms": 0.001
+    },
+    {
+      "visitor_id": "sample-007",
+      "component": "judge.mock",
+      "status": "ok",
+      "ms": 0.006
+    },
+    {
+      "visitor_id": "sample-008",
+      "component": "classifier",
+      "status": "ok",
+      "ms": 0.013
+    },
+    {
+      "visitor_id": "sample-008",
+      "component": "strategy",
+      "status": "ok",
+      "ms": 0.004
+    },
+    {
+      "visitor_id": "sample-008",
+      "component": "response",
+      "status": "ok",
+      "ms": 0.001
+    },
+    {
+      "visitor_id": "sample-008",
+      "component": "judge.mock",
+      "status": "ok",
+      "ms": 0.008
+    },
+    {
+      "visitor_id": "sample-009",
+      "component": "classifier",
+      "status": "ok",
+      "ms": 0.017
+    },
+    {
+      "visitor_id": "sample-009",
+      "component": "strategy",
+      "status": "ok",
+      "ms": 0.003
+    },
+    {
+      "visitor_id": "sample-009",
+      "component": "response",
+      "status": "ok",
+      "ms": 0.001
+    },
+    {
+      "visitor_id": "sample-009",
+      "component": "judge.mock",
+      "status": "ok",
+      "ms": 0.005
+    },
+    {
+      "visitor_id": "sample-010",
+      "component": "classifier",
+      "status": "ok",
+      "ms": 0.013
+    },
+    {
+      "visitor_id": "sample-010",
+      "component": "strategy",
+      "status": "ok",
+      "ms": 0.003
+    },
+    {
+      "visitor_id": "sample-010",
+      "component": "response",
+      "status": "ok",
+      "ms": 0.001
+    },
+    {
+      "visitor_id": "sample-010",
+      "component": "judge.mock",
+      "status": "ok",
+      "ms": 0.007
+    },
+    {
+      "visitor_id": "sample-001",
+      "component": "classifier",
+      "status": "ok",
+      "ms": 0.02
+    },
+    {
+      "visitor_id": "sample-001",
+      "component": "strategy",
+      "status": "ok",
+      "ms": 0.004
+    },
+    {
+      "visitor_id": "sample-001",
+      "component": "response",
+      "status": "ok",
+      "ms": 0.001
+    },
+    {
+      "visitor_id": "sample-001",
+      "component": "judge.mock",
+      "status": "ok",
+      "ms": 0.007
+    },
+    {
+      "visitor_id": "sample-002",
+      "component": "classifier",
+      "status": "ok",
+      "ms": 0.015
+    },
+    {
+      "visitor_id": "sample-002",
+      "component": "strategy",
+      "status": "ok",
+      "ms": 0.003
+    },
+    {
+      "visitor_id": "sample-002",
+      "component": "response",
+      "status": "ok",
+      "ms": 0.001
+    },
+    {
+      "visitor_id": "sample-002",
+      "component": "judge.mock",
+      "status": "ok",
+      "ms": 0.005
+    },
+    {
+      "visitor_id": "sample-003",
+      "component": "classifier",
+      "status": "ok",
+      "ms": 0.013
+    },
+    {
+      "visitor_id": "sample-003",
+      "component": "strategy",
+      "status": "ok",
+      "ms": 0.003
+    },
+    {
+      "visitor_id": "sample-003",
+      "component": "response",
+      "status": "ok",
+      "ms": 0.001
+    },
+    {
+      "visitor_id": "sample-003",
+      "component": "judge.mock",
+      "status": "ok",
+      "ms": 0.005
+    },
+    {
+      "visitor_id": "sample-004",
+      "component": "classifier",
+      "status": "ok",
+      "ms": 0.013
+    },
+    {
+      "visitor_id": "sample-004",
+      "component": "strategy",
+      "status": "ok",
+      "ms": 0.004
+    },
+    {
+      "visitor_id": "sample-004",
+      "component": "response",
+      "status": "ok",
+      "ms": 0.001
+    },
+    {
+      "visitor_id": "sample-004",
+      "component": "judge.mock",
+      "status": "ok",
+      "ms": 0.005
+    },
+    {
+      "visitor_id": "sample-005",
+      "component": "classifier",
+      "status": "ok",
+      "ms": 0.012
+    },
+    {
+      "visitor_id": "sample-005",
+      "component": "strategy",
+      "status": "ok",
+      "ms": 0.003
+    },
+    {
+      "visitor_id": "sample-005",
+      "component": "response",
+      "status": "ok",
+      "ms": 0.001
+    },
+    {
+      "visitor_id": "sample-005",
+      "component": "judge.mock",
+      "status": "ok",
+      "ms": 0.005
+    },
+    {
+      "visitor_id": "sample-006",
+      "component": "classifier",
+      "status": "ok",
+      "ms": 0.012
+    },
+    {
+      "visitor_id": "sample-006",
+      "component": "strategy",
+      "status": "ok",
+      "ms": 0.004
+    },
+    {
+      "visitor_id": "sample-006",
+      "component": "response",
+      "status": "ok",
+      "ms": 0.001
+    },
+    {
+      "visitor_id": "sample-006",
+      "component": "judge.mock",
+      "status": "ok",
+      "ms": 0.005
+    },
+    {
+      "visitor_id": "sample-007",
+      "component": "classifier",
+      "status": "ok",
+      "ms": 0.013
+    },
+    {
+      "visitor_id": "sample-007",
+      "component": "strategy",
+      "status": "ok",
+      "ms": 0.003
+    },
+    {
+      "visitor_id": "sample-007",
+      "component": "response",
+      "status": "ok",
+      "ms": 0.004
+    },
+    {
+      "visitor_id": "sample-007",
+      "component": "judge.mock",
+      "status": "ok",
+      "ms": 0.005
+    },
+    {
+      "visitor_id": "sample-008",
+      "component": "classifier",
+      "status": "ok",
+      "ms": 0.011
+    },
+    {
+      "visitor_id": "sample-008",
+      "component": "strategy",
+      "status": "ok",
+      "ms": 0.003
+    },
+    {
+      "visitor_id": "sample-008",
+      "component": "response",
+      "status": "ok",
+      "ms": 0.001
+    },
+    {
+      "visitor_id": "sample-008",
+      "component": "judge.mock",
+      "status": "ok",
+      "ms": 0.004
+    },
+    {
+      "visitor_id": "sample-009",
+      "component": "classifier",
+      "status": "ok",
+      "ms": 0.011
+    },
+    {
+      "visitor_id": "sample-009",
+      "component": "strategy",
+      "status": "ok",
+      "ms": 0.003
+    },
+    {
+      "visitor_id": "sample-009",
+      "component": "response",
+      "status": "ok",
+      "ms": 0.001
+    },
+    {
+      "visitor_id": "sample-009",
+      "component": "judge.mock",
+      "status": "ok",
+      "ms": 0.005
+    },
+    {
+      "visitor_id": "sample-010",
+      "component": "classifier",
+      "status": "ok",
+      "ms": 0.013
+    },
+    {
+      "visitor_id": "sample-010",
+      "component": "strategy",
+      "status": "ok",
+      "ms": 0.003
+    },
+    {
+      "visitor_id": "sample-010",
+      "component": "response",
+      "status": "ok",
+      "ms": 0.001
+    },
+    {
+      "visitor_id": "sample-010",
+      "component": "judge.mock",
+      "status": "ok",
+      "ms": 0.005
+    },
+    {
+      "visitor_id": "sample-001",
+      "component": "judge.mock",
+      "status": "ok",
+      "ms": 0.006
+    },
+    {
+      "visitor_id": "sample-002",
+      "component": "judge.mock",
+      "status": "ok",
+      "ms": 0.004
+    },
+    {
+      "visitor_id": "sample-003",
+      "component": "judge.mock",
+      "status": "ok",
+      "ms": 0.003
+    },
+    {
+      "visitor_id": "sample-004",
+      "component": "judge.mock",
+      "status": "ok",
+      "ms": 0.003
+    },
+    {
+      "visitor_id": "sample-005",
+      "component": "judge.mock",
+      "status": "ok",
+      "ms": 0.003
+    },
+    {
+      "visitor_id": "sample-006",
+      "component": "judge.mock",
+      "status": "ok",
+      "ms": 0.003
+    },
+    {
+      "visitor_id": "sample-007",
+      "component": "judge.mock",
+      "status": "ok",
+      "ms": 0.003
+    },
+    {
+      "visitor_id": "sample-008",
+      "component": "judge.mock",
+      "status": "ok",
+      "ms": 0.003
+    },
+    {
+      "visitor_id": "sample-009",
+      "component": "judge.mock",
+      "status": "ok",
+      "ms": 0.003
+    },
+    {
+      "visitor_id": "sample-010",
+      "component": "judge.mock",
+      "status": "ok",
+      "ms": 0.003
+    },
+    {
+      "visitor_id": "sample-001",
+      "component": "classifier",
+      "status": "ok",
+      "ms": 0.015
+    },
+    {
+      "visitor_id": "sample-001",
+      "component": "memory",
+      "status": "ok",
+      "ms": 0.042
+    },
+    {
+      "visitor_id": "sample-001",
+      "component": "plan",
+      "status": "ok",
+      "ms": 0.002
+    },
+    {
+      "visitor_id": "sample-002",
+      "component": "classifier",
+      "status": "ok",
+      "ms": 0.016
+    },
+    {
+      "visitor_id": "sample-002",
+      "component": "memory",
+      "status": "ok",
+      "ms": 0.002
+    },
+    {
+      "visitor_id": "sample-002",
+      "component": "plan",
+      "status": "ok",
+      "ms": 0.001
+    },
+    {
+      "visitor_id": "sample-003",
+      "component": "classifier",
+      "status": "ok",
+      "ms": 0.015
+    },
+    {
+      "visitor_id": "sample-003",
+      "component": "memory",
+      "status": "ok",
+      "ms": 0.002
+    },
+    {
+      "visitor_id": "sample-003",
+      "component": "plan",
+      "status": "ok",
+      "ms": 0.001
+    },
+    {
+      "visitor_id": "sample-004",
+      "component": "classifier",
+      "status": "ok",
+      "ms": 0.015
+    },
+    {
+      "visitor_id": "sample-004",
+      "component": "memory",
+      "status": "ok",
+      "ms": 0.002
+    },
+    {
+      "visitor_id": "sample-004",
+      "component": "plan",
+      "status": "ok",
+      "ms": 0.001
+    },
+    {
+      "visitor_id": "sample-005",
+      "component": "classifier",
+      "status": "ok",
+      "ms": 0.017
+    },
+    {
+      "visitor_id": "sample-005",
+      "component": "memory",
+      "status": "ok",
+      "ms": 0.002
+    },
+    {
+      "visitor_id": "sample-005",
+      "component": "plan",
+      "status": "ok",
+      "ms": 0.001
+    },
+    {
+      "visitor_id": "sample-006",
+      "component": "classifier",
+      "status": "ok",
+      "ms": 0.014
+    },
+    {
+      "visitor_id": "sample-006",
+      "component": "memory",
+      "status": "ok",
+      "ms": 0.002
+    },
+    {
+      "visitor_id": "sample-006",
+      "component": "plan",
+      "status": "ok",
+      "ms": 0.001
+    },
+    {
+      "visitor_id": "sample-007",
+      "component": "classifier",
+      "status": "ok",
+      "ms": 0.015
+    },
+    {
+      "visitor_id": "sample-007",
+      "component": "memory",
+      "status": "ok",
+      "ms": 0.002
+    },
+    {
+      "visitor_id": "sample-007",
+      "component": "plan",
+      "status": "ok",
+      "ms": 0.001
+    },
+    {
+      "visitor_id": "sample-008",
+      "component": "classifier",
+      "status": "ok",
+      "ms": 0.015
+    },
+    {
+      "visitor_id": "sample-008",
+      "component": "memory",
+      "status": "ok",
+      "ms": 0.002
+    },
+    {
+      "visitor_id": "sample-008",
+      "component": "plan",
+      "status": "ok",
+      "ms": 0.055
+    },
+    {
+      "visitor_id": "sample-009",
+      "component": "classifier",
+      "status": "ok",
+      "ms": 0.016
+    },
+    {
+      "visitor_id": "sample-009",
+      "component": "memory",
+      "status": "ok",
+      "ms": 0.002
+    },
+    {
+      "visitor_id": "sample-009",
+      "component": "plan",
+      "status": "ok",
+      "ms": 0.001
+    },
+    {
+      "visitor_id": "sample-010",
+      "component": "classifier",
+      "status": "ok",
+      "ms": 0.014
+    },
+    {
+      "visitor_id": "sample-010",
+      "component": "memory",
+      "status": "ok",
+      "ms": 0.002
+    },
+    {
+      "visitor_id": "sample-010",
+      "component": "plan",
+      "status": "ok",
+      "ms": 0.001
+    },
+    {
+      "visitor_id": "sample-001",
+      "component": "judge.mock",
+      "status": "ok",
+      "ms": 0.006
+    },
+    {
+      "visitor_id": "sample-002",
+      "component": "judge.mock",
+      "status": "ok",
+      "ms": 0.004
+    },
+    {
+      "visitor_id": "sample-003",
+      "component": "judge.mock",
+      "status": "ok",
+      "ms": 0.003
+    },
+    {
+      "visitor_id": "sample-004",
+      "component": "judge.mock",
+      "status": "ok",
+      "ms": 0.003
+    },
+    {
+      "visitor_id": "sample-005",
+      "component": "judge.mock",
+      "status": "ok",
+      "ms": 0.003
+    },
+    {
+      "visitor_id": "sample-006",
+      "component": "judge.mock",
+      "status": "ok",
+      "ms": 0.003
+    },
+    {
+      "visitor_id": "sample-007",
+      "component": "judge.mock",
+      "status": "ok",
+      "ms": 0.003
+    },
+    {
+      "visitor_id": "sample-008",
+      "component": "judge.mock",
+      "status": "ok",
+      "ms": 0.003
+    },
+    {
+      "visitor_id": "sample-009",
+      "component": "judge.mock",
+      "status": "ok",
+      "ms": 0.003
+    },
+    {
+      "visitor_id": "sample-010",
+      "component": "judge.mock",
+      "status": "ok",
+      "ms": 0.003
+    },
+    {
+      "visitor_id": "sample-001",
+      "component": "select",
+      "status": "ok",
+      "ms": 0.001
+    },
+    {
+      "visitor_id": "sample-001",
+      "component": "classifier",
+      "status": "ok",
+      "ms": 0.019
+    },
+    {
+      "visitor_id": "sample-001",
+      "component": "strategy",
+      "status": "ok",
+      "ms": 0.005
+    },
+    {
+      "visitor_id": "sample-001",
+      "component": "response",
+      "status": "ok",
+      "ms": 0.001
+    },
+    {
+      "visitor_id": "sample-002",
+      "component": "select",
+      "status": "ok",
+      "ms": 0.001
+    },
+    {
+      "visitor_id": "sample-002",
+      "component": "classifier",
+      "status": "ok",
+      "ms": 0.016
+    },
+    {
+      "visitor_id": "sample-002",
+      "component": "strategy",
+      "status": "ok",
+      "ms": 0.004
+    },
+    {
+      "visitor_id": "sample-002",
+      "component": "response",
+      "status": "ok",
+      "ms": 0.001
+    },
+    {
+      "visitor_id": "sample-003",
+      "component": "select",
+      "status": "ok",
+      "ms": 0.001
+    },
+    {
+      "visitor_id": "sample-003",
+      "component": "classifier",
+      "status": "ok",
+      "ms": 0.016
+    },
+    {
+      "visitor_id": "sample-003",
+      "component": "strategy",
+      "status": "ok",
+      "ms": 0.004
+    },
+    {
+      "visitor_id": "sample-003",
+      "component": "response",
+      "status": "ok",
+      "ms": 0.001
+    },
+    {
+      "visitor_id": "sample-004",
+      "component": "select",
+      "status": "ok",
+      "ms": 0.001
+    },
+    {
+      "visitor_id": "sample-004",
+      "component": "classifier",
+      "status": "ok",
+      "ms": 0.016
+    },
+    {
+      "visitor_id": "sample-004",
+      "component": "strategy",
+      "status": "ok",
+      "ms": 0.003
+    },
+    {
+      "visitor_id": "sample-004",
+      "component": "response",
+      "status": "ok",
+      "ms": 0.001
+    },
+    {
+      "visitor_id": "sample-005",
+      "component": "select",
+      "status": "ok",
+      "ms": 0.001
+    },
+    {
+      "visitor_id": "sample-005",
+      "component": "classifier",
+      "status": "ok",
+      "ms": 0.015
+    },
+    {
+      "visitor_id": "sample-005",
+      "component": "strategy",
+      "status": "ok",
+      "ms": 0.003
+    },
+    {
+      "visitor_id": "sample-005",
+      "component": "response",
+      "status": "ok",
+      "ms": 0.001
+    },
+    {
+      "visitor_id": "sample-006",
+      "component": "select",
+      "status": "ok",
+      "ms": 0.001
+    },
+    {
+      "visitor_id": "sample-006",
+      "component": "classifier",
+      "status": "ok",
+      "ms": 0.015
+    },
+    {
+      "visitor_id": "sample-006",
+      "component": "strategy",
+      "status": "ok",
+      "ms": 0.003
+    },
+    {
+      "visitor_id": "sample-006",
+      "component": "response",
+      "status": "ok",
+      "ms": 0.001
+    },
+    {
+      "visitor_id": "sample-007",
+      "component": "select",
+      "status": "ok",
+      "ms": 0.001
+    },
+    {
+      "visitor_id": "sample-007",
+      "component": "classifier",
+      "status": "ok",
+      "ms": 0.016
+    },
+    {
+      "visitor_id": "sample-007",
+      "component": "strategy",
+      "status": "ok",
+      "ms": 0.004
+    },
+    {
+      "visitor_id": "sample-007",
+      "component": "response",
+      "status": "ok",
+      "ms": 0.001
+    },
+    {
+      "visitor_id": "sample-008",
+      "component": "select",
+      "status": "ok",
+      "ms": 0.001
+    },
+    {
+      "visitor_id": "sample-008",
+      "component": "classifier",
+      "status": "ok",
+      "ms": 0.015
+    },
+    {
+      "visitor_id": "sample-008",
+      "component": "strategy",
+      "status": "ok",
+      "ms": 0.003
+    },
+    {
+      "visitor_id": "sample-008",
+      "component": "response",
+      "status": "ok",
+      "ms": 0.001
+    },
+    {
+      "visitor_id": "sample-009",
+      "component": "select",
+      "status": "ok",
+      "ms": 0.001
+    },
+    {
+      "visitor_id": "sample-009",
+      "component": "classifier",
+      "status": "ok",
+      "ms": 0.015
+    },
+    {
+      "visitor_id": "sample-009",
+      "component": "strategy",
+      "status": "ok",
+      "ms": 0.002
+    },
+    {
+      "visitor_id": "sample-009",
+      "component": "classifier",
+      "status": "ok",
+      "ms": 0.013
+    },
+    {
+      "visitor_id": "sample-009",
+      "component": "strategy",
+      "status": "ok",
+      "ms": 0.003
+    },
+    {
+      "visitor_id": "sample-009",
+      "component": "response",
+      "status": "ok",
+      "ms": 0.003
+    },
+    {
+      "visitor_id": "sample-010",
+      "component": "select",
+      "status": "ok",
+      "ms": 0.001
+    },
+    {
+      "visitor_id": "sample-010",
+      "component": "classifier",
+      "status": "ok",
+      "ms": 0.016
+    },
+    {
+      "visitor_id": "sample-010",
+      "component": "strategy",
+      "status": "ok",
+      "ms": 0.003
+    },
+    {
+      "visitor_id": "sample-010",
+      "component": "response",
+      "status": "ok",
+      "ms": 0.001
+    },
+    {
+      "visitor_id": "sample-001",
+      "component": "classifier",
+      "status": "ok",
+      "ms": 0.017
+    },
+    {
+      "visitor_id": "sample-001",
+      "component": "strategy",
+      "status": "ok",
+      "ms": 0.004
+    },
+    {
+      "visitor_id": "sample-001",
+      "component": "response",
+      "status": "ok",
+      "ms": 0.001
+    },
+    {
+      "visitor_id": "sample-001",
+      "component": "judge.mock",
+      "status": "ok",
+      "ms": 0.006
+    },
+    {
+      "visitor_id": "sample-002",
+      "component": "classifier",
+      "status": "ok",
+      "ms": 0.016
+    },
+    {
+      "visitor_id": "sample-002",
+      "component": "strategy",
+      "status": "ok",
+      "ms": 0.004
+    },
+    {
+      "visitor_id": "sample-002",
+      "component": "response",
+      "status": "ok",
+      "ms": 0.001
+    },
+    {
+      "visitor_id": "sample-002",
+      "component": "judge.mock",
+      "status": "ok",
+      "ms": 0.005
+    },
+    {
+      "visitor_id": "sample-003",
+      "component": "classifier",
+      "status": "ok",
+      "ms": 0.015
+    },
+    {
+      "visitor_id": "sample-003",
+      "component": "strategy",
+      "status": "ok",
+      "ms": 0.003
+    },
+    {
+      "visitor_id": "sample-003",
+      "component": "response",
+      "status": "ok",
+      "ms": 0.001
+    },
+    {
+      "visitor_id": "sample-003",
+      "component": "judge.mock",
+      "status": "ok",
+      "ms": 0.005
+    },
+    {
+      "visitor_id": "sample-004",
+      "component": "classifier",
+      "status": "ok",
+      "ms": 0.014
+    },
+    {
+      "visitor_id": "sample-004",
+      "component": "strategy",
+      "status": "ok",
+      "ms": 0.003
+    },
+    {
+      "visitor_id": "sample-004",
+      "component": "response",
+      "status": "ok",
+      "ms": 0.001
+    },
+    {
+      "visitor_id": "sample-004",
+      "component": "judge.mock",
+      "status": "ok",
+      "ms": 0.004
+    },
+    {
+      "visitor_id": "sample-005",
+      "component": "classifier",
+      "status": "ok",
+      "ms": 0.014
+    },
+    {
+      "visitor_id": "sample-005",
+      "component": "strategy",
+      "status": "ok",
+      "ms": 0.003
+    },
+    {
+      "visitor_id": "sample-005",
+      "component": "response",
+      "status": "ok",
+      "ms": 0.001
+    },
+    {
+      "visitor_id": "sample-005",
+      "component": "judge.mock",
+      "status": "ok",
+      "ms": 0.004
+    },
+    {
+      "visitor_id": "sample-006",
+      "component": "classifier",
+      "status": "ok",
+      "ms": 0.013
+    },
+    {
+      "visitor_id": "sample-006",
+      "component": "strategy",
+      "status": "ok",
+      "ms": 0.003
+    },
+    {
+      "visitor_id": "sample-006",
+      "component": "response",
+      "status": "ok",
+      "ms": 0.001
+    },
+    {
+      "visitor_id": "sample-006",
+      "component": "judge.mock",
+      "status": "ok",
+      "ms": 0.004
+    },
+    {
+      "visitor_id": "sample-007",
+      "component": "classifier",
+      "status": "ok",
+      "ms": 0.015
+    },
+    {
+      "visitor_id": "sample-007",
+      "component": "strategy",
+      "status": "ok",
+      "ms": 0.003
+    },
+    {
+      "visitor_id": "sample-007",
+      "component": "response",
+      "status": "ok",
+      "ms": 0.001
+    },
+    {
+      "visitor_id": "sample-007",
+      "component": "judge.mock",
+      "status": "ok",
+      "ms": 0.004
+    },
+    {
+      "visitor_id": "sample-008",
+      "component": "classifier",
+      "status": "ok",
+      "ms": 0.013
+    },
+    {
+      "visitor_id": "sample-008",
+      "component": "strategy",
+      "status": "ok",
+      "ms": 0.003
+    },
+    {
+      "visitor_id": "sample-008",
+      "component": "response",
+      "status": "ok",
+      "ms": 0.001
+    },
+    {
+      "visitor_id": "sample-008",
+      "component": "judge.mock",
+      "status": "ok",
+      "ms": 0.004
+    },
+    {
+      "visitor_id": "sample-009",
+      "component": "classifier",
+      "status": "ok",
+      "ms": 0.013
+    },
+    {
+      "visitor_id": "sample-009",
+      "component": "strategy",
+      "status": "ok",
+      "ms": 0.003
+    },
+    {
+      "visitor_id": "sample-009",
+      "component": "response",
+      "status": "ok",
+      "ms": 0.001
+    },
+    {
+      "visitor_id": "sample-009",
+      "component": "judge.mock",
+      "status": "ok",
+      "ms": 0.004
+    },
+    {
+      "visitor_id": "sample-010",
+      "component": "classifier",
+      "status": "ok",
+      "ms": 0.014
+    },
+    {
+      "visitor_id": "sample-010",
+      "component": "strategy",
+      "status": "ok",
+      "ms": 0.004
+    },
+    {
+      "visitor_id": "sample-010",
+      "component": "response",
+      "status": "ok",
+      "ms": 0.001
+    },
+    {
+      "visitor_id": "sample-010",
+      "component": "judge.mock",
+      "status": "ok",
+      "ms": 0.004
+    },
+    {
+      "visitor_id": "sample-001",
+      "component": "classifier",
+      "status": "ok",
+      "ms": 0.019
+    },
+    {
+      "visitor_id": "sample-001",
+      "component": "strategy",
+      "status": "ok",
+      "ms": 0.004
+    },
+    {
+      "visitor_id": "sample-001",
+      "component": "response",
+      "status": "ok",
+      "ms": 0.001
+    },
+    {
+      "visitor_id": "sample-001",
+      "component": "judge.mock",
+      "status": "ok",
+      "ms": 0.007
+    },
+    {
+      "visitor_id": "sample-002",
+      "component": "classifier",
+      "status": "ok",
+      "ms": 0.016
+    },
+    {
+      "visitor_id": "sample-002",
+      "component": "strategy",
+      "status": "ok",
+      "ms": 0.004
+    },
+    {
+      "visitor_id": "sample-002",
+      "component": "response",
+      "status": "ok",
+      "ms": 0.001
+    },
+    {
+      "visitor_id": "sample-002",
+      "component": "judge.mock",
+      "status": "ok",
+      "ms": 0.005
+    },
+    {
+      "visitor_id": "sample-003",
+      "component": "classifier",
+      "status": "ok",
+      "ms": 0.016
+    },
+    {
+      "visitor_id": "sample-003",
+      "component": "strategy",
+      "status": "ok",
+      "ms": 0.004
+    },
+    {
+      "visitor_id": "sample-003",
+      "component": "response",
+      "status": "ok",
+      "ms": 0.001
+    },
+    {
+      "visitor_id": "sample-003",
+      "component": "judge.mock",
+      "status": "ok",
+      "ms": 0.005
+    },
+    {
+      "visitor_id": "sample-004",
+      "component": "classifier",
+      "status": "ok",
+      "ms": 0.015
+    },
+    {
+      "visitor_id": "sample-004",
+      "component": "strategy",
+      "status": "ok",
+      "ms": 0.003
+    },
+    {
+      "visitor_id": "sample-004",
+      "component": "response",
+      "status": "ok",
+      "ms": 0.001
+    },
+    {
+      "visitor_id": "sample-004",
+      "component": "judge.mock",
+      "status": "ok",
+      "ms": 0.005
+    },
+    {
+      "visitor_id": "sample-005",
+      "component": "classifier",
+      "status": "ok",
+      "ms": 0.014
+    },
+    {
+      "visitor_id": "sample-005",
+      "component": "strategy",
+      "status": "ok",
+      "ms": 0.003
+    },
+    {
+      "visitor_id": "sample-005",
+      "component": "response",
+      "status": "ok",
+      "ms": 0.001
+    },
+    {
+      "visitor_id": "sample-005",
+      "component": "judge.mock",
+      "status": "ok",
+      "ms": 0.005
+    },
+    {
+      "visitor_id": "sample-006",
+      "component": "classifier",
+      "status": "ok",
+      "ms": 0.015
+    },
+    {
+      "visitor_id": "sample-006",
+      "component": "strategy",
+      "status": "ok",
+      "ms": 0.003
+    },
+    {
+      "visitor_id": "sample-006",
+      "component": "response",
+      "status": "ok",
+      "ms": 0.001
+    },
+    {
+      "visitor_id": "sample-006",
+      "component": "judge.mock",
+      "status": "ok",
+      "ms": 0.005
+    },
+    {
+      "visitor_id": "sample-007",
+      "component": "classifier",
+      "status": "ok",
+      "ms": 0.016
+    },
+    {
+      "visitor_id": "sample-007",
+      "component": "strategy",
+      "status": "ok",
+      "ms": 0.004
+    },
+    {
+      "visitor_id": "sample-007",
+      "component": "response",
+      "status": "ok",
+      "ms": 0.001
+    },
+    {
+      "visitor_id": "sample-007",
+      "component": "judge.mock",
+      "status": "ok",
+      "ms": 0.005
+    },
+    {
+      "visitor_id": "sample-008",
+      "component": "classifier",
+      "status": "ok",
+      "ms": 0.014
+    },
+    {
+      "visitor_id": "sample-008",
+      "component": "strategy",
+      "status": "ok",
+      "ms": 0.003
+    },
+    {
+      "visitor_id": "sample-008",
+      "component": "response",
+      "status": "ok",
+      "ms": 0.001
+    },
+    {
+      "visitor_id": "sample-008",
+      "component": "judge.mock",
+      "status": "ok",
+      "ms": 0.004
+    },
+    {
+      "visitor_id": "sample-009",
+      "component": "classifier",
+      "status": "ok",
+      "ms": 0.015
+    },
+    {
+      "visitor_id": "sample-009",
+      "component": "strategy",
+      "status": "ok",
+      "ms": 0.003
+    },
+    {
+      "visitor_id": "sample-009",
+      "component": "response",
+      "status": "ok",
+      "ms": 0.001
+    },
+    {
+      "visitor_id": "sample-009",
+      "component": "judge.mock",
+      "status": "ok",
+      "ms": 0.004
+    },
+    {
+      "visitor_id": "sample-010",
+      "component": "classifier",
+      "status": "ok",
+      "ms": 0.014
+    },
+    {
+      "visitor_id": "sample-010",
+      "component": "strategy",
+      "status": "ok",
+      "ms": 0.003
+    },
+    {
+      "visitor_id": "sample-010",
+      "component": "response",
+      "status": "ok",
+      "ms": 0.001
+    },
+    {
+      "visitor_id": "sample-010",
+      "component": "judge.mock",
+      "status": "ok",
+      "ms": 0.004
+    },
+    {
+      "visitor_id": "sample-001",
+      "component": "classifier",
+      "status": "ok",
+      "ms": 0.02
+    },
+    {
+      "visitor_id": "sample-001",
+      "component": "strategy",
+      "status": "ok",
+      "ms": 0.005
+    },
+    {
+      "visitor_id": "sample-001",
+      "component": "response",
+      "status": "ok",
+      "ms": 0.001
+    },
+    {
+      "visitor_id": "sample-001",
+      "component": "judge.mock",
+      "status": "ok",
+      "ms": 0.006
+    },
+    {
+      "visitor_id": "sample-002",
+      "component": "classifier",
+      "status": "ok",
+      "ms": 0.016
+    },
+    {
+      "visitor_id": "sample-002",
+      "component": "strategy",
+      "status": "ok",
+      "ms": 0.004
+    },
+    {
+      "visitor_id": "sample-002",
+      "component": "response",
+      "status": "ok",
+      "ms": 0.001
+    },
+    {
+      "visitor_id": "sample-002",
+      "component": "judge.mock",
+      "status": "ok",
+      "ms": 0.005
+    },
+    {
+      "visitor_id": "sample-003",
+      "component": "classifier",
+      "status": "ok",
+      "ms": 0.018
+    },
+    {
+      "visitor_id": "sample-003",
+      "component": "strategy",
+      "status": "ok",
+      "ms": 0.004
+    },
+    {
+      "visitor_id": "sample-003",
+      "component": "response",
+      "status": "ok",
+      "ms": 0.001
+    },
+    {
+      "visitor_id": "sample-003",
+      "component": "judge.mock",
+      "status": "ok",
+      "ms": 0.006
+    },
+    {
+      "visitor_id": "sample-004",
+      "component": "classifier",
+      "status": "ok",
+      "ms": 0.016
+    },
+    {
+      "visitor_id": "sample-004",
+      "component": "strategy",
+      "status": "ok",
+      "ms": 0.004
+    },
+    {
+      "visitor_id": "sample-004",
+      "component": "response",
+      "status": "ok",
+      "ms": 0.001
+    },
+    {
+      "visitor_id": "sample-004",
+      "component": "judge.mock",
+      "status": "ok",
+      "ms": 0.005
+    },
+    {
+      "visitor_id": "sample-005",
+      "component": "classifier",
+      "status": "ok",
+      "ms": 0.016
+    },
+    {
+      "visitor_id": "sample-005",
+      "component": "strategy",
+      "status": "ok",
+      "ms": 0.004
+    },
+    {
+      "visitor_id": "sample-005",
+      "component": "response",
+      "status": "ok",
+      "ms": 0.001
+    },
+    {
+      "visitor_id": "sample-005",
+      "component": "judge.mock",
+      "status": "ok",
+      "ms": 0.005
+    },
+    {
+      "visitor_id": "sample-006",
+      "component": "classifier",
+      "status": "ok",
+      "ms": 0.014
+    },
+    {
+      "visitor_id": "sample-006",
+      "component": "strategy",
+      "status": "ok",
+      "ms": 0.007
+    },
+    {
+      "visitor_id": "sample-006",
+      "component": "response",
+      "status": "ok",
+      "ms": 0.001
+    },
+    {
+      "visitor_id": "sample-006",
+      "component": "judge.mock",
+      "status": "ok",
+      "ms": 0.008
+    },
+    {
+      "visitor_id": "sample-007",
+      "component": "classifier",
+      "status": "ok",
+      "ms": 0.024
+    },
+    {
+      "visitor_id": "sample-007",
+      "component": "strategy",
+      "status": "ok",
+      "ms": 0.005
+    },
+    {
+      "visitor_id": "sample-007",
+      "component": "response",
+      "status": "ok",
+      "ms": 0.001
+    },
+    {
+      "visitor_id": "sample-007",
+      "component": "judge.mock",
+      "status": "ok",
+      "ms": 0.006
+    },
+    {
+      "visitor_id": "sample-008",
+      "component": "classifier",
+      "status": "ok",
+      "ms": 0.015
+    },
+    {
+      "visitor_id": "sample-008",
+      "component": "strategy",
+      "status": "ok",
+      "ms": 0.004
+    },
+    {
+      "visitor_id": "sample-008",
+      "component": "response",
+      "status": "ok",
+      "ms": 0.001
+    },
+    {
+      "visitor_id": "sample-008",
+      "component": "judge.mock",
+      "status": "ok",
+      "ms": 0.005
+    },
+    {
+      "visitor_id": "sample-009",
+      "component": "judge.mock",
+      "status": "ok",
+      "ms": 0.004
+    },
+    {
+      "visitor_id": "sample-010",
+      "component": "classifier",
+      "status": "ok",
+      "ms": 0.014
+    },
+    {
+      "visitor_id": "sample-010",
+      "component": "strategy",
+      "status": "ok",
+      "ms": 0.004
+    },
+    {
+      "visitor_id": "sample-010",
+      "component": "response",
+      "status": "ok",
+      "ms": 0.001
+    },
+    {
+      "visitor_id": "sample-010",
+      "component": "judge.mock",
+      "status": "ok",
+      "ms": 0.005
+    },
+    {
+      "visitor_id": "sample-009",
+      "component": "classifier",
+      "status": "ok",
+      "ms": 0.021
+    },
+    {
+      "visitor_id": "sample-009",
+      "component": "memory",
+      "status": "ok",
+      "ms": 0.002
+    },
+    {
+      "visitor_id": "sample-009",
+      "component": "plan",
+      "status": "ok",
+      "ms": 0.001
+    },
+    {
+      "visitor_id": "sample-001",
+      "component": "judge.mock",
+      "status": "ok",
+      "ms": 0.006
+    },
+    {
+      "visitor_id": "sample-002",
+      "component": "judge.mock",
+      "status": "ok",
+      "ms": 0.004
+    },
+    {
+      "visitor_id": "sample-003",
+      "component": "judge.mock",
+      "status": "ok",
+      "ms": 0.004
+    },
+    {
+      "visitor_id": "sample-004",
+      "component": "judge.mock",
+      "status": "ok",
+      "ms": 0.004
+    },
+    {
+      "visitor_id": "sample-005",
+      "component": "judge.mock",
+      "status": "ok",
+      "ms": 0.003
+    },
+    {
+      "visitor_id": "sample-006",
+      "component": "judge.mock",
+      "status": "ok",
+      "ms": 0.003
+    },
+    {
+      "visitor_id": "sample-007",
+      "component": "judge.mock",
+      "status": "ok",
+      "ms": 0.003
+    },
+    {
+      "visitor_id": "sample-008",
+      "component": "judge.mock",
+      "status": "ok",
+      "ms": 0.003
+    },
+    {
+      "visitor_id": "sample-009",
+      "component": "judge.mock",
+      "status": "ok",
+      "ms": 0.004
+    },
+    {
+      "visitor_id": "sample-010",
+      "component": "judge.mock",
+      "status": "ok",
+      "ms": 0.003
+    },
+    {
+      "visitor_id": "sample-001",
+      "component": "classifier",
+      "status": "ok",
+      "ms": 0.025
+    },
+    {
+      "visitor_id": "sample-001",
+      "component": "memory",
+      "status": "ok",
+      "ms": 0.003
+    },
+    {
+      "visitor_id": "sample-001",
+      "component": "plan",
+      "status": "ok",
+      "ms": 0.002
+    },
+    {
+      "visitor_id": "sample-002",
+      "component": "classifier",
+      "status": "ok",
+      "ms": 0.027
+    },
+    {
+      "visitor_id": "sample-002",
+      "component": "memory",
+      "status": "ok",
+      "ms": 0.002
+    },
+    {
+      "visitor_id": "sample-002",
+      "component": "plan",
+      "status": "ok",
+      "ms": 0.001
+    },
+    {
+      "visitor_id": "sample-003",
+      "component": "classifier",
+      "status": "ok",
+      "ms": 0.019
+    },
+    {
+      "visitor_id": "sample-003",
+      "component": "memory",
+      "status": "ok",
+      "ms": 0.002
+    },
+    {
+      "visitor_id": "sample-003",
+      "component": "plan",
+      "status": "ok",
+      "ms": 0.001
+    },
+    {
+      "visitor_id": "sample-004",
+      "component": "classifier",
+      "status": "ok",
+      "ms": 0.019
+    },
+    {
+      "visitor_id": "sample-004",
+      "component": "memory",
+      "status": "ok",
+      "ms": 0.002
+    },
+    {
+      "visitor_id": "sample-004",
+      "component": "plan",
+      "status": "ok",
+      "ms": 0.001
+    },
+    {
+      "visitor_id": "sample-005",
+      "component": "classifier",
+      "status": "ok",
+      "ms": 0.019
+    },
+    {
+      "visitor_id": "sample-005",
+      "component": "memory",
+      "status": "ok",
+      "ms": 0.002
+    },
+    {
+      "visitor_id": "sample-005",
+      "component": "plan",
+      "status": "ok",
+      "ms": 0.001
+    },
+    {
+      "visitor_id": "sample-006",
+      "component": "classifier",
+      "status": "ok",
+      "ms": 0.019
+    },
+    {
+      "visitor_id": "sample-006",
+      "component": "memory",
+      "status": "ok",
+      "ms": 0.002
+    },
+    {
+      "visitor_id": "sample-006",
+      "component": "plan",
+      "status": "ok",
+      "ms": 0.001
+    },
+    {
+      "visitor_id": "sample-007",
+      "component": "classifier",
+      "status": "ok",
+      "ms": 0.019
+    },
+    {
+      "visitor_id": "sample-007",
+      "component": "memory",
+      "status": "ok",
+      "ms": 0.002
+    },
+    {
+      "visitor_id": "sample-007",
+      "component": "plan",
+      "status": "ok",
+      "ms": 0.001
+    },
+    {
+      "visitor_id": "sample-008",
+      "component": "classifier",
+      "status": "ok",
+      "ms": 0.017
+    },
+    {
+      "visitor_id": "sample-008",
+      "component": "memory",
+      "status": "ok",
+      "ms": 0.002
+    },
+    {
+      "visitor_id": "sample-008",
+      "component": "plan",
+      "status": "ok",
+      "ms": 0.001
+    },
+    {
+      "visitor_id": "sample-010",
+      "component": "classifier",
+      "status": "ok",
+      "ms": 0.022
+    },
+    {
+      "visitor_id": "sample-010",
+      "component": "memory",
+      "status": "ok",
+      "ms": 0.003
+    },
+    {
+      "visitor_id": "sample-010",
+      "component": "plan",
+      "status": "ok",
+      "ms": 0.001
+    },
+    {
+      "visitor_id": "sample-001",
+      "component": "judge.mock",
+      "status": "ok",
+      "ms": 0.007
+    },
+    {
+      "visitor_id": "sample-002",
+      "component": "judge.mock",
+      "status": "ok",
+      "ms": 0.004
+    },
+    {
+      "visitor_id": "sample-003",
+      "component": "judge.mock",
+      "status": "ok",
+      "ms": 0.005
+    },
+    {
+      "visitor_id": "sample-004",
+      "component": "judge.mock",
+      "status": "ok",
+      "ms": 0.003
+    },
+    {
+      "visitor_id": "sample-005",
+      "component": "judge.mock",
+      "status": "ok",
+      "ms": 0.003
+    },
+    {
+      "visitor_id": "sample-006",
+      "component": "judge.mock",
+      "status": "ok",
+      "ms": 0.003
+    },
+    {
+      "visitor_id": "sample-007",
+      "component": "judge.mock",
+      "status": "ok",
+      "ms": 0.003
+    },
+    {
+      "visitor_id": "sample-008",
+      "component": "judge.mock",
+      "status": "ok",
+      "ms": 0.003
+    },
+    {
+      "visitor_id": "sample-010",
+      "component": "judge.mock",
+      "status": "ok",
+      "ms": 0.003
+    }
+  ],
+  "http": []
+}

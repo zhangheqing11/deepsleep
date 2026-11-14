@@ -1,0 +1,32 @@
+{
+  "at": "2026-11-14T18:42:39+08:00",
+  "reports_checked": 6,
+  "validation_errors": {},
+  "hard_rules_and_gates_recomputed": true,
+  "ledger_starts_results": [
+    8954,
+    8954,
+    8954
+  ],
+  "http_statuses": {
+    "ok": 7494,
+    "error": 990,
+    "cancelled": 470
+  },
+  "http_components": {
+    "judge.ds_flash": 2004,
+    "classifier.jev": 1884,
+    "turn": 1637,
+    "visitor": 1796,
+    "classifier.ds_flash": 101,
+    "judge.jev": 534,
+    "memory_plan": 305,
+    "select": 200,
+    "memory": 213,
+    "plan": 279,
+    "reflector": 1
+  },
+  "tracked_unchanged": true,
+  "runtime_git_dirs": [],
+  "secret_matching_files": []
+}

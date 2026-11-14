@@ -1,0 +1,33 @@
+{
+  "tests": "1178 passed in 18.62s",
+  "contracts": "passed",
+  "post_run_cli_changes": [
+    "engine/run.py",
+    "engine/demo.py"
+  ],
+  "other_evaluated_sources_unchanged": true,
+  "protected_paths_changed": [],
+  "secret_matching_files": [],
+  "benchmark_audit": {
+    "reports": 7,
+    "validation_errors": {},
+    "gate_recomputed": true,
+    "http_starts_results_budget": [
+      7934,
+      7934,
+      10227
+    ],
+    "prior_aborted_attempts": 2293,
+    "max_inflight": 16,
+    "visitor_http_requests": 0,
+    "source_changes_during_run": [],
+    "tracked_unchanged_during_run": true,
+    "runtime_git_dirs": [],
+    "secret_matching_files": []
+  },
+  "request_budget": {
+    "attempts": 10227,
+    "limit": 12000,
+    "budget_blocked": 0
+  }
+}

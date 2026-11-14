@@ -1,0 +1,10 @@
+{
+  "sdk": "installed OpenAI",
+  "transport": "httpx2.MockTransport",
+  "network_requests": 0,
+  "mock_sends": 3,
+  "retries": 2,
+  "result": {
+    "ok": true
+  }
+}
