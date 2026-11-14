@@ -35,5 +35,6 @@ export const CONTRACTS_VERSION = '0.1.0';
  */
 export const DEVCONSOLE_LINK = resolveDevconsoleLink(
   env.VITE_DEVCONSOLE_URL,
-  typeof window === 'undefined' ? 'http://localhost/' : window.location.href,
+  // 非浏览器环境（测试替身）可能没有 location，只用于解析同源路径
+  globalThis.location?.href ?? 'http://localhost/',
 );
