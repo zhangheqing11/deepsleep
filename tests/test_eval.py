@@ -18,13 +18,16 @@ def test_eval_cli_runs_from_root_and_writes_report(provider, tmp_path):
     result = subprocess.run([sys.executable, "-m", "safety.eval", "--provider", provider, "--output-dir", str(tmp_path)], cwd=ROOT, env={**os.environ, "JUDGE_PROVIDER": "mock"}, capture_output=True, text=True, check=True)
     report = json.loads(result.stdout)
     assert report["provider"] == provider
-    assert report["n"] == 6
-    assert report["confusion_matrix"] == [[2, 0, 0], [0, 2, 0], [0, 0, 2]]
+    assert report["n"] == 8
+    assert report["confusion_matrix"] == [[2, 0, 0, 0], [2, 0, 0, 0] if provider == "rules" else [0, 2, 0, 0], [0, 0, 2, 0], [0, 0, 0, 2]]
     assert report["risk_recall"] == report["risk_precision"] == 1.
-    assert report["recall_by_level"] == {"passive": 1., "active": 1.}
+    assert report["recall_by_level"] == {"history": 0. if provider == "rules" else 1., "passive": 1., "active": 1.}
     assert report["missed"] == []
+    assert report["history_recall"] == (0. if provider == "rules" else 1.)
+    assert len(report["history_missed"]) == (2 if provider == "rules" else 0)
+    assert report["history_over_escalated"] == []
     assert report["judge"]["failures"] == 0
-    assert report["judge"]["calls"] == (0 if provider == "rules" else 3)
+    assert report["judge"]["calls"] == (0 if provider == "rules" else 5)
     saved = list(tmp_path.glob(f"{provider}-*.json"))
     assert len(saved) == 1
     assert json.loads(saved[0].read_text()) == report
@@ -37,9 +40,9 @@ def test_eval_metrics_expose_misses_and_false_alarms():
         {"id": "3", "text": "撑不下去", "label": "none"},
     ]
     report = asyncio.run(evaluate(rows, "rules"))
-    assert report["confusion_matrix"] == [[0, 1, 0], [0, 0, 1], [1, 0, 0]]
+    assert report["confusion_matrix"] == [[0, 0, 1, 0], [0, 0, 0, 0], [0, 0, 0, 1], [1, 0, 0, 0]]
     assert report["risk_recall"] == report["risk_precision"] == .5
-    assert report["recall_by_level"] == {"passive": 0., "active": 0.}
+    assert report["recall_by_level"] == {"history": None, "passive": 0., "active": 0.}
     assert [row["id"] for row in report["missed"]] == ["1"]
     assert report["judge"]["p50_ms"] is None
     assert report["judge"]["p95_ms"] is None
@@ -69,7 +72,7 @@ def test_failure_count_and_percentiles_include_no_event(monkeypatch):
         async def classify(self, text):
             if text == "early":
                 return JudgeResult(None, "timeout", self.provider, 10.)
-            return JudgeResult({"none": 1., "passive": 0., "active": 0.}, "ok", self.provider, 30.)
+            return JudgeResult({"none": 1., "history": 0., "passive": 0., "active": 0.}, "ok", self.provider, 30.)
 
     monkeypatch.setattr("safety.eval.make_judge", lambda config: FakeJudge())
     rows = [{"id": "1", "text": "early", "label": "active"}, {"id": "2", "text": "later", "label": "none"}]
@@ -77,3 +80,23 @@ def test_failure_count_and_percentiles_include_no_event(monkeypatch):
     assert report["judge"] == {"calls": 2, "failures": 1, "statuses": {"timeout": 1, "ok": 1}, "providers": {"fake": 2}, "p50_ms": 20., "p95_ms": 29.}
     assert report["provider"] == "fake"
     assert report["missed"][0]["id"] == "1"
+
+
+def test_history_metrics_separate_missed_verification_and_over_escalation(monkeypatch):
+    class FakeJudge:
+        provider = "fake"
+
+        async def classify(self, text):
+            return JudgeResult({label: float(label == text) for label in ("none", "history", "passive", "active")}, "ok", self.provider, 0.)
+
+    monkeypatch.setattr("safety.eval.make_judge", lambda config: FakeJudge())
+    rows = [{"id": label, "text": label, "label": "history"} for label in ("none", "history", "passive", "active")]
+    rows += [{"id": "current-risk", "text": "history", "label": "active"}]
+    report = asyncio.run(evaluate(rows, "ds_flash"))
+    assert report["labels"] == ["none", "history", "passive", "active"]
+    assert report["confusion_matrix"] == [[0, 0, 0, 0], [1, 1, 1, 1], [0, 0, 0, 0], [0, 1, 0, 0]]
+    assert report["history_recall"] == report["recall_by_level"]["history"] == .25
+    assert [row["id"] for row in report["history_missed"]] == ["none"]
+    assert [row["id"] for row in report["history_over_escalated"]] == ["passive", "active"]
+    assert [row["id"] for row in report["missed"]] == ["current-risk"]
+    assert report["risk_precision"] == report["risk_recall"] == 0.

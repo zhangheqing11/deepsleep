@@ -16,7 +16,7 @@ import pytest
 from safety.judges import GeminiDecisionJudge, MockJudge, make_judge
 
 
-PROBS = {"none": .1, "passive": .3, "active": .6}
+PROBS = {"none": .1, "history": 0., "passive": .3, "active": .6}
 
 
 def response(**overrides):
@@ -37,7 +37,7 @@ def test_gemini_success_and_frozen_question():
         assert question["type"] == "choice"
         assert set(question["criteria"]) == set(PROBS)
         assert all(isinstance(v, str) and v.strip() for v in question["criteria"].values())
-        assert "近两周" in question["instructions"]
+        assert "近 1 个月" in question["instructions"]
         assert "拿不准时偏向 passive" in question["instructions"]
         assert "不再醒来" in question["criteria"]["passive"]
         assert "自伤准备" in question["criteria"]["active"]
@@ -50,13 +50,13 @@ def test_gemini_success_and_frozen_question():
 
 
 @pytest.mark.parametrize("bad", [
-    {"none": 1., "passive": 0.},
-    {"none": -1., "passive": 1., "active": 1.},
-    {"none": float("nan"), "passive": 0., "active": 0.},
-    {"none": float("inf"), "passive": 0., "active": 0.},
-    {"none": True, "passive": 0., "active": 0.},
-    {"none": .1, "passive": .1, "active": .1},
-    {"none": "1", "passive": 0., "active": 0.},
+    {"none": 1., "history": 0., "passive": 0.},
+    {"none": -1., "history": 0., "passive": 1., "active": 1.},
+    {"none": float("nan"), "history": 0., "passive": 0., "active": 0.},
+    {"none": float("inf"), "history": 0., "passive": 0., "active": 0.},
+    {"none": True, "history": 0., "passive": 0., "active": 0.},
+    {"none": .1, "history": 0., "passive": .1, "active": .1},
+    {"none": "1", "history": 0., "passive": 0., "active": 0.},
     {**PROBS, "extra": 0.}, None, [],
 ])
 def test_gemini_invalid_probabilities(bad):
@@ -184,3 +184,18 @@ def test_gemini_eval_cli_without_key(tmp_path):
     saved = list(tmp_path.glob("gemini_decision-*.json"))
     assert len(saved) == 1
     assert json.loads(saved[0].read_text()) == report
+
+
+@pytest.mark.parametrize("include_history", [True, False])
+def test_gemini_history_four_key_parsing(include_history):
+    probs = {"none": 0., "history": 1., "passive": 0., "active": 0.}
+    if not include_history:
+        probs = {"none": 1., "passive": 0., "active": 0.}
+
+    async def request(**kwargs):
+        assert "过去且已结束" in kwargs["questions"]["risk"]["criteria"]["history"]
+        return response(choice="history", probabilities=probs, confidence=1.)
+
+    result = asyncio.run(GeminiDecisionJudge(client=fake_client(request)).classify("模拟历史风险"))
+    assert result.status == ("ok" if include_history else "error")
+    assert result.probs == (probs if include_history else None)

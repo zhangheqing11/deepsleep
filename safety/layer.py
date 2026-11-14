@@ -1,6 +1,7 @@
 """Per-visitor safety state and contract-shaped events; engine owns crisis_exit."""
 import asyncio
 from dataclasses import asdict, dataclass, field
+import re
 from time import perf_counter
 
 import yaml
@@ -16,6 +17,8 @@ class SessionSafetyState:
     safety_check_inserted: bool = False
     judge_failures: int = 0
     judge_results: list[JudgeResult] = field(default_factory=list)
+    pending_history_check: bool = False
+    history_check_issued: bool = False
 
 
 @dataclass(frozen=True)
@@ -41,6 +44,7 @@ class SafetyLayer:
         self.judge = judge if judge is not None else make_judge(self.config)
         with open(self.config["scripts_path"], encoding="utf-8") as stream:
             self.scripts = yaml.safe_load(stream)
+        self.history_verify_patterns = [re.compile(pattern) for pattern in self.scripts["history_verify_patterns"]]
 
     @staticmethod
     def _check_position(round, turn):
@@ -54,7 +58,8 @@ class SafetyLayer:
         action = "none"
         if level == "active":
             action = "crisis_protocol"
-        elif previous != "active" and not state.safety_check_inserted:
+            state.pending_history_check = False
+        elif level == "passive" and previous != "active" and not state.safety_check_inserted:
             action = "safety_check"
             state.safety_check_inserted = True
         return SafetyEvent(round, turn, level, source, action,
@@ -84,16 +89,27 @@ class SafetyLayer:
         if result.status != "ok":
             state.judge_failures += 1
         level = "none"
+        history = False
         if result.status == "ok":
             if result.probs["active"] >= self.config["tau_active"]:
                 level = "active"
             elif result.probs["passive"] + result.probs["active"] >= self.config["tau_flag"]:
                 level = "passive"
+            elif result.probs["history"] == max(result.probs.values()):
+                history = True
         if hit.tier == "ambiguous":
-            level = max((level, "passive"), key=LEVEL_RANK.__getitem__)
+            if result.status != "ok":
+                level = "passive"
             source = "rule_ambiguous+judge" if result.status == "ok" else "rule_ambiguous"
         else:
             source = "judge"
+        if history:
+            if state.highest_level == "active" or state.history_check_issued:
+                return None
+            state.history_check_issued = True
+            state.pending_history_check = True
+            return SafetyEvent(round, turn, "none", source, "history_check", result.status,
+                               result.provider, result.probs, hit.matched)
         if level == "none":
             return None
         return self._event(level, source, round, turn, state, result=result, matched=hit.matched)
@@ -106,10 +122,14 @@ class SafetyLayer:
             return None
         return self._event("passive", "scale_item9", round, turn, state, matched="PHQ-9 item 9 > 0")
 
+    def check_verification(self, agent_text: str) -> bool:
+        """Check the next agent reply; the engine clears the per-session pending flag."""
+        return any(pattern.search(agent_text) for pattern in self.history_verify_patterns)
+
     def script_for(self, action: str) -> str:
         if action == "none":
             return ""
-        if action not in ("safety_check", "crisis_protocol"):
+        if action not in ("history_check", "safety_check", "crisis_protocol"):
             raise ValueError(f"Unknown safety action: {action}")
         hotlines = "；".join(
             f"{entry['name']}：{entry['number']}（{entry['hours']}；{'已核验' if entry['verified'] else '未核验，占位'}）"

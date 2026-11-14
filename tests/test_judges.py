@@ -9,7 +9,7 @@ from safety.config import load_config
 from safety.judges import DsFlashJudge, JevJudge, MockJudge, make_judge
 
 
-PROBS = {"none": .1, "passive": .3, "active": .6}
+PROBS = {"none": .1, "history": 0., "passive": .3, "active": .6}
 
 
 @pytest.fixture
@@ -54,19 +54,19 @@ def test_adapters_offline(provider, mode, expected, fake_typesafe, monkeypatch):
         assert requests[0]["response_format"] == {"type": "json_object"}
         assert "只输出 JSON" in requests[0]["messages"][0]["content"]
     else:
-        assert list(requests[0]["questions"]["risk"].criteria) == ["active", "passive", "none"]
-        assert "近两周" in requests[0]["questions"]["risk"].instructions
+        assert list(requests[0]["questions"]["risk"].criteria) == ["active", "passive", "history", "none"]
+        assert "近 1 个月" in requests[0]["questions"]["risk"].instructions
 
 
 @pytest.mark.parametrize("bad", [
-    {"none": 1., "passive": 0.},
-    {"none": -1., "passive": 1., "active": 1.},
-    {"none": float("nan"), "passive": 0., "active": 0.},
-    {"none": float("inf"), "passive": 0., "active": 0.},
-    {"none": True, "passive": 0., "active": 0.},
-    {"none": .1, "passive": .1, "active": .1},
-    {"none": "1", "passive": 0., "active": 0.},
-    {"none": 1., "passive": 0., "active": 0., "extra": 0.},
+    {"none": 1., "history": 0., "passive": 0.},
+    {"none": -1., "history": 0., "passive": 1., "active": 1.},
+    {"none": float("nan"), "history": 0., "passive": 0., "active": 0.},
+    {"none": float("inf"), "history": 0., "passive": 0., "active": 0.},
+    {"none": True, "history": 0., "passive": 0., "active": 0.},
+    {"none": .1, "history": 0., "passive": .1, "active": .1},
+    {"none": "1", "history": 0., "passive": 0., "active": 0.},
+    {"none": 1., "history": 0., "passive": 0., "active": 0., "extra": 0.},
 ])
 def test_invalid_probabilities_become_error(bad):
     async def request(**kwargs):
@@ -150,3 +150,40 @@ def test_real_adapter_constructor_uses_env_and_closes_fake_client(provider, monk
         assert seen["base_url"] == "https://offline.invalid/v1"
         assert seen["model"] == "offline-model"
         assert seen["max_retries"] == 0
+
+
+@pytest.mark.parametrize("provider", ["ds_flash", "jev"])
+@pytest.mark.parametrize("include_history", [True, False])
+def test_history_four_key_parsing(provider, include_history, fake_typesafe):
+    probs = {"none": .1, "history": .9, "passive": 0., "active": 0.}
+    if not include_history:
+        probs = {"none": 1., "passive": 0., "active": 0.}
+
+    async def request(**kwargs):
+        if provider == "ds_flash":
+            return SimpleNamespace(choices=[SimpleNamespace(message=SimpleNamespace(
+                content=json.dumps({"level": "history", "probs": probs})))])
+        return SimpleNamespace(choices={"risk": SimpleNamespace(choice="history", probabilities=probs)})
+
+    judge = (DsFlashJudge(client=SimpleNamespace(chat=SimpleNamespace(completions=SimpleNamespace(create=request))))
+             if provider == "ds_flash" else JevJudge(client=SimpleNamespace(system_one=request)))
+    result = asyncio.run(judge.classify("以前自伤过，现在没有了"))
+    assert result.status == ("ok" if include_history else "error")
+    assert result.probs == (probs if include_history else None)
+
+
+@pytest.mark.parametrize("text,label", [
+    ("以前有过不想活的念头，现在没有了", "history"),
+    ("那时候曾经自伤过", "history"),
+    ("早就不想自杀了", "history"),
+    ("过去想结束生命，现在已经不再有了", "history"),
+    ("以前想多睡一会儿", "none"),
+    ("以前有过，现在仍然想自杀", "active"),
+    ("以前有过，现在仍然不想活", "passive"),
+    ("以前自伤过，现在仍然不想活", "passive"),
+    ("以前自伤过，现在没有自伤，但最近希望不再醒来", "passive"),
+])
+def test_mock_history_keywords(text, label):
+    result = asyncio.run(MockJudge().classify(text))
+    assert result.status == "ok"
+    assert result.probs[label] == 1.

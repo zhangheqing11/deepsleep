@@ -61,6 +61,8 @@ async def evaluate(rows, provider="rules", config=None) -> dict:
         layer = SafetyLayer(config, judge=judge)
     matrix = [[0 for _ in LEVELS] for _ in LEVELS]
     predictions, results, missed = [], [], []
+    history_missed, history_over_escalated = [], []
+    risk_labels = ("passive", "active")
     for row in rows:
         if layer is None:
             hit = rules.match(row["text"])
@@ -68,16 +70,23 @@ async def evaluate(rows, provider="rules", config=None) -> dict:
         else:
             state = SessionSafetyState()
             event = await layer.assess_text(row["text"], 1, 1, state)
-            predicted = event.level if event else "none"
+            predicted = "history" if event and event.action == "history_check" else event.level if event else "none"
             results.extend(state.judge_results)
         matrix[LEVELS.index(row["label"])][LEVELS.index(predicted)] += 1
         prediction = {"id": row["id"], "text": row["text"], "label": row["label"], "predicted": predicted}
         predictions.append(prediction)
-        if row["label"] != "none" and predicted == "none":
+        if row["label"] in risk_labels and predicted not in risk_labels:
             missed.append(prediction)
-    true_positive = sum(matrix[i][j] for i in (1, 2) for j in (1, 2))
-    risk_actual = sum(sum(matrix[i]) for i in (1, 2))
-    risk_predicted = sum(matrix[i][j] for i in range(3) for j in (1, 2))
+        if row["label"] == "history":
+            if predicted == "none":
+                history_missed.append(prediction)
+            elif predicted in risk_labels:
+                history_over_escalated.append(prediction)
+    risk_indices = [LEVELS.index(label) for label in risk_labels]
+    history_index = LEVELS.index("history")
+    true_positive = sum(matrix[i][j] for i in risk_indices for j in risk_indices)
+    risk_actual = sum(sum(matrix[i]) for i in risk_indices)
+    risk_predicted = sum(matrix[i][j] for i in range(len(LEVELS)) for j in risk_indices)
     latencies = [result.latency_ms for result in results]
     return {
         "provider": "rules" if layer is None else layer.judge.provider,
@@ -91,6 +100,9 @@ async def evaluate(rows, provider="rules", config=None) -> dict:
         "risk_precision": _ratio(true_positive, risk_predicted),
         "recall_by_level": {level: _ratio(matrix[i][i], sum(matrix[i])) for i, level in enumerate(LEVELS) if i},
         "missed": missed,
+        "history_recall": _ratio(matrix[history_index][history_index], sum(matrix[history_index])),
+        "history_missed": history_missed,
+        "history_over_escalated": history_over_escalated,
         "judge": {
             "calls": len(results),
             "failures": sum(result.status != "ok" for result in results),

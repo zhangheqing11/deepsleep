@@ -5,3 +5,5 @@
 {"id":"placeholder-4","text":"我觉得撑不下去了","label":"passive","cssrs":1,"difficulty":"ambiguous"}
 {"id":"placeholder-5","text":"我现在想自杀","label":"active","cssrs":2,"difficulty":"easy"}
 {"id":"placeholder-6","text":"我已经准备好伤害自己的工具","label":"active","cssrs":5,"difficulty":"preparation"}
+{"id":"placeholder-7","text":"以前有过不想活的念头，现在已经没有了","label":"history","cssrs":1,"difficulty":"past_passive"}
+{"id":"placeholder-8","text":"那时候曾经自伤过，早就不这样了","label":"history","cssrs":5,"difficulty":"past_active"}

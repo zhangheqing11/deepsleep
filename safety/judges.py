@@ -4,13 +4,14 @@ from dataclasses import dataclass
 import json
 import math
 import os
+import re
 from pathlib import Path
 from time import perf_counter
 from typing import Protocol
 
 from .config import load_config
 
-LEVELS = ("none", "passive", "active")
+LEVELS = ("none", "history", "passive", "active")
 
 
 @dataclass(frozen=True)
@@ -27,7 +28,7 @@ class Judge(Protocol):
 
 def validate_probs(probs, tolerance: float) -> dict[str, float]:
     if not isinstance(probs, dict) or set(probs) != set(LEVELS):
-        raise ValueError("Expected exactly none/passive/active probabilities")
+        raise ValueError("Expected exactly none/history/passive/active probabilities")
     if any(isinstance(v, bool) or not isinstance(v, (int, float)) or not math.isfinite(v) or not 0 <= v <= 1 for v in probs.values()):
         raise ValueError("Invalid probability")
     # Numerical serialization tolerance, not a classification threshold.
@@ -76,6 +77,16 @@ class MockJudge(_BoundedJudge):
             if any(word in text for word in self.config["mock_keywords"][candidate]):
                 level = candidate
                 break
+        if level != "none" and any(word in text for word in ("以前", "那时候", "早就不", "过去")):
+            # Offline fixture only: an explicit current statement takes precedence.
+            current = [match.group() for match in re.finditer(
+                r"(?:现在|目前|如今|最近|仍然|仍旧|至今|一直)[^，。！？；\n]*", text
+            ) if not re.search(r"没有|不再有|不再想|不想自|不想结束|早就不", match.group())]
+            level = "history"
+            for candidate in ("active", "passive"):
+                if any(word in clause for clause in current for word in self.config["mock_keywords"][candidate]):
+                    level = candidate
+                    break
         return {name: float(name == level) for name in LEVELS}
 
 
@@ -131,11 +142,12 @@ class JevJudge(_BoundedJudge):
         self.prompt = Path(self.config["judge_prompt_path"]).read_text(encoding="utf-8")
 
     async def _request(self, client, text):
-        # Dict insertion order is deliberate: active, passive, none.
+        # Dict insertion order is deliberate: active, passive, history, none.
         choice = self.choice_type(instructions=self.prompt, criteria={
             "active": "本人当前主动意念、方法、意图、计划或自伤准备、行为",
             "passive": "本人当前死亡愿望或被动意念，含希望睡去不再醒来",
-            "none": "无本人当前死亡愿望或自伤信号",
+            "history": "本人过去且已结束的被动或主动意念、自伤或尝试，当前否认或未表明仍有；是否结束不明时偏向 passive",
+            "none": "无本人当前风险信号，也未谈及本人过去已结束的风险史",
         })
         response = await client.system_one(state={"text": text}, questions={"risk": choice})
         answer = response.choices["risk"]
@@ -177,7 +189,7 @@ class GeminiDecisionJudge(_BoundedJudge):
                 or not self.question["instructions"].strip()
                 or not isinstance(criteria, dict) or set(criteria) != set(LEVELS)
                 or not all(isinstance(v, str) and v.strip() for v in criteria.values())):
-            raise ValueError("Gemini Choice requires instructions and three nonempty descriptions")
+            raise ValueError("Gemini Choice requires instructions and four nonempty descriptions")
 
     async def _request(self, client, text):
         # The SDK supports both HTTP transports; normalize their timeout exceptions.
