@@ -13,7 +13,7 @@ make contracts
 ```
 
 `make smoke` 同时运行 contracts 和 test。测试使用假客户端并禁止 socket 连接，不读 `.env`，不调用真实 API。
-`python -m safety.eval --provider rules|mock|ds_flash|jev` 写入配置指定的报告目录。
+`python -m safety.eval --provider rules|mock|ds_flash|jev|gemini_decision` 写入配置指定的报告目录。
 激活 `.venv` 后也可直接在根目录运行 `pytest`。
 
 ## 接入约定
@@ -44,6 +44,22 @@ Jev 依赖可选安装：`pip install -r requirements-optional.txt`。
 适配器采用 [TypeSafe 官方 SDK](https://github.com/typesafe-ai/typesafe-sdk-python) 的
 `system_one(state=..., questions={risk: Choice(...)})` 与 `answer.probabilities`，选项顺序为 active/passive/none。
 所有判断调用受 `asyncio.wait_for` 限时；请求错误、超时或非法概率不向会谈抛出。
+
+Gemini Decision 候选使用可选依赖 `google-genai>=3.2.0`（同一可选依赖文件）。
+`make safety-eval PROVIDER=gemini_decision` 读取 `GEMINI_API_KEY`，为空时再读 `GOOGLE_API_KEY`；
+缺 key 或 SDK 未安装时工厂回退 `mock(fallback)`，直接构造且缺 SDK 时给出安装提示。
+按 [官方 SDK 3.2.0](https://github.com/googleapis/python-genai/blob/v3.2.0/google/genai/client.py)
+使用 `client.aio.decisions.create(model="gemini-decision-1", ...)`，显式配置 `api_version: v1beta`，
+对应 [官方端点](https://aistudio.google.com/docs/decisions-api) `POST /v1beta/decisions`。
+三档中文定义及指令冻结在 `prompts/gemini_decision_zh.json`，criteria 均为非空字符串；
+不依赖选项插入顺序。校验 `choice`、`confidence` 和完整概率分布，将 `probabilities` 映射为 `probs`，
+分档继续使用现有阈值，不把 `confidence` 作为新阈值。HTTP 400/402/404/429 等异常记 error，
+超时记 timeout；关闭自动重试，正常、失败或取消后均释放客户端资源。
+
+Gemini 免费层输入可能被用于改进产品并由人工审阅，**只能发送模拟文本**，不得发送真实来访信息。
+见 [官方数据使用条款](https://aistudio.google.com/docs/terms#data-use-unpaid)。
+中国大陆不在 [官方支持地区](https://aistudio.google.com/docs/available-regions)，网络接入需要代理；
+代理不改变地区支持范围，也不保证账户可用。本任务未进行真实 API 或大陆网络连通性验证。
 
 正式词表/话术可直接替换 YAML，加载器不限制条数；新建层实例时加载。
 按任务要求，testset.jsonl 首行使用 `#` 注释，因此是支持注释的 JSONL；加载器跳过注释/空行，

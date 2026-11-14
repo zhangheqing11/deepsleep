@@ -20,8 +20,8 @@ def load_config(config=None) -> dict:
     provider = os.getenv("JUDGE_PROVIDER", "").strip()
     if provider:
         values["judge_provider"] = provider
-    if values["judge_provider"] not in ("ds_flash", "jev", "mock"):
-        raise ValueError("judge_provider must be ds_flash, jev or mock")
+    if values["judge_provider"] not in ("ds_flash", "jev", "gemini_decision", "mock"):
+        raise ValueError("judge_provider must be ds_flash, jev, gemini_decision or mock")
     for key in ("tau_flag", "tau_active", "probability_sum_tolerance"):
         value = values[key]
         if isinstance(value, bool) or not isinstance(value, (int, float)) or not 0 <= value <= 1:

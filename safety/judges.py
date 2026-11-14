@@ -150,17 +150,90 @@ class JevJudge(_BoundedJudge):
             return await self._request(client, text)
 
 
+class GeminiDecisionJudge(_BoundedJudge):
+    provider = "gemini_decision"
+
+    def __init__(self, config=None, *, client=None):
+        super().__init__(config)
+        self.client = client
+        self.api_key = (os.getenv("GEMINI_API_KEY", "").strip()
+                        or os.getenv("GOOGLE_API_KEY", "").strip())
+        if client is None:
+            try:
+                from google import genai
+            except ImportError as exc:
+                raise ImportError(
+                    "GeminiDecisionJudge requires google-genai>=3.2.0; install requirements-optional.txt"
+                ) from exc
+            self.client_type = genai.Client
+            if not self.api_key:
+                raise ValueError("GeminiDecisionJudge requires GEMINI_API_KEY or GOOGLE_API_KEY")
+        # A separate frozen Choice question avoids the chat judge's JSON-output instruction.
+        path = Path(__file__).with_name("prompts") / "gemini_decision_zh.json"
+        self.question = json.loads(path.read_text(encoding="utf-8"))
+        criteria = self.question["criteria"]
+        if (self.question["type"] != "choice"
+                or not isinstance(self.question["instructions"], str)
+                or not self.question["instructions"].strip()
+                or not isinstance(criteria, dict) or set(criteria) != set(LEVELS)
+                or not all(isinstance(v, str) and v.strip() for v in criteria.values())):
+            raise ValueError("Gemini Choice requires instructions and three nonempty descriptions")
+
+    async def _request(self, client, text):
+        # The SDK supports both HTTP transports; normalize their timeout exceptions.
+        try:
+            import httpx
+        except ImportError:
+            import httpx2 as httpx
+        timeout_errors = (httpx.TimeoutException,)
+        try:
+            from google.genai._interactions import APITimeoutError
+        except ImportError:
+            pass  # Injected fake clients also work without the optional SDK.
+        else:
+            timeout_errors += (APITimeoutError,)
+        try:
+            response = await client.decisions.create(
+                model="gemini-decision-1", input=text, questions={"risk": self.question},
+            )
+        except timeout_errors as exc:
+            raise TimeoutError("Gemini decision request timed out") from exc
+        answer = response.answers["risk"]
+        if answer.choice not in LEVELS:
+            raise ValueError("Unknown Gemini choice")
+        confidence = answer.confidence
+        if (isinstance(confidence, bool) or not isinstance(confidence, (int, float))
+                or not math.isfinite(confidence) or not 0 <= confidence <= 1):
+            raise ValueError("Invalid Gemini confidence")
+        # Existing safety thresholds consume the full distribution, not choice/confidence.
+        return answer.probabilities
+
+    async def _predict(self, text):
+        if self.client is not None:
+            return await self._request(self.client.aio, text)
+        # Close both transports, including on cancellation/error. HttpOptions timeout is ms.
+        with self.client_type(api_key=self.api_key, http_options={
+            "api_version": "v1beta", "timeout": max(1, math.ceil(self.timeout * 1000)),
+            "retry_options": {"attempts": 1},
+        }) as client:
+            async with client.aio as async_client:
+                return await self._request(async_client, text)
+
+
 def make_judge(config=None) -> Judge:
     config = load_config(config)
     provider = config["judge_provider"]
     if provider == "mock":
         return MockJudge(config)
-    key = "DS_API_KEY" if provider == "ds_flash" else "TYPESAFE_API_KEY"
-    if not os.getenv(key, "").strip():
+    keys = {
+        "ds_flash": ("DS_API_KEY",), "jev": ("TYPESAFE_API_KEY",),
+        "gemini_decision": ("GEMINI_API_KEY", "GOOGLE_API_KEY"),
+    }[provider]
+    if not any(os.getenv(key, "").strip() for key in keys):
         return MockJudge(config, provider="mock(fallback)")
     if provider == "ds_flash":
         return DsFlashJudge(config)
     try:
-        return JevJudge(config)
+        return GeminiDecisionJudge(config) if provider == "gemini_decision" else JevJudge(config)
     except ImportError:
         return MockJudge(config, provider="mock(fallback)")

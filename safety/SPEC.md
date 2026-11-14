@@ -9,7 +9,7 @@
 |---|---|
 | `safety/lexicon.yaml` | 三档：`explicit`（每条带 `level: passive \| active`）、`ambiguous`、`exclude`（只作用于 ambiguous）。每条 `{id, pattern(正则), level?, example}` |
 | `safety/scripts.yaml` | 固定话术：`safety_check`（被动意念时插入的一句安全确认）、`crisis_protocol`（主动意念时的完整话术，含热线占位 `{hotlines}`）、`hotlines` 列表 `[{name, number, hours, verified: bool}]`。文案为占位，正式文案另行审核 |
-| `safety/config.yaml` | `judge_provider: ds_flash \| jev \| mock`、`judge_timeout_s: 2.5`、`tau_flag`（P(passive)+P(active) ≥ 此值至少判 passive，默认 0.2）、`tau_active`（P(active) ≥ 此值判 active，默认 0.5） |
+| `safety/config.yaml` | `judge_provider: ds_flash \| jev \| gemini_decision \| mock`、`judge_timeout_s: 2.5`、`tau_flag`（P(passive)+P(active) ≥ 此值至少判 passive，默认 0.2）、`tau_active`（P(active) ≥ 此值判 active，默认 0.5） |
 | `safety/testset.jsonl` | 独立测试集，每行 `{id, text, label: none\|passive\|active, cssrs, difficulty}`；先放 6 条占位 |
 
 ## 2. 判定流程（每条**来访**发言、每次量表结果都过一遍）
@@ -35,7 +35,7 @@ text ─▶ rules.match(text)
 | 模块 | 职责 |
 |---|---|
 | `safety/rules.py` | 加载 lexicon，`match(text) -> RuleHit(tier, entry_ids, level)` |
-| `safety/judges.py` | `Judge` 协议：`async classify(text) -> JudgeResult(probs={none,passive,active}, status, provider, latency_ms)`。实现：`MockJudge`（确定性，按关键词给概率，供 smoke 与测试）、`DsFlashJudge`（OpenAI 兼容 SDK，读 `DS_BASE_URL/DS_API_KEY/DS_MODEL`，temperature 0，JSON 输出 `{"level": ..., "probs": {...}}`，解析失败算 error）、`JevJudge`（`typesafe_sdk` 的 `AsyncTypeSafeClient` + `Choice`，选项顺序 **active, passive, none**——利用其偏前选项的倾向往召回方向偏；读 `TYPESAFE_API_KEY`）。所有实现都包 `asyncio.wait_for(timeout)`，异常与超时转 status，不抛出。`make_judge(config)` 工厂；缺 key 时回退 MockJudge 并在 provider 字段标 `mock(fallback)` |
+| `safety/judges.py` | `Judge` 协议：`async classify(text) -> JudgeResult(probs={none,passive,active}, status, provider, latency_ms)`。实现：`MockJudge`（确定性，按关键词给概率，供 smoke 与测试）、`DsFlashJudge`（OpenAI 兼容 SDK，读 `DS_BASE_URL/DS_API_KEY/DS_MODEL`，temperature 0，JSON 输出 `{"level": ..., "probs": {...}}`，解析失败算 error）、`JevJudge`（`typesafe_sdk` 的 `AsyncTypeSafeClient` + `Choice`，选项顺序 **active, passive, none**——利用其偏前选项的倾向往召回方向偏；读 `TYPESAFE_API_KEY`）。`GeminiDecisionJudge`（`google-genai>=3.2.0`，`genai.Client(http_options={"api_version": "v1beta"})`，`client.aio.decisions.create(model="gemini-decision-1", ...)` 用 Choice 题，三个选项 key 为 `none`/`passive`/`active`，criteria 为各档中文定义（服务端按 key 的 UTF-8 字节序排序，选项顺序无法利用）；读 `GEMINI_API_KEY`；调用细节以 `research/1114/5-gemini-decision.md` 第 2 节官方示例为准）。所有实现都包 `asyncio.wait_for(timeout)`，异常与超时转 status，不抛出。`make_judge(config)` 工厂；缺 key 时回退 MockJudge 并在 provider 字段标 `mock(fallback)` |
 | `safety/layer.py` | `SafetyLayer(config).assess_text(text, round, turn, state) -> SafetyEvent \| None` 与 `assess_phq9_item9(value, round, turn, state)`；`SessionSafetyState` 记最高 level 与是否已插过 safety_check；`SafetyEvent` 序列化后**必须符合** contracts session.`safety_events` 项结构；`script_for(action)` 从 scripts.yaml 取话术（填入热线） |
 | `safety/prompts/judge_zh.md` | 判断器 system prompt（冻结）。要点：只判断说话人本人当前（近两周）是否有死亡愿望/自杀念头；C-SSRS 第 1 条 = passive（含"睡过去不再醒来"类），第 2–5 条或任何自伤准备/行为 = active；谈论他人、新闻、夸张口头禅（困死了、累死了、笑死）、单纯想多睡/赖床 = none；拿不准时偏向 passive |
 | `safety/eval.py` | `python -m safety.eval --provider rules\|mock\|ds_flash\|jev [--testset path]`：逐条跑，输出混淆矩阵（3×3）、"有风险 vs 无风险"二分类召回/精确率、passive/active 各自召回、漏报条目清单、判断器 p50/p95 延迟与失败数；`rules` = 只用规则层（ambiguous 命中算 passive）。结果另存 `var/safety-eval/<provider>-<时间>.json` |

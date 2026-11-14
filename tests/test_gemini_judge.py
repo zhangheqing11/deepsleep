@@ -1,0 +1,186 @@
+"""Decisions protocol tests: no google-genai installation or network needed."""
+import asyncio
+import json
+import os
+from pathlib import Path
+import subprocess
+import sys
+from types import SimpleNamespace
+
+try:
+    import httpx
+except ImportError:
+    import httpx2 as httpx
+import pytest
+
+from safety.judges import GeminiDecisionJudge, MockJudge, make_judge
+
+
+PROBS = {"none": .1, "passive": .3, "active": .6}
+
+
+def response(**overrides):
+    return SimpleNamespace(answers={"risk": SimpleNamespace(
+        **{"choice": "active", "probabilities": PROBS, "confidence": .6, **overrides}
+    )})
+
+
+def fake_client(request):
+    return SimpleNamespace(aio=SimpleNamespace(decisions=SimpleNamespace(create=request)))
+
+
+def test_gemini_success_and_frozen_question():
+    async def request(**kwargs):
+        assert kwargs["model"] == "gemini-decision-1"
+        assert kwargs["input"] == "模拟发言"
+        question = kwargs["questions"]["risk"]
+        assert question["type"] == "choice"
+        assert set(question["criteria"]) == set(PROBS)
+        assert all(isinstance(v, str) and v.strip() for v in question["criteria"].values())
+        assert "近两周" in question["instructions"]
+        assert "拿不准时偏向 passive" in question["instructions"]
+        assert "不再醒来" in question["criteria"]["passive"]
+        assert "自伤准备" in question["criteria"]["active"]
+        assert "明确否认" in question["criteria"]["none"]
+        return response()
+
+    result = asyncio.run(GeminiDecisionJudge(client=fake_client(request)).classify("模拟发言"))
+    assert (result.status, result.provider, result.probs) == ("ok", "gemini_decision", PROBS)
+    assert result.latency_ms >= 0
+
+
+@pytest.mark.parametrize("bad", [
+    {"none": 1., "passive": 0.},
+    {"none": -1., "passive": 1., "active": 1.},
+    {"none": float("nan"), "passive": 0., "active": 0.},
+    {"none": float("inf"), "passive": 0., "active": 0.},
+    {"none": True, "passive": 0., "active": 0.},
+    {"none": .1, "passive": .1, "active": .1},
+    {"none": "1", "passive": 0., "active": 0.},
+    {**PROBS, "extra": 0.}, None, [],
+])
+def test_gemini_invalid_probabilities(bad):
+    async def request(**kwargs):
+        return response(probabilities=bad)
+
+    result = asyncio.run(GeminiDecisionJudge(client=fake_client(request)).classify("模拟发言"))
+    assert (result.status, result.probs) == ("error", None)
+
+
+@pytest.mark.parametrize("answer", [
+    response(choice="unknown"), response(confidence=float("nan")),
+    response(confidence=True), response(confidence=".6"), response(confidence=2),
+    SimpleNamespace(answers={}), SimpleNamespace(answers={"risk": SimpleNamespace(choice="active")}),
+])
+def test_gemini_malformed_answers(answer):
+    async def request(**kwargs):
+        return answer
+
+    result = asyncio.run(GeminiDecisionJudge(client=fake_client(request)).classify("模拟发言"))
+    assert (result.status, result.probs) == ("error", None)
+
+
+@pytest.mark.parametrize("mode", ["deadline", "transport", "sdk"])
+def test_gemini_timeout(mode, monkeypatch):
+    class APITimeoutError(Exception):
+        pass
+
+    monkeypatch.setitem(sys.modules, "google.genai._interactions",
+                        SimpleNamespace(APITimeoutError=APITimeoutError))
+
+    async def request(**kwargs):
+        if mode == "transport":
+            raise httpx.ReadTimeout("offline timeout")
+        if mode == "sdk":
+            raise APITimeoutError("offline SDK timeout")
+        await asyncio.Event().wait()
+
+    result = asyncio.run(GeminiDecisionJudge(
+        {"judge_timeout_s": .01}, client=fake_client(request)
+    ).classify("模拟发言"))
+    assert (result.status, result.probs) == ("timeout", None)
+
+
+@pytest.mark.parametrize("code", [400, 402, 404, 429, 500])
+def test_gemini_http_errors(code):
+    async def request(**kwargs):
+        request = httpx.Request("POST", "https://offline.invalid/v1beta/decisions")
+        raise httpx.HTTPStatusError("offline error", request=request,
+                                    response=httpx.Response(code, request=request))
+
+    result = asyncio.run(GeminiDecisionJudge(client=fake_client(request)).classify("模拟发言"))
+    assert (result.status, result.probs) == ("error", None)
+
+
+def test_gemini_missing_key():
+    judge = make_judge({"judge_provider": "gemini_decision"})
+    assert isinstance(judge, MockJudge)
+    assert asyncio.run(judge.classify("模拟发言")).provider == "mock(fallback)"
+
+
+def test_gemini_missing_sdk(monkeypatch):
+    monkeypatch.setenv("GEMINI_API_KEY", "offline-key")
+    monkeypatch.setitem(sys.modules, "google.genai", None)
+    monkeypatch.setitem(sys.modules, "google", SimpleNamespace())
+    with pytest.raises(ImportError, match="requirements-optional.txt"):
+        GeminiDecisionJudge()
+    assert make_judge({"judge_provider": "gemini_decision"}).provider == "mock(fallback)"
+
+
+@pytest.mark.parametrize("key", ["GEMINI_API_KEY", "GOOGLE_API_KEY"])
+@pytest.mark.parametrize("status", ["ok", "error", "timeout"])
+def test_gemini_sdk_construction_and_cleanup(monkeypatch, key, status):
+    seen = {}
+
+    class AsyncClient:
+        def __init__(self):
+            self.decisions = SimpleNamespace(create=self.create)
+
+        async def create(self, **kwargs):
+            if status == "error":
+                raise RuntimeError("offline error")
+            if status == "timeout":
+                await asyncio.Event().wait()
+            return response()
+
+        async def __aenter__(self):
+            return self
+
+        async def __aexit__(self, *args):
+            seen["async_closed"] = True
+
+    class Client:
+        def __init__(self, **kwargs):
+            seen.update(kwargs)
+            self.aio = AsyncClient()
+
+        def __enter__(self):
+            return self
+
+        def __exit__(self, *args):
+            seen["sync_closed"] = True
+
+    monkeypatch.setenv(key, "offline-key")
+    monkeypatch.setitem(sys.modules, "google", SimpleNamespace(genai=SimpleNamespace(Client=Client)))
+    judge = make_judge({"judge_provider": "gemini_decision", "judge_timeout_s": .01})
+    assert asyncio.run(judge.classify("模拟发言")).status == status
+    assert seen["api_key"] == "offline-key"
+    assert seen["http_options"]["api_version"] == "v1beta"
+    assert seen["http_options"]["timeout"] == 10
+    assert seen["http_options"]["retry_options"] == {"attempts": 1}
+    assert seen["async_closed"] and seen["sync_closed"]
+
+
+def test_gemini_eval_cli_without_key(tmp_path):
+    result = subprocess.run([
+        sys.executable, "-m", "safety.eval", "--provider", "gemini_decision",
+        "--output-dir", str(tmp_path),
+    ], cwd=Path(__file__).resolve().parents[1], env=dict(os.environ),
+        capture_output=True, text=True, check=True)
+    report = json.loads(result.stdout)
+    assert report["requested_provider"] == "gemini_decision"
+    assert report["provider"] == "mock(fallback)"
+    assert report["judge"]["providers"] == {"mock(fallback)": report["judge"]["calls"]}
+    saved = list(tmp_path.glob("gemini_decision-*.json"))
+    assert len(saved) == 1
+    assert json.loads(saved[0].read_text()) == report
