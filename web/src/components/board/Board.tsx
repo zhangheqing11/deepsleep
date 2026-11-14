@@ -9,6 +9,7 @@ import {
   alertSlots,
   candidateVerdict,
   finding,
+  isiTrajectories,
   metricDifference,
   pairVisitors,
   responders,
@@ -19,6 +20,7 @@ import {
   type UnitGroup,
 } from '../../lib/board';
 import { pct, pointDelta, seconds, signed } from '../../lib/format';
+import { DuoChart, GateChart, LineChart, type DuoRow, type LineSeries } from './charts';
 import { CHANGE_OP_LABEL, FAILURE_TAG_LABEL, SECTION_LABEL, STEP_STATE_LABEL, VETO_CODE_LABEL, label } from '../../lib/labels';
 
 const NOT_YET = '尚未生成';
@@ -259,35 +261,39 @@ function formatDiff(row: MetricRow, d: number | null): { text: string; tone: 'up
   return { text, tone: good ? 'up' : 'down' };
 }
 
+/** 把指标值换成轨道上的位置：越靠右越好。 */
+function scaleFor(row: MetricRow, values: (number | null)[]): { pos: (v: number | null) => number | null; zero?: number } {
+  if (row.kind === 'ratio') return { pos: (v) => v };
+  if (row.kind === 'points') return { pos: (v) => (v === null ? null : 0.5 + v), zero: 0.5 };
+  // ISI 变化：下降越多越好。量程取到 4 的整数倍，至少 12 分。
+  const lowest = Math.min(-12, ...values.filter((v): v is number => v !== null));
+  const span = Math.ceil(-lowest / 4) * 4;
+  return { pos: (v) => (v === null ? null : -v / span) };
+}
+
 function SecondaryPanel({ data }: { data: BoardData }) {
   const cols = [data.run1, data.control, data.run2];
+  const rows: DuoRow[] = SECONDARY_METRICS.map((row) => {
+    const [context, base, lead] = cols.map((s) => (s.report ? row.get(s.report.metrics) : null));
+    const diff = formatDiff(row, metricDifference(lead, base));
+    const scale = scaleFor(row, [context, base, lead]);
+    return {
+      key: row.key, title: row.title,
+      base: scale.pos(base), lead: scale.pos(lead), context: scale.pos(context), zero: scale.zero,
+      baseText: formatMetric(row, base), leadText: formatMetric(row, lead),
+      diffText: diff.text, diffTone: diff.tone,
+      ariaLabel: `${row.title}：对照 ${formatMetric(row, base)}，运行 2 ${formatMetric(row, lead)}，运行 1 ${formatMetric(row, context)}`,
+    };
+  });
   return (
-    <Panel className="bd-secondary" title="副指标" aside="差值为运行 2 减对照，比例差的单位是百分点">
-      <table className="bd-table">
-        <thead>
-          <tr>
-            <th>指标</th>
-            {cols.map((s) => <th key={s.role} className="num">{ROLE_LABEL[s.role]}</th>)}
-            <th className="num">差值</th>
-          </tr>
-        </thead>
-        <tbody>
-          {SECONDARY_METRICS.map((row) => {
-            const values = cols.map((s) => (s.report ? row.get(s.report.metrics) : null));
-            const diff = formatDiff(row, metricDifference(values[2], values[1]));
-            return (
-              <tr key={row.key}>
-                <td>{row.title}</td>
-                {values.map((v, i) => (
-                  <td key={i} className={`num ${i === 0 ? 'context' : ''} ${v === null ? 'none' : ''}`}>{formatMetric(row, v)}</td>
-                ))}
-                <td className={`num bd-diff ${diff.tone}`}>{diff.text}</td>
-              </tr>
-            );
-          })}
-        </tbody>
-      </table>
-      <p className="bd-footnote">“—” 表示该项尚未生成或无法计算。平均 ISI 变化越低越好。</p>
+    <Panel className="bd-secondary" title="副指标" aside="越靠右越好">
+      <DuoChart rows={rows} head={['对照', '运行 2', '差值']} />
+      <ul className="bd-duo-legend">
+        <li><i className="dot base" />对照</li>
+        <li><i className="dot lead" />运行 2</li>
+        <li><i className="tick" />运行 1，另一批来访</li>
+      </ul>
+      <p className="bd-footnote">差值为运行 2 减对照，比例差的单位是百分点。“—” 表示尚未生成或无法计算。</p>
     </Panel>
   );
 }
@@ -413,24 +419,17 @@ function ChangeItem({ change }: { change: EvolutionChange }) {
 }
 
 function CandidateLine({ evo }: { evo: Evolution }) {
+  const baseline = evo.baseline_val_metrics.isi_response_rate;
   return (
-    <ul className="bd-candidates">
-      <li className="baseline">
-        <span>上一代 {evo.from_version}</span>
-        <strong>{pct(evo.baseline_val_metrics.isi_response_rate)}</strong>
-        <span>门禁基线</span>
-      </li>
-      {evo.candidates.map((c) => {
+    <GateChart
+      baseline={baseline}
+      baselineLabel={<>竖线是上一代 {evo.from_version} 的 <b>{pct(baseline)}</b>：超过它且不触发否决，才算过门禁。</>}
+      rows={evo.candidates.map((c) => {
         const verdict = candidateVerdict(c, evo);
-        return (
-          <li key={c.id} className={verdict === 'chosen' ? 'chosen' : ''}>
-            <span>候选 {c.id}</span>
-            {c.val_metrics ? <strong>{pct(c.val_metrics.isi_response_rate)}</strong> : <strong className="none">未验证</strong>}
-            <span>{VERDICT_LABEL[verdict]}</span>
-          </li>
-        );
+        const value = c.val_metrics ? c.val_metrics.isi_response_rate : null;
+        return { key: c.id, name: `候选 ${c.id}`, value, valueText: value === null ? '未验证' : pct(value), verdict: VERDICT_LABEL[verdict], chosen: verdict === 'chosen' };
       })}
-    </ul>
+    />
   );
 }
 
@@ -554,6 +553,95 @@ function RollbackPanel({ data }: { data: BoardData }) {
   );
 }
 
+// ---------- 第二屏：证据 ----------
+
+function TrajectoryPanel({ data }: { data: BoardData }) {
+  const sources = ([[data.control, 'base'], [data.run2, 'lead']] as const)
+    .map(([slot, tone]) => ({ slot, tone, t: slot.report ? isiTrajectories(slot.report) : null }))
+    .filter((x) => x.t !== null);
+  if (sources.length === 0) {
+    return (
+      <Panel className="bd-trajectory" title="4 周里 ISI 怎么变">
+        <p className="bd-chart-empty">对照或运行 2 完成后，这里画出每位来访 4 周的 ISI 变化。</p>
+      </Panel>
+    );
+  }
+  const all = sources.flatMap((x) => x.t!.visitors.flatMap((v) => v.deltas));
+  const bottom = Math.floor(Math.min(-12, ...all) / 4) * 4;
+  const top = Math.ceil(Math.max(0, ...all) / 4) * 4;
+  const yTicks: number[] = [];
+  for (let y = top; y >= bottom; y -= 4) yTicks.push(y);
+  const series: LineSeries[] = sources.map(({ slot, tone, t }) => ({
+    key: slot.role, tone,
+    points: t!.mean.map((y, x) => ({ x, y })),
+    endLabel: `${ROLE_LABEL[slot.role]} ${signed(t!.mean[4])} 分`,
+  }));
+  const faint = sources.flatMap(({ slot, tone, t }) =>
+    t!.visitors.map((v) => ({ key: `${slot.role}-${v.id}`, tone, points: v.deltas.map((y, x) => ({ x, y })) })));
+  return (
+    <Panel className="bd-trajectory" title="4 周里 ISI 怎么变" aside="细线是每位来访相对第 0 周的变化，粗线是平均">
+      <LineChart
+        ariaLabel={`4 周 ISI 变化：${series.map((s) => s.endLabel).join('，')}`}
+        series={series}
+        faint={faint}
+        xDomain={[0, 4]}
+        yDomain={[bottom, top]}
+        xTicks={[0, 1, 2, 3, 4].map((x) => ({ x, label: `第 ${x} 周` }))}
+        yTicks={yTicks}
+        yFormat={(v) => signed(v) || '0'}
+        refs={[{ y: -7, label: '有效线 −7 分' }]}
+      />
+      <p className="bd-footnote">越往下越好。落到有效线以下的来访计入“有效”。数值由冻结的规则模型推演，不是来访自述。</p>
+    </Panel>
+  );
+}
+
+function EvidencePanel({ data }: { data: BoardData }) {
+  const sources = ([[data.control, 'base'], [data.run2, 'lead']] as const).filter(([slot]) => slot.evidence);
+  const title = '问到关键线索了吗';
+  if (sources.length === 0) {
+    const waiting = !data.control.report && !data.run2.report;
+    return (
+      <Panel className="bd-evidence" title={title}>
+        <p className="bd-chart-empty">
+          {waiting ? '对照或运行 2 完成后，这里画出会谈每一步的判断把握。' : '这份证据尚未生成：当前数据来源没有提供逐步的路径权重。'}
+        </p>
+      </Panel>
+    );
+  }
+  // 两次运行的步数可能不同：横轴按“第几轮第几步”的并集排开。
+  const keys = [...new Set(sources.flatMap(([slot]) => slot.evidence!.map((e) => `${e.round}:${e.step}`)))]
+    .map((k) => k.split(':').map(Number) as [number, number])
+    .sort((x, y) => x[0] - y[0] || x[1] - y[1]);
+  const index = new Map(keys.map(([r, st], i) => [`${r}:${st}`, i]));
+  const series: LineSeries[] = sources.map(([slot, tone]) => {
+    const points = slot.evidence!.map((e) => ({ x: index.get(`${e.round}:${e.step}`)!, y: e.pTrue }));
+    return { key: slot.role, tone, points, endLabel: `${ROLE_LABEL[slot.role]} ${pct(points[points.length - 1].y)}` };
+  });
+  const highest = Math.max(...series.flatMap((s) => s.points.map((pt) => pt.y)));
+  const top = Math.max(0.5, Math.ceil(highest * 4) / 4);
+  const yTicks: number[] = [];
+  for (let y = 0; y <= top + 1e-9; y += 0.25) yTicks.push(y);
+  const secondRound = keys.findIndex(([r]) => r === 2);
+  return (
+    <Panel className="bd-evidence" title={title} aside="会谈每一步，判断落在正确干预路径上的平均权重">
+      <LineChart
+        ariaLabel={`逐步判断把握：${series.map((s) => s.endLabel).join('，')}`}
+        series={series}
+        xDomain={[0, Math.max(1, keys.length - 1)]}
+        yDomain={[0, top]}
+        xTicks={keys.map(([, st], i) => ({ x: i, label: `${st}` }))}
+        yTicks={yTicks}
+        yFormat={(v) => pct(v)}
+        refs={[{ y: 0.2, label: '五选一的起点' }]}
+        firstRegionLabel="第 1 轮 · 第几步"
+        dividers={secondRound > 0 ? [{ x: secondRound - 0.5, label: '第 2 轮' }] : []}
+      />
+      <p className="bd-footnote">越往上越好。线升得早、升得高，说明提问更早问出了能区分路径的线索。分类器在两次运行之间是冻结的。</p>
+    </Panel>
+  );
+}
+
 // ---------- 整页 ----------
 
 export function EvolutionBoard({ data, loading = false }: { data: BoardData; loading?: boolean }) {
@@ -577,6 +665,10 @@ export function EvolutionBoard({ data, loading = false }: { data: BoardData; loa
           <LearnedPanel data={data} />
           <RollbackPanel data={data} />
         </div>
+      </div>
+      <div className="bd-proof">
+        <TrajectoryPanel data={data} />
+        <EvidencePanel data={data} />
       </div>
     </div>
   );

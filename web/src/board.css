@@ -1,6 +1,6 @@
 /* 进化看板（评委页）。颜色变量在 styles.css。
    这页是站着在一两米外读的：字号跟着视口宽度放大，所有尺寸用 em 跟着走。
-   栅格：三列 4fr / 3fr / 5fr，间距 0.8em。主指标占前两列，副指标与安全线在它下面各占一列；
+   栅格：三列 4.5fr / 2.5fr / 5fr，间距 0.8em。主指标占前两列，副指标与安全线在它下面各占一列；
    第三列跨这两行，上面是“学到了什么”，下面是“怎么回退”的版本链。 */
 
 .bd {
@@ -237,7 +237,7 @@
 /* ---------- 面板 ---------- */
 .bd-grid {
   display: grid;
-  grid-template-columns: minmax(0, 4fr) minmax(0, 3fr) minmax(0, 5fr);
+  grid-template-columns: minmax(0, 4.5fr) minmax(0, 2.5fr) minmax(0, 5fr);
   grid-template-areas:
     'lead lead side'
     'secondary safety side';
@@ -481,32 +481,279 @@
   font-weight: 400;
 }
 
-/* ---------- 副指标表 ---------- */
-.bd-table {
-  width: 100%;
-  border-collapse: collapse;
+/* ---------- 副指标：对比条 ---------- */
+.bd-duo {
+  display: grid;
   font-size: 0.92em;
 }
-.bd-table th {
-  padding: 0 0 0.45em;
-  color: var(--muted);
-  font-size: 0.9em;
-  font-weight: 400;
-  text-align: left;
-}
-.bd-table td {
-  padding: 0.4em 0;
+.bd-duo-row {
+  display: grid;
+  grid-template-columns: 9em minmax(4em, 1fr) 3.4em 3.4em 3.6em;
+  align-items: center;
+  column-gap: 0.7em;
+  padding: 0.42em 0;
   border-top: 1px solid var(--rule);
 }
-.bd-table th.num,
-.bd-table td.num {
-  padding-left: 0.9em;
+.bd-duo-head {
+  border-top: 0;
+  padding-top: 0;
+  color: var(--muted);
+  font-size: 0.9em;
 }
-.bd-table td.context {
+.bd-duo-row .num.base {
   color: var(--muted);
 }
-.bd-table td.bd-diff {
+.bd-duo-row .bd-diff {
   font-weight: 500;
+}
+.bd-duo-track {
+  position: relative;
+  height: 1.1em;
+  /* 轨道本身是一条细线，两端留出半个圆点的位置 */
+  margin: 0 0.45em;
+  background: linear-gradient(var(--control), var(--control)) center / 100% 1px no-repeat;
+}
+.bd-duo-track i {
+  position: absolute;
+  top: 50%;
+  display: block;
+}
+.bd-duo-track .dot,
+.bd-duo-legend .dot {
+  width: 0.8em;
+  height: 0.8em;
+  border-radius: 50%;
+}
+.bd-duo-track .dot {
+  margin: -0.4em 0 0 -0.4em;
+  transition: left 600ms cubic-bezier(0.2, 0.7, 0.2, 1);
+  animation: bd-pop 500ms ease-out both;
+}
+.bd-duo .dot.base,
+.bd-duo-legend .dot.base {
+  background: var(--base);
+}
+.bd-duo .dot.lead,
+.bd-duo-legend .dot.lead {
+  background: var(--hue);
+}
+.bd-duo-track .link {
+  height: 3px;
+  margin-top: -1.5px;
+  background: var(--base);
+  transform-origin: left center;
+  animation: bd-grow-x 600ms cubic-bezier(0.2, 0.7, 0.2, 1) both;
+}
+.bd-duo-track .link.up {
+  background: var(--hue);
+}
+.bd-duo-track .link.down {
+  background: var(--danger);
+}
+.bd-duo-track .tick,
+.bd-duo-legend .tick {
+  width: 2px;
+  height: 0.9em;
+  background: var(--muted);
+  opacity: 0.55;
+}
+.bd-duo-track .tick {
+  margin: -0.45em 0 0 -1px;
+}
+.bd-duo-track .zero {
+  width: 1px;
+  height: 1.1em;
+  margin-top: -0.55em;
+  background: var(--control);
+}
+.bd-duo-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.2em 1.4em;
+  margin-top: 0.6em !important;
+  color: var(--muted);
+  font-size: 0.86em;
+}
+.bd-duo-legend li {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45em;
+}
+.bd-duo-legend i {
+  display: block;
+}
+
+/* ---------- 门禁条 ---------- */
+.bd-gate-rows {
+  display: grid;
+  font-size: 0.92em;
+}
+.bd-gate-row {
+  display: grid;
+  grid-template-columns: 4.2em minmax(4em, 1fr) 3.6em 7.5em;
+  align-items: center;
+  column-gap: 0.7em;
+  color: var(--muted);
+}
+.bd-gate-row.chosen {
+  color: var(--text);
+  font-weight: 600;
+}
+.bd-gate-track {
+  position: relative;
+  display: block;
+  padding: 0.32em 0;
+}
+/* 每一行各画一段基线，上下相接成一条贯穿的竖线 */
+.bd-gate-track::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: var(--baseline);
+  width: 2px;
+  margin-left: -1px;
+  background: var(--text);
+}
+.bd-gate-track .bar {
+  display: block;
+  height: 0.9em;
+  border-radius: 2px;
+  background: var(--base);
+  transform-origin: left center;
+  animation: bd-grow-x 700ms cubic-bezier(0.2, 0.7, 0.2, 1) both;
+}
+.bd-gate-track .bar.lead {
+  background: var(--hue);
+}
+.bd-gate-track .bar.none {
+  width: 100%;
+  background: none;
+  box-shadow: inset 0 0 0 1px var(--control);
+  animation: none;
+  opacity: 0.7;
+}
+.bd-gate-baseline {
+  margin-top: 0.35em !important;
+  color: var(--muted);
+  font-size: 0.8em;
+}
+.bd-gate-baseline b {
+  color: var(--text);
+  font-weight: 600;
+}
+
+/* ---------- 第二屏：证据 ---------- */
+.bd-proof {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: var(--gap);
+  /* 一边没有数据时，空的那块保持自己的高度，不被拉成一大片空白 */
+  align-items: start;
+}
+.ch {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+  font-family: var(--font);
+}
+.ch-grid {
+  stroke: var(--rule);
+  stroke-width: 1;
+}
+.ch-ref {
+  stroke: var(--text);
+  stroke-width: 1;
+  stroke-dasharray: 4 4;
+  opacity: 0.55;
+}
+.ch-divider {
+  stroke: var(--control);
+  stroke-width: 1;
+}
+.ch-tick,
+.ch-note {
+  fill: var(--muted);
+  font-size: 12.5px;
+}
+.ch-end {
+  font-size: 13.5px;
+  font-weight: 600;
+}
+.ch-end.base {
+  fill: var(--muted);
+}
+.ch-end.lead {
+  fill: var(--hue);
+}
+.ch-faint,
+.ch-line {
+  fill: none;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+}
+.ch-faint {
+  stroke-width: 1;
+  opacity: 0.28;
+  animation: bd-fade 900ms ease-out both;
+}
+.ch-faint.base,
+.ch-line.base {
+  stroke: var(--base);
+}
+.ch-faint.lead,
+.ch-line.lead {
+  stroke: var(--hue);
+}
+.ch-line {
+  stroke-width: 3;
+  /* pathLength=1：数据到达时把线从左画到右 */
+  stroke-dasharray: 1;
+  animation: bd-draw 1100ms cubic-bezier(0.3, 0.6, 0.2, 1) both;
+}
+.ch-faint.lead {
+  opacity: 0.38;
+}
+
+/* 数据到达时的过渡：元素首次出现时播放一次，轮询刷新不会重播 */
+.bd-figure-value,
+.bd-delta strong,
+.bd-safety-value {
+  animation: bd-rise 500ms ease-out both;
+}
+.bd-dots i {
+  animation: bd-pop 400ms ease-out both;
+}
+@keyframes bd-draw {
+  from {
+    stroke-dashoffset: 1;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+@keyframes bd-grow-x {
+  from {
+    transform: scaleX(0);
+  }
+}
+@keyframes bd-pop {
+  from {
+    opacity: 0;
+    transform: scale(0.4);
+  }
+}
+@keyframes bd-fade {
+  from {
+    opacity: 0;
+  }
+}
+@keyframes bd-rise {
+  from {
+    opacity: 0;
+    transform: translateY(0.12em);
+  }
 }
 
 /* ---------- 安全线 ---------- */
@@ -606,43 +853,6 @@
 .bd-change-reason {
   color: var(--muted);
   font-size: 0.8em;
-}
-.bd-candidates {
-  display: grid;
-  grid-auto-flow: column;
-  grid-auto-columns: minmax(0, 1fr);
-  border-top: 1px solid var(--rule);
-}
-.bd-candidates li {
-  display: flex;
-  flex-direction: column;
-  padding: 0.5em 0.9em 0;
-  border-left: 1px solid var(--rule);
-  color: var(--muted);
-  font-size: 0.86em;
-}
-.bd-candidates li:first-child {
-  padding-left: 0;
-  border-left: 0;
-}
-.bd-candidates strong {
-  font-size: 1.5em;
-  font-weight: 500;
-  line-height: 1.3;
-  color: var(--text);
-}
-.bd-candidates strong.none {
-  color: var(--muted);
-  font-weight: 400;
-}
-.bd-candidates li.chosen {
-  color: var(--text);
-  font-weight: 600;
-}
-.bd-candidates li.chosen strong {
-  font-weight: 600;
-  box-shadow: inset 0 -0.14em 0 var(--hue);
-  align-self: flex-start;
 }
 .bd-steps {
   display: grid;
@@ -790,6 +1000,11 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .bd *,
+  .bd *::before {
+    animation: none !important;
+    transition: none !important;
+  }
   .bd-steps li.bd-step-running::before {
     animation: none;
   }
@@ -812,6 +1027,9 @@
   }
   .bd-scope {
     display: none;
+  }
+  .bd-proof {
+    grid-template-columns: minmax(0, 1fr);
   }
 }
 
@@ -867,6 +1085,30 @@
   }
   .bd-versions li + li::before {
     display: none;
+  }
+  .bd-duo-row {
+    grid-template-columns: minmax(0, 1fr) 3.4em 3.4em 3.6em;
+    row-gap: 0.1em;
+  }
+  .bd-duo-row > :first-child {
+    grid-column: 1 / -1;
+  }
+  .bd-duo-head > :first-child,
+  .bd-duo-head > :nth-child(2) {
+    display: none;
+  }
+  .bd-duo-head {
+    grid-template-columns: minmax(0, 1fr) 3.4em 3.4em 3.6em;
+  }
+  .bd-duo-head::before {
+    content: '';
+  }
+  .bd-gate-row {
+    grid-template-columns: 4.2em minmax(3em, 1fr) 3.6em;
+  }
+  .bd-gate-verdict {
+    grid-column: 2 / -1;
+    font-size: 0.9em;
   }
   .bd-panel-head {
     flex-direction: column;
