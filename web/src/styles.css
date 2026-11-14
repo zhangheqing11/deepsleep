@@ -1,5 +1,5 @@
-/* 视觉变量：无彩色的界面，唯一的色相（--hue）只用在“进化后的那一版”的数据上。
-   地面是偏冷的月光灰，卡片纯白；语义色只出现在状态和变化上。
+/* 视觉变量：低饱和、不抢眼。唯一的色相家族（--hue，偏灰的深青绿）只用在“进化后的那一版”的数据和“变好”上。
+   页面底色比所有板块深一档；板块靠各自的低饱和底色分开；砖红只表示变差和安全线失守。
    日间 / 夜间都在这里定义；组件只引用变量。 */
 
 @font-face {
@@ -13,40 +13,47 @@
 }
 
 :root {
-  --bg: #f2f4f7;
-  --surface: #ffffff;
-  --surface-2: #eceef2;
-  --border: #e2e5ea;
-  --rule: #eef0f3;
-  --control: #cfd3da;
-  --text: #0b0d11;
-  --muted: #59606c;
-  --accent: #14161a;
-  --accent-soft: #eceef2;
-  --link: #1d5fbf;
-  --button: #14161a;
-  --button-ink: #ffffff;
+  --bg: #e4e7e6;
+  --surface: #fbfbf9;
+  --surface-2: #eceeed;
+  --border: #d6dad9;
+  --rule: #e6e9e8;
+  --control: #c3c9c7;
+  --text: #1c2322;
+  --muted: #56605e;
+  --accent: #1c2322;
+  --accent-soft: #eceeed;
+  --link: #2f6f6a;
+  --button: #1c2322;
+  --button-ink: #fbfbf9;
 
   /* 语义色：只用于状态与变化 */
-  --ok: #247b50;
-  --ok-soft: #dcfae5;
-  --ok-ink: #04250e;
-  --warn: #92400e;
-  --warn-soft: #fffbeb;
-  --warn-ink: #92400e;
-  --danger: #c4242a;
-  --danger-soft: #ffedea;
-  --danger-ink: #831c1e;
-  --info: #3d4654;
-  --info-soft: #eceef2;
+  --ok: #2f6f6a;
+  --ok-soft: #dbe9e3;
+  --ok-ink: #1f4f47;
+  --warn: #7a5f1f;
+  --warn-soft: #f0e8d6;
+  --warn-ink: #6e5520;
+  --danger: #a4503f;
+  --danger-soft: #f1dfda;
+  --danger-ink: #7a3a2c;
+  --info: #46524f;
+  --info-soft: #eceeed;
 
-  --frame: #f2f4f7;
-  --frame-ink: #3a404a;
+  --frame: #e4e7e6;
+  --frame-ink: #3c4644;
 
   /* 数据色：--hue 给进化后的版本，--base 给对照 */
-  --hue: #1d5fbf;
-  --hue-soft: #e4edfa;
-  --base: #8a8f98;
+  --hue: #2f6f6a;
+  --hue-soft: #dbe9e3;
+  --base: #8b908f;
+
+  /* 板块底色：靠低饱和的色块分区，不靠边框和阴影 */
+  --panel-lead: #fbfbf9;
+  --panel-learned: #e7eee9;
+  --panel-safety: #e4ebef;
+  --panel-plain: #eff0ee;
+  --panel-edge: rgba(28, 35, 34, 0.07);
 
   --radius: 6px;
   --radius-lg: 8px;
@@ -59,69 +66,79 @@
 /* 夜间：跟随系统（未手动选择日间时），或手动选择夜间。真中性的深色，不用藏青。 */
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme='light']) {
-    --bg: #0a0a0a;
-    --surface: #141414;
-    --surface-2: #202020;
-    --border: #2a2a2a;
-    --rule: #1e1e1e;
-    --control: #444444;
-    --text: #ffffff;
-    --muted: #b4b4b4;
-    --accent: #ffffff;
-    --accent-soft: #202020;
-    --link: #8ab8ff;
-    --button: #ffffff;
-    --button-ink: #0a0a0a;
-    --ok: #3fc07a;
-    --ok-soft: #172a1d;
-    --ok-ink: #3fc07a;
-    --warn: #e0b45c;
-    --warn-soft: #2b2415;
-    --warn-ink: #e0b45c;
-    --danger: #e5566f;
-    --danger-soft: #2c1a20;
-    --danger-ink: #e5566f;
-    --info: #b4b4b4;
-    --info-soft: #202020;
-    --frame: #0a0a0a;
-    --frame-ink: #b4b4b4;
-    --hue: #6ea8ff;
-    --hue-soft: #14233a;
-    --base: #8c8c8c;
+    --bg: #0c0d0d;
+    --surface: #1a1c1c;
+    --surface-2: #242727;
+    --border: #2c3030;
+    --rule: #232626;
+    --control: #474d4c;
+    --text: #eef1f0;
+    --muted: #aab2b0;
+    --accent: #eef1f0;
+    --accent-soft: #242727;
+    --link: #86bdb5;
+    --button: #eef1f0;
+    --button-ink: #0c0d0d;
+    --ok: #86bdb5;
+    --ok-soft: #17302c;
+    --ok-ink: #9fd0c8;
+    --warn: #d2b673;
+    --warn-soft: #2c2617;
+    --warn-ink: #d2b673;
+    --danger: #d98a78;
+    --danger-soft: #33201c;
+    --danger-ink: #e3a092;
+    --info: #aab2b0;
+    --info-soft: #242727;
+    --frame: #0c0d0d;
+    --frame-ink: #aab2b0;
+    --hue: #86bdb5;
+    --hue-soft: #17302c;
+    --base: #868c8b;
+    --panel-lead: #1c1f1f;
+    --panel-learned: #18211e;
+    --panel-safety: #181e22;
+    --panel-plain: #151717;
+    --panel-edge: rgba(238, 241, 240, 0.07);
     color-scheme: dark;
   }
 }
 
 :root[data-theme='dark'] {
-  --bg: #0a0a0a;
-  --surface: #141414;
-  --surface-2: #202020;
-  --border: #2a2a2a;
-  --rule: #1e1e1e;
-  --control: #444444;
-  --text: #ffffff;
-  --muted: #b4b4b4;
-  --accent: #ffffff;
-  --accent-soft: #202020;
-  --link: #8ab8ff;
-  --button: #ffffff;
-  --button-ink: #0a0a0a;
-  --ok: #3fc07a;
-  --ok-soft: #172a1d;
-  --ok-ink: #3fc07a;
-  --warn: #e0b45c;
-  --warn-soft: #2b2415;
-  --warn-ink: #e0b45c;
-  --danger: #e5566f;
-  --danger-soft: #2c1a20;
-  --danger-ink: #e5566f;
-  --info: #b4b4b4;
-  --info-soft: #202020;
-  --frame: #0a0a0a;
-  --frame-ink: #b4b4b4;
-  --hue: #6ea8ff;
-  --hue-soft: #14233a;
-  --base: #8c8c8c;
+  --bg: #0c0d0d;
+  --surface: #1a1c1c;
+  --surface-2: #242727;
+  --border: #2c3030;
+  --rule: #232626;
+  --control: #474d4c;
+  --text: #eef1f0;
+  --muted: #aab2b0;
+  --accent: #eef1f0;
+  --accent-soft: #242727;
+  --link: #86bdb5;
+  --button: #eef1f0;
+  --button-ink: #0c0d0d;
+  --ok: #86bdb5;
+  --ok-soft: #17302c;
+  --ok-ink: #9fd0c8;
+  --warn: #d2b673;
+  --warn-soft: #2c2617;
+  --warn-ink: #d2b673;
+  --danger: #d98a78;
+  --danger-soft: #33201c;
+  --danger-ink: #e3a092;
+  --info: #aab2b0;
+  --info-soft: #242727;
+  --frame: #0c0d0d;
+  --frame-ink: #aab2b0;
+  --hue: #86bdb5;
+  --hue-soft: #17302c;
+  --base: #868c8b;
+  --panel-lead: #1c1f1f;
+  --panel-learned: #18211e;
+  --panel-safety: #181e22;
+  --panel-plain: #151717;
+  --panel-edge: rgba(238, 241, 240, 0.07);
   color-scheme: dark;
 }
 
