@@ -8,7 +8,7 @@ probability_sum_tolerance: 0.000001
 tau_flag: 0.2
 tau_active: 0.5
 phq9_item9_threshold: 0
-min_tib_minutes: 300
+min_tib_minutes: 330
 lexicon_path: lexicon.yaml
 scripts_path: scripts.yaml
 judge_prompt_path: prompts/judge_zh.md

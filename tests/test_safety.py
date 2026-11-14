@@ -30,7 +30,7 @@ def assess(layer, text, state=None):
     return asyncio.run(layer.assess_text(text, 1, 1, state or SessionSafetyState()))
 
 
-@pytest.mark.parametrize("text,level", [("我希望睡过去不再醒来", "passive"), ("我现在想自杀", "active")])
+@pytest.mark.parametrize("text,level", [("我打算结束自己的生命", "active"), ("我现在想自杀", "active")])
 def test_explicit_skips_judge(text, level):
     judge = StubJudge()
     event = assess(SafetyLayer(judge=judge), text)
@@ -42,7 +42,8 @@ def test_explicit_skips_judge(text, level):
 def test_exclusion_only_cancels_ambiguous():
     rules = Rules()
     assert rules.match("撑不下去了").tier == "ambiguous"
-    assert rules.match("困死了，撑不下去了").tier == "none"
+    assert rules.match("困死了，但我不想活了").tier == "ambiguous"
+    assert rules.match("困死了").tier == "none"
     assert rules.match("困死了，但我现在想自杀").level == "active"
     assert rules.match("我希望睡过去不再醒来，我现在想自杀").level == "active"
 
@@ -112,10 +113,11 @@ def test_item9_and_monotonic_state():
     assert (event.level, event.source, event.action) == ("passive", "scale_item9", "safety_check")
     assert layer.assess_phq9_item9(2, 1, 0, state).action == "none"
     assert assess(layer, "我现在想自杀", state).action == "crisis_protocol"
+    judge.result = JudgeResult({"none": 0., "history": 0., "passive": 1., "active": 0.}, "ok", "stub", .1)
     assert assess(layer, "我希望睡过去不再醒来", state).action == "none"
     assert layer.assess_phq9_item9(1, 2, 0, state).action == "none"
     assert state.highest_level == "active"
-    assert judge.calls == 0
+    assert judge.calls == 1
     assert layer.assess_phq9_item9(1, 1, 0, SessionSafetyState()).action == "safety_check"
 
 
@@ -201,7 +203,9 @@ def test_history_ambiguous_once_and_escalation():
     state.pending_history_check = False
     assert assess(layer, "过去的经历", state) is None
     assert not state.pending_history_check
+    layer.judge = StubJudge({"none": 0., "history": 0., "passive": 1., "active": 0.})
     assert assess(layer, "我希望睡过去不再醒来", state).action == "safety_check"
+    layer.judge = StubJudge({"none": 0., "history": 1., "passive": 0., "active": 0.})
     assert assess(layer, "过去的经历", SessionSafetyState()).action == "history_check"
 
 

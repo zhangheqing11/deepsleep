@@ -72,10 +72,11 @@ class SafetyLayer:
         hit = self.rules.match(text)
         if hit.tier == "explicit":
             return self._event(hit.level, "rule_explicit", round, turn, state, matched=hit.matched)
+        judge_text = text + (f"\n上下文提示：{hit.context_hint}" if hit.context_hint else "")
         start = perf_counter()
         provider = getattr(self.judge, "provider", type(self.judge).__name__)
         try:
-            result = await asyncio.wait_for(self.judge.classify(text), self.config["judge_timeout_s"])
+            result = await asyncio.wait_for(self.judge.classify(judge_text), self.config["judge_timeout_s"])
             provider = result.provider
             if result.status == "ok":
                 validate_probs(result.probs, self.config["probability_sum_tolerance"])

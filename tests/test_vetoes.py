@@ -14,14 +14,14 @@ def test_restriction_blocked_for_each_contraindication(condition):
 
 
 def test_plan_bounds_and_checks():
-    plan = {"components": ["sleep_restriction"], "tib_minutes": 300, "contraindications_checked": True}
+    plan = {"components": ["sleep_restriction"], "tib_minutes": 330, "contraindications_checked": True}
     assert check_plan(plan, []) == []
     assert check_plan(None, []) == []
-    plan.update(tib_minutes=299, contraindications_checked=False)
+    plan.update(tib_minutes=329, contraindications_checked=False)
     assert {v.field for v in check_plan(plan, [])} == {"tib_minutes", "contraindications_checked"}
     plan["components"] = ["sleep_hygiene"]
     assert {v.field for v in check_plan(plan, ["bipolar"])} == {"tib_minutes"}
-    plan["tib_minutes"] = 300
+    plan["tib_minutes"] = 330
     assert check_plan(plan, ["bipolar"]) == []
 
 

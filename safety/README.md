@@ -1,7 +1,7 @@
-# 安全层骨架
+# 固定安全层
 
-契约以 `contracts/README.md` 和 schema 为唯一真相，`SPEC.md` 补充实现约定；词表、话术与 8 条测试集均为**占位，待心理学同学审定后替换**。
-这 8 条的通过率只验证接线和报告流程，不能证明真实场景零漏报。
+契约以 `contracts/README.md` 和 schema 为唯一真相，`SPEC.md` 补充实现约定；词表与 48 条自写测试集已按 11/14 临床结论替换，固定话术与热线仍保留待审定/核验状态。
+本集仅用于排错，不能证明真实场景零漏报，不得据此反复调 prompt。
 
 在仓库根目录运行：
 
@@ -29,8 +29,9 @@ make contracts
 - `safety_check` / `crisis_protocol` 直接插入 `layer.script_for(event.action)`；`history_check` 按下方流程交给 agent 核验。
 - `active` 返回 `crisis_protocol`，由引擎设置 `crisis_exit` 并结束会谈。
 - 仅在 event 非 None 且 `event.action != "none"` 时，将 `event.to_dict()` 或 `dataclasses.asdict(event)` 放入 session.safety_events。
-- `matched` 保存命中的原文片段；`RuleHit.entry_ids` 提供词表条目编号。
-- `Violation.field` 是本地定位信息；写入候选时由调用方关联 `change_id`，写入 veto 时只取 code/message。
+- `matched` 保存归一化后的命中片段；`RuleHit.entry_ids` 提供词表条目编号。
+- `Violation.field` 是本地定位信息，`severity` 为 hard/soft（默认 hard）。候选使用 `to_hard_rule_violations(violations, change_id)` 序列化，只收 hard；soft 留作本地警告，不能影响门禁是否通过。写入运行 veto 同样只取 hard 的 code/message。
+- `check_plan(plan, contraindications, *, age=None, crisis_level="none", config=None)`：默认卧床下限 330；传入 age < 18 且含 sleep_restriction 时硬否决；未检查禁忌仍硬否决；passive + sleep_restriction 仅软警告。调用方应传入年龄和危机级别。W1–W8 硬否决，W9/W10 软警告。
 
 ## history_check 引擎接口
 
@@ -38,7 +39,8 @@ make contracts
 按顺序分档：P(active) ≥ tau_active → active；P(passive)+P(active) ≥ tau_flag → passive；
 否则 P(history) 为最大（含并列）→ level none + action history_check；否则 none。
 ambiguous 命中且判断器 ok 时服从分档（history 不升级）；仅 timeout/error 时兜底 passive。
-explicit 规则仍优先，未经判断器。Mock 的关键词只是离线接线占位，不具备完整时态理解。
+explicit 无同句 past_time 时优先直接 active；同句 past_time 时改走判断器，成功按其结果（含 history），失败按 passive / rule_ambiguous 兜底。
+X1–X8 仅逐区间排除模糊命中，不能抵消 explicit；X9 不丢弃命中，仅在判断器输入追加赖床/补觉提示（DS 的 user message，Choice 的 state/input 文本）。Mock 的关键词只是离线接线占位，不具备完整时态理解。
 
 每个会话首次 history_check 将 `state.pending_history_check` 和 `state.history_check_issued` 置 True，
 不提升 `state.highest_level`，不消耗 safety_check。已 active 或已发过 history_check 则不再发出。
@@ -131,4 +133,4 @@ SPEC 流程图说失败时记录 judge_status，但测试要求无规则命中�
 “只升不降”作用于会话最高级别，单次事件保留来源对应的实际判档。
 contracts 对 hard_rule_violations.code 只限定字符串；为兼容 veto 枚举，所有处方硬否决使用
 contraindication_violation，用药建议与禁用措辞使用 forbidden_wording。
-文本硬否决是固定正则，不能覆盖所有药名、改写或上下文；正式规则仍需审定。
+文本规则采用已定稿 W1–W10；固定正则不能覆盖所有药名、改写或上下文。当前仓库没有 engine/scoring 调用方，候选序列化使用上述过滤入口，未扩展契约。

@@ -187,3 +187,21 @@ def test_mock_history_keywords(text, label):
     result = asyncio.run(MockJudge().classify(text))
     assert result.status == "ok"
     assert result.probs[label] == 1.
+
+
+def test_x9_hint_in_jev_state_not_instructions(fake_typesafe):
+    from safety.layer import SafetyLayer, SessionSafetyState
+
+    captured = {}
+
+    async def request(**kwargs):
+        captured.update(kwargs)
+        return SimpleNamespace(choices={"risk": SimpleNamespace(choice="none", probabilities={
+            "none": 1., "history": 0., "passive": 0., "active": 0.,
+        })})
+
+    judge = JevJudge(client=SimpleNamespace(system_one=request))
+    asyncio.run(SafetyLayer(judge=judge).assess_text("周末不想醒", 1, 1, SessionSafetyState()))
+    assert captured["state"]["text"] == "周末不想醒\n上下文提示：赖床/补觉语境"
+    assert captured["questions"]["risk"].instructions == judge.prompt
+    assert "上下文提示" not in str(captured["questions"]["risk"].criteria)

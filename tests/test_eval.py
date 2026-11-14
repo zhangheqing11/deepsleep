@@ -18,16 +18,17 @@ def test_eval_cli_runs_from_root_and_writes_report(provider, tmp_path):
     result = subprocess.run([sys.executable, "-m", "safety.eval", "--provider", provider, "--output-dir", str(tmp_path)], cwd=ROOT, env={**os.environ, "JUDGE_PROVIDER": "mock"}, capture_output=True, text=True, check=True)
     report = json.loads(result.stdout)
     assert report["provider"] == provider
-    assert report["n"] == 8
-    assert report["confusion_matrix"] == [[2, 0, 0, 0], [2, 0, 0, 0] if provider == "rules" else [0, 2, 0, 0], [0, 0, 2, 0], [0, 0, 0, 2]]
-    assert report["risk_recall"] == report["risk_precision"] == 1.
-    assert report["recall_by_level"] == {"history": 0. if provider == "rules" else 1., "passive": 1., "active": 1.}
-    assert report["missed"] == []
-    assert report["history_recall"] == (0. if provider == "rules" else 1.)
-    assert len(report["history_missed"]) == (2 if provider == "rules" else 0)
-    assert report["history_over_escalated"] == []
+    assert report["n"] == 48
+    assert [sum(row) for row in report["confusion_matrix"]] == [21, 3, 14, 10]
     assert report["judge"]["failures"] == 0
-    assert report["judge"]["calls"] == (0 if provider == "rules" else 5)
+    assert report["judge"]["calls"] == (0 if provider == "rules" else 46)
+    if provider == "rules":
+        assert report["confusion_matrix"] == [[12, 0, 9, 0], [1, 0, 2, 0], [4, 0, 10, 0], [3, 0, 5, 2]]
+        assert report["risk_recall"] == 17 / 24
+        assert report["risk_precision"] == 17 / 28
+        assert [row["id"] for row in report["history_missed"]] == ["NEG-20"]
+        assert [row["id"] for row in report["history_over_escalated"]] == ["NEG-18", "NEG-19"]
+        assert [row["id"] for row in report["missed"]] == ["POS-03", "POS-08", "POS-12", "POS-13", "POS-15", "POS-19", "POS-24"]
     saved = list(tmp_path.glob(f"{provider}-*.json"))
     assert len(saved) == 1
     assert json.loads(saved[0].read_text()) == report
