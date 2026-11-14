@@ -7,6 +7,7 @@ import { useHealth } from './hooks/useRunData';
 import { AppLayout } from './layouts/AppLayout';
 import { ConsoleLayout } from './layouts/ConsoleLayout';
 import { applyAppearance, useSavedPreferences } from './lib/userDemoStore';
+import { BoardPage } from './pages/board/BoardPage';
 import { ChatPage } from './pages/app/ChatPage';
 import { SettingsPage } from './pages/app/SettingsPage';
 import { DebugPage } from './pages/console/DebugPage';
@@ -59,5 +60,6 @@ export function App() {
     applyAppearance(prefs.appearance);
   }, [prefs.appearance]);
 
+  if (route.name === 'board') return <BoardPage />;
   return isUserRoute(route) ? <UserApp route={route} /> : <ConsoleApp route={route} />;
 }

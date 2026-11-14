@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react';
 
-// 两套界面共用一个 hash 路由：
-//   #/console/...  开发者控制台（#/ 默认进入控制台）
+// 三套界面共用一个 hash 路由：
+//   #/             进化看板（评委看的首页；未知地址也回到这里）
+//   #/console/...  开发者控制台
 //   #/app/...      用户端交互演示
 // 旧链接 #/runs/:id/sessions/:vid 仍然可用。
 
@@ -14,7 +15,9 @@ export type ConsoleRoute =
 
 export type UserRoute = { name: 'app-chat' } | { name: 'app-settings' };
 
-export type Route = ConsoleRoute | UserRoute;
+export type BoardRoute = { name: 'board' };
+
+export type Route = BoardRoute | ConsoleRoute | UserRoute;
 
 function safeDecode(s: string): string | null {
   try {
@@ -35,6 +38,9 @@ export function parseRoute(hash: string): Route {
   }
 
   switch (path) {
+    case '/console':
+    case '/console/runs':
+      return { name: 'console-runs' };
     case '/console/visitors':
       return { name: 'console-visitors' };
     case '/console/evolution':
@@ -47,11 +53,12 @@ export function parseRoute(hash: string): Route {
     case '/app/settings':
       return { name: 'app-settings' };
     default:
-      return { name: 'console-runs' };
+      return { name: 'board' };
   }
 }
 
 export const HREF = {
+  board: '#/',
   runs: '#/console',
   visitors: '#/console/visitors',
   evolution: '#/console/evolution',
